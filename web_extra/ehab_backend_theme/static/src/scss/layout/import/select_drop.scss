@@ -1,0 +1,48 @@
+@mixin Select-drop() {
+    div.select2-drop {
+        border: 1px solid var(--border);
+        box-shadow: none;
+        border-radius: 0;
+        padding: 5px;
+        margin-top: 3px;
+
+        .select2-search {
+            margin-bottom: 5px;
+            color: var(--Label-value);
+
+            input {
+                border: 0;
+                border-bottom: 1px solid var(--border);
+                background: none;
+                padding: 0px;
+                font-size: $font-size-1;
+
+                &:focus {
+                    @include border-animation();
+                }
+            }
+
+            &:before {
+                font-size: $font-size-1;
+                content: "\f002";
+                color: var(--Label-value);
+                position: absolute;
+                right: 10px;
+                font-family: FontAwesome;
+            }
+        }
+
+        .select2-results {
+            color: var(--Label-value);
+
+            .select2-highlighted {
+                background-color: $tr-hover;
+                color: var(--Label-value);
+            }
+        }
+
+        &.select2-drop-active {
+            border-top: 1px solid var(--border);
+        }
+    }
+}

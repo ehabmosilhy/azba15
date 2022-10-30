@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="training_report_view" model="ir.ui.view">
+        <field name="name">Training Courses Report</field>
+        <field name="model">training.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Report Options">
+                <group col="4">
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="contact_type" widget="radio"/>
+
+                </group>
+                <group>
+                    <field name="partner_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                </group>
+                <group>
+                    <field name="courses_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                </group>
+                <footer>
+                    <button name="check_report" string="Print" type="object" default_focus="1" class="oe_highlight"/>
+                    <button string="Cancel" class="btn btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_training_report_menu" model="ir.actions.act_window">
+        <field name="name">Training Courses Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">training.report.wizard</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="training_report_view"/>
+        <field name="target">new</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!--<menuitem-->
+            <!--id="menu_training_report_view"-->
+            <!--name="Training Courses Report"-->
+            <!--parent="account_reports.account_reports_audit_reports_menu"-->
+            <!--action="action_training_report_menu"-->
+            <!--groups="account.group_account_user"-->
+    <!--/>-->
+
+</odoo>

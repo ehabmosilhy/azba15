@@ -1,0 +1,60 @@
+@mixin ni_barcode_view() {
+    .o_barcode_client_container {
+        .o_barcode_header {
+            background-color: var(--night-light);
+        }
+
+        .o_barcode_lines {
+            background-color: var(--night) !important;
+            box-shadow: unset;
+
+            .o_barcode_line {
+                background-color: var(--btn-secondary);
+                box-shadow: unset;
+                border-radius: 0;
+                border-bottom: var(--border);
+
+                .o_barcode_line_title {
+                    color: var(--font-color);
+                }
+
+                .fa {
+                    color: var(--font-color);
+                }
+            }
+        }
+
+        .o_barcode_message {
+            background-color: var(--night) !important;
+        }
+
+        .o_barcode_generic_view {
+            background: var(--btn-secondary);
+
+            .o_view_controller {
+                .o_content {
+                    .o_form_view {
+                        background: var(--btn-secondary);
+                        @include sync_list_view();
+                        @include sync_kanban_view();
+                    }
+                }
+            }
+        }
+
+        .o_barcode_control_buttons {
+            border-top: 1px solid var(--border);
+            margin: 0;
+        }
+
+        .o_barcode_options {
+
+            .btn-dark,
+            .btn {
+                color: var(--font-color);
+                background-color: var(--btn-secondary);
+                border-bottom: 1px solid var(--border);
+            }
+        }
+    }
+}

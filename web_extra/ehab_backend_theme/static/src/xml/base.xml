@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <!-- Owl Templates -->
+    <t t-name="ActionMenus" t-inherit="web.ActionMenus" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o_cp_action_menus')]" position="inside">
+            <span class="o_sidebar_drw fa fa-chevron-left" t-on-click="onActionMore" />
+        </xpath>
+        <xpath expr="//DropdownMenu[@t-if='printItems.length']" position="attributes">
+            <attribute name="startOpen">true</attribute>
+            <attribute name="manualyClose">true</attribute>
+            <attribute name="class" separator=" " add="o_action_ejad"></attribute>
+        </xpath>
+        <xpath expr="//DropdownMenu[@t-if='actionItems.length']" position="replace">
+            <DropdownMenu t-if="actionItems.length and !printItems.length" title="env._t('Action')" items="actionItems" icon="'fa fa-cog'" startOpen="true" manualyClose="true" closeOnSelected="true" hotkey="'u'" hotkeyTitle="'Additional actions'" class="o_action_ejad" />
+            <DropdownMenu t-if="actionItems.length and printItems.length" title="env._t('Action')" items="actionItems" icon="'fa fa-cog'" startOpen="false" manualyClose="true" closeOnSelected="true" hotkey="'u'" hotkeyTitle="'Additional actions'" class="o_action_ejad" />
+        </xpath>
+    </t>
+    <t t-name="ehab_backend_theme.ControlPanel" t-inherit="web.Legacy.ControlPanel" t-inherit-mode="extension" owl="1">
+        <xpath expr="//ActionMenus" position="replace" />
+        <xpath expr="//div[hasclass('o_search_options')]" position="replace" />
+        <xpath expr="//nav[hasclass('o_cp_switch_buttons')]" position="replace" />
+        <xpath expr="//SearchBar" position="attributes">
+            <attribute name="t-if">!isMobileView</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_cp_top')]" position="inside">
+            <ActionMenus t-if="props.actionMenus and props.actionMenus.items" t-props="props.actionMenus" />
+            <div class="btn-group o_search_options position-static o_hidden" role="search" t-ref="searchViewButtons">
+                <div class="ad_mobile_search" t-if="isMobileView">
+                    <div class="ad_mobile_search_header">
+                        <button type="button" class="btn ad_mobile_search_filter" t-on-click="_onShowMobileSearchFilter">
+                            <i class="fa fa-arrow-left" />
+                            <strong class="ml8">FILTER</strong>
+                        </button>
+                        <button type="button" class="btn ad_mobile_search_clear" t-on-click="_onShowMobileSearchClear">
+                            <t>CLEAR</t>
+                        </button>
+                    </div>
+                    <SearchBar t-if="props.withSearchBar" fields="fields" />
+                </div>
+                <t t-if="props.withSearchBar">
+                    <FilterMenu t-if="props.searchMenuTypes.includes('filter')" class="o_filter_menu" fields="fields" />
+                    <GroupByMenu t-if="props.searchMenuTypes.includes('groupBy')" class="o_group_by_menu" fields="fields" />
+                    <ComparisonMenu t-if="props.searchMenuTypes.includes('comparison') and model.get('filters', f => f.type === 'comparison').length" class="o_comparison_menu" />
+                    <FavoriteMenu t-if="props.searchMenuTypes.includes('favorite')" class="o_favorite_menu" />
+                </t>
+                <button t-if="isMobileView" type="button" class="btn btn-primary ad_mobile_search_footer" t-on-click="_onShowMobileSearchFilter">
+                    <t>SEE RESULT</t>
+                </button>
+            </div>
+            <nav t-if="props.views.length gt 1" class="btn-group o_cp_switch_buttons" role="toolbar" aria-label="View switcher">
+                <t t-foreach="props.views" t-as="view" t-key="view.type" t-if="env.view.type === view.type">
+                    <button class="btn btn-link btn-sm" data-toggle="dropdown" aria-expanded="false">
+                        <span t-attf-class="btn btn-secondary fa fa-lg o_switch_view o_{{ view.type }} {{ view.icon }}"></span>
+                    </button>
+                </t>
+                <ul class="dropdown-menu dropdown-menu-right list-inline">
+                    <t t-foreach="props.views" t-as="view" t-key="view.type">
+                        <div class="oe_view_btn">
+                            <t t-call="web.ViewSwitcherButton" />
+                        </div>
+                    </t>
+                </ul>
+            </nav>
+        </xpath>
+        <xpath expr="//div[hasclass('o_cp_bottom_left')]" position="before">
+            <button t-if="isMobileView and additionalContent and additionalContent.buttons" class="o_main_cp_buttons btn btn-primary fa fa-bars" t-on-click.stop="_onClickCpButtons">Cancel</button>
+        </xpath>
+        <xpath expr="//i[hasclass('o_searchview_icon')]" position="attributes">
+            <attribute name="t-on-click">_onClickSearchButton</attribute>
+        </xpath>
+        <xpath expr="//i[hasclass('o_searchview_icon')]" position="after">
+            <sapn class="o_search_recs fa fa-ellipsis-v dropdown-toggle o_hidden" t-if="!env.isSmall" data-toggle="dropdown" id="dropdownMenu" type="button" />
+            <ul class="dropdown-menu o_search_rec_ul" t-if="!env.isSmall" aria-labelledby="dropdownMenu" />
+        </xpath>
+    </t>
+    <t t-name="ehab_backend_theme.SearchBar" t-inherit="web.SearchBar" t-inherit-mode="extension" owl="1">
+        <xpath expr="//i[hasclass('o_searchview_icon')]" position="attributes">
+            <attribute name="t-on-click">_onClickSearchButton</attribute>
+        </xpath>
+        <xpath expr="//i[hasclass('o_searchview_icon')]" position="after">
+            <sapn t-if="!env.isSmall" class="o_search_recs fa fa-ellipsis-v dropdown-toggle o_hidden" data-toggle="dropdown" id="dropdownMenu" type="button" />
+            <ul t-if="!env.isSmall" class="dropdown-menu o_search_rec_ul" aria-labelledby="dropdownMenu" />
+        </xpath>
+    </t>
+    <t t-name="ehab_backend_theme.SearchBar.Facets" t-inherit="web.SearchBar.Facets" owl="1" t-inherit-mode="extension">
+        <xpath expr="//t[@t-as='facet']" position="before">
+            <t t-set="facet_count" t-value="0" />
+        </xpath>
+        <xpath expr="//div[hasclass('o_searchview_facet')]" position="attributes">
+            <attribute name="t-att-facet-count">facet_count</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_searchview_facet')]/i[hasclass('o_facet_remove')]" position="after">
+            <t t-set="facet_count" t-value="facet_count + 1" />
+            <t t-log="facet_count" />
+        </xpath>
+    </t>
+    <t t-name="ehab_backend_theme.SearchPanel" t-inherit="web.Legacy.SearchPanel" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o_search_panel')]" position="attributes">
+            <attribute name="t-if">!isMobileView</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_search_panel')]" position="after">
+            <div t-else="" t-on-click="state.visibleSearch = true" class="o_mobile_search_content w-100">
+                <t t-set="selected_categories" t-value="_getCategories()" />
+                <t t-set="selected_filters" t-value="_getFilters()" />
+                <button t-if="!selected_categories.length and !selected_filters.length and !state.visibleSearch" class="w-100 text-left btn btn-light" t-on-click="state.visibleSearch = true"><i class="small mr-1 fa fa-filter"></i><span class="o_dropdown_title">Filters</span></button>
+                <t t-else="">
+                    <span t-foreach="selected_categories" t-as="category" t-key="category.id" class="mr-1">
+                        <i t-if="category.icon" t-attf-class="o_search_panel_section_icon fa {{ category.icon }} mr-1" t-att-style="category.color and ('color: ' + category.color)" />
+                        <t t-esc="category.values.join('/')" />
+                    </span>
+                    <span t-foreach="selected_filters" t-as="filter" t-key="filter.id" class="mr-1">
+                        <i t-if="filter.icon" t-attf-class="o_search_panel_section_icon fa {{ filter.icon }} mr-1" t-att-style="filter.color and ('color: ' + filter.color)" />
+                        <t t-esc="filter.values.join(', ')" />
+                    </span>
+                </t>
+                <t t-if="state.visibleSearch">
+                    <Portal target="'body'">
+                        <div class="o_search_panel o_searchview o_mobile_search">
+                            <div class="o_mobile_search_header">
+                                <button type="button" class="o_mobile_search_button btn" t-on-click="state.visibleSearch = false">
+                                    <i class="fa fa-arrow-left" />
+                                    <strong class="ml8">FILTER</strong>
+                                </button>
+                            </div>
+                            <section class="pl-4 pr-4" t-foreach="model.get('sections', s => !s.empty)" t-as="section" t-key="section.id" t-attf-class="o_search_panel_section o_search_panel_{{ section.type }}">
+                                <header class="o_search_panel_section_header text-uppercase">
+                                    <i t-attf-class="fa {{ section.icon }} o_search_panel_section_icon mr-2" t-att-style="section.color and ('color: ' + section.color)" />
+                                    <b t-esc="section.description" />
+                                </header>
+                                <div t-if="section.errorMsg" class="alert alert-warning">
+                                    <span>
+                                        <t t-esc="section.errorMsg" /></span>
+                                </div>
+                                <ul t-else="" class="list-group d-block o_search_panel_field">
+                                    <t t-if="section.type === 'category'" t-call="web.Legacy.SearchPanel.Category">
+                                        <t t-set="values" t-value="section.rootIds" />
+                                    </t>
+                                    <t t-elif="section.groups">
+                                        <li t-foreach="section.sortedGroupIds" t-as="groupId" t-key="groupId" class="o_search_panel_filter_group list-group-item border-0">
+                                            <t t-set="_section" t-value="section" />
+                                            <t t-set="group" t-value="section.groups.get(groupId)" />
+                                            <header class="o_search_panel_group_header">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" t-attf-id="{{ section.id }}_input_{{ groupId }})" t-on-click="_toggleFilterGroup(section.id, group)" />
+                                                    <label t-attf-for="{{ section.id }}_input_{{ groupId }})" class="o_search_panel_label custom-control-label" t-att-class="{ o_with_counters: group.enableCounters }" t-att-title="group.tooltip or false">
+                                                        <span class="o_search_panel_label_title">
+                                                            <span t-if="group.hex_color" class="mr-1" t-attf-style="color: {{ group.hex_color }};">●</span>
+                                                            <t t-esc="group.name" />
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </header>
+                                            <ul class="list-group d-block">
+                                                <t t-call="web.Legacy.SearchPanel.FiltersGroup">
+                                                    <t t-set="values" t-value="group.values" />
+                                                    <t t-set="section" t-value="_section" />
+                                                </t>
+                                            </ul>
+                                        </li>
+                                        <ul t-if="section.groups.get(false)" class="list-group d-block">
+                                            <t t-call="web.Legacy.SearchPanel.FiltersGroup">
+                                                <t t-set="group" t-value="section.groups.get(false)" />
+                                                <t t-set="values" t-value="group.values" />
+                                                <t t-set="section" t-value="section" />
+                                            </t>
+                                        </ul>
+                                    </t>
+                                    <t t-else="" t-call="web.Legacy.SearchPanel.FiltersGroup">
+                                        <t t-set="values" t-value="section.values" />
+                                    </t>
+                                </ul>
+                            </section>
+                            <button type="button" class="btn btn-primary o_mobile_search_footer" t-on-click.stop="state.visibleSearch = false">
+                                <t>SEE RESULT</t>
+                            </button>
+                        </div>
+                    </Portal>
+                </t>
+            </div>
+        </xpath>
+    </t>
+    <t t-name="ehab_backend_theme.ControlPanel" t-inherit="web.ControlPanel" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[@t-if='(env.config.viewSwitcherEntries or []).length']" position="replace" />
+        <xpath expr="//div[hasclass('o_search_options')]" position="replace" />
+        <xpath expr="//div[hasclass('o_cp_bottom_left')]" position="before">
+            <button t-if="isMobileView" class="o_main_cp_buttons btn btn-primary fa fa-bars" t-on-click.stop="_onClickCpButtons">Cancel</button>
+        </xpath>
+        <xpath expr="//div[hasclass('o_cp_top_right')]" position="after">
+            <div class="btn-group o_search_options position-static o_hidden" role="search">
+                <t t-foreach="searchMenus" t-as="menu" t-key="menu.key">
+                    <t t-component="menu.Component" />
+                </t>
+            </div>
+            <t t-if="(env.config.viewSwitcherEntries or []).length">
+                <nav t-if="env.config.viewSwitcherEntries.length gt 1" class="btn-group o_cp_switch_buttons" role="toolbar" aria-label="View switcher">
+                    <t t-foreach="env.config.viewSwitcherEntries" t-as="view" t-key="view.type" t-if="view.active">
+                        <button class="btn btn-link btn-sm" data-toggle="dropdown" aria-expanded="false">
+                            <span t-attf-class="btn btn-secondary fa fa-lg o_switch_view o_{{ view.type }} {{ view.icon }}"></span>
+                        </button>
+                    </t>
+                    <ul class="dropdown-menu dropdown-menu-right list-inline">
+                        <t t-foreach="env.config.viewSwitcherEntries" t-as="view" t-key="view.type">
+                            <div class="oe_view_btn">
+                                <button class="btn btn-light fa fa-lg o_switch_view " t-attf-class="o_{{view.type}} {{view.icon}} {{view.active ? 'active' : ''}}" t-att-data-tooltip="view.name" t-on-click="onViewClicked(view.type)">
+                                    <t t-esc="view.type" /></button>
+                            </div>
+                        </t>
+                    </ul>
+                </nav>
+            </t>
+        </xpath>
+        <xpath expr="//t[@t-slot='control-panel-top-right']" position="replace">
+            <t t-if="!env.isSmall">
+                <t t-slot="control-panel-top-right">
+                    <SearchBar />
+                </t>
+            </t>
+            <t t-else="">
+                <div class="o_cp_searchview">
+                    <div class="o_searchview">
+                        <i role="img" aria-label="Search..." title="Search..." class="o_searchview_icon fad fa-sliders-h" t-on-click="state.visibleSearch = true"></i>
+                    </div>
+                </div>
+                <t t-if="state.visibleSearch">
+                    <Portal target="'body'">
+                        <div class="o_searchview o_mobile_search">
+                            <div class="o_mobile_search_header">
+                                <button type="button" class="o_mobile_search_button btn" t-on-click="state.visibleSearch = false">
+                                    <i class="fa fa-arrow-left" />
+                                    <strong class="ml8">FILTER</strong>
+                                </button>
+                                <button type="button" class="o_mobile_search_button btn" t-on-click="env.searchModel.clearQuery()">
+                                    CLEAR
+                                </button>
+                            </div>
+                            <div class="o_mobile_search_content">
+                                <t t-if="display['top-right']">
+                                    <t t-slot="control-panel-top-right">
+                                        <SearchBar />
+                                    </t>
+                                </t>
+                                <t t-if="display['bottom-right']">
+                                    <t t-slot="control-panel-bottom-right">
+                                        <div class="o_mobile_search_filter o_search_options">
+                                            <t t-foreach="searchMenus" t-as="menu" t-key="menu.key">
+                                                <t t-component="menu.Component" />
+                                            </t>
+                                        </div>
+                                    </t>
+                                </t>
+                            </div>
+                            <button type="button" class="btn btn-primary o_mobile_search_footer" t-on-click="state.visibleSearch = false">
+                                SEE RESULT
+                            </button>
+                        </div>
+                    </Portal>
+                </t>
+            </t>
+        </xpath>
+    </t>
+    <!-- Inherit menus for replace drop down button click event -->
+    <t t-name="ehab_backend_theme.legacy.FilterMenu" t-inherit="web.legacy.FilterMenu" t-inherit-mode="extension" owl="1">
+        <xpath expr="//Dropdown" position="attributes">
+            <attribute name="startOpen">true</attribute>
+            <attribute name="manualOnly">true</attribute>
+            <attribute name="class" separator=" " add="o_dropdown_ejad"></attribute>
+        </xpath>
+    </t>
+    <t t-name="ehab_backend_theme.Legacy.FavoriteMenu" t-inherit="web.Legacy.FavoriteMenu" t-inherit-mode="extension" owl="1">
+        <xpath expr="//Dropdown" position="attributes">
+            <attribute name="manualOnly">true</attribute>
+            <attribute name="class" separator=" " add="o_dropdown_ejad"></attribute>
+        </xpath>
+    </t>
+    <t t-name="GroupByMenu" t-inherit="web.GroupByMenu" t-inherit-mode="extension" owl="1">
+        <xpath expr="//Dropdown" position="attributes">
+            <attribute name="manualOnly">true</attribute>
+            <attribute name="class" separator=" " add="o_dropdown_ejad"></attribute>
+        </xpath>
+    </t>
+    <t t-name="FilterMenu" t-inherit="web.FilterMenu" t-inherit-mode="extension" owl="1">
+        <xpath expr="//Dropdown" position="attributes">
+            <attribute name="startOpen">true</attribute>
+            <attribute name="manualOnly">true</attribute>
+            <attribute name="class" separator=" " add="o_dropdown_ejad"></attribute>
+        </xpath>
+    </t>
+    <t t-name="ComparisonMenu" t-inherit="web.ComparisonMenu" t-inherit-mode="extension" owl="1">
+        <xpath expr="//Dropdown" position="attributes">
+            <attribute name="manualOnly">true</attribute>
+            <attribute name="class" separator=" " add="o_dropdown_ejad"></attribute>
+        </xpath>
+    </t>
+    <t t-name="FavoriteMenu" t-inherit="web.FavoriteMenu" t-inherit-mode="extension" owl="1">
+        <xpath expr="//Dropdown" position="attributes">
+            <attribute name="manualOnly">true</attribute>
+            <attribute name="class" separator=" " add="o_dropdown_ejad"></attribute>
+        </xpath>
+    </t>
+    <t t-name="ViewSwitcherButton" t-inherit="web.ViewSwitcherButton" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button" position="inside">
+            <t t-esc="view.type" />
+        </xpath>
+    </t>
+    <!-- Inherit search bar owl template for add sequence of facet -->
+    <t t-name="SearchBar" t-inherit="web.Legacy.SearchBar" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o_searchview_facet')]" position="before">
+            <t t-set="facet_count" t-value="0" />
+        </xpath>
+        <xpath expr="//div[hasclass('o_searchview_facet')]" position="attributes">
+            <attribute name="t-att-facet-count">facet_count</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_searchview_facet')]/i[hasclass('o_facet_remove')]" position="after">
+            <t t-set="facet_count" t-value="facet_count+1" />
+        </xpath>
+    </t>
+    <t t-name="ControlPanel.SwitchButton">
+        <div class="oe_view_btn">
+            <button type="button" t-att-accesskey="view.accessKey" t-attf-class="btn btn-secondary fa fa-lg #{view.icon} o_cp_switch_#{view.type} #{viewType === view.type ? ' active' : ''}" t-attf-aria-label="View #{view.type}" t-att-data-view-type="view.type" t-attf-title="View #{view.type}" tabindex="-1">
+                <t t-esc="view.type" />
+            </button>
+        </div>
+    </t>
+    <t t-extend="UserMenu">
+        <t t-jquery=".dropdown-menu-right" t-operation="attributes">
+            <attribute name="class" value="dropdown-menu dropdown-menu-right ad_active" />
+        </t>
+        <t t-jquery=".oe_topbar_name" t-operation="replace" />
+        <t t-jquery=".dropdown-menu-right" t-operation="prepend">
+            <div class="ad_user_details_box mb16 mt16">
+                <div class="ad_user_details">
+                    <div class="ad_avtar_image">
+                        <img class="img-circle oe_topbar_avatar" t-att-src="_s + '/web/static/src/img/user_menu_avatar.png'" />
+                    </div>
+                    <div class="oe_user p-2 text-center">
+                        <b><span class="oe_topbar_name" /></b>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+    <!-- Logout Message -->
+    <t t-name="LogoutMessage">
+        <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
+            <div class="mb-container">
+                <div class="mb-middle">
+                    <div class="mb-title"><span class="fa fa-sign-out" />
+                        Log <strong>Out</strong> ?</div>
+                    <div class="mb-content">
+                        <p>Are you sure you want to log out?</p>
+                        <p>Press No if you want to continue work. Press Yes to logout current user.</p>
+                    </div>
+                    <div class="mb-footer">
+                        <div class="pull-right">
+                            <a href="#" class="btn btn-default btn-lg oe_cu_logout_yes">Yes</a>
+                            <button class="btn btn-default btn-lg mb-control-close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    <!-- Import view inherit -->
+    <t t-extend="ImportView">
+        <t t-jquery="input[id='oe_import_deferparentstore']" t-operation="replace">
+            <div class="o_checkbox"><input type="checkbox" id="oe_import_deferparentstore" checked="checked" />
+                <span></span></div>
+        </t>
+        <t t-jquery="input[id='oe_import_has_header']" t-operation="replace">
+            <div class="o_checkbox"><input type="checkbox" class="oe_import_has_header" id="oe_import_has_header" checked="checked" />
+                <span></span></div>
+        </t>
+        <t t-jquery="input[id='oe_import_advanced_mode']" t-operation="replace">
+            <div class="o_checkbox"><input type="checkbox" class="oe_import_advanced_mode" checked="checked" id="oe_import_advanced_mode" />
+                <span></span></div>
+        </t>
+        <t t-jquery="input[id='oe_import_tracking']" t-operation="replace">
+            <div class="o_checkbox"><input type="checkbox" id="oe_import_tracking" />
+                <span></span></div>
+        </t>
+    </t>
+    <t t-extend="Throbber">
+        <t t-jquery="img" t-operation="replace">
+            <svg width="58px" height="58px" xmlns="" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-cube nvd3-svg">
+                <g transform="translate(25,25)">
+                    <rect ng-attr-x="{{config.dp}}" ng-attr-y="{{config.dp}}" ng-attr-width="{{config.blockSize}}" ng-attr-height="{{config.blockSize}}" ng-attr-fill="{{config.c1}}" x="-18" y="-18" width="36" height="36" fill="#875A7B" transform="scale(1.11648 1.11648)">
+                        <animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="-0.3s" repeatCount="indefinite" />
+                    </rect>
+                </g>
+                <g transform="translate(75,25)">
+                    <rect ng-attr-x="{{config.dp}}" ng-attr-y="{{config.dp}}" ng-attr-width="{{config.blockSize}}" ng-attr-height="{{config.blockSize}}" ng-attr-fill="{{config.c2}}" x="-18" y="-18" width="36" height="36" fill="#875A7B" transform="scale(1.1619 1.1619)">
+                        <animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="-0.2s" repeatCount="indefinite" />
+                    </rect>
+                </g>
+                <g transform="translate(25,75)">
+                    <rect ng-attr-x="{{config.dp}}" ng-attr-y="{{config.dp}}" ng-attr-width="{{config.blockSize}}" ng-attr-height="{{config.blockSize}}" ng-attr-fill="{{config.c3}}" x="-18" y="-18" width="36" height="36" fill="#875A7B" transform="scale(1.30165 1.30165)">
+                        <animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="0s" repeatCount="indefinite" />
+                    </rect>
+                </g>
+                <g transform="translate(75,75)">
+                    <rect ng-attr-x="{{config.dp}}" ng-attr-y="{{config.dp}}" ng-attr-width="{{config.blockSize}}" ng-attr-height="{{config.blockSize}}" ng-attr-fill="{{config.c4}}" x="-18" y="-18" width="36" height="36" fill="#875A7B" transform="scale(1.21853 1.21853)">
+                        <animateTransform attributeName="transform" type="scale" calcMode="spline" values="1.5;1" keyTimes="0;1" dur="1s" keySplines="0 0.5 0.5 1" begin="-0.1s" repeatCount="indefinite" />
+                    </rect>
+                </g>
+            </svg>
+        </t>
+    </t>
+    <!-- CH: Wrep Form button -->
+    <t t-name="ButtonGroup">
+        <div class="o_statusbar_buttons">
+            <div class="btn-group">
+                <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">Action</a>
+                <ul class="dropdown-menu" role="menu" />
+            </div>
+        </div>
+    </t>
+    <!-- CH: Wrep Breadcrumb -->
+    <t t-name="Breadcrumb.mobile">
+        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+            <t t-if="state_info" t-esc="state_info.display_name" />
+        </button>
+        <ul class="dropdown-menu o-status-more" role="menu">
+            <li t-foreach="selection" t-as="i">
+                <t t-call="FieldStatus.content.button" />
+            </li>
+        </ul>
+    </t>
+    <t t-extend="SearchView">
+        <t t-jquery=".o_toggle_searchview_full" t-operation="before">
+            <t t-call="SearchView.MoreFacets" />
+        </t>
+        <t t-jquery=".o_searchview_more" t-operation="after">
+            <t t-call="SearchView.MoreFacets" />
+        </t>
+    </t>
+    <t t-extend="mail.widgets.Discuss.DiscussControlButtons">
+        <t t-jquery="div:first" t-operation="attributes">
+            <attribute name="class">o_discuss_buttons</attribute>
+        </t>
+    </t>
+    <t t-name="ListView.Attachment">
+        <t t-foreach="values" t-as="value">
+            <t t-set="type" t-value="value.mimetype and value.mimetype.split('/').shift()" />
+            <t t-set="has_preview" t-value="type == 'image' or type == 'video' or value.mimetype == 'application/pdf'" />
+            <t t-if="has_preview">
+                <div class="o_attachment_download float-right">
+                    <div t-att-data-id="value.id" class="o_image_box float-left o_attachment_view" t-attf-title="Preview - #{value.name}">
+                        <div class="o_image o_hover" t-att-data-mimetype="value.mimetype" />
+                    </div>
+                    <a class="attech_link" t-attf-href="/web/content/#{value.id}?download=true" t-attf-title="Download - #{value.name}">
+                        <div class="name">
+                            <t t-esc="value.name" />
+                        </div>
+                        <i aria-label="Download" role="img" class="fa fa-download" />
+                    </a>
+                </div>
+            </t>
+            <t t-else="">
+                <a class="o_attachment_download float-right" t-attf-href="/web/content/#{value.id}?download=true" t-att-title="value.name">
+                    <div t-att-data-id="value.id" class="o_image_box float-left">
+                        <div class="o_image o_hover" t-att-data-mimetype="value.mimetype" />
+                    </div>
+                    <div class="name">
+                        <t t-esc="value.name" />
+                    </div>
+                    <i aria-label="Download" role="img" class="fa fa-download" />
+                </a>
+            </t>
+        </t>
+    </t>
+    <t t-name="DisplayDensityList.buttons">
+        <button class="btn btn-default o_display_density" type="button">
+            Display Density
+        </button>
+    </t>
+    <t t-extend="ListView.buttons">
+        <t t-jquery=".o_list_buttons" t-operation="prepend">
+            <t t-if="widget and widget.group_display_density">
+                <t t-call="DisplayDensityList.buttons" />
+            </t>
+        </t>
+    </t>
+    <t t-name="CustomizeList">
+        <div class="row-fluid text-center">
+            <div class="o_density_image">
+                <img t-att-src="'/ehab_backend_theme/static/src/img/' + widget.default_density + '.png'" class="mx-auto d-block w-100" />
+            </div>
+            <div class="btn-group mt-3 mb-3 text-center o_density" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-default" data-value="default">Default</button>
+                <button type="button" class="btn btn-default" data-value="comfortable">Comfortable</button>
+                <button type="button" class="btn btn-default" data-value="compact">Compact</button>
+            </div>
+        </div>
+    </t>
+    <t t-extend="mail.systray.ActivityMenu">
+        <t t-jquery=".o_mail_systray_dropdown_items" t-operation="attributes">
+            <attribute name="t-att-icon-type">window['ejadTheme'].base_menu_icon</attribute>
+        </t>
+    </t>
+    <t t-extend="SwitchCompanyMenu">
+        <t t-jquery=".bg-info" t-operation="replace">
+            <div class="bg-info">Tap on the list to change company</div>
+        </t>
+    </t>
+</templates>

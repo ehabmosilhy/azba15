@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_material_price">
+        <t t-call="web.html_container">
+            <!--<t t-call="ejad_erp_purchase.nauss_header"/>-->
+            <!--<t t-call="ejad_erp_purchase.nauss_footer"/>-->
+            <div class="header">
+            </div>
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <!--<h3> List of available materials for (<strong><span t-esc="data['category_id'][1]"/></strong>) Category</h3>-->
+                    <h3>
+                        قائمة المواد المتوفرة للفئة :
+                        <strong><span t-esc="data['category_id'][1]"/></strong>
+                    </h3>
+                    <br/>
+                    <table t-if="len(lines)" class="table table-bordered">
+                        <thead>
+                            <!--<tr class="text-center">-->
+                                <!--<th>Internal Reference</th>-->
+                                <!--<th>Name</th>-->
+                                <!--<th>Internal Category</th>-->
+                                <!--<th>Material Type</th>-->
+                                <!--<th>On Hand</th>-->
+                                <!--<th>Cost</th>-->
+                                <!--<th>Sale Price</th>-->
+                            <!--</tr>-->
+                            <tr>
+                                <th class="text-center">المرجع الداخلي</th>
+                                <th class="text-center">الإسم</th>
+                                <th class="text-center">الفئة الداخلية</th>
+                                <th class="text-center">نوع المادة</th>
+                                <th class="text-center">الكمية المتوفرة</th>
+                                <th class="text-center">الكلفة</th>
+                                <th class="text-center">سعر البيع</th>
+                            </tr>
+                        </thead>
+                        <tr t-foreach="lines" t-as="line">
+                            <td><span t-esc="line.default_code"/></td>
+                            <td><span t-esc="line.name"/></td>
+                            <td><span t-esc="line.categ_id.name"/></td>
+                            <td><span t-esc="line.type"/></td>
+                            <td><span t-esc="line.qty_available"/></td>
+                            <td><strong><span t-esc="line.standard_price" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong></td>
+                            <td><strong><span t-esc="line.list_price" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/></strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

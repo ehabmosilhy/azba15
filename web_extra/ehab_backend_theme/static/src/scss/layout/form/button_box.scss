@@ -1,0 +1,227 @@
+// Form Panel view  function to used in no sheet form [start]
+@mixin form_panel() {
+    .oe_button_box {
+        width: 100%;
+        margin: 0;
+        box-shadow: none;
+        margin-bottom: 5px;
+        display: flex;
+        justify-content: flex-end;
+
+        &.o_full {
+            &>button {
+                width: 100% !important;
+                flex: auto;
+            }
+
+            div.o_dropdown_more {
+                border-radius: 0;
+                box-shadow: none;
+                border: 0;
+                left: auto !important;
+                right: 0;
+                margin-top: 5px;
+                top: 100% !important;
+                position: absolute !important;
+                transform: none !important;
+                flex-wrap: wrap;
+                width: auto;
+                flex-direction: column;
+
+                &.show {
+                    display: flex;
+                }
+
+                &>button {
+                    width: 160px !important;
+                    border: 0;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+
+        .oe_stat_button {
+            background-color: rgba($button-box, .03);
+            box-shadow: none;
+            min-height: 40px;
+            color: var(--button-box);
+            margin-left: 5px;
+            border-color: transparent;
+            min-width: 50px;
+            overflow: hidden;
+            max-width: 128px !important;
+            opacity: 1;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+
+            .o_button_icon {
+                color: var(--button-box);
+                font-size: $font-size-7;
+
+                &:before {
+                    font-size: $font-size-7;
+                }
+            }
+
+            .o_stat_value {
+                color: var(--button-box);
+                display: flex;
+
+                .o_field_widget {
+                    display: block;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+
+            &:hover {
+                background-color: rgba($button-box, .07);
+            }
+
+            &.o_button_more {
+                justify-content: center;
+
+                &:after {
+                    vertical-align: middle;
+                }
+            }
+
+            .o_stat_info,
+            .btn.oe_stat_button>span {
+                padding-left: 6px;
+            }
+        }
+
+        .o_pie {
+            background-color: var(--brand-secondary);
+
+            .o_pie_value {
+                color: var(--brand-secondary);
+            }
+        }
+    }
+
+    .o_field_image {
+        float: right;
+
+        &>img {
+            box-shadow: none;
+            margin-bottom: 0px;
+            @include round-border();
+        }
+
+        &>.o_form_image_controls {
+            background-color: var(--brand-secondary);
+        }
+    }
+
+    .oe_title {
+        // padding-left: 0;
+        // padding-right: 105px;
+        width: 100%;
+        margin: 0;
+
+        h1 {
+            color: var(--Label-value);
+        }
+    }
+
+    @include ad-notbook-editer();
+
+    #o_work_employee_container {
+        padding-top: 20px;
+
+        #o_employee_right {
+            border-left: 1px solid var(--border);
+
+            .o_org_chart_title {
+                color: var(--brand-secondary);
+            }
+
+            .o_org_chart_group_up,
+            .o_org_chart_entry {
+                .media-body {
+                    .o_employee_redirect {
+                        color: $normal-color;
+                        font-weight: var(--font-weight-b);
+
+                        h5 b {
+                            color: $normal-color;
+                            font-weight: var(--font-weight-b);
+                        }
+
+                        .media-heading {
+                            color: var(--brand-secondary);
+                        }
+
+                        strong {
+                            color: $normal-color;
+                            font-weight: var(--font-weight-b);
+                        }
+                    }
+
+                    .badge {
+                        color: $white;
+                        border-color: var(--brand-secondary);
+                        background-color: var(--brand-secondary);
+                    }
+
+                    strong {
+                        color: $normal-color;
+                        font-weight: var(--font-weight-b);
+                    }
+                }
+
+                &:hover,
+                &.o_org_chart_entry_self {
+                    .o_media_heading {
+                        &>b {
+                            color: var(--brand-secondary) !important;
+                        }
+                    }
+
+                    .o_media_left {
+                        .o_media_object {
+                            box-shadow: 0 0 0 2px var(--brand-secondary);
+                            border: 2px solid transparent;
+                        }
+                    }
+                }
+            }
+
+            .o_field_widget {
+                &>.o_org_chart_entry {
+                    .media-left {
+                        .media-object {
+                            border: 2px solid var(--brand-secondary);
+                        }
+                    }
+                }
+
+                &>.o_org_chart_group_up,
+                &>.o_org_chart_group_down {
+                    .o_org_chart_entry {
+                        &:hover {
+                            .media-left {
+                                .media-object.o_employee_redirect {
+                                    box-shadow: 0 0 0 2px darken($brand-secondary, 10%);
+                                    border: 0;
+                                }
+                            }
+                        }
+
+                        .media-left {
+                            .media-object.o_employee_redirect {
+                                box-shadow: 0 0 0 1px var(--brand-secondary);
+                                border: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Form Panel view  function to used in no sheet form [stop]

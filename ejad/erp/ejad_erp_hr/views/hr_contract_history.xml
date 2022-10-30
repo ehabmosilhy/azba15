@@ -1,0 +1,169 @@
+<?xml version="1.0" ?>
+<odoo>
+	<data>
+		<!-- Action -->
+		<act_window id="payroll_history_action" 
+			name="Contract Wage History Action"
+			res_model="hr.payroll.wage.history"
+			view_mode="tree,form"
+		/>
+		
+		<record model="ir.actions.act_window" id="open_payroll_wage_hist_action">
+			<field name="name">Contract Wage History </field>
+			<field name="res_model">hr.payroll.wage.history</field>
+			<field name="view_mode">tree,form</field>
+ 			<field name="context">{'search_default_employee_id': active_id}</field>		 
+		</record>
+		
+		<!-- Tree View -->
+		<record id="payroll_wage_history_tree_view" model="ir.ui.view">
+			<field name="name">payroll_wage_history_tree_view</field>
+			<field name="model">hr.payroll.wage.history</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Contract Wage History List" 
+					default_order="id desc" create="false" edit="false" delete="false">
+					<field name="name"/>
+					<field name="employee_id"/>
+					<field name="contract_id"/>
+					<field name="department_id"/>
+					<field name="job_id"/>
+					<field name="cur_grade_level_id"/>
+					<field name="pre_grade_level_id"/>
+					<field name="pre_wage"/>
+					<field name="cur_wage"/>
+					<field name="difference"/>
+					<field name="percentage"/>
+					<field name="effective_date"/>
+					<field name="responsible_id"/>
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Form View -->
+		<record id="payroll_wage_history_form_view" model="ir.ui.view">
+			<field name="name">payroll_wage_history_form_view</field>
+			<field name="model">hr.payroll.wage.history</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Contract Wage History Information" create="false" edit="false" delete="false">
+					<header>
+						<field name="state" widget="statusbar"
+							statusbar_visible="ok,cancel"/>
+					</header>
+					<sheet>
+						<group name="group_header" colspan="4">
+							<h1>
+								Wage History Report
+							</h1>
+						</group>
+						<!--<div class="oe_right oe_button_box" name="button_box">
+                            <button name="Print Report"
+										type="object"
+										icon="fa-floppy-o"
+										class="oe_inline oe_stat_button"
+										string="Print Report"/>
+                        </div>-->
+						<group name="group_top" colspan="4" col="4">
+							<group string="Payroll Basic Info" colspan="2">
+								<field name="name"/>
+								<field name="employee_id" options="{'no_create': True,'no_open':True}"/>
+								<field name="contract_id" options="{'no_create': True,'no_open':True}"/>
+								<field name="department_id" options="{'no_create': True,'no_open':True}"/>
+								<field name="job_id" options="{'no_create': True,'no_open':True}"/>
+							</group>
+							<group string="Payroll Details Info" colspan="2">
+								<field name="pre_wage"/>
+								<field name="cur_wage"/>
+								<field name="difference"/>
+								<field name="percentage"/>
+								<field name="effective_date"/>
+								<field name="responsible_id" options="{'no_create': True,'no_open':True}"/>
+							</group>
+						</group>
+					</sheet>	
+				</form>
+			</field>
+		</record>
+		
+		<!-- Search View -->
+		<record id="payroll_wage_history_search_view" model="ir.ui.view">
+			<field name="name">payroll_wage_history_search_view</field>
+			<field name="model">hr.payroll.wage.history</field>
+			<field name="type">search</field>
+			<field name="arch" type="xml">
+				<search>
+					<!-- Search by -->
+					<field name="employee_id"/>
+					<field name="job_id"/>
+					<field name="department_id"/>
+					<field name="responsible_id"/>
+					<field name="effective_date"/>
+					<!-- Filter -->
+					<group expand="1" string="Filter By">
+						<filter name="filter_highest_raise" string="Highest Raise in 12 Months"
+							domain="[]" context="{'filter_highest_raise':'True'}"/>
+						<filter name="filter_no_raise"  string="No Raise in 12 Months"
+							domain="[]" context="{'filter_no_raise':'True'}"/>
+						<filter name="responsible_id"  string="My Responsibility"
+							domain="[]" context="{'group_by' : 'responsible_id'}"/>
+					</group>
+					<!-- Group by -->
+					<group expand="0" string="Group By">
+						<filter name="employee" string="Employee Name"
+							domain="[]" context="{'group_by':'employee_id'}"/>
+						<filter name="job" string="Job"
+							domain="[]" context="{'group_by':'job_id'}"/>
+						<filter name="department_id" string="Department"
+							domain="[]" context="{'group_by':'department_id'}"/>
+						<filter name="responsible_id" string="Responsible"
+							domain="[]" context="{'group_by':'responsible_id'}"/>
+						<filter name="eff_month" string="Effective Month"
+							domain="[]" context="{'group_by':'eff_month'}"/>
+						<filter name="eff_year" string="Effective Year"
+							domain="[]" context="{'group_by':'eff_year'}"/>
+					</group>
+
+				</search>
+			</field>
+		</record>
+			
+		<!-- Tree View for Wizard -->
+		<record id='payroll_wage_hist_wizard_tree_view' model='ir.ui.view'>
+			<field name="name">payroll_wage_hist_wizard_tree_view</field>
+			<field name="model">hr.payroll.wage.history</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+			<!-- cant create new Record -->
+				<tree string="Payroll History Wizard List" create="false">
+					<field name="employee_id"/>
+					<field name="cur_wage"/>
+					<field name="pre_wage"/>
+					<field name="cur_grade_level_id"/>
+					<field name="pre_grade_level_id"/>
+					<field name="percentage"/>
+					<field name="effective_date"/>
+					<!-- Months until the Effective Date -->
+					<field name="until_eff_date"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_employee_form_hiss" model="ir.ui.view">
+        <field name="name">hr.employee.h.hissnk</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+        <xpath expr="//div[@name='button_box']" position="inside">
+          <button name="%(open_payroll_wage_hist_action)d" 
+              type="action"
+              class="oe_stat_button" 
+              icon="fa-floppy-o">
+			  <field name="wage_incr_count" widget="statinfo"
+              string="Contract History"/>
+            </button>
+        </xpath>
+    </field>
+</record>
+	</data>
+</odoo>

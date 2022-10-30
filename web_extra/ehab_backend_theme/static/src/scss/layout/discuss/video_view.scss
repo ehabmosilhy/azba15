@@ -1,0 +1,110 @@
+@mixin Rtc-call() {
+    .o_RtcCallViewer {
+        background-image: radial-gradient(circle, darken($brand-secondary, 20%), $black);
+
+        .o_RtcCallViewer_participantContainer {
+            .o_RtcCallParticipantCard {
+                .o_RtcVideo {
+                    background-color: transparent;
+                }
+
+                &.o-isTalking {
+                    box-shadow: none;
+                    position: relative;
+
+                    &:before {
+                        content: '';
+                        width: 3px;
+                        height: 10px;
+                        background-color: white;
+                        display: inline-block;
+                        position: absolute;
+                        bottom: 15px;
+                        right: 32px;
+                        z-index: 11;
+                        border-radius: 15px;
+                        animation-duration: .8s;
+                        animation-delay: 4s;
+                        animation-iteration-count: infinite;
+                        animation-name: video-speaker-rev;
+                    }
+
+                    &:after {
+                        content: '';
+                        width: 3px;
+                        height: 10px;
+                        background-color: white;
+                        display: inline-block;
+                        position: absolute;
+                        bottom: 15px;
+                        right: 16px;
+                        z-index: 11;
+                        border-radius: 15px;
+                        animation-duration: .8s;
+                        animation-delay: 2s;
+                        animation-iteration-count: infinite;
+                        animation-name: video-speaker-rev;
+                    }
+
+                    .o_RtcCallParticipantCard_container {
+                        &:before {
+                            content: '';
+                            width: 3px;
+                            height: 15px;
+                            background-color: white;
+                            display: inline-block;
+                            position: absolute;
+                            bottom: 9px;
+                            right: 21px;
+                            z-index: 11;
+                            border-radius: 15px;
+                            animation-duration: 1s;
+                            animation-delay: 0.5s;
+                            animation-iteration-count: infinite;
+                            animation-name: video-speaker;
+                        }
+                    }
+                }
+
+                .o_RtcCallParticipantCard_overlayBottom {
+                    left: 5px;
+
+                    .o_RtcCallParticipantCard_name {
+                        background-color: var(--brand-secondary);
+                    }
+                }
+            }
+
+            .o_RtcCallParticipantCard_container {
+                .o_RtcCallParticipantCard_avatarFrame {
+                    background-color: transparent;
+                }
+            }
+        }
+
+        .o_RtcCallParticipantCard_avatarImage.o-isTalking {
+            border-color: var(--brand-secondary);
+        }
+
+        .o_RtcController_button:not(.o_RtcController_callToggle) {
+            background-color: var(--brand-primary);
+        }
+    }
+
+    .o_ThreadView_core {
+        .o_ThreadView_outOfOffice {
+            background-color: $tr-hover;
+            border: 0;
+            border-bottom: 0;
+        }
+
+        .o_MessageList {
+            @include Message-view();
+        }
+    }
+
+    .o_ChannelMemberList {
+        background-color: white !important;
+        padding: 5px;
+    }
+}

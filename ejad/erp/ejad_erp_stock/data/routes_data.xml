@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <record id="route_warehouse0_buy" model='stock.location.route'>
+            <field name="name">استلام مباشر</field>
+            <field name="company_id"></field>
+            <field name="sequence">1</field>
+            <field name="product_selectable">True</field>
+        </record>
+
+        <record id="stock_location_check_location" model='stock.location'>
+            <field name="name">موقع الفحص</field>
+            <field name="location_id" ref="stock.warehouse0"/>
+        </record>
+        <record id="stock_location_custody_location" model='stock.location'>
+            <field name="name">موقع العهد</field>
+            <field name="location_id" ref="stock.warehouse0"/>
+        </record>
+        <record id="route_warehouse0_check_before_receipt" model='stock.location.route'>
+            <field name="name">الفحص قبل الإستلام</field>
+            <field name="company_id"></field>
+            <field name="sequence">2</field>
+            <field name="product_selectable">True</field>
+            <!--<field name="push_ids" eval="[(4,ref('ejad_erp_stock.stock_location_path1'))]"></field>-->
+
+        </record>
+
+        <!--<record id="stock_location_path1" model='stock.location.path'>-->
+            <!--<field name="name">موقع الفحص إلى المستودع</field>-->
+            <!--<field name="location_from_id" ref="stock_location_check_location"/>-->
+            <!--<field name="location_dest_id" ref="stock.stock_location_stock"/>-->
+            <!--<field name="picking_type_id" ref="stock.picking_type_internal"/>-->
+            <!--<field name="route_id" ref="route_warehouse0_check_before_receipt"/>-->
+
+        <!--</record>-->
+        <record id="stock_procurement_rule" model='stock.rule'>
+            <field name="name">موقع الفحص إلى المستودع</field>
+            <field name="action">push</field>
+            <field name="procure_method">make_to_order</field>
+            <field name="location_src_id" ref="stock_location_check_location"/>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="warehouse_id" ref="stock.warehouse0"/>
+            <field name="picking_type_id" ref="stock.picking_type_internal"/>
+            <field name="route_id" ref="route_warehouse0_check_before_receipt"/>
+
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,242 @@
+<odoo>
+    <data noupdate="1">
+
+        <record id="seq_payment_advice" model="ir.sequence">
+            <field name="name">Payment Advice</field>
+            <field name="code">payment.advice</field>
+            <field name="padding">3</field>
+        </record>
+
+    </data>
+    <data>
+
+        <record id="view_hr_bank_advice_tree" model="ir.ui.view">
+            <field name="name">hr.payroll.advice.tree</field>
+            <field name="model">hr.payroll.advice</field>
+            <field name="arch" type="xml">
+                <tree string="Bank Advice" create="false" delete="false">
+                    <field name="date"/>
+                    <field name="batch_id"/>
+
+                    <field name="total_amount"/>
+
+                    <field name="name"/>
+                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                    <field name="journal_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_bank_advice_form" model="ir.ui.view">
+            <field name="name">hr.payroll.advice.form</field>
+            <field name="model">hr.payroll.advice</field>
+            <field name="arch" type="xml">
+                <form string="Bank Advice" create="false" delete="false">
+                    <header>
+                        <button name="confirm_sheet" string="Confirm Sheet" states="draft" type="object"
+                                class="oe_highlight" groups="ejad_erp_hr.access_confirm_sheet"/>
+                        <button name="compute_advice" string="Compute Advice" states="draft" type="object"
+                                class="oe_highlight" groups="ejad_erp_hr.access_compute_advice"/>
+                        <button name="action_pay" string="Pay" states="confirm" type="object" class="oe_highlight"
+                                groups="ejad_erp_hr.access_action_pay"/>
+                        <button name="cancel_sheet" string="Cancel Advice" states="draft" type="object"
+                                groups="ejad_erp_hr.access_cancel_sheet"/>
+                        <button name="set_to_draft" string="Set to Draft" states="cancel,confirm" type="object"
+                                groups="ejad_erp_hr.access_set_to_draft"/>
+                        <button name="%(ejad_erp_account.action_payment_order_report_wizard)d"
+                                type="action"
+                                string="طباعة أمر الصرف"
+                                class="oe_stat_button oe_highlight"
+                                attrs="{'invisible': ['|',('move_id', '=', False),('payment_type', '!=', 'bank')]}"
+                                context="{
+									'default_move_id': move_id,
+									'default_payment_name': name,
+
+								}"
+                        />
+
+                        <button name="%(action_bank_letter_payroll_wizard)d"
+                                type="action"
+                                states="confirm,paid"
+                                groups="ejad_erp_hr.group_print_bank_letter"
+                                string="خطاب البنك"
+                                class="oe_stat_button oe_highlight"
+                                context="{
+									'default_payroll_advice_id': active_id,
+									'default_journal_id': journal_id,
+									'default_line_ids': line_ids,
+
+								}"
+                        />
+
+
+                        <field name="state" widget="statusbar" nolabel="1"/>
+
+
+                    </header>
+                    <sheet>
+                        <group>
+                            <label for="name" class="oe_edit_only" string="الاسم"/>
+                            <h2>
+                                <field name="name"/>
+                            </h2>
+                            <label for="date" class="oe_edit_only"/>
+                            <div>
+                                <field name="date"/>
+                            </div>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="payment_type"/>
+                                <!--                                 <field name="is_paid"/>
+                                -->
+                            </group>
+                            <group>
+                                <field name="bank_id" attrs="{'invisible':[('payment_type','!=','bank')]}"/>
+                                <field name="number" invisible="1"/>
+                                <!--                                 <field name="is_paid"/>
+                                -->
+                            </group>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Payment Lines">
+                                <field name="line_ids" colspan="4" nolabel="1">
+                                    <tree string="Payment Lines" editable="bottom">
+                                        <field name="employee_id" on_change="onchange_employee_id(employee_id)"/>
+                                        <field name="name"/>
+                                        <field name="ifsc" invisible="1"/>
+                                        <field name="bank_id" attrs="{'invisible':[('bank_id','=', False)]}"/>
+                                        <field name="payslip_id"/>
+                                        <field name="amount"/>
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right">
+
+                                    <field name="total_amount"/>
+                                </group>
+
+                            </page>
+
+                            <page string="Other Information">
+                                <group colspan="4" col="6">
+                                    <field name="batch_id"/>
+
+                                    <field name="journal_id"/>
+                                    <field name="treasury_account_id"/>
+                                    <field name="emp_account_id"/>
+
+                                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                                    <field name="chaque_nos"/>
+                                    <field name="bank_ref"/>
+                                    <field name="cash_ref_seq" invisible="1"/>
+                                    <field name="bank_ref_seq" invisible="1"/>
+                                    <newline/>
+                                    <field name="move_id"/>
+                                </group>
+                                <separator colspan="4" string="Letter Details"/>
+                                <field name="note" colspan="4" nolabel="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hr_payroll_advice_filter" model="ir.ui.view">
+            <field name="name">hr.payroll.advice.select</field>
+            <field name="model">hr.payroll.advice</field>
+            <field name="arch" type="xml">
+                <search string="Search Payment advice">
+
+                    <group>
+                        <filter name="draft" string="Draft" domain="[('state','=','draft')]"
+                              icon="terp-document-new"   help="Draft Advices" />
+                        <filter name="confirm" string="Confirm" domain="[('state','=','confirm')]"
+                             icon="terp-camera_test"   help="Confirm Advices" />
+                        <separator orientation="vertical"/>
+                        <field name="date"/>
+                        <field name="number"/>
+                        <field name="name"/>
+                        <field name="bank_id"/>
+                        <field name="batch_id"/>
+
+                        <!--                         <field name="is_paid"/>
+                         -->
+                    </group>
+                    <newline/>
+                    <group expand="0" string="Group By">
+                        <filter string="Bank" name="bank_id" icon="terp-go-home" context="{'group_by':'bank_id'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Status" name="state" icon="terp-stock_effects-object-colorize"
+                                context="{'group_by':'state'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Company" name="company_id" groups="base.group_multi_company" icon="terp-go-home"
+                                context="{'group_by':'company_id'}"/>
+                        <filter string="Payment" name="payment_type" icon="terp-go-home"
+                                context="{'group_by':'payment_type'}"/>
+                        <separator orientation="vertical"/>
+                        <!--   <filter string="Paid" name="is_paid" icon="terp-stock_effects-object-colorize" context="{'group_by':'is_paid'}"/>
+   -->
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_view_hr_bank_advice_tree" model="ir.actions.act_window">
+            <field name="name">Payment Advices</field>
+            <field name="res_model">hr.payroll.advice</field>
+
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_hr_bank_advice_tree"/>
+            <field name="search_view_id" ref="view_hr_payroll_advice_filter"/>
+        </record>
+
+        <menuitem
+                action="action_view_hr_bank_advice_tree"
+                id="hr_menu_payment_advice"
+                parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root" groups="access_payment_advice_menu"/>
+
+        <record id="view_advice_line_form" model="ir.ui.view">
+            <field name="name">advice.line.form</field>
+            <field name="model">hr.payroll.advice.line</field>
+            <field name="arch" type="xml">
+                <form string="Advice Lines">
+                    <sheet>
+                        <label for="advice_id" class="oe_edit_only"/>
+                        <h1>
+                            <field name="advice_id"/>
+                        </h1>
+                        <group>
+                            <field name="employee_id" on_change="onchange_employee_id(employee_id)"/>
+                            <field name="name"/>
+                            <field name="ifsc" invisible="1"/>
+                            <field name="bank_id" attrs="{'invisible':[('bank_id','=', False)]}"/>
+                            <field name="payslip_id"/>
+                            <field name="amount"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!--override menu item for configraution in payroll-->
+<!--        <menuitem id="hr_payroll.menu_hr_payroll_configuration" name="Configuration"-->
+<!--                  parent="hr_payroll.menu_hr_payroll_root"-->
+<!--                  sequence="100" groups="hr_payroll.group_hr_payroll_manager,ejad_erp_hr.access_configuration_menu"-->
+<!--        />-->
+
+        <record id="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6,0,[ref('ejad_erp_hr.group_holidays_menu')])]"/>
+       </record>
+
+        <menuitem action="hr_payroll.action_hr_payslip_run_tree" id="hr_payroll.menu_hr_payslip_run"
+                  parent="hr_payroll.menu_hr_payroll_payslips" groups="access_payslip_batch_menu"
+        />
+
+        <menuitem action="hr_payroll.action_view_hr_payslip_form" id="hr_payroll.menu_department_tree"
+                  parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root"
+                  groups="hr_payroll.group_hr_payroll_user,ejad_erp_hr.access_payslip_menu"
+        />
+
+    </data>
+</odoo>

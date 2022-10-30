@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--
+        Country form view
+        -->
+
+        <record id="view_country_form" model="ir.ui.view">
+            <field name="name">res.country.form2</field>
+            <field name="model">res.country</field>
+            <field name="arch" type="xml">
+                <form>
+                    <div class="oe_button_box">
+                    </div>
+<!--                    <field name="image" widget="image" class="oe_avatar"/>-->
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="currency_id"/>
+                            <field name="code"/>
+                        </group>
+                        <group>
+                            <field name="phone_code"/>
+                            <field name="vat_label"/>
+                        </group>
+                    </group>
+                    <label for="state_ids"/>
+                    <field name="state_ids">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="code"/>
+                        </tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+<!--countries tree view-->
+          <record id="view_country_tree" model="ir.ui.view">
+            <field name="name">res.country.tree</field>
+            <field name="model">res.country</field>
+            <field name="arch" type="xml">
+
+            <tree >
+                 <field name="name"/>
+                <field name="code"/>
+
+            </tree>
+
+            </field>
+        </record>
+
+    <!--countries search view-->
+    <record id="view_countries_search_form" model="ir.ui.view">
+        <field name="name">res.country.search.form</field>
+        <field name="model">res.country</field>
+        <field name="arch" type="xml">
+           <search string="countries">
+                <field name="name"/>
+                <field name="code"/>
+           </search>
+        </field>
+    </record>
+
+
+       <record id="action_country_hr" model="ir.actions.act_window">
+            <field name="name">Countries</field>
+            <field name="res_model">res.country</field>
+
+        <field name="view_mode">tree,form</field>
+             <field name="search_view_id" ref="view_countries_search_form"/>
+           <field name="view_id" ref="view_country_tree"/>
+
+        </record>
+
+          <record id="action_country_hr_form" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_country_form"/>
+            <field name="act_window_id" ref="action_country_hr"/>
+        </record>
+
+
+         <record id="action_country_hr_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_country_tree"/>
+            <field name="act_window_id" ref="action_country_hr"/>
+        </record>
+
+
+
+        <menuitem
+            id="menu_view_country_hr_form"
+            action="ejad_erp_hr.action_country_hr"
+            parent="hr.menu_human_resources_configuration"
+            groups="group_hr_setting"
+            sequence="2"/>
+
+
+
+
+  <record id="view_partner_bank_hr_form" model="ir.ui.view">
+            <field name="name">res.partner.bank.form.hr</field>
+            <field name="model">res.partner.bank</field>
+            <field name="arch" type="xml">
+                <form string="Bank account">
+                    <group col="5">
+                        <field name="acc_number"/>
+                            <div class="label label-danger pull-left" attrs="{'invisible': [('has_char','!=',True)]}">
+                                <span>رقم الحساب يحتوي على حروف</span>
+                            </div>
+                        <field name="has_char" invisible="1"/>
+                        <field name="bank_id"/>
+                        <field name="partner_id"/>
+                        <field name="account_type"/>
+                        <field name="additional_info" attrs="{'invisible':[('account_type','!=','external')]}"/>
+                        <field name="currency_id" groups="base.group_multi_currency" options="{'no_create': True}"/>
+                        <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="view_partner_bank_tree_hr" model="ir.ui.view">
+            <field name="name">res.partner.bank.tree.hr</field>
+            <field name="model">res.partner.bank</field>
+            <field name="arch" type="xml">
+                <tree string="Bank Accounts">
+                    <field name="sequence" invisible="1"/>
+                    <field name="acc_number"/>
+                    <field name="bank_name"/>
+                    <field name="partner_id"/>
+                    <field name="account_type"/>
+                    <field name="additional_info" attrs="{'invisible':[('account_type','!=','external')]}"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_partner_bank_search_hr" model="ir.ui.view">
+            <field name="name">res.partner.bank.search</field>
+            <field name="model">res.partner.bank</field>
+            <field name="arch" type="xml">
+                <search string="Bank Accounts">
+                    <field name="bank_name" filter_domain="['|', ('bank_name','ilike',self), ('acc_number','ilike',self)]" string="Bank Name"/>
+                    <field name="company_id" invisible="context.get('company_hide', True)"/>
+                    <field name="partner_id"/>
+                </search>
+            </field>
+        </record>
+        <record id="action_res_partner_bank_account_form_hr" model="ir.actions.act_window">
+            <field name="name">Bank Accounts</field>
+            <field name="res_model">res.partner.bank</field>
+
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a bank account.
+              </p>
+            </field>
+        </record>
+
+        <record id="res_partner_bank_account_form_hr" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_partner_bank_hr_form"/>
+            <field name="act_window_id" ref="action_res_partner_bank_account_form_hr"/>
+        </record>
+
+
+         <record id="res_partner_bank_account_tree_hr" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_partner_bank_tree_hr"/>
+            <field name="act_window_id" ref="action_res_partner_bank_account_form_hr"/>
+        </record>
+
+
+
+
+         <menuitem action="action_res_partner_bank_account_form_hr" id="menu_action_account_bank_hr_journal_form" parent="hr.menu_human_resources_configuration"
+            groups="group_hr_setting"
+            sequence="3" />
+
+
+
+    </data>
+</odoo>

@@ -1,0 +1,259 @@
+@mixin sync_model_view() {
+    .modal {
+        background-color: rgba($btn-primary, 0.4);
+
+        .modal-dialog {
+            .modal-content {
+
+                .modal-header,
+                .modal-footer {
+                    background-color: var(--night-light) !important;
+                    color: var(--font-color);
+                    border-radius: 0;
+                    border-color: var(--border);
+
+                    .modal-title {
+                        color: var(--font-color);
+                    }
+
+                    .close {
+                        color: var(--font-color);
+                    }
+                }
+
+                .modal-body {
+                    background-color: var(--btn-secondary);
+                    color: var(--font-color);
+                    @include sync_form_view();
+                    @include sync_list_view();
+                    @include sync_kanban_view();
+
+                    div.o_control_panel {
+                        @include sync_control_panel_layout();
+                    }
+
+                    .o_view_controller {
+                        .o_cp_controller {
+                            .o_control_panel {
+                                background-color: var(--btn-secondary);
+                                border-color: var(--border);
+
+                                .o_searchview {
+                                    .o_searchview_input_container {
+                                        .o_searchview_input {
+                                            padding-left: 5px;
+                                        }
+                                    }
+
+                                    .o_search_recs {
+                                        background: var(--night);
+                                        color: var(--font-color);
+                                        border: 0;
+                                    }
+
+                                    .o_searchview_input_container {
+                                        li.o-selection-focus {
+                                            background-color: var(--btn-primary);
+
+                                            &>a {
+                                                color: var(--font-color);
+                                            }
+                                        }
+
+                                        li:hover {
+                                            background-color: var(--btn-primary);
+                                        }
+                                    }
+                                }
+
+                                .o_cp_pager {
+                                    .o_pager {
+                                        .btn-group {
+                                            .btn-secondary {
+                                                color: var(--font-color);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        @include sync_form_view();
+                        @include sync_list_view();
+                    }
+
+                    .o_cp_bottom_right {
+                        margin-left: auto;
+                    }
+
+                    table.table {
+                        color: var(--font-color);
+                    }
+
+                    .o_kanban_view {
+                        .o_kanban_record {
+                            background-color: var(--night);
+                            border-color: var(--border);
+                            border-left: 0;
+                            border-right: 0;
+                            border-top: 0;
+                            margin: 0;
+                        }
+                    }
+
+                    .o_modal_header {
+                        .o_searchview {
+                            background-color: var(--night);
+                            color: var(--font-color);
+                            border: 0;
+
+                            .o_searchview_input_container {
+                                .o_searchview_facet {
+                                    .o_searchview_facet_label {
+                                        color: var(--font-color);
+                                        background-color: var(--btn-primary);
+                                        border: 0;
+                                    }
+
+                                    .o_facet_values {
+                                        background-color: var(--night-light);
+                                        color: var(--font-color);
+                                    }
+
+                                    .o_facet_remove {
+                                        color: var(--font-color);
+                                    }
+                                }
+                            }
+
+                            .o-selection-focus {
+                                background-color: var(--btn-primary);
+                            }
+                        }
+
+                        .o_search_options {
+                            .dropdown-menu {
+                                .o_menu_item {
+                                    a {
+                                        color: var(--font-color);
+                                    }
+                                }
+                            }
+
+                            .o_dropdown {
+                                &.show {
+                                    .btn {
+                                        background-color: var(--btn-primary);
+                                        color: var(--font-color);
+                                    }
+
+                                    .custom-checkbox {
+                                        .custom-control-label {
+                                            &:before {
+                                                outline: 1px solid var(--font-color);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .o_subtype.dropdown-item {
+                        color: var(--font-color);
+
+                        .custom-checkbox {
+                            .custom-control-label {
+                                color: var(--font-color);
+
+                                &:before {
+                                    outline: 1px solid var(--checkbox);
+                                }
+                            }
+                        }
+
+                        &:hover,
+                        &:active,
+                        &:focus {
+                            background-color: var(--btn-primary);
+                        }
+                    }
+
+                    .o_mobile_search_show_result {
+                        background-color: var(--btn-primary) !important;
+                    }
+
+                    &.o_kanban_examples_dialog {
+                        .o_kanban_examples_dialog_nav {
+                            border-color: var(--border);
+
+                            .nav.nav-pills {
+                                .nav-item {
+                                    border-color: var(--border);
+
+                                    .nav-link {
+                                        background-color: var(--night-light);
+                                        color: var(--font-color);
+
+                                        &.active {
+                                            background-color: var(--btn-primary);
+                                            color: var(--font-color);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .o_error_detail {
+                        background-color: var(--night);
+                        border-color: var(--border);
+                    }
+
+                    .o_nocontent_help {
+                        &>p {
+                            color: var(--font-color);
+                        }
+                    }
+
+                    .o_density_image {
+                        img {
+                            filter: grayscale(1);
+                            opacity: 0.5;
+                        }
+                    }
+
+                    .alert.clearfix {
+                        &~div[style="background-color:#ececec;"] {
+                            background-color: var(--night) !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .o_DialogManager {
+        .o_Dialog {
+
+            .modal-header,
+            .modal-footer {
+                background-color: var(--night);
+            }
+
+            .modal-body {
+                background-color: var(--btn-secondary);
+
+                .o_FollowerSubtypeList_subtypes {
+                    .o_FollowerSubtype {
+                        .o_FollowerSubtype_label {
+                            &:hover {
+                                background-color: var(--btn-primary);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

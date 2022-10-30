@@ -1,0 +1,33 @@
+@mixin search_panel() {
+    &.o_controller_with_searchpanel {
+        #o_mobile_search_panel_summary {
+            padding: 8px;
+            position: sticky;
+            width: 100%;
+            height: auto;
+            flex: 1 1 auto;
+            top: 0;
+            z-index: 1;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            overflow: unset;
+            background-color: var(--brand-secondary);
+            color: white;
+        }
+    }
+
+    .o_search_panel {
+        .fa {
+            color: var(--brand-secondary) !important;
+        }
+
+        .list-group-item-action {
+
+            &.active,
+            &:hover {
+                background-color: $tr-hover;
+            }
+        }
+    }
+}

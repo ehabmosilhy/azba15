@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="ehab_backend_theme.SystrayHepler">
+        <div class="__menu_helper" data-target="#o_menu_systray" data-toggle="collapse" />
+    </t>
+</templates>

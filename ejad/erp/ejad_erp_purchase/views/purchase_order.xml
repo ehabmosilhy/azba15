@@ -1,0 +1,834 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="purchase_order_form_view_inherit">
+        <field name="name">purchase.order.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position='after'>
+                <field name="file_name" invisible="1"/>
+                <field widget="binary" height="64" name="original_file" filename="file_name"
+                       attrs="{'required': [('state', '=', 'purchase')],'readonly': [('state','not in', ['draft'])]}"/>
+            </xpath>
+            <field name="order_line" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('state','not in', ['draft'])]}
+                </attribute>
+            </field>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="attributes">
+                  <attribute name="domain">[('is_outcome','=',False)]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+        <field name="name">طلبات الاسعار</field>
+    </record>
+    <record model="ir.ui.menu" id="purchase.menu_purchase_rfq">
+        <field name="name">طلبات الاسعار</field>
+    </record>
+
+    <record id="project_type_request_form" model="ir.ui.view">
+        <field name="name">طلبات مشاريع</field>
+        <field name="model">purchase.requisition.request</field>
+        <field name="arch" type="xml">
+            <form string="طلبات مشاريع">
+                <field name="employee_user_current" invisible="1"/>
+                <field name="employee_manager_user_current" invisible="1"/>
+                <field name="department_manager_user_current" invisible="1"/>
+                <field name="department_moderator_user_current" invisible="1"/>
+                <header>
+                    <button name="action_draft_manager" string="ارسال" type="object" class="oe_highlight"
+                            attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('employee_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من إرسال الطلب ؟"/>
+
+                    <button name="action_ok_manager" string="الموافقة على الطلب" type="object" class="oe_highlight"
+                            attrs="{'invisible': ['|', ('state', '!=', 'manager'), ('employee_manager_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من الموافقة على الطلب ؟"/>
+
+                    <button name="%(ejad_erp_purchase.purchase_requisition_refuse_action)d" string="رفض الطلب"
+                            attrs="{'invisible': ['|', ('state', '!=', 'manager'), ('employee_manager_user_current', '=', False)]}"
+                            type="action" confirm="هل أنت متأكد من رفض الطلب ؟"/>
+
+                    <button name="action_need_department" string="يوجد احتياج" type="object" class="oe_highlight"
+                            attrs="{'invisible': ['|', '|', ('is_needed', '=', True), ('state', '!=', 'department'), ('department_manager_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من الاحتياج للمشروع ؟"/>
+
+                    <button name="%(ejad_erp_purchase.purchase_requisition_refuse_action)d" string="لا يوجد احتياج"
+                            type="action"
+                            attrs="{'invisible': ['|', '|', ('is_needed', '=', True), ('state', '!=', 'department'), ('department_manager_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من عدم الاحتياج للمشروع ؟"/>
+
+                    <button name="action_exist_department" string=" متوفر" type="object" class="oe_highlight"
+                            attrs="{'invisible':['|', '|', ('is_needed','=',False), ('state', '!=', 'department'), ('department_manager_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من توفر المواد المطلوبة في المستودع ؟"/>
+
+                    <button name="action_no_exist_department" string="غير متوفر" type="object"
+                            attrs="{'invisible':['|', '|', ('is_needed','=',False), ('state', '!=', 'department'), ('department_manager_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من عدم توفر المواد المطلوبة في المستودع ؟"/>
+
+                    <button name="action_ok_supervisor" string="اعتماد الطلب" type="object" class="oe_highlight"
+                            attrs="{'invisible':['|', ('state', '!=', 'supervisor'), ('department_moderator_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من اعتماد الطلب ؟"/>
+
+                    <button name="%(ejad_erp_purchase.purchase_requisition_refuse_action)d" string="رفض الطلب"
+                            type="action"
+                            attrs="{'invisible':['|', ('state', '!=', 'supervisor'), ('department_moderator_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من رفض الطلب ؟"/>
+
+                    <button name="action_validate" states="director" string="انهاء التقييم" type="object"
+                            class="oe_highlight"/>
+
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,manager,department,supervisor,director,accepted" readonly="1"/>
+                </header>
+                <sheet>
+                    <h1 class="mt0">
+                        <!--<label string="مسودة طلب مشروع" attrs="{'invisible': [('name', '!=', 'جديد')]}"/>-->
+
+                        <div class="label  pull-left" attrs="{'invisible': [('name', '!=', 'جديد')]}">
+                            <span>مسودة طلب مشروع</span>
+                        </div>
+
+                        <field name="name" readonly="1" class="oe_inline"
+                               attrs="{'invisible': [('name', '=', 'جديد')]}"/>
+
+                        <div class="label label-danger pull-left" attrs="{'invisible': [('state','!=','refused')]}">
+                            <span>مرفوض</span>
+                        </div>
+                    </h1>
+                    <group>
+                        <field name="employee_id" options="{'no_create': True,'no_open':True}"
+                               attrs="{'readonly':[('state','!=','draft')]}" class="oe_inline"/>
+                        <field name="employee_user_id" invisible="1"/>
+                        <field name="company_id" groups="base.group_multi_company" class="oe_inline"/>
+                    </group>
+                    <group>
+                        <group>
+                            <!--<field name="request_type" readonly="1"/>-->
+                            <field name="product_category_id" string="فئة المشروع"
+                                   domain="[('request_type','=','project')]"
+                                   options="{'no_create': True,'no_open':True}"/>
+                            <field name="department_id" options="{'no_create': True,'no_open':True}"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="requested_date"/>
+                            <field name="is_needed" invisible="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="specifications_filename" invisible="1"/>
+                            <field name="specifications_attachment_id" widget="binary" height="64"
+                                   filename="specifications_filename"
+                                   attrs="{'invisible':[('state','not in',['department'])]}"/>
+                            <field name="purchase_representative"
+                                   domain="[('is_user_purchase_representative','=', True)]"
+                                   attrs="{'invisible':[('state','not in',['director', 'accepted'])]}"
+                                   options="{'no_create': True,'no_open':True}"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="سبب الطلب">
+                            <field name="reason" widget="html"/>
+                        </page>
+                        <page string="المواد المطلوبة">
+                            <field name="line_ids"
+                                   attrs="{'readonly':[('state','not in',['draft','manager','department'])]}">
+                                <tree string="المواد المطلوبة" editable="bottom">
+                                    <field name="state" invisible="1"/>
+                                    <field name="is_needed" invisible="1"/>
+                                    <field name="product_id" options="{'no_quick_create': True, 'no_create_edit': True}"
+                                           domain="[('type','=','service'),('categ_id.request_type','=','project')]"/>
+                                    <field name="name"/>
+                                    <field name="product_uom_id" groups="uom.group_uom"/>
+                                    <field name="requested_qty"/>
+                                    <field name="price_unit" attrs="{'invisible':[('state','not in',['director'])]}"/>
+                                </tree>
+                            </field>
+                            <group>
+                                <field name="total_amount" attrs="{'invisible':[('state','not in',['director'])]}"/>
+                            </group>
+                        </page>
+                        <page string="سبب الرفض" attrs="{'invisible': [('state','!=','refused')]}">
+                            <group>
+                                <field name="refuse_user_id"/>
+                                <field name="refuse_reason_id"/>
+                                <field name="refuse_message"/>
+                                <field name="refuse_state"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+
+        </field>
+    </record>
+    <record id="product_type_request_form" model="ir.ui.view">
+        <field name="name">طلبات تامين مواد</field>
+        <field name="model">purchase.requisition.request</field>
+        <field name="arch" type="xml">
+            <form string="طلبات تامين مواد">
+                <field name="employee_user_current" invisible="1"/>
+                <field name="employee_manager_user_current" invisible="1"/>
+                <field name="department_manager_user_current" invisible="1"/>
+                <field name="department_moderator_user_current" invisible="1"/>
+                <header>
+                    <button name="action_draft_manager" string="ارسال" type="object" class="oe_highlight"
+                            attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('employee_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من إرسال الطلب ؟"/>
+
+                    <button name="action_ok_manager" string="الموافقة على الطلب" type="object" class="oe_highlight"
+                            attrs="{'invisible': ['|', ('state', '!=', 'manager'), ('employee_manager_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من الموافقة على الطلب ؟"/>
+
+                    <button name="%(ejad_erp_purchase.purchase_requisition_refuse_action)d" type="action"
+                            string="رفض الطلب"
+                            attrs="{'invisible': ['|', ('state', '!=', 'manager'), ('employee_manager_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من رفض الطلب ؟"/>
+
+                    <button name="action_need_department" string="يوجد احتياج" type="object" class="oe_highlight"
+                            attrs="{'invisible': ['|', '|', ('is_needed', '=', True), ('state', '!=', 'department'), ('department_manager_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من الاحتياج للمواد المطلوبة ؟"/>
+
+                    <button name="%(ejad_erp_purchase.purchase_requisition_refuse_action)d" string="لا يوجد احتياج"
+                            type="action"
+                            attrs="{'invisible': ['|', '|', ('is_needed', '=', True), ('state', '!=', 'department'), ('department_manager_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من عدم الاحتياج للمواد المطلوبة ؟"/>
+
+                    <button name="action_exist_department" string=" متوفر" type="object" class="oe_highlight"
+                            attrs="{'invisible':['|', '|', ('is_needed','=',False), ('state', '!=', 'department'), ('department_manager_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من توفر المواد المطلوبة في المستودع ؟"/>
+
+                    <button name="action_no_exist_department" string="غير متوفر" type="object"
+                            attrs="{'invisible':['|', '|', ('is_needed','=',False), ('state', '!=', 'department'), ('department_manager_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من عدم توفر المواد المطلوبة في المستودع ؟"/>
+
+                    <button name="action_ok_supervisor" string="اعتماد الطلب" type="object" class="oe_highlight"
+                            attrs="{'invisible':['|', ('state', '!=', 'supervisor'), ('department_moderator_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من اعتماد الطلب ؟"/>
+
+                    <button name="%(ejad_erp_purchase.purchase_requisition_refuse_action)d" string="رفض الطلب"
+                            type="action"
+                            attrs="{'invisible':['|', ('state', '!=', 'supervisor'), ('department_moderator_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من رفض الطلب ؟"/>
+
+                    <button name="action_validate" states="director" string="انهاء التقييم" type="object"
+                            groups="ejad_erp_purchase.group_purchase_manager" class="oe_highlight"/>
+                    <button name="action_order_delivered" type="object" string="تم اكتمال الاستلام"
+                            attrs="{'invisible': ['|', ('state', 'not in', ['inventory','accepted']),'&amp;', ('employee_manager_user_current', '=', False),('employee_user_current', '=', False)]}"
+                            confirm="هل أنت متأكد من اكتمال استلام الطلب ؟"/>
+
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,manager,department,supervisor,director,accepted,delivered"
+                           readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_agreement" type="object" string="عملية الشراء" class="oe_stat_button"
+                                icon="fa-file-contract" attrs="{'invisible': [('state', '!=', 'accepted')]}"/>
+                        <button name="action_open_stock_picking" type="object" string="سند التسليم"
+                                class="oe_stat_button" icon="fa-exchange"
+                                attrs="{'invisible': [('state', '!=', 'inventory')]}"/>
+                    </div>
+                    <h1 class="mt0">
+                        <!--<label string="مسودة طلب تأمين مواد" attrs="{'invisible': [('name', '!=', 'جديد')]}"/>-->
+                        <div class="label label- pull-left" attrs="{'invisible': [('name', '!=', 'جديد')]}">
+                            <span>مسودة طلب تأمين مواد</span>
+                        </div>
+
+                        <field name="name" readonly="1" class="oe_inline"
+                               attrs="{'invisible': [('name', '=', 'جديد')]}"/>
+                        <div class="label label-danger pull-left" attrs="{'invisible': [('state','!=','refused')]}">
+                            <span>مرفوض</span>
+                        </div>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="employee_id" options="{'no_create': True,'no_open':True}"
+                                   attrs="{'readonly':[('state','!=','draft')]}" class="oe_inline"/>
+                            <field name="employee_department_id" options="{'no_create': True,'no_open':True}"/>
+                            <field name="employee_manager_id" options="{'no_create': True,'no_open':True}"/>
+                            <field name="employee_user_id" invisible="1"/>
+                            <field name="company_id" groups="base.group_multi_company" class="oe_inline"/>
+                            <field name="is_category_editable" invisible="1"/>
+                            <field name="product_category_id" domain="[('request_type','=','product')]" force_save="1"
+                                   attrs="{'readonly': [('is_category_editable', '=', False)]}"
+                                   options="{'no_create': True,'no_open':True}"/>
+                            <field name="department_id" options="{'no_create': True,'no_open':True}"/>
+                            <field name="purchase_representative"
+                                   domain="[('is_user_purchase_representative','=', True)]"
+                                   attrs="{'invisible':[('state','not in',['director', 'accepted'])]}"
+                                   options="{'no_create': True,'no_open':True}"/>
+                        </group>
+                        <group>
+                            <field name="date" readonly="1"/>
+                            <field name="is_needed" invisible="1"/>
+                            <field name="requested_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="product_category_manager_id" options="{'no_create': True,'no_open':True}"/>
+                            <field name="product_category_security_group_users" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="المواد المطلوبة">
+                            <field name="line_ids"
+                                   attrs="{'readonly':[('state','not in',['draft','manager','department'])]}">
+                                <tree string="المواد المطلوبة" editable="bottom">
+                                    <field name="state" invisible="1"/>
+                                    <field name="is_needed" invisible="1"/>
+                                    <field name="product_id" options="{'no_quick_create': True, 'no_create_edit': True}"
+                                           domain="[('categ_id','=',parent.product_category_id)]"/> <!-- attrs="{'required': [('is_needed', '=', True)]}" -->
+                                    <field name="name"/>
+                                    <field name="trade_mark"/>
+                                    <field name="product_uom_id" groups="uom.group_uom"/>
+                                    <field name="requested_qty"/>
+                                    <field name="qty_available" readonly="1"
+                                           groups="ejad_erp_purchase.group_show_product_qty_onhand"/>
+                                    <field name="price_unit"
+                                           attrs="{'invisible':[('state', 'not in', ['director'])]}"/>
+                                </tree>
+                                <group>
+                                    <field name="total_amount" attrs="{'invisible':[('state','not in',['director'])]}"/>
+                                </group>
+                            </field>
+                        </page>
+                        <page string="سبب الطلب/الأصناف المطلوبة">
+                            <field name="reason" widget="html"/>
+                        </page>
+                        <page string="سبب الرفض" attrs="{'invisible': [('state','!=','refused')]}">
+                            <group>
+                                <field name="refuse_user_id"/>
+                                <field name="refuse_reason_id"/>
+                                <field name="refuse_message"/>
+                                <field name="refuse_state"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="project_request_tree" model="ir.ui.view">
+        <field name="name">طلبات مشاريع</field>
+        <field name="model">purchase.requisition.request</field>
+        <field name="arch" type="xml">
+            <tree string="طلبات مشاريع">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="requested_date"/>
+                <field name="employee_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="product_request_tree" model="ir.ui.view">
+        <field name="name">طلبات تامين مواد</field>
+        <field name="model">purchase.requisition.request</field>
+        <field name="arch" type="xml">
+            <tree string="طلبات تامين مواد">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="requested_date"/>
+                <field name="product_category_manager_id"/>
+                <field name="employee_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="project_type_request_action" model="ir.actions.act_window">
+        <field name="name">طلبات مشاريع</field>
+        <field name="res_model">purchase.requisition.request</field>
+        <field name="context">{'default_request_type': 'project'}</field>
+        <field name="domain">[('request_type','=','project')]</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="child_project_request_action_tree" model="ir.actions.act_window.view">
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="project_request_tree"/>
+        <field name="act_window_id" ref="project_type_request_action"/>
+    </record>
+    <record id="child_project_request_action_form" model="ir.actions.act_window.view">
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="project_type_request_form"/>
+        <field name="act_window_id" ref="project_type_request_action"/>
+    </record>
+
+    <record id="product_type_request_action" model="ir.actions.act_window">
+        <field name="name">طلبات تامين مواد</field>
+        <field name="res_model">purchase.requisition.request</field>
+        <field name="context">{'default_request_type': 'product'}</field>
+        <field name="domain">[('request_type','=','product')]</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="child_product_request_action_tree" model="ir.actions.act_window.view">
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="product_request_tree"/>
+        <field name="act_window_id" ref="product_type_request_action"/>
+    </record>
+    <record id="child_product_request_action_form" model="ir.actions.act_window.view">
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="product_type_request_form"/>
+        <field name="act_window_id" ref="product_type_request_action"/>
+    </record>
+
+    <menuitem id="menu_product_type_request" parent="purchase.menu_purchase_root"
+              action="product_type_request_action"
+              groups="ejad_erp_purchase.group_purchase_requisition_request_menu"
+              sequence="-2"/>
+    <menuitem id="menu_project_type_request" parent="purchase.menu_purchase_root"
+              action="project_type_request_action"
+              groups="ejad_erp_purchase.group_purchase_requisition_request_project_menu" sequence="-1"/>
+
+    <record id="request_product_type_form" model="ir.ui.view">
+        <field name="name">انواع المواد</field>
+        <field name="model">purchase.requisition.request.product.type</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="sequence" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="request_product_type_tree" model="ir.ui.view">
+        <field name="name">انواع المواد</field>
+        <field name="model">purchase.requisition.request.product.type</field>
+        <field name="arch" type="xml">
+            <tree string="قائمة انواع المواد">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="request_project_type_form" model="ir.ui.view">
+        <field name="name">انواع المشاريع</field>
+        <field name="model">purchase.requisition.request.project.type</field>
+        <field name="arch" type="xml">
+            <form string=" انواع المشاريع">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="sequence" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="request_project_type_tree" model="ir.ui.view">
+        <field name="name">انواع المشاريع</field>
+        <field name="model">purchase.requisition.request.project.type</field>
+        <field name="arch" type="xml">
+            <tree string=" انواع المشاريع">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="product_type_list_action" model="ir.actions.act_window">
+        <field name="name">انواع المواد</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.requisition.request.product.type</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="project_type_list_action" model="ir.actions.act_window">
+        <field name="name">انواع المشاريع</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.requisition.request.project.type</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_product_type" parent="purchase.menu_purchase_config" action="product_type_list_action"/>
+    <menuitem id="menu_project_type" parent="purchase.menu_purchase_config" action="project_type_list_action"/>
+
+    <record model="ir.actions.act_window" id="purchase_requisition.tender_type_action">
+        <field name="name">أنواع عمليات الشراء</field>
+    </record>
+    <record model="ir.ui.menu" id="purchase_requisition.menu_purchase_requisition_type">
+        <field name="name">أنواع عمليات الشراء</field>
+    </record>
+
+    <!-- Change Purchase menu -->
+    <menuitem name="المنتجات" id="purchase.menu_procurement_partner_contact_form"
+              action="purchase.product_normal_action_puchased"
+              parent="purchase.menu_purchase_root" sequence="20" groups="ejad_erp_purchase.group_product_menu"/>
+    <menuitem id="purchase.menu_procurement_management_supplier_name" name="الموردون"
+              parent="purchase.menu_purchase_root"
+              action="base.action_partner_supplier_form"
+              groups="ejad_erp_purchase.group_vendors_menu"
+              sequence="15"/>
+    <menuitem id="purchase.purchase_report" name="Reporting" parent="nauss_menu_reporting"
+              groups="ejad_erp_purchase.group_purchase_reports_menu" action="purchase.action_purchase_order_report_all"
+              sequence="1"/>
+
+
+    <record model="ir.actions.act_window" id="action_purchase_order_direct">
+        <field name="name">أوامر الشراء</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('requisition_id.type_id.name','=','شراء مباشر')]
+        </field> <!-- TODO condition should not base on name -->
+    </record>
+
+    <record model="ir.actions.act_window" id="action_purchase_requisition_direct">
+        <field name="name">عمليات الشراء</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.requisition</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+        <field name="context" eval="{'default_type_id': ref('ejad_erp_purchase.type_single_direct'),
+                                    'default_is_internal_purchase': True}"/>
+        <field name="domain">[('type_id.name','=','شراء مباشر'),('request_launch_id','=',False)]</field> <!-- TODO condition should not base on name -->
+    </record>
+
+    <menuitem id="nauss_menu_agreement_direct" groups="ejad_erp_purchase.group_direct_purchase_menu"
+              name="الشراء المباشر" parent="purchase.menu_purchase_root" sequence="9"/>
+
+    <menuitem id="vro_direct_internal_purchase" groups="ejad_erp_purchase.group_direct_internal_purchase_menu"
+              name=" الشراء المباشر الداخلي" parent="purchase.menu_purchase_root" sequence="9"/>
+    <menuitem
+            id="menu_purchase_requisition_direct"
+            parent="vro_direct_internal_purchase"
+            action="action_purchase_requisition_direct"
+            sequence="1"/>
+    <menuitem
+            id="menu_purchase_order_direct"
+            parent="nauss_menu_agreement_direct"
+            action="action_purchase_order_direct" sequence="3"
+            groups="ejad_erp_purchase.group_purchase_order_menu"/>
+
+    <record model="ir.actions.act_window" id="action_purchase_requisition_agreement">
+        <field name="name">التعميد</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.requisition</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('type_id.name','=','تعميد')]</field>
+    </record>
+    <record model="ir.actions.act_window" id="action_rfq_agreement_multi">
+        <field name="name">العروض</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','in',['draft','sent','cancel',
+            'confirmed']),('requisition_id.type_id.name','=','تعميد')]
+        </field> <!-- TODO condition should not base on name -->
+    </record>
+    <record model="ir.actions.act_window" id="action_po_agreement_multi">
+        <field name="name">أوامر الشراء</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state','not in',['draft','sent',
+            'confirmed']),('requisition_id.type_id.name','=','تعميد')]
+        </field> <!-- TODO condition should not base on name -->
+    </record>
+    <menuitem id="nauss_menu_agreement_multi" name="التعميد" parent="purchase.menu_purchase_root" sequence="10"
+              groups="ejad_erp_purchase.group_ta3med_purchase_menu"/>
+    <menuitem id="menu_purchase_requisition_agreement" parent="nauss_menu_agreement_multi"
+              action="action_purchase_requisition_agreement"/>
+    <menuitem id="menu_rfq_agreement_multi" parent="nauss_menu_agreement_multi" action="action_rfq_agreement_multi"/>
+    <menuitem id="menu_po_agreement_multi" parent="nauss_menu_agreement_multi" action="action_po_agreement_multi"/>
+
+    <record model="ir.ui.view" id="purchase_order_tree_inherit_false_create">
+        <field name="name">purchase.order.tree.inherit.false.create</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position='attributes'>
+                <attribute name="create">true</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="purchase_order_form_inherit_false_create">
+        <field name="name">purchase.order.form.inherit.false.create</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position='attributes'>
+                <attribute name="create">false</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="purchase_requisition_type_form_view_inherit">
+        <field name="name">purchase.requisition.type.form.inherit</field>
+        <field name="model">purchase.requisition.type</field>
+        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='exclusive']" position="after">
+                <field name="custom_type"/>
+            </xpath>
+        </field>
+    </record>
+        <record model="ir.ui.view" id="view_purchase_initiative_requisition_tree_inherit1">
+            <field name="name">purchase.requisition.form.inherit1</field>
+            <field name="model">purchase.requisition</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_tree"/>
+            <field name="arch" type="xml">
+
+                <field name="state" position="after">
+                    <field name="tree_state"
+                           invisible="not context.get('default_is_internal_purchase')" string="الحالة"/>
+                </field>
+
+            </field>
+        </record>
+
+    <record model="ir.ui.view" id="purchase_requisition_form_view_inherit">
+        <field name="name">purchase.requisition.form.inherit</field>
+        <field name="model">purchase.requisition</field>
+        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook[last()]" position='inside'>
+                <page string="حطاب التعميد" attrs="{'invisible': [('custom_type', '!=', 'tender')]}">
+                    <group>
+                        <field name="report_introduction"/>
+                    </group>
+                    <group>
+                        <field name="report_conditions"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='name']/../.." position='attributes'>
+                <attribute name="class"></attribute>
+            </xpath>
+            <field name="name" position='attributes'>
+                <attribute name="readonly">1</attribute>
+            </field>
+            <field name="origin" position='attributes'>
+                <attribute name="readonly">1</attribute>
+            </field>
+            <button name="action_in_progress" position="replace">
+                <button name="action_in_progress" string="تأكيد" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|', ('state', 'not in', ['draft']), ('salesperson_user_current', '=', False)]}"/>
+            </button>
+            <button name="action_cancel" position="replace">
+                <button name="action_cancel" states="draft,in_progress" string="إلغاء" type="object"
+                        attrs="{'invisible': ['|', ('state', 'not in', ['draft', 'in_progress']), ('salesperson_user_current', '=', False)]}"/>
+            </button>
+            <button name="action_open" position="replace">
+                <button name="action_open" states="in_progress" string="اعتماد" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|', ('state', 'not in', ['in_progress']), ('salesperson_user_current', '=', False)]}"/>
+            </button>
+<!--            <xpath expr="//header/button[1]" position="replace">-->
+<!--                <button name="346" type="action" string="تسعيرة جديدة" class="btn-primary"-->
+<!--                        attrs="{'invisible': ['|', ('state', 'not in', ['open']), ('salesperson_user_current', '=', False)]}"/>-->
+<!--            </xpath>-->
+            <button name="action_done" position="replace">
+                <button name="action_done" string="اعتماد اختيار العرض" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|', '|', ('state', 'not in', ['open']), ('salesperson_user_current', '=', False), ('require_committee', '=', True)]}"/>
+
+                <button name="action_to_committee" string="إرسال إلى اللجنة" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|', '|', ('state', 'not in', ['open']), ('salesperson_user_current', '=', False), ('require_committee', '=', False)]}"/>
+
+                <button name="action_done" string="اعتماد اختيار العرض" type="object" class="btn-primary"
+                        attrs="{'invisible': ['|', ('state', 'not in', ['std_committee']), ('salesperson_user_current', '=', False)]}"/>
+            </button>
+            <xpath expr="//header/button[2]" position="replace"/>
+            <!--<xpath expr="//field[@name='state']" position='before'>-->
+            <!--<button name="action_to_purchase_accountant" states="draft" string="محاسب المشتريات" type="object" class="oe_highlight"/>-->
+            <!--<button name="action_to_std_committee" states="purchase_accountant" string="اللجنة الدائمة" type="object" class="oe_highlight"/>-->
+            <!--<button name="action_to_purchase_manager" states="std_committee" string="مدير المشتريات" type="object" class="oe_highlight"/>-->
+            <!--<button name="action_to_financial_audit_unit" states="purchase_manager" string="وحدة المراجعة المالية" type="object" class="oe_highlight"/>-->
+            <!--<button name="action_to_general_director" states="financial_audit_unit" string="رئيس الجامعة" type="object" class="oe_highlight"/>-->
+            <!--</xpath>-->
+            <xpath expr="//field[@name='state']" position='replace'>
+                <field name="custom_type" invisible="1"/>
+
+                <field name="is_total_amount_exceed_limit" invisible="1"/>
+                <button name="action_manager" string="موافقة المدير المباشر" type="object"
+                        attrs="{'invisible': ['|','|',('direct_purchase_not_exceed_limit_state', '!=', 'direct_manager'),('custom_type', '!=', 'direct'),('is_total_amount_exceed_limit', '=', True)]}"
+                        groups="ejad_erp_purchase.hr_requisition_direct_manager" class="oe_highlight"/>
+
+                <button name="action_manager" string="موافقة مدراء الوحدات الإدارية" type="object"
+                        attrs="{'invisible': ['|','|',('direct_purchase_exceed_limit_state', '!=', 'departments_manager'),('custom_type', '!=', 'direct'),('is_total_amount_exceed_limit', '=', False)]}"
+                        groups="ejad_erp_purchase.group_managers_administrative_units" class="oe_highlight"/>
+
+                <button name="action_direct_purchase_procurements_unit" string="موافقة مسؤول المشتريات" type="object"
+                        attrs="{'invisible': ['&amp;',('direct_purchase_exceed_limit_state', '!=', 'procurements_unit'),('direct_purchase_not_exceed_limit_state', '!=', 'procurements_unit')]}"
+                        groups="ejad_erp_purchase.purchase_requisition_procurements_unit" class="oe_highlight"/>
+
+                <button name="action_support_services_manager" string="موافقة مدير إدارة الخدمات المساندة" type="object"
+                        attrs="{'invisible': ['&amp;',('direct_purchase_exceed_limit_state', '!=', 'support_services_manager'),('direct_purchase_not_exceed_limit_state', '!=', 'support_services_manager')]}"
+                        groups="ejad_erp_purchase.purchase_support_services_manage" class="oe_highlight"/>
+
+                <button name="action_office_leader" string="موافقة قائد المكتب" type="object"
+                        attrs="{'invisible': ['&amp;',('direct_purchase_exceed_limit_state', '!=', 'office_leader'),('direct_purchase_not_exceed_limit_state', '!=', 'office_leader')]}"
+                        groups="ejad_erp_purchase.purchase_office_leader" class="oe_highlight"/>
+
+                <button name="action_refused_direct_purchase" string="رفض" type="object"
+                        attrs="{'invisible': ['|','|',('direct_purchase_exceed_limit_state', 'in', ['accepted','refused']),('direct_purchase_not_exceed_limit_state', 'in', ['accepted','refused'])]}"
+                        groups="ejad_erp_purchase.purchase_requisition_procurements_unit,ejad_erp_purchase.purchase_support_services_manage,ejad_erp_purchase.purchase_office_leader" class="oe_highlight"/>
+
+                <field name="direct_purchase_not_exceed_limit_state" widget="statusbar"
+                       statusbar_visible="direct_manager,procurements_unit,support_services_manager,office_leader,accepted"
+                       attrs="{'invisible': ['|',('custom_type', '!=', 'direct'),('is_total_amount_exceed_limit', '=', True)]}"/>
+                <field name="direct_purchase_exceed_limit_state" widget="statusbar"
+                       statusbar_visible="departments_manager,procurements_unit,support_services_manager,office_leader,accepted"
+                       attrs="{'invisible': ['|',('custom_type', '!=', 'direct'),('is_total_amount_exceed_limit', '=', False)]}"/>
+
+                <field name="state" widget="statusbar"
+                       statusbar_visible="in_progress,open,purchase_manager,purchase_manager,financial_audit_unit,general_director,done"
+                       attrs="{'invisible': [('custom_type', '!=', 'tender')]}"/>
+
+            </xpath>
+            <xpath expr="//field[@name='type_id']" position='before'>
+                <field name="requisition_request_id" invisible="1"/>
+
+                <field name="employee_id" attrs="{'invisible': [('requisition_request_id', '=', False)]}"/>
+                <field name="employee_department_id" attrs="{'invisible': [('requisition_request_id', '=', False)]}"/>
+            </xpath>
+            <!--<xpath expr="//field[@name='origin']" position='after'>-->
+            <!--<field name="requisition_request_id"/>-->
+            <!--</xpath>-->
+            <!--<xpath expr="//field[@name='type_id']" position='attributes'>-->
+            <!--<attribute name="attrs">{'readonly':[('requisition_request_id','!=',False)]}</attribute>-->
+            <!--</xpath>-->
+            <xpath expr="//field[@name='vendor_id']" position='after'>
+                <field name="require_committee" invisible="1"/>
+                <field name="salesperson_user_current" invisible="1"/>
+                <field name="committee_decision_filename" invisible="1"/>
+                <field name="committee_decision_attachment_id" widget="binary" height="64"
+                       filename="committee_decision_filename"
+                       attrs="{'invisible':[('state','in',['draft','request_refund','purchase_accountant'])]}"/>
+                <field name="total_amount"/>
+                <field name="require_committee" invisible="1"/>
+            </xpath>
+            <xpath expr="//page[last()]" position='after'>
+                <page string="مرفقات">
+                    <field name="attachment_requisition_ids">
+                        <tree editable="top">
+                            <field name="name" string="الاسم"/>
+                            <field widget="binary" name="attachment_id" filename="attachment_filename" string="المرفق"/>
+                            <field name="attachment_filename" invisible="1"/>
+                        </tree>
+                        <form>
+                            <group>
+                                <field name="name" string="الاسم"/>
+                                <field widget="binary" name="attachment_id" filename="attachment_filename"
+                                       string="المرفق"/>
+                                <field name="attachment_filename" invisible="1"/>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position='before'>
+                <field name="project_id_purchase" string="اسم المشروع" required="context.get('default_is_internal_purchase')" options="{'no_create': True, 'no_open': True}"/>
+<!--                <field name="project_id_purchase" string="اسم المشروع" options="{'no_create': True, 'no_open': True}" attrs="{'invisible': [('type_project', 'in',['initiative','project'])]}"/>-->
+
+             </xpath>
+           <xpath expr="//page[1]" position='after'>
+                     <page string="مرفقـــــات">
+                         <group string="العقد">
+                            <field name="contract_filename" invisible="1"/>
+                            <field name="letter_filename" invisible="1"/>
+                            <field name="other_filename" invisible="1"/>
+                            <field name="rfp_filename" invisible="1"/>
+                            <field name="rfq_filename" invisible="1"/>
+                            <field name="rfi_filename" invisible="1"/>
+                            <field name="evaluate_filename" invisible="1"/>
+                            <field name="lunch_filename" invisible="1"/>
+                            <field name="charter_filename" invisible="1"/>
+                            <field name="contract_attach" filename="contract_filename" widget="binary" height="64" string="العقد"
+                                   attrs="{'required': [('direct_purchase_exceed_limit_state', '=', 'procurements_unit' ),('is_total_amount_exceed_limit', '=', True)]}"
+                            />
+                            <field name="letter_attach" filename="letter_filename" widget="binary" height="64" string="خطاب الترسية" attrs="{'required': [('direct_purchase_exceed_limit_state', '=', 'procurements_unit' ),('is_total_amount_exceed_limit', '=', True)]}"/>
+                            <field name="other_attach" filename="other_filename" widget="binary" height="64" string="أخرى"/>
+                         </group>
+                         <group string="كراسة الشروط والمواصفات">
+                            <field name="rfp_attach" filename="rfp_filename" widget="binary" height="64" string="RFP" attrs="{'required': [('direct_purchase_exceed_limit_state', '=', 'procurements_unit' ),('is_total_amount_exceed_limit', '=', True)]}"/>
+                            <field name="rfq_attach" filename="rfq_filename" widget="binary" height="64" string="RFQ" attrs="{'required': [('direct_purchase_exceed_limit_state', '=', 'procurements_unit' ),('is_total_amount_exceed_limit', '=', True)]}"/>
+                            <field name="rfi_attach" filename="rfi_filename" widget="binary" height="64" string="RFI" attrs="{'required': [('direct_purchase_exceed_limit_state', '=', 'procurements_unit' ),('is_total_amount_exceed_limit', '=', True)]}"/>
+                            <field name="evaluate_attach" filename="evaluate_filename" widget="binary" height="64" string="التقييم" attrs="{'required': [('direct_purchase_exceed_limit_state', '=', 'procurements_unit' ),('is_total_amount_exceed_limit', '=', True)]}"/>
+                            <field name="lunch_attach" filename="lunch_filename" widget="binary" height="64" string="نموذج طرح المشروع" attrs="{'required': [('direct_purchase_exceed_limit_state', '=', 'procurements_unit' ),('is_total_amount_exceed_limit', '=', True)]}"/>
+                         </group>
+                     <group>
+                          <field name="charter_attach" filename="charter_filename" widget="binary" height="64" string="ميثاق المشروع " attrs="{'required': [('direct_purchase_exceed_limit_state', '=', 'procurements_unit' ),('is_total_amount_exceed_limit', '=', True)]}"/>
+                     </group>
+
+                    </page>
+                 </xpath>
+           <xpath expr="//field[@name='line_ids']/tree/field[@name='product_id']" position="attributes">
+                  <attribute name="domain">[('is_outcome','=',False)]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="stock_picking_form_view_inherit">
+        <field name="name">stock.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position='inside'>
+                <span attrs="{'invisible':[('requisition_request_id','=',False)]}">
+                    طلب التامين :
+                    <field name="requisition_request_id"/>
+                </span>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="base.action_partner_supplier_form">
+        <field name="context">
+            {'search_default_supplier': 1, 'default_customer': 0,'default_supplier': 1,
+            'default_company_type': 'company', 'default_is_company': 1}
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="res_partner_form_inherit_company_type_hide">
+        <field name="name">res.partner.form.inherit.company.type.hide</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_type']" position='attributes'>
+                <attribute name="attrs">
+                    {'invisible':[('is_company','=',True)]}
+                </attribute>
+            </xpath>
+<!--            <xpath expr="//field[@name='company_type']" position='before'>-->
+<!--                <label for="company_type" string="الشركة" attrs="{'invisible':[('is_company','=',False)]}"/>-->
+<!--            </xpath>-->
+        </field>
+    </record>
+
+    <!--Hide menu Control & Purchase from menu bar-->
+    <record id="make_invisible" model="res.groups">
+        <field name="name">Invisible</field>
+    </record>
+    <!--<record model="ir.ui.menu" id="purchase.menu_purchase_control">-->
+    <!--<field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>-->
+    <!--</record>-->
+    <record model="ir.ui.menu" id="purchase.menu_procurement_management">
+        <field name="groups_id" eval="[(6,0,[ref('make_invisible')])]"/>
+    </record>
+    <!--<record model="ir.ui.menu" id="mail.mail_channel_menu_root_chat">-->
+    <!--<field name="groups_id" eval="[(6,0,[ref('group_chat_main_menu')])]"/>-->
+    <!--</record>-->
+</odoo>

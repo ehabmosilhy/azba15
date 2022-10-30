@@ -1,0 +1,184 @@
+@mixin home_menu() {
+
+    // Home menu Mount
+    &.oe_home_menu {
+        background-image: radial-gradient(circle, darken($brand-secondary, 20%), $black);
+
+        // Horizontal View
+        &.oe_base_menu {
+            header {
+                .o_main_navbar:not(.oe_favorite_view) {
+                    .o_menu_brand {
+                        display: none;
+                    }
+
+                    .o_menu_sections {
+                        display: none;
+                    }
+                }
+
+                .o_main_navbar {
+                    --Label: white;
+                }
+            }
+
+            .o_action_manager {
+                border-top: 0;
+
+                .o_action {
+                    display: none !important;
+                }
+            }
+        }
+
+        header {
+            .o_main_navbar {
+                background: transparent !important;
+
+                .__menu_toggle {
+                    background: transparent !important;
+                }
+
+                #av_full_view i.fa,
+                .oe_full_button {
+                    color: white;
+                }
+            }
+        }
+
+        .o_action_manager {
+            .o_action {
+                display: none;
+            }
+
+            .__home_menu {
+                overflow: auto;
+                width: 100%;
+                height: 100%;
+
+                .__editor {
+                    width: auto;
+                    display: block;
+                    padding: 6px 10px;
+                    margin-right: 10px;
+                    margin-top: 10px;
+                    color: white;
+                    border-radius: 3px;
+                    width: 33px;
+                    margin-left: auto;
+                }
+
+                .__menu_item {
+                    display: flex;
+                    flex-wrap: wrap;
+                    max-width: 750px;
+                    margin: auto;
+
+                    .o_app {
+                        font-size: 15px;
+                        list-style: none;
+                        width: 16.66666667%;
+                        text-align: center;
+                        padding: 10px 0;
+
+                        .__app_img {
+                            width: 70px;
+                            height: 70px;
+                            margin: auto;
+                            background-position: center;
+                            background-size: cover;
+                        }
+
+                        .name {
+                            margin: 4px 0;
+                            display: block;
+                            max-width: 100%;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            vertical-align: top;
+                            color: white;
+                        }
+                    }
+
+                    .__items_view {
+                        flex: 0 0 100%;
+                        display: flex;
+                        flex-direction: column;
+                        font-size: 20px;
+
+                        &>.__items {
+                            padding: 5px;
+                            color: white;
+                        }
+                    }
+
+                    .__active {
+                        background-color: rgba(255, 255, 255, 0.05);
+                    }
+                }
+
+                .__search_menu {
+                    max-width: 750px;
+                    margin: 25px auto 15px auto;
+                    position: relative;
+
+                    .o_search_icon {
+                        position: absolute;
+                        color: white;
+                        font-size: 18px;
+                        z-index: 2;
+                        top: 8px;
+                        left: 8px;
+                    }
+
+                    input {
+                        border: 0;
+                        color: white;
+                        height: 34px;
+                        padding: 0 35px;
+                        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+                        background-color: rgba(255, 255, 255, 0.1);
+                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 1px 0 rgba(0, 0, 0, 0.10);
+                    }
+
+                    &.d-none {
+                        +.__menu_item {
+                            margin-top: 74px; //Search size + search box outer size
+
+                            .o_app {
+                                position: relative;
+
+                                .o_favorite {
+                                    position: absolute;
+                                    margin: auto;
+                                    left: 0;
+                                    right: 0;
+                                    top: 0;
+                                    bottom: 0;
+                                    text-align: right;
+                                    font-size: 16px;
+                                    overflow: visible;
+
+                                    &:before {
+                                        position: relative;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        width: 25px;
+                                        height: 25px;
+                                        top: 0;
+                                        margin-left: calc(((100% + 70px) / 2) - 12.5px); // (total width + Image size) / 2) - (width / 2))
+                                        color: gold;
+                                        background-color: var(--brand-secondary);
+                                        border-radius: 50%;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

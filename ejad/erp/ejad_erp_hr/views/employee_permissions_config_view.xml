@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_hr_permission_tree_view" model="ir.ui.view">
+            <field name="name">hr.permissions.tree</field>
+            <field name="model">hr.permissions</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="أنواع الإستئذانات" editable="bottom">
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_hr_permission_type" model="ir.actions.act_window">
+            <field name="name">Permission Types</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.permissions</field>
+
+            <field name="help">انواع الإستئذانات</field>
+        </record>
+
+        <menuitem id="menu_hr_permission_type"
+                  name="أنواع الإستئذانات"
+                  action="action_hr_permission_type"
+                  parent="hr.menu_human_resources_configuration"
+                  sequence="3"/>
+
+    </data>
+</openerp>

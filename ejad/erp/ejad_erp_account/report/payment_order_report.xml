@@ -1,0 +1,334 @@
+<odoo>
+    <template id="payment_order_report">
+        <t t-call="web.html_container">
+
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div></div>
+                </div>
+                <div class="footer">
+                    <div></div>
+                </div>
+                <t t-call="web.internal_layout">
+                    <div style="direction:rtl;" class="page">
+                        <div class="row" style="font-size:14 px" width="100%">
+                            <div class="col-3">
+                                <h6>
+                                    التاريخ:
+                                    <span dir="rtl" t-esc="o.hijri_date"/>
+                                    هـ
+                                    <br/>
+                                    الموافق:
+                                    <span dir="rtl" t-esc="o.date"/>
+                                    م
+                                </h6>
+                                                            </div>
+                            <div class="col-4">
+                                <h6>
+                                    رقم:
+                                    <span t-esc="o.payment_name"/>
+                                </h6>
+                            </div>
+                            <div class="col-5" style="text-align:right">
+                                <h6>
+                                    الإدارة المالية
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" style="text-align:center">
+                                <h3>
+                                    أمر اعتماد صرف
+                                </h3>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row" style="font-size:14 px">
+                            <div class="col-11" style="float:right">
+                               <h6>
+                                    صاحب الاستحقاق:
+                                    <span t-esc="o.partner_name"/>
+                                </h6>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row" style="font-size:14 px">
+                            <div class="col-11" style="float:right">
+                                <h6>
+                                    أساس الصرف :
+                                    <span t-esc="o.basis_exchange"/>
+                                </h6>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row" style="font-size:14 px">
+                            <div class="col-11" style="margin-right:60 px">
+                                <h6>
+                                    البيان :
+                                    <span t-esc="o.report"/>
+                                </h6>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-9">
+                                <div class="row">
+                                    <div class="col-12" style="text-align:center">
+                                        <h6>
+                                            الجانب المدين
+                                        </h6>
+                                    </div>
+                                </div>
+                                <table class="table Black_border" style="border: 1px solid Black">
+
+                                    <tr style="border-top: 1px solid Black">
+                                        <td colspan="2" class="text-center">
+                                            <b>المبلغ</b>
+                                        </td>
+
+                                        <td rowspan="2" class="text-center">
+                                            <b>اسم الحساب</b>
+                                        </td>
+
+                                        <td rowspan="2" class="text-center">
+                                            <b>رقم الحساب</b>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">هـ</td>
+
+                                        <td class="text-center">ريال</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span t-esc="str(o.paid_amount).split('.')[1]"/>
+                                        </td>
+
+                                        <td>
+                                            <span t-esc="int(str(o.paid_amount).split('.')[0])"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="o.debit_account_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="o.debit_account_id.code"/>
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span t-esc="str(o.paid_amount).split('.')[1]"/>
+
+                                        </td>
+
+                                        <td>
+                                            <span t-esc="str(o.paid_amount).split('.')[0]"/>
+                                        </td>
+                                        <td colspan="2">
+                                            فقط
+                                            <span t-esc="o.paid_amount_words"/>
+                                        </td>
+
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div class="col-3" style="font-size:14 px">
+                                مدخل البيانات:
+                                <br/>
+                                <br/>
+                                الاسم:
+                                <span t-esc="o.user_id.name"/>
+                                <br/>
+                                <br/>
+                                التوقيع:
+                                <div style="display: inline-block;;border-bottom:1px dotted Black;width:120px;"></div>
+                                <br/>
+                                <br/>
+                                التاريخ:
+                                <div style="display: inline-block;;border-bottom:1px dotted Black;width:120px;"></div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" style="text-align:center">
+                                <h6>
+                                    الجانب الدائن
+                                </h6>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-9">
+                                <table class="table Black_border" style="border: 1px solid Black">
+
+                                    <tr style="border-top: 1px solid Black">
+                                        <td colspan="2" class="text-center">
+                                            <b>المبلغ</b>
+                                        </td>
+
+                                        <td rowspan="2" class="text-center">
+                                            <b>اسم الحساب</b>
+                                        </td>
+
+                                        <td rowspan="2" class="text-center">
+                                            <b>رقم الحساب</b>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">هـ</td>
+
+                                        <td class="text-center">ريال</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span t-esc="str(o.paid_amount).split('.')[1]"/>
+                                        </td>
+
+                                        <td>
+
+                                            <span t-esc="int(str(o.paid_amount).split('.')[0])"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="o.credit_account_id.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="o.credit_account_id.code"/>
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span t-esc="str(o.paid_amount).split('.')[1]"/>
+
+                                        </td>
+
+                                        <td>
+                                            <span t-esc="str(o.paid_amount).split('.')[0]"/>
+                                        </td>
+                                        <td colspan="2">
+                                            صافي الاستحقاق:
+                                            <br/>
+                                            فقط
+                                            <span t-esc="o.paid_amount_words"/>
+                                        </td>
+
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div class="col-3" style="font-size:14 px">
+                                المختص بالحسابات:
+                                <br/>
+                                <br/>
+                                الاسم:
+                                <div style="display: inline-block;;border-bottom:1px dotted Black;width:120px;"></div>
+                                <br/>
+                                <br/>
+                                التوقيع:
+                                <div style="display: inline-block;;border-bottom:1px dotted Black;width:120px;"></div>
+                                <br/>
+                                <br/>
+                                التاريخ:
+                                <div style="display: inline-block;;border-bottom:1px dotted Black;width:120px;"></div>
+
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:1.5cm">
+                            <div class="col-9">
+                                <table class="table Black_border" style="border: 1px solid Black">
+
+                                    <tr>
+                                        <td>
+                                            <span t-raw="o.move_id.company_id.sign_payment_order_report.signature"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            1) صدر الخطاب رقم
+                                            <span t-esc="o.transfer_speech_no"
+                                                  style="margin-left:15px;margin-right:15px"/>
+                                            بتاريخ
+                                            <span t-esc="o.transfer_speech_date"
+                                                  style="margin-left:15px;margin-right:15px"/>
+                                            2) استلمت الخطاب
+                                            الاسم:
+                                            <br/>
+                                            <span style="margin-right:9cm">التوقيع:</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            3) قيد بدفتر اليومية برقم
+                                            <span t-esc="o.move_id.name"
+                                                  style="margin-left:15px;margin-right:15px"/>
+                                            بتاريخ
+                                            <span t-esc="o.move_id.date"
+                                                  style="margin-left:15px;margin-right:15px"/>
+                                            <span style="margin-left:20px;margin-right:20px">توقيع المختص</span>
+
+                                            4) قيد بدفاتر الحسابات المختصة
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-3" style="font-size:14 px">
+                                مسؤول تدقيق المصروفات:
+                                <br/>
+                                <br/>
+                                الاسم:
+                                <div style="display: inline-block;;border-bottom:1px dotted Black;width:120px;"></div>
+                                <br/>
+                                <br/>
+                                التوقيع:
+                                <div style="display: inline-block;;border-bottom:1px dotted Black;width:120px;"></div>
+                                <br/>
+                                <br/>
+                                التاريخ:
+                                <div style="display: inline-block;;border-bottom:1px dotted Black;width:120px;"></div>
+
+                            </div>
+                        </div>
+
+
+                        <style>
+
+                            .Black_border td{
+                            border: 1px solid Black !important;
+
+                            }
+                            .border_left td{
+                            border-left: 1px solid Black !important;
+                            border-bottom: none !important;
+                            border-top: none !important;
+
+                            }
+                            .border_right td{
+                            border: 1px solid Black !important;
+
+                            }
+                            .square {
+                            height:20 px;
+                            width:20 px;
+                            border:1px solid Black
+                            }
+                        </style>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <report
+            id="payment_order_report_action"
+            string="Print"
+            model="payment.order.report.wizard"
+            report_type="qweb-pdf"
+            file="ejad_erp_account.payment_order_report"
+            name="ejad_erp_account.payment_order_report"
+            menu="False"
+    />
+</odoo>

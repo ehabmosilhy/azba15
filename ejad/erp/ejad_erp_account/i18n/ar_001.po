@@ -1,0 +1,3000 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* ejad_erp_account
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-27 01:12+0000\n"
+"PO-Revision-Date: 2020-06-27 01:12+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_access_dashboard_data
+msgid " إظهار بيانات لوحة المعلومات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_access_action_print_menu
+msgid " صلاحية قائمة الإجراء والتقارير في شاشة الموردين والمستفيدين"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.report,print_report_name:ejad_erp_account.action_nauss_financial_report
+msgid "(object.report_name)"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid "1) صدر الخطاب رقم"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid ""
+"2) استلمت الخطاب\n"
+"                                            الاسم:\n"
+"                                            <br/>\n"
+"                                            <span style=\"margin-right:9cm\">التوقيع:</span>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid "3) قيد بدفتر اليومية برقم"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ":الهوية الوطنية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"<b>\n"
+"                                            سبب استيراد الرسوم:\n"
+"                                        </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"<b>\n"
+"                                        :ايبان\n"
+"                                    </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"<b>\n"
+"                                        :رقم الهوية\n"
+"                                    </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"<b>\n"
+"                                        :نوعها\n"
+"                                    </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"<b>\n"
+"                                        المبلغ المسدد:\n"
+"                                    </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"<b>\n"
+"                                        سعادة مدير الإدارة المالية:\n"
+"                                    </b>\n"
+"                                    <br/>\n"
+"                                    إن مبلغ الرسوم الدراسية المذكورة أعلاه:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"<b>\n"
+"                                        عمادة القبول والتسجيل:\n"
+"                                    </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"<b>\n"
+"                                        كتابة:\n"
+"                                    </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"<b>\n"
+"                                        نموذج طلب استيراد رسوم دراسية\n"
+"                                    </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_invoice_document33
+msgid ""
+"<b>\n"
+"                                <u>\n"
+"                                الجانب الدائن\n"
+"                                </u>\n"
+"                            </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_invoice_document33
+msgid ""
+"<b>\n"
+"                                <u>\n"
+"                                الجانب المدين\n"
+"                                </u>\n"
+"                            </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"<b>:اسم البنك\n"
+"                                    </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"<b>:اسم صاحب الايبان\n"
+"                                    </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"<b>:رقم الجوال\n"
+"                                    </b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_invoice_document33
+msgid "<b>اسم الحساب</b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid "<b>اسم الطالب :</b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid "<b>العام الدراسي/الدرجة :</b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_invoice_document33
+msgid "<b>المبلغ</b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid "<b>جهة العمل :</b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_invoice_document33
+msgid "<b>رقم الحساب</b>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid ""
+"<br/>\n"
+"                                <br/>\n"
+"                                التاريخ:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid ""
+"<br/>\n"
+"                                <br/>\n"
+"                                التوقيع:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.nauss_footer
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.partner_ledger_external_layout
+msgid "<i class=\"fa fa-at\" role=\"img\" aria-label=\"Email\" title=\"Email\"/>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.nauss_footer
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.partner_ledger_external_layout
+msgid "<i class=\"fa fa-building-o\" role=\"img\" aria-label=\"Fiscal number\"/>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.nauss_footer
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.partner_ledger_external_layout
+msgid "<i class=\"fa fa-globe\" role=\"img\" aria-label=\"Website\" title=\"Website\"/>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.nauss_footer
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.partner_ledger_external_layout
+msgid "<i class=\"fa fa-phone\" role=\"img\" aria-label=\"Phone\" title=\"Phone\"/>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid ""
+"<span style=\"margin-left:20px;margin-right:20px\">توقيع المختص</span>\n"
+"\n"
+"                                            4) قيد بدفاتر الحسابات المختصة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "<span>New</span>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "<span>Operations</span>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "<span>Reconciliation</span>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "<span>Reporting</span>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "<span>View</span>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_nauss_financial
+msgid ""
+"<strong>\n"
+"                                        الإجمالي\n"
+"                                    </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_nauss_financial
+msgid "<strong>Date from :</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_nauss_financial
+msgid "<strong>Date to :</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "<strong>Memo: </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "<strong>إجمــــالــي</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid ""
+"<strong>إلى تاريخ\n"
+"                                            </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_training_courses
+msgid ""
+"<strong>إلى تاريخ\n"
+"                                        </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.bank_letter_report
+msgid "<strong>اسم المستفيد:</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "<strong>اسم دافع النقود: </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "<strong>البنك</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "<strong>البيان : </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.bank_letter_report
+msgid "<strong>البيان:</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "<strong>التاريخ :</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "<strong>التاريخ: </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "<strong>الجهة : </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.bank_letter_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "<strong>المبلغ :</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "<strong>المبلغ: </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "<strong>المورد: </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "<strong>الموظف المختص</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "<strong>تاريخ الحوالة:</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "<strong>توقيع أمين الصندوق</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_invoice_document33
+msgid "<strong>توقيع المحاسب</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_invoice_document33
+msgid "<strong>توقيع المدقق</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "<strong>رقم الحوالة: </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "<strong>سند قبض </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "<strong>سند قبض فرعي </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "<strong>طريقة الدفع : </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "<strong>طريقة الدفع: </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.bank_letter_report
+msgid "<strong>على العنوان:</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "<strong>لقاء: </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid ""
+"<strong>من تاريخ :\n"
+"\n"
+"                                            </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_training_courses
+msgid ""
+"<strong>من تاريخ :\n"
+"\n"
+"                                        </strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.bank_letter_report
+msgid "<strong>نوع الطلب:</strong>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_account_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__account_ids
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_account_category__type__account
+msgid "Account"
+msgstr "الحساب"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__account_level_ids
+msgid "Account Level"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_account_account_level_form
+#: model:ir.ui.menu,name:ejad_erp_account.menu_action_account_account_level
+msgid "Account Levels"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__account_type_ids
+msgid "Account Type"
+msgstr "أنواع الحسابات"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__accounting
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__reverse_entry_request__state__accounting
+msgid "Accountant"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__account_ids
+msgid "Accounts"
+msgstr "الحسابات المالية"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_needaction
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_needaction
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_needaction
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_needaction
+msgid "Action Needed"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__activity_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__activity_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__activity_ids
+msgid "Activities"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__activity_exception_decoration
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__activity_exception_decoration
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__activity_state
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__activity_state
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__activity_state
+msgid "Activity State"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_payment_form_inherite
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_reverse_entry_request_form
+msgid "Approve"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_attachment_count
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_attachment_count
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_attachment_count
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_attachment_count
+msgid "Attachment Count"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account__total
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_account_level_form
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_account_level_tree
+msgid "Balance"
+msgstr "الرصيد"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__bank_id
+msgid "Bank"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__bank_account_id
+msgid "Bank Account"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__bank_ref_seq
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__bank_ref_seq
+msgid "Bank Reference Seq"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Bank Statements"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Bill"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Bills"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Bills Analysis"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__cancelled
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__reverse_entry_request__state__cancelled
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_partner_receivable_view
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_payment_form_inherite
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.training_report_view
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_payment_reset_wizard_form
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_reverse_entry_wizard_form
+msgid "Cancel"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_reverse_entry_wizard
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_reverse_entry_wizard_form
+msgid "Cancel Payment"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Cash Statements"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,help:ejad_erp_account.field_account_move__is_company
+#: model:ir.model.fields,help:ejad_erp_account.field_account_move_line__is_company
+msgid "Check if the contact is a company, otherwise it is a person"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__partner_receivable_ledger_wizard__contact_type__company
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__training_report_wizard__contact_type__company
+msgid "Client"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__partner_receivable_ledger_wizard__contact_type__both
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__training_report_wizard__contact_type__both
+msgid "Client or Student"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_receivable_ledger_wizard__partner_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_training_report_wizard__partner_ids
+msgid "Client/Student"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_partner_receivable_ledger_menu
+#: model:ir.ui.menu,name:ejad_erp_account.menu_partner_receivable_ledger
+msgid "Client/Student Receivable Ledger"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__code
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_account_level_form
+msgid "Code"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_partner__college
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_users__college
+msgid "College"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_reset_wizard__comment
+msgid "Comments"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_res_company
+msgid "Companies"
+msgstr "الشركات"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__company_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__company_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,help:ejad_erp_account.field_account_payment__company_id
+msgid "Company related to this journal"
+msgstr "المؤسسة المرتبطة بدفتر اليومية هذا"
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_payment_form_inherite
+msgid "Confirm"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__posted
+msgid "Confirmed"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_res_partner
+msgid "Contact"
+msgstr "جهة الاتصال"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_multi_partners_service__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_receivable_ledger_wizard__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_reset_wizard__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_signature__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_wizard__create_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_training_report_wizard__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_multi_partners_service__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_receivable_ledger_wizard__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_reset_wizard__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_signature__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_wizard__create_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_training_report_wizard__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account__credit
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__credit
+msgid "Credit"
+msgstr "الدائن"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__credit_account_id
+msgid "Credit Account"
+msgstr "حساب الدائن"
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Credit Note"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Credit Note Bill"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Credit Notes"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_receivable_ledger_wizard__contact_type
+#: model:ir.model.fields,field_description:ejad_erp_account.field_training_report_wizard__contact_type
+msgid "Customer Type"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__date_due
+msgid "Date Due"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__date_invoice
+msgid "Date Invoice"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account__debit
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__debit
+msgid "Debit"
+msgstr "المدين"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__debit_account_id
+msgid "Debit Account"
+msgstr "حساب المدين"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__nauss_report_financial__report_type__detailed
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__partner_receivable_ledger_wizard__report_type__detailed
+msgid "Detailed"
+msgstr "مفصل"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_multi_partners_service__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_receivable_ledger_wizard__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_reset_wizard__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_ejad_ejad_erp_account_report_bank_letter_multi__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_ejad_ejad_erp_account_report_nauss_financial__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_ejad_ejad_erp_account_report_receivable_partnerledger__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_ejad_ejad_erp_account_report_training_courses__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_signature__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_wizard__display_name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_training_report_wizard__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__reverse_entry_request__state__done
+msgid "Done"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__invoice_date_due
+msgid "Due Date"
+msgstr "تاريخ الاستحقاق"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__date_to
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_receivable_ledger_wizard__date_to
+#: model:ir.model.fields,field_description:ejad_erp_account.field_training_report_wizard__date_to
+msgid "End Date"
+msgstr "تاريخ النهاية"
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Entries to Review"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__verfication
+msgid "Expense Auditor"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__reverse_entry_request__state__verfication
+msgid "Financial Auditor"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__account_department
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__reverse_entry_request__state__account_department
+msgid "Financial Manager"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__finance_verfifcation
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__reverse_entry_request__state__finance_verfifcation
+msgid "Financial Monitor"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_account_financial_report_menu
+#: model:ir.ui.menu,name:ejad_erp_account.menu_nauss_financial_report
+msgid "Financial Reports"
+msgstr "التقارير المالية"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_follower_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_follower_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_follower_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_channel_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_channel_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_channel_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_channel_ids
+msgid "Followers (Channels)"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_partner_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_partner_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_partner_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__hijri_date
+msgid "Hijri date"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_multi_partners_service__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_receivable_ledger_wizard__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_reset_wizard__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_ejad_ejad_erp_account_report_bank_letter_multi__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_ejad_ejad_erp_account_report_nauss_financial__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_ejad_ejad_erp_account_report_receivable_partnerledger__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_ejad_ejad_erp_account_report_training_courses__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_signature__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_wizard__id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_training_report_wizard__id
+msgid "ID"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__activity_exception_icon
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__activity_exception_icon
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__activity_exception_icon
+msgid "Icon"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners__activity_exception_icon
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners_line__activity_exception_icon
+#: model:ir.model.fields,help:ejad_erp_account.field_partner_invoice_multi__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_partner__identify_number
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_users__identify_number
+msgid "Identify ID"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners__message_needaction
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners__message_unread
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners_line__message_needaction
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners_line__message_unread
+#: model:ir.model.fields,help:ejad_erp_account.field_partner_invoice_multi__message_needaction
+#: model:ir.model.fields,help:ejad_erp_account.field_partner_invoice_multi__message_unread
+#: model:ir.model.fields,help:ejad_erp_account.field_reverse_entry_request__message_needaction
+#: model:ir.model.fields,help:ejad_erp_account.field_reverse_entry_request__message_unread
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners__message_has_error
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners__message_has_sms_error
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners_line__message_has_error
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners_line__message_has_sms_error
+#: model:ir.model.fields,help:ejad_erp_account.field_partner_invoice_multi__message_has_error
+#: model:ir.model.fields,help:ejad_erp_account.field_partner_invoice_multi__message_has_sms_error
+#: model:ir.model.fields,help:ejad_erp_account.field_reverse_entry_request__message_has_error
+#: model:ir.model.fields,help:ejad_erp_account.field_reverse_entry_request__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__initial_balance
+msgid "Initial Balance"
+msgstr "الارصدة الإفتتاحية"
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Internal Transfer"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.make_invisible
+msgid "Invisible"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Invoice"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__invoice_date
+msgid "Invoice/Bill Date"
+msgstr "تاريخ الفاتورة/فاتورة البائع"
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Invoices"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Invoices Analysis"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_is_follower
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_is_follower
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_is_follower
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__report_generated
+msgid "Is Report Generated"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners__journal_account_id
+msgid "It acts as a default account for debit amount"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__journal_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_wizard__journal_id
+msgid "Journal"
+msgstr "دفتر اليومية"
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_account_move
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Journal Entries"
+msgstr "القيود اليومية"
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Journal Entry"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_account_move_line
+msgid "Journal Item"
+msgstr "عنصر اليومية"
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_move_form_inherit
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Journal Items"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__journal_ids
+msgid "Journals"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_multi_partners_service____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_receivable_ledger_wizard____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_reset_wizard____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_ejad_ejad_erp_account_report_bank_letter_multi____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_ejad_ejad_erp_account_report_nauss_financial____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_ejad_ejad_erp_account_report_receivable_partnerledger____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_ejad_ejad_erp_account_report_training_courses____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_signature____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_wizard____last_update
+#: model:ir.model.fields,field_description:ejad_erp_account.field_training_report_wizard____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_multi_partners_service__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_receivable_ledger_wizard__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_reset_wizard__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_signature__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_wizard__write_uid
+#: model:ir.model.fields,field_description:ejad_erp_account.field_training_report_wizard__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_multi_partners_service__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_receivable_ledger_wizard__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_reset_wizard__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_signature__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_wizard__write_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_training_report_wizard__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_account_category__type__level
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_account_level_search
+msgid "Level"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__line_ids
+msgid "Line"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_main_attachment_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_main_attachment_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_main_attachment_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_has_error
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_has_error
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_has_error
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_has_error
+msgid "Message Delivery error"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__original_move_id
+msgid "Move"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_nauss_report_financial
+msgid "NAUSS Financial Report"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__bank_name_id
+msgid "Name"
+msgstr "الاسم"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__activity_date_deadline
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__activity_date_deadline
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__activity_summary
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__activity_summary
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__activity_summary
+msgid "Next Activity Summary"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__activity_type_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__activity_type_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__activity_type_id
+msgid "Next Activity Type"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__note
+msgid "Notes"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid ""
+"Nothing to\n"
+"                                        Reconcile"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_needaction_counter
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_needaction_counter
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_needaction_counter
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_has_error_counter
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_has_error_counter
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_has_error_counter
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners__message_needaction_counter
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners_line__message_needaction_counter
+#: model:ir.model.fields,help:ejad_erp_account.field_partner_invoice_multi__message_needaction_counter
+#: model:ir.model.fields,help:ejad_erp_account.field_reverse_entry_request__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners__message_has_error_counter
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners_line__message_has_error_counter
+#: model:ir.model.fields,help:ejad_erp_account.field_partner_invoice_multi__message_has_error_counter
+#: model:ir.model.fields,help:ejad_erp_account.field_reverse_entry_request__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners__message_unread_counter
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners_line__message_unread_counter
+#: model:ir.model.fields,help:ejad_erp_account.field_partner_invoice_multi__message_unread_counter
+#: model:ir.model.fields,help:ejad_erp_account.field_reverse_entry_request__message_unread_counter
+msgid "Number of unread messages"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.nauss_footer
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.partner_ledger_external_layout
+msgid ""
+"Page:\n"
+"                        <span class=\"page\"/>\n"
+"                        of\n"
+"                        <span class=\"topage\"/>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__parent_id
+msgid "Parent"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__partner_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move_line__partner_id1
+msgid "Partner"
+msgstr "الشريك"
+
+#. module: ejad_erp_account
+#: model:ir.actions.report,name:ejad_erp_account.action_partner_receivable_ledger
+msgid "Partner Receivable Ledger"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_partner_receivable_ledger_wizard
+#: model:ir.model,name:ejad_erp_account.model_training_report_wizard
+msgid "Partner Receivable Report"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "Payment Receipt:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_payment_reset_wizard
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_payment_reset_wizard_form
+msgid "Payment Reset to Draft"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_account_payment
+msgid "Payments"
+msgstr "المدفوعات"
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Payments Matching"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_move_form_inherit
+msgid "Post"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Post All Entries"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.report,name:ejad_erp_account.account_invoice_report_action
+#: model:ir.actions.report,name:ejad_erp_account.account_refund_invoice_report_action
+#: model:ir.actions.report,name:ejad_erp_account.payment_order_report_action
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_partner_receivable_view
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.training_report_view
+msgid "Print"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_payment_form_inherite
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_reverse_entry_request_form
+msgid "Progress"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_wizard__reason
+msgid "Reason"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Receive Money"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Reconcile"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__reconciled
+msgid "Reconciled"
+msgstr "تمت التسوية"
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Reconciliation Models"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__refuse
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_reverse_entry_request_form
+msgid "Refuse"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_invoice_inherit
+msgid "Register Payment"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_filter_report_inherit
+msgid "Report"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__report_type
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_receivable_ledger_wizard__report_type
+msgid "Report Display"
+msgstr "طريقة العرض"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__report_name
+msgid "Report Name"
+msgstr "اسم التقرير"
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_partner_receivable_view
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.training_report_view
+msgid "Report Options"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_payment_form_inherite
+msgid "Reset to Draft"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__user_id
+msgid "Responsible"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__activity_user_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__activity_user_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__activity_user_id
+msgid "Responsible User"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__reverse_request_id
+msgid "Revere Entry Request"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_reverse_entry_request
+#: model:ir.ui.menu,name:ejad_erp_account.menu_reverse_entry_request
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_reverse_entry_request_tree
+msgid "Revers Entry Requests"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__reversal_date
+msgid "Reversal Date"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__reversed_move
+msgid "Reversal Entry"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__reversal_move_id
+msgid "Reversal Move"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_wizard__date
+msgid "Reversal date"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_reverse_entry_request_form
+msgid "Reverse Entry Request"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__parent_id
+msgid "Root"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_has_sms_error
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_has_sms_error
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_has_sms_error
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Search Operations"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Send Money"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__sent
+msgid "Sent"
+msgstr "تم الإرسال"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__name
+msgid "Sequence NUmber"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Settings"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__date_from
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_receivable_ledger_wizard__date_from
+#: model:ir.model.fields,field_description:ejad_erp_account.field_training_report_wizard__date_from
+msgid "Start Date"
+msgstr "تاريخ البداية"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__state
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__state
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__state
+msgid "State"
+msgstr "تاريخ النهاية"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners__activity_state
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners_line__activity_state
+#: model:ir.model.fields,help:ejad_erp_account.field_partner_invoice_multi__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__partner_receivable_ledger_wizard__contact_type__student
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__training_report_wizard__contact_type__student
+msgid "Student"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__nauss_report_financial__report_type__summery
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__partner_receivable_ledger_wizard__report_type__summery
+msgid "Summery"
+msgstr "مختصر"
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_partner__supplier_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_users__supplier_id
+msgid "Supplier ID"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_nauss_report_financial__target_move
+msgid "Target Moves"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_move_form_inherit
+msgid "Tax Grids"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_move_form_inherit
+msgid "Taxes Applied"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.constraint,message:ejad_erp_account.constraint_account_account_category_code_uniq
+msgid "The code must be unique!"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__total_amount
+msgid "Total Amount"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_move_form_inherit
+msgid "Total Credit"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_move_form_inherit
+msgid "Total Debit"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_training_report_wizard__courses_ids
+msgid "Training Courses"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_training_report_menu
+#: model:ir.ui.menu,name:ejad_erp_account.menu_training_report_view
+msgid "Training Courses Report"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.journal_dashboard_view_inherit1
+msgid "Transaction"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__type
+msgid "Type"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners__activity_exception_decoration
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners_line__activity_exception_decoration
+#: model:ir.model.fields,help:ejad_erp_account.field_partner_invoice_multi__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_partner__uni_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_users__uni_id
+msgid "University ID"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__reverse_entry_request__state__manager
+msgid "University Manager"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_unread
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_unread
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_unread
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_unread
+msgid "Unread Messages"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__message_unread_counter
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__message_unread_counter
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__message_unread_counter
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_res_users
+msgid "Users"
+msgstr "المستخدمون"
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_payment_reset_wizard_form
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_reverse_entry_wizard_form
+msgid "Validate"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__website_message_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__website_message_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__website_message_ids
+#: model:ir.model.fields,field_description:ejad_erp_account.field_reverse_entry_request__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners__website_message_ids
+#: model:ir.model.fields,help:ejad_erp_account.field_account_invoice_multi_partners_line__website_message_ids
+#: model:ir.model.fields,help:ejad_erp_account.field_partner_invoice_multi__website_message_ids
+#: model:ir.model.fields,help:ejad_erp_account.field_reverse_entry_request__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_account_account_category
+msgid "account.account.category"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_account_invoice_multi_partners
+msgid "account.invoice.multi.partners"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_account_invoice_multi_partners_line
+msgid "account.invoice.multi.partners.line"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_bank_letter_multi_wizard
+msgid "bank.letter.multi.wizard"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__cash_ref_seq
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__cash_ref_seq
+msgid "cash Reference Seq"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_account_level_search
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_account_level_tree
+msgid "code"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__is_company
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move_line__is_company
+msgid "compagny"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_payment_form_inherite
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_reverse_entry_request_form
+msgid "confirm"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__draft
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__reverse_entry_request__state__draft
+msgid "draft"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__invoice_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__invoice_id
+msgid "invoice multi partners"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__line_number
+msgid "lines number"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_multi_partners_service
+msgid "multi.partners.service"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_partner_invoice_multi
+msgid "partner.invoice.multi"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_payment_order_report_wizard
+msgid "payment.order.report.wizard"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_payment_reset_wizard
+msgid "payment.reset.wizard"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_refund_invoice_report_wizard
+msgid "refund.invoice.report.wizard"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_report_ejad_ejad_erp_account_report_bank_letter_multi
+msgid "report.ejad_ejad_erp_account.report_bank_letter_multi"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_report_ejad_ejad_erp_account_report_nauss_financial
+msgid "report.ejad_ejad_erp_account.report_nauss_financial"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_report_ejad_ejad_erp_account_report_receivable_partnerledger
+msgid "report.ejad_ejad_erp_account.report_receivable_partnerledger"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_report_ejad_ejad_erp_account_report_training_courses
+msgid "report.ejad_ejad_erp_account.report_training_courses"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_report_signature
+msgid "report.signature"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_reverse_entry_request
+msgid "reverse.entry.request"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model,name:ejad_erp_account.model_reverse_entry_wizard
+msgid "reverse.entry.wizard"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_account_level_tree
+msgid "t_balance"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_account_level_tree
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_list
+msgid "t_credit"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_account_level_tree
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_list
+msgid "t_debit"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_list
+msgid "t_total"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_bank_letter_multi_wizard_form
+msgid "total"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__basis_exchange
+msgid "أساس الصرف"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid "أساس الصرف :"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_company__sign_payment_order_report
+msgid "أمر اعتماد الصرف"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid "أمر اعتماد صرف"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"أنا الطالب الموضح اسمي أعلاه أرغب في استيراد الرسوم الدراسية التي أودعتها في حساب\n"
+"                                    الجامعة وأقر بموافقتي على تحويلها على رقم الايبان المذكور أعلاه"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__user_id
+msgid "أنشئ بواسطة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "إجمالي المبلغ المحول :"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid "إقامة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_payment_form_inherite
+msgid "إكمال التسليم"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_payment_expense_delivery
+msgid "إكمال تسليم المصروفات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_bank_letter_multi_wizard_form
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_payment_order_wizard_form
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_refund_invoice_wizard_form
+msgid "إلغاء"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_invoice_multi_cancel
+msgid "إلغاء الفاتورة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "إلى التالية أسماؤهم :"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__payment_type_customer__cash_deposit
+msgid "إيداع نقدي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_users__barcode_department
+msgid "اسم الادارة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__bank_name
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "اسم البنك"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_multi_partners_service__name
+msgid "اسم الخدمة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "اسم الطالب"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "اسم المستفيد - مورد"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__bank_account_name
+msgid "اسم صاحب الاّيبان"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_multi_partners_search
+msgid "اصحاب الاستحقاق"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.access_multi_partners_specific_services
+msgid "اظهار خدمات محددة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.access_multi_partners_all_services
+msgid "اظهار كل الخدمات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+#: model:res.groups,name:ejad_erp_account.group_invoice_multi_financial_auditor
+msgid "اعتماد المدقق المالي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+#: model:res.groups,name:ejad_erp_account.group_invoice_multi_financial_manager
+msgid "اعتماد المدير المالي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+#: model:res.groups,name:ejad_erp_account.group_invoice_multi_financial_monitor
+msgid "اعتماد المراقب المالي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_invoice_multi_admin_financial_manager
+msgid "اعتماد المشرف العام على الشؤون الإدارية والمالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+msgid "اعتماد المشرف العام على الشئون الادارية و المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_customer_payment_confirm
+msgid "اعتماد سداد المستفيدين"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+#: model:res.groups,name:ejad_erp_account.group_invoice_multi_accountant
+msgid "اعتماد مختص الحسابات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.ui.menu,name:ejad_erp_account.multi_partners_menu
+msgid "اعداد أصحاب الاستحقاق"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_view_multi_partners_tree
+msgid "اعداد اصحاب الاستحقاق"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_multi_partners_service
+#: model:ir.ui.menu,name:ejad_erp_account.multi_partners_service_menu
+msgid "اعداد الخدمات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__total
+msgid "الإجمالي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_training_courses
+msgid ""
+"الإجمالي\n"
+"                                            <br/>\n"
+"\n"
+"                                            Total"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid "الإجمــــــــــــالي:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid "الإدارة المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__name
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_signature__name
+msgid "الاسم"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid "الاسم :"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__bank_id
+msgid "البنك"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__description
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__invoice_report
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__report
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__report
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__report
+msgid "البيان"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid "البيان :"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__date
+msgid "التاريخ"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid ""
+"التاريخ\n"
+"                                                <br/>\n"
+"                                                Date"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_nauss_financial
+msgid ""
+"التاريخ\n"
+"                                    <br/>\n"
+"                                    Date"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid "التاريخ :"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.bank_letter_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "التاريخ:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.res_company_form_inherit
+msgid "التقارير"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid "التوقيع :"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid "الجانب الدائن"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid "الجانب المدين"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid "الجهة/الطالب"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_training_courses
+msgid ""
+"الجهة/الطالب\n"
+"                                            <br/>\n"
+"                                            Client"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__account_id
+msgid "الحساب"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_multi_partners_service__account_id
+msgid "الحساب الافتراضي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__bank_account_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__bank_acc
+msgid "الحساب البنكي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__journal_account_id
+msgid "الحساب الدائن"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+msgid "الحساب المدين"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_multi_partners_service_tree
+msgid "الخدمات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__service_id
+msgid "الخدمة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_nauss_financial
+msgid ""
+"الدائن\n"
+"                                    <br/>\n"
+"                                    Credit"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_training_courses
+msgid ""
+"الدورة التدريبة\n"
+"                                            <br/>\n"
+"                                            Training Course"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "الرصيد"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_nauss_financial
+msgid ""
+"الرصيد\n"
+"                                    <br/>\n"
+"                                    Balance"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "الرقم"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__uni_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move_line__uni_id
+msgid "الرقم الجامعي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.bank_letter_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "السلام عليكم و ورحمة الله وبركاته."
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_invoice_form_inherite2
+msgid "الطالب/الجهة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__year_and_degree
+msgid "العام الدراسي/الدرجة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_company__address_bank_report
+msgid "العنوان لخطاب البنك"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+msgid "الغاء"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "القيمة الأصلية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid ""
+"الكشف\n"
+"                                                <br/>\n"
+"                                                Statement"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__name
+msgid "الكود"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__amount
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__paid_amount
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "المبلغ"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "المبلغ المدفوع"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__paid_amount
+msgid "المبلغ المسدد"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__paid_amount_words
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__paid_amount_words
+msgid "المبلغ المسدد كتابيا"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid "المتبقي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid ""
+"المتبقي\n"
+"                                                <br/>\n"
+"                                                Balance"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_training_courses
+msgid ""
+"المتبقي\n"
+"                                            <br/>\n"
+"                                            Remaining"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid ""
+"المختص بالحسابات:\n"
+"                                <br/>\n"
+"                                <br/>\n"
+"                                الاسم:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid "المدفوع"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid ""
+"المدفوع\n"
+"                                                <br/>\n"
+"\n"
+"                                                Credit"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_training_courses
+msgid ""
+"المدفوع\n"
+"                                            <br/>\n"
+"\n"
+"                                            Paid"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_finance_verfifcation
+msgid "المدقق المالي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_nauss_financial
+msgid ""
+"المدين\n"
+"                                    <br/>\n"
+"                                    Debit"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_finance_monitor
+msgid "المراقب المالي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__state__finance_monitor
+msgid "المراقب المالي "
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_account_category__total
+msgid "المستوى الرئيسي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__state__managerial
+msgid "المشرف العام على الشئون الادارية و المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__line_ids
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+msgid "المصروفات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid ""
+"المطلوب\n"
+"                                                <br/>\n"
+"\n"
+"                                                Debit"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid ""
+"المطلوب\n"
+"                                            <br/>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.bank_letter_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "المكرم/مدير"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__partner_id
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__custody_partner_id
+msgid "المورد"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__create_uid
+msgid "الموظف المسؤول"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__name
+msgid "الوصف"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__journal_id
+msgid "اليومية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__pending_delivery
+msgid "بانتظار التسليم"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid "بتاريخ"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid "بموجب أنظمة ولوائح الجامعة فإن الطالب الموضح اسمه أعلاه:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__state__confirmed
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+msgid "تأكيد"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_payment_transfer_confirm
+msgid "تأكيد التحويلات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_invoice_multi_confirm
+msgid "تأكيد الفاتورة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "تاريخ"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__payment_date
+msgid "تاريخ السداد"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "تاريخ الطباعة:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "تاريخ المطالبة المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__transfer_speech_date
+msgid "تاريخ خطاب التحويل"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_partner__nomination_date
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_users__nomination_date
+msgid "تاريخ خطاب الترشيخ"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"تحفظ لعدم الاستحقاق\n"
+"                                                <br/>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__payment_type2__bank
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_move__payment_type2__bank
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__payment_type2__bank
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__payment_type_customer__bank
+msgid "تحويل بنكي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.bank_letter_report
+msgid "تحويل مبلغ"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_company__bank_report_footer
+msgid "تذييل  خطاب البنك"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_company__inv_report_footer
+msgid "تذييل خطاب المطالبة المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_post_journal_entry
+msgid "ترحيل القيود"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+#: model:res.groups,name:ejad_erp_account.group_invoice_multi_register_payment
+msgid "تسجيل الدفعية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_customer_payment_register
+msgid "تسجيل سداد المطالبات المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_supplier_payment_register
+msgid "تسجيل سداد فواتير الموردين"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid "تقرير كشف المستحقات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.report,name:ejad_erp_account.action_training_course_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_training_courses
+msgid "تقرير كشف رسوم الدورات المستحقة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.report,name:ejad_erp_account.action_nauss_financial_report
+msgid "تقرير مالي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"تم إيداعه في حساب الجامعة\n"
+"                                        <br/>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__state__cancel
+msgid "تم الإلغاء"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__delivered
+msgid "تم التسليم"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_report_signature__signature
+msgid "تنسيق التوقيع"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.res_company_form_inherit
+msgid "تنسيق تواقيع التقارير"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid ""
+"تهدي جامعة نايف العربية للعلوم الأمنية أطيب تحياتها لكم وترغب تحويل المبالغ التالية من\n"
+"                            الحساب الجاري رقم :"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.bank_letter_report
+msgid ""
+"تهدي جامعة نايف العربية للعلوم الأمنية أطيب تحياتها لكم وترغب في التالي:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_partner__nomination_report_recipient
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_users__nomination_report_recipient
+msgid "توجيه الخطاب"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_invoice_inherit
+msgid "توليد المطالبة المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_generate_invoice_report
+msgid "توليد خطابات المطالبات المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__res_partner__company_type_nauss__company
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_invoice_form_inherite2
+msgid "جهة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__working_place
+msgid "جهة العمل"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_users__invoice_partner_ids
+msgid "خدمات فواتير المصروفات متعددة الموردين"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_bank_letter_multi_wizard
+#: model:ir.actions.report,name:ejad_erp_account.action_bank_letter_multi_report
+#: model:ir.actions.report,name:ejad_erp_account.bank_letter_report_print
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_bank_letter_multi_wizard_form
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_refund_invoice_wizard_form
+msgid "خطاب البنك"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__invoice_report_html
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_invoice_inherit
+msgid "خطاب المطالبة المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_department_manager
+msgid "رئيس الادارة المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "رئيس جامعة نايف العربية للعلوم الأمنية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "رقم الحساب"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__payment_name
+msgid "رقم السداد"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__bank_ref
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__bank_ref
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__bank_ref
+msgid "رقم السند"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid ""
+"رقم السند\n"
+"                                                <br/>\n"
+"                                                Voucher No"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt1
+msgid "رقم السند:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__bank_check_no
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__bank_check_no
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__bank_check_no
+msgid "رقم الشيك"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "رقم الطالب"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_nauss_financial
+msgid ""
+"رقم القيد\n"
+"\n"
+"                                    <br/>\n"
+"                                    Move Number"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_receivable_partnerledger
+msgid ""
+"رقم القيد\n"
+"                                                <br/>\n"
+"                                                Move Number"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__transfer_speech_no
+msgid "رقم خطاب التحويل"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_partner__nomination_no
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_users__nomination_no
+msgid "رقم خطاب الترشيح"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__supplier_id
+msgid "رقم صاحب الاستحقاق"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__acc_number
+msgid "رقم و تفاصيل الحساب البنكي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "رقم:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_invoice_document33
+msgid "ريال"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__refund_reason
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__refund_reason
+msgid "سبب استيراد الرسوم الدراسية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__cancel_reasons
+msgid "سبب الإلغاء"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__payment_type2__check
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_move__payment_type2__check
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__payment_type2__check
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__payment_type_customer__check
+msgid "شيك"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners_line__partner_id2
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__partner_name
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_multi_partners_form
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_multi_partners_tree
+msgid "صاحب الاستحقاق"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid "صاحب الاستحقاق:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid ""
+"صافي الاستحقاق:\n"
+"                                            <br/>\n"
+"                                            فقط"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.module.category,name:ejad_erp_account.module_nauss_account
+msgid "صلاحيات الحسابات والمالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.module.category,description:ejad_erp_account.module_nauss_account
+msgid "صلاحيات الدفعيات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__payment_type2__cash
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_move__payment_type2__cash
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__payment_type2__cash
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__payment_type_customer__cash
+msgid "صندوق (نقد)"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move_line__partner_id
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__res_partner__company_type_nauss__person
+msgid "طالب"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_bank_letter_multi_wizard_form
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_payment_order_wizard_form
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_refund_invoice_wizard_form
+msgid "طباعة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_move_form_inherit
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+msgid "طباعة أمر الصرف"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_invoice_inherit
+msgid "طباعة المطالبة المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_print_bank_letter_multi
+msgid "طباعة خطاب البنك"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_print_invoice_report
+msgid "طباعة خطابات المطالبات المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_invoice_inherit
+msgid "طباعة نموذج استيراد الرسوم"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_bank_letter_multi_wizard__journal_id
+msgid "طريقة السداد"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_company__sign_refund_invoice_report_finance
+msgid "طلب استيراد رسوم دراسية-الإدارة المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_company__sign_refund_invoice_report_reg
+msgid "طلب استيراد رسوم دراسية-الفبول والتسجيل"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "عدد المحول لهم :"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "على حسابه الخاص"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_invoice_document33
+msgid "فقط"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.module.category,description:ejad_erp_account.module_invoice_multi_partners
+#: model:ir.module.category,name:ejad_erp_account.module_invoice_multi_partners
+msgid "فواتير مصروفات متعددة المستفيدين"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.access_multi_partners_setting_menu
+msgid "قائمة إعداد الخدمات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.access_multi_partners_menu
+msgid "قائمة مصروفات متعددة المستفيدين"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_refund_invoice_report_wizard__registration_office_report
+msgid "قرار عمادة القبول والتسجيل"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__move_id
+msgid "قيد السداد"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_payment_order_report_wizard__move_id
+msgid "قيد اليومية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"لم يودع في حساب الجامعة\n"
+"                                        <br/>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__state__accountant
+msgid "مختص الحساب"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_accounting_employee
+msgid "مختص الحسابات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid ""
+"مدخل البيانات:\n"
+"                                <br/>\n"
+"                                <br/>\n"
+"                                الاسم:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__state__paid
+msgid "مدفوع"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid "مدير الإدارة المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__state__account_department
+msgid "مدير الادارة المالية "
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:res.groups,name:ejad_erp_account.group_university_manager
+msgid "مدير الشؤون المالية والإدارية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__state__verification
+#: model:res.groups,name:ejad_erp_account.group_verfication
+msgid "مسؤول تدقيق المصروفات"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid ""
+"مسؤول تدقيق المصروفات:\n"
+"                                <br/>\n"
+"                                <br/>\n"
+"                                الاسم:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__state__draft
+msgid "مسودة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_account_invoice_multi_partners
+#: model:ir.ui.menu,name:ejad_erp_account.invoice_multi_partners_main_menu
+#: model:ir.ui.menu,name:ejad_erp_account.invoice_multi_partners_sub_menu
+#: model:ir.ui.menu,name:ejad_erp_account.menu_account_invoice_multi_partners
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_tree
+msgid "مصروفات متعددة المستفيدين"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__other_info
+msgid "معلومات أخرى"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__bank_account_info
+msgid "معلومات الحساب البنكي"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_company__inv_report_header
+msgid "مقدمة خطاب المطالبة المالية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.bank_letter_report
+msgid "من حسابنا الجاري رقم:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_invoice_multi_partners__state__general_director_approve
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__general_director_approve
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_payment_form_inherite
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.view_account_invoice_multi_partners_form
+msgid "موافقة رئيس الجامعة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields.selection,name:ejad_erp_account.selection__account_payment__state__manager
+msgid "موافقة مدير الشؤون المالية والإدارية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "نأمل اتخاذ مايلزم وإشعارنا بما يفيد ذلك، وتقبلوا تحياتنا،،،،،"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_multi_partners_service__active
+#: model:ir.model.fields,field_description:ejad_erp_account.field_partner_invoice_multi__active
+msgid "نشط"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_payment_order_report_wizard
+msgid "نموذج اعتماد أمر صرف"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.actions.act_window,name:ejad_erp_account.action_refund_invoice_report_wizard
+msgid "نموذج طلب استيراد رسوم دراسية"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_partner__company_type_nauss
+#: model:ir.model.fields,field_description:ejad_erp_account.field_res_users__company_type_nauss
+msgid "نوع"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__payment_type2
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__payment_type2
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__payment_type2
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__payment_type_customer
+msgid "نوع السداد"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_invoice_document33
+msgid "هـ"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.payment_order_report
+msgid ""
+"هـ\n"
+"                                    <br/>\n"
+"                                    الموافق:"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_move__is_pay_by_custody
+msgid "هل دفع بواسطة عهدة؟"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_payment_receipt2
+msgid "و ذلك عن"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.report_bank_letter_multi
+msgid "وكيل الجامعة"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__require_general_director_approve
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_payment__require_general_director_approve
+msgid "يحتاج موافقة الرئيس"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model_terms:ir.ui.view,arch_db:ejad_erp_account.account_refund_invoice_report
+msgid ""
+"يكمل اللازم حيال الصرف\n"
+"                                                <br/>"
+msgstr ""
+
+#. module: ejad_erp_account
+#: model:ir.model.fields,field_description:ejad_erp_account.field_account_invoice_multi_partners__payment_journal_id
+msgid "يومية السداد"
+msgstr ""

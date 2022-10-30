@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="operation_barcode_template">
+        <!-- predefined, t-call call existing functionality -->
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="operation">
+                <div class="header">
+                    <div></div>
+                </div>
+                <!-- either use same template, inherit external_layout or create your own -->
+                <t t-call="web.external_layout">
+                    <!-- each report will start from new page -->
+                    <div class="page">
+                        <br/><br/>
+                        <div class="footer">
+                            <div class="col-xs-4"></div>
+                            <div class="col-xs-4">
+                                <table class="text-center">
+                                    <tr><td>No: <span t-esc="operation.department_sequence"/></td></tr>
+                                    <tr><td>Date: <span t-esc="operation.hijri_date(operation.date)"/><br/><span t-field="operation.date" class="o_hijri o_input mt4" t-field-options='{"format": "dd-MM-yyyy"}'/>
+
+                                    </td></tr>
+                                        <tr><td>
+                                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', operation.name, 200, 40)"
+                                         style="width:300px;height:50px;"/>
+                                        </td></tr>
+                                        <tr><td><span t-esc="operation.name"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="ac_operation_barcode_report"
+        string="طباعة الباركود"
+        model="ac.operation"
+        report_type="qweb-pdf"
+        name="ejad_erp_administrative_communications.operation_barcode_template"
+        print_report_name="(object.name)"
+    />
+</odoo>

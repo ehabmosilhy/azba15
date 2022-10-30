@@ -1,0 +1,149 @@
+// Form -stausbar
+@mixin form-statusbar() {
+    .o_form_statusbar {
+        margin: 0 0 5px 0;
+        border-bottom: none;
+        flex-wrap: wrap;
+        padding: 0;
+
+        .o_statusbar_buttons {
+            .btn-default {
+                background-color: $white;
+                color: var(--brand-secondary);
+                border: 1px solid var(--brand-secondary);
+                box-shadow: none;
+                outline: none;
+                font-size: $font-size-1;
+
+                &:hover {
+                    background-color: var(--brand-secondary);
+                    border-color: var(--brand-secondary);
+                    color: $white;
+                }
+            }
+
+            .btn-primary {
+                background-color: var(--brand-secondary);
+                border-radius: 0;
+                font-size: $font-size-2;
+                border: 1px solid var(--brand-secondary);
+                outline: none;
+                box-shadow: none;
+                padding: 4px 8px;
+                color: $white;
+
+                &:hover {
+                    background-color: darken($brand-secondary, 7%);
+                }
+            }
+
+            &>button {
+                height: 30px;
+                border-radius: 0;
+
+                &.oe_highlight {
+                    background-color: var(--brand-secondary);
+                    border-color: var(--brand-secondary);
+                    color: $white;
+
+                    &:hover {
+                        background-color: darken($brand-secondary, 7%);
+                    }
+                }
+            }
+        }
+
+        .o_statusbar_status {
+            align-self: center;
+            align-items: center;
+            overflow-x: inherit;
+
+            button.o_arrow_button {
+                font-weight: var(--font-weight-4);
+                font-size: $font-size-1;
+                text-transform: uppercase;
+                color: var(--Label);
+                background-color: rgba($button-box, .03);
+                border: 0;
+                padding: 6px 15px;
+
+                &:before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    float: right;
+                    border-style: solid;
+                    border-width: 17px 8px 17px 0;
+                    border-color: $body-bg transparent $body-bg transparent;
+                    right: 0px;
+                    transform: rotate(180deg);
+                    height: 100%;
+                }
+
+                &:after {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    float: left;
+                    border-style: solid;
+                    border-width: 16px 8px 17px 0;
+                    border-color: transparent $body-bg transparent $body-bg;
+                    left: -1px;
+                    transform: rotate(180deg);
+                    height: 100%;
+                    margin-left: 0px;
+                }
+
+                &.o_arrow_button.btn-primary {
+                    background-color: var(--brand-secondary);
+                    color: $white;
+                }
+
+                &:first-child {
+                    overflow-x: inherit;
+                }
+
+                &:not(.disabled) {
+                    &:hover {
+                        color: $white;
+                        background-color: var(--brand-primary);
+                    }
+                }
+
+                &.o_arrow_button.tag-primary {
+                    background-color: $text-primary;
+                }
+
+                &.o_arrow_button.tag-info {
+                    background-color: $text-info;
+                }
+
+                &.o_arrow_button.tag-danger {
+                    background-color: $text-danger;
+                }
+
+                &.o_arrow_button.tag-success {
+                    background-color: $text-success;
+                }
+
+                &.o_arrow_button.tag-warning {
+                    background-color: $text-warning;
+                }
+
+                &.o_arrow_button.tag-muted {
+                    background-color: $text-muted;
+                }
+            }
+
+            ul.o-status-more {
+                padding: 5px;
+
+                &>li {
+                    float: left;
+                }
+            }
+        }
+    }
+}
+
+// Form -stausbar

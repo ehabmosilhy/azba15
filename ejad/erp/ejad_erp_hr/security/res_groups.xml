@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!--    <record model="ir.module.category" id="dynamic_workflow_category">-->
+<!--        <field name="name">Dynamic Workflow Responsibility</field>-->
+<!--        <field name="sequence">1</field>-->
+<!--    </record>-->
+
+<!--    <record id="user_can_chose_previous_stage" model="res.groups">-->
+<!--        <field name="name">يمكن إختيار المرحلة السابقة</field>-->
+<!--        <field name="category_id" ref="ejad_erp_hr.dynamic_workflow_category"/>-->
+<!--    </record>-->
+
+</odoo>

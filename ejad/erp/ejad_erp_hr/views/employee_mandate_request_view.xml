@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--<record id="view_hr_mandate_request" model="ir.ui.view">-->
+        <!--<field name="name">hr.mandate.type.tree</field>-->
+        <!--<field name="model">hr.mandate.type</field>-->
+        <!--<field name="type">tree</field>-->
+        <!--<field name="arch" type="xml">-->
+        <!--<tree string="أنواع الإنتدابات">-->
+        <!--<field name="name"/>-->
+        <!--<field name="type"/>-->
+        <!--</tree>-->
+        <!--</field>-->
+        <!--</record>-->
+        <record id="view_hr_mandate_request_tree" model="ir.ui.view">
+            <field name="name">hr.mandate.request.tree</field>
+            <field name="model">hr.mandate.request</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Mandate Requests">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="activity_name"/>
+                    <field name="type_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="total_mandate_amount"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_hr_mandate_request_form" model="ir.ui.view">
+            <field name="name">hr.mandate.request.form</field>
+            <field name="model">hr.mandate.request</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Mandate Request">
+                    <field name="current_user_employee_manager" invisible="1"/>
+                    <field name="current_user_employee" invisible="1"/>
+                    <field name="require_general_director_approve" invisible="1"/>
+                    <header>
+                        <button name="workflow_next" string="Accept"
+                            attrs="{'invisible':[('is_workflow_next_allowed', '=', False)]}"
+                            type="object"
+                            class="oe_highlight reload_page_js"/>
+
+                        <button name="workflow_previous" string="Previous Stage"
+                            attrs="{'invisible':[('is_workflow_previous_allowed', '=', False)]}"
+                            type="object"
+                            class="oe_highlight reload_page_js"/>
+
+                        <button name="%(mandate_return_wizard_action)d" string="Return to Draft"
+                                attrs="{'invisible':[('is_return_action_allowed', '=', False)]}"
+                                type="action"
+                                class="oe_highlight"
+                            />
+
+                        <field name="stage_id" widget="statusbar"  domain="[('id', 'in', related_stages)]"/>
+
+        <!--                <div attrs="{'invisible':['|',('stage_id','=',False),('have_secondary_stage','=',False)]}">-->
+        <!--                    <field name="current_second_stage" widget="statusbar" domain="[('id', 'in', related_secondary_stages)]"/>-->
+        <!--                </div>-->
+
+
+                        <group invisible="1">
+                            <field name="is_workflow_next_allowed" invisible="1"/>
+                            <field name="related_stages" invisible="1"/>
+                            <field name="have_secondary_stage" invisible="1"/>
+                            <field name="related_secondary_stages" invisible="1"/>
+                            <field name="is_workflow_previous_allowed" invisible="1"/>
+                            <field name="is_refuse_action_allowed" invisible="1"/>
+                            <field name="is_return_action_allowed" invisible="1"/>
+                            <field name="state" invisible="1"/>
+                        </group>
+
+<!--                        <field name="state" attrs="{'invisible':[('contract_type', '=', 'sicetific')]}"-->
+<!--                               widget="statusbar"-->
+<!--                               statusbar_visible="draft,employee_request,approved_by_direct_manger,admin_financial_manager1,approved_by_hr,issue_ticket,end_task,approve_end_task,accountant,financial_auditor,financial_manager,financial_monitor,admin_financial_manager,mandat_amount_paid"/>-->
+<!--                        <field name="state1" attrs="{'invisible':[('contract_type', '!=', 'sicetific')]}"-->
+<!--                               widget="statusbar"-->
+<!--                               statusbar_visible="draft,employee_request,approved_by_direct_manger,approved_by_academic_adviser,admin_financial_manager1,approved_by_hr,issue_ticket,end_task,approve_end_task,accountant,financial_auditor,financial_manager,financial_monitor,admin_financial_manager,mandat_amount_paid"/>-->
+<!--                        <button name="button_employee_send_request"-->
+<!--                                string="Apply Request" type="object" class="oe_highlight"-->
+<!--                                attrs="{'invisible': ['|','&amp;',-->
+<!--                                ('current_user_employee', '=', False),-->
+<!--                                ('current_user_employee_manager', '=', False),-->
+<!--                                ('state', '!=', 'draft')]}"/>-->
+<!--                        <button name="button_approved_by_direct_manger"-->
+<!--                                string="Approve Direct Manager" type="object" class="oe_highlight"-->
+<!--                                attrs="{'invisible': ['|',('current_user_employee_manager', '=', False),('state', '!=', 'employee_request')]}"/>-->
+<!--                        <button name="button_approved_by_academic_adviser"-->
+<!--                                string="Confirm Academic Manager" groups="ejad_erp_hr.group_academic_adviser_mandate"-->
+<!--                                type="object"-->
+<!--                                class="oe_highlight"-->
+<!--                                attrs="{'invisible':['|', '&amp;', ('contract_type', '=', 'sicetific'), ('state', '!=', 'approved_by_direct_manger'), ('contract_type', '!=', 'sicetific')]}"/>-->
+<!--                        <button name="button_admin_financial_manager1"-->
+<!--                                attrs="{'invisible':['|', '&amp;', ('contract_type', '=', 'sicetific'), ('state', '!=', 'approved_by_academic_adviser'), '&amp;', ('contract_type', '!=', 'sicetific'), ('state', '!=', 'approved_by_direct_manger')]}"-->
+<!--                                string="Confirm Admin/Financial Manager" type="object"-->
+<!--                                class="oe_highlight" groups="ejad_erp_hr.group_admin_financial_manager"/>-->
+<!--                        <button name="button_approved_by_hr" states="admin_financial_manager1"-->
+<!--                                string="Confirm HR" groups="ejad_erp_hr.group_hr_mandate" type="object"-->
+<!--                                class="oe_highlight"-->
+<!--                        />-->
+
+<!--                        <button name="button_issue_ticket" states="approved_by_hr"-->
+<!--                                string="Issue Ticket" groups="ejad_erp_hr.group_ticket_issue" type="object"-->
+<!--                                class="oe_highlight"/>-->
+<!--                        <button name="button_end_task"-->
+<!--                                string="End Task" type="object"-->
+<!--                                class="oe_highlight"-->
+<!--                                attrs="{'invisible': ['|','&amp;',-->
+<!--                                ('current_user_employee', '=', False),-->
+<!--                                ('current_user_employee_manager', '=', False),-->
+<!--                                ('state', '!=', 'issue_ticket')]}"-->
+<!--                        />-->
+
+<!--                        <button name="button_approve_end_task"-->
+<!--                                string="Confirm End Task" type="object"-->
+<!--                                class="oe_highlight"-->
+<!--                                attrs="{'invisible': ['|',-->
+<!--                                ('state', '!=', 'end_task'),-->
+<!--                                ('current_user_employee_manager', '=', False)]}"/>-->
+
+
+<!--                        <button name="button_accountant" states="approve_end_task"-->
+<!--                                string="Confirm Accountant" type="object"-->
+<!--                                class="oe_highlight" groups="ejad_erp_hr.group_accountant"/>-->
+<!--                        <button name="button_financial_auditor" states="accountant"-->
+<!--                                string="Confirm Financial Auditor" type="object"-->
+<!--                                class="oe_highlight" groups="ejad_erp_hr.group_financial_auditor"/>-->
+<!--                        <button name="button_financial_manager" states="financial_auditor"-->
+<!--                                string="Confirm Financial Manager" type="object"-->
+<!--                                class="oe_highlight" groups="ejad_erp_hr.group_financial_manager"/>-->
+<!--                        <button name="button_financial_monitor" states="financial_manager"-->
+<!--                                string="Confirm Financial Monitor" type="object"-->
+<!--                                class="oe_highlight" groups="ejad_erp_hr.group_financial_monitor"/>-->
+<!--                        <button name="button_admin_financial_manager" states="financial_monitor"-->
+<!--                                string="Confirm Admin/Financial Manager" type="object"-->
+<!--                                class="oe_highlight" groups="ejad_erp_hr.group_admin_financial_manager"/>-->
+
+<!--                        <button name="button_general_director_approve"-->
+<!--                                attrs="{'invisible': ['|',-->
+<!--                                ('require_general_director_approve', '=', False),-->
+<!--                                ('state', '!=', 'admin_financial_manager')]}"-->
+
+<!--                                string="General director approve" type="object"-->
+<!--                                class="oe_highlight" groups="ejad_erp_base.group_general_director"/>-->
+
+                        <button name="%(action_mandate_payment_wizard)d"
+                                type="action"
+                                groups="ejad_erp_hr.group_mandate_payment_register"
+                                string="Mandate Payment"
+                                attrs="{'invisible':['|', '&amp;',
+                                ('require_general_director_approve', '=', True), ('state', '!=', 'general_director_approve'),
+                                 '&amp;',
+                                ('require_general_director_approve', '=', False), ('state', '!=', 'admin_financial_manager')]}"
+                                class=" oe_stat_button oe_highlight"
+                                context="{
+                        'default_mandate_request_id': active_id,
+                        'default_journal_id':journal_id,
+
+                        }"
+                        />
+                        <button name="%(ejad_erp_account.action_payment_order_report_wizard)d"
+                                type="action"
+                                string="طباعة أمر الصرف"
+                                class="oe_stat_button oe_highlight"
+                                attrs="{'invisible':[('move_id','=',False)]}"
+                                context="{
+									'default_move_id': move_id,
+									'default_payment_name': name,
+
+								}"
+                        />
+
+                        <button name="%(action_bank_letter_wizard)d"
+                                type="action"
+                                attrs="{'invisible':['|', '&amp;',
+                                ('require_general_director_approve', '=', True), ('state', '=', 'admin_financial_manager'),
+                                ('state', 'not in', ['general_director_approve','mandat_amount_paid','admin_financial_manager'])]}"
+                                groups="ejad_erp_hr.group_mandate_bank_letter"
+                                string="خطاب البنك"
+                                class="oe_stat_button oe_highlight"
+                                context="{
+									'default_employee_id': employee_id,
+									'default_amount': total_mandate_amount,
+									'default_journal_id': journal_id,
+
+								}"
+                        />
+                        <button name="button_cancel"
+                                string="Cancel Request" type="object"
+                                class="oe_highlight"
+                                attrs="{'invisible': [('state', 'in', ['mandat_amount_paid','cancel'])]}"/>
+
+<!--                        <button name="button_set_draft"-->
+<!--                                string="Return to Draft" type="object"-->
+<!--                                class="oe_highlight"-->
+<!--                                attrs="{'invisible': [('state', 'not in', ['cancel'])]}"/>-->
+
+                    </header>
+
+                    <sheet>
+                        <h3>
+                            <field name="name"></field>
+                        </h3>
+                        <group>
+                            <group string="Employee Information">
+                                <field name="employee_id" options="{'no_create': True,'no_open':True}" attrs="{'readonly':[('state','not in',['draft'])]}"/>
+                                <field name="department_id" options="{'no_create': True,'no_open':True}"/>
+                                <field name="job_id" options="{'no_create': True,'no_open':True}"/>
+                                <field name="manager_id" options="{'no_create': True,'no_open':True}"/>
+                                <field name="contract_type" invisible="1"/>
+
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <group string="Mandate Details">
+                            <group>
+                                <field name="is_multi_mandate" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}"/>
+                                <field name="type_id" options="{'no_create': True,'no_open':True}" attrs="{'invisible':[('is_multi_mandate','=',True)],'required':[('is_multi_mandate','!=',True)],'readonly':[('state','not in',['draft','admin_financial_manager1'])]}"/>
+                                <!--<field name="mandate_reason" options="{'no_create': True,'no_open':True}" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}"/>-->
+                                <field name="activity_name" attrs="{'readonly':[('state','not in',['draft'])]}"/>
+                                <field name="implementing_agency" attrs="{'readonly':[('state','not in',['draft'])]}"/>
+                                <field name="type" invisible="1"/>
+                                <field name="number_days_before" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}" groups="ejad_erp_hr.group_financial_info_mandate"/>
+                                <field name="number_days_after" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}" groups="ejad_erp_hr.group_financial_info_mandate"/>
+                                <field name="number_days" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}" groups="ejad_erp_hr.group_financial_info_mandate"/>
+                                <field name="date_from" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}"/>
+                                <field name="date_to" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}"/>
+                            </group>
+                            <group string="">
+                                <field name="type1" attrs="{'invisible':[('is_multi_mandate','!=',True)], 'required':[('is_multi_mandate','=',True)]}"/>
+                                <field name="mandate_amount" groups="ejad_erp_hr.group_financial_info_mandate" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}"/>
+                                <field name="total_mandate_amount" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}" groups="ejad_erp_hr.group_financial_info_mandate"/>
+                                <field name="saudi_cities_id"
+                                       attrs="{'invisible': [('type', '!=', 'internal')],
+                                       'required': [('type', '=', 'internal')], 'readonly':[('state','not in',['draft'])]}"
+                                       options="{'no_create': True,'no_open':True}"/>
+                                <field name="countries_id" domain="[('mandate_type_id','=', type_id)]"
+                                       attrs="{'invisible': [('type', '!=', 'external')],
+                                       'required': [('type', '=', 'external')], 'readonly':[('state','not in',['draft'])]}"
+                                       options="{'no_create': True,'no_open':True}"/>
+                                <field name="city_name" attrs="{'invisible': [('type', '!=', 'external')]}"/>
+                                <field name="obligations_involved" attrs="{'readonly':[('state','not in',['draft'])]}"/>
+                                <field name="attachment_filename" invisible="1"/>
+                                <field name="attachment_filename1" invisible="1"/>
+                                <field name="mandate_attachment" widget="binary" filename="attachment_filename" attrs="{'readonly':[('state','not in',['draft'])]}"/>
+                                <field name="end_task_report_attachment" widget="binary" filename="attachment_filename1"
+                                       attrs="{'readonly':[('state','not in',['issue_ticket'])], 'invisible': [('state', 'in', ['draft','employee_request','approved_by_direct_manger','approved_by_academic_adviser','admin_financial_manager1','approved_by_hr'])]}"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="multi" attrs="{'invisible':[('is_multi_mandate','!=',True)]}">
+                                <button name="update_days" string="تحديث أيام الانتداب" type="object" groups="ejad_erp_hr.group_hr_mandate" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}"/>
+                                <field name="mandate_line_ids" context="{'default_type':type1}" attrs="{'readonly':['|',('state','not in',['draft','admin_financial_manager1']),('type1','=',False)],'invisible':[('is_multi_mandate','!=',True)],'required':[('is_multi_mandate','=',True)]}">
+                                    <tree>
+                                        <field name="state" invisible="1"/>
+                                        <field name="type" invisible="1"/>
+                                        <field name="parent_id" invisible="1" options="{'no_create': True,'no_open':True}"/>
+                                        <field name="employee_id" invisible="1" options="{'no_create': True,'no_open':True}"/>
+                                        <field name="type_id" options="{'no_create': True,'no_open':True}" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}"/>
+                                        <field name="saudi_cities_id" options="{'no_create': True,'no_open':True}"/>
+                                        <field name="countries_id" domain="[('mandate_type_id','=', type_id)]" options="{'no_create': True,'no_open':True}"/>
+                                        <field name="date_from"/>
+                                        <field name="date_to"/>
+                                        <field name="number_days_before" groups="ejad_erp_hr.group_financial_info_mandate"/>
+                                        <field name="number_days_after" groups="ejad_erp_hr.group_financial_info_mandate"/>
+                                        <field name="number_days" groups="ejad_erp_hr.group_financial_info_mandate"/>
+                                        <field name="description"/>
+                                    </tree>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="state" invisible="1"/>
+                                                    <field name="type" invisible="1"/>
+                                                    <field name="parent_id" invisible="1" options="{'no_create': True,'no_open':True}"/>
+                                                    <field name="employee_id" invisible="1" options="{'no_create': True,'no_open':True}"/>
+                                                    <field name="type_id" domain="[('type','=',type)]" options="{'no_create': True,'no_open':True}" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}"/>
+                                                    <field name="saudi_cities_id" options="{'no_create': True,'no_open':True}" attrs="{'invisible': ['|',('type', '!=', 'internal'),('type_id', '=', False)],
+                                       'required': [('type', '=', 'internal')], 'readonly':[('state','not in',['draft'])]}"/>
+                                                    <field name="countries_id" domain="[('mandate_type_id','=', type_id)]" options="{'no_create': True,'no_open':True}" attrs="{'invisible': ['|',('type', '!=', 'external'),('type_id', '=', False)],
+                                       'required': [('type', '=', 'external')], 'readonly':[('state','not in',['draft'])]}"/>
+                                                    <field name="description" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}"/>
+                                                </group>
+                                                <group>
+                                                    <field name="date_from" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}"/>
+                                                    <field name="date_to" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}"/>
+                                                    <field name="number_days_before" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}" groups="ejad_erp_hr.group_financial_info_mandate"/>
+                                                    <field name="number_days_after" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}" groups="ejad_erp_hr.group_financial_info_mandate"/>
+                                                    <field name="number_days" attrs="{'readonly':[('state','not in',['draft','admin_financial_manager1'])]}" groups="ejad_erp_hr.group_financial_info_mandate"/>
+                                                </group>
+                                            </group>
+                                        </sheet>
+                                        <div class="oe_chatter">
+                                            <field name="message_follower_ids" widget="mail_followers"/>
+                                            <field name="message_ids" widget="mail_thread"/>
+                                        </div>
+                                    </form>
+                                </field>
+                            </page>
+                            <page string="تفاصيل السداد" groups="ejad_erp_hr.group_financial_info_mandate">
+                                <group groups="ejad_erp_hr.group_financial_info_mandate" string="تفاصيل السداد">
+                                    <group groups="ejad_erp_hr.group_financial_info_mandate">
+                                        <field name="payment_type2" widget="radio" attrs="{'readonly':[('state','not in',['accountant','approve_end_task'])]}"
+                                               groups="ejad_erp_hr.group_financial_info_mandate"/>
+                                    </group>
+                                    <group groups="ejad_erp_hr.group_financial_info_mandate">
+                                        <field name="journal_id" widget="selection" attrs="{'readonly':[('state','not in',['accountant','approve_end_task'])]}"
+                                               groups="ejad_erp_hr.group_financial_info_mandate"
+                                               options="{'no_create': True,'no_open':True}"/>
+                                        <field name="treasury_account_id" readonly="1" options="{'no_create': True,'no_open':True}"/>
+                                        <field name="mandate_account_id" readonly="1" options="{'no_create': True,'no_open':True}"/>
+                                        <field name="bank_ref" groups="ejad_erp_hr.group_financial_info_mandate" attrs="{'readonly':[('state','not in',['accountant','approve_end_task'])]}"/>
+                                        <field name="cash_ref_seq" invisible="1" attrs="{'readonly':[('state','not in',['accountant','approve_end_task'])]}"/>
+                                        <field name="bank_ref_seq" invisible="1" attrs="{'readonly':[('state','not in',['accountant','approve_end_task'])]}"/>
+                                        <field name="bank_check_no" groups="ejad_erp_hr.group_financial_info_mandate" attrs="{'readonly':[('state','not in',['accountant','approve_end_task'])]}"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+
+                        <group>
+                            <group>
+                                <field name="move_id" invisible="1"/>
+                                <field name="note" />
+                                <field name="refuse_reason" attrs="{'readonly':[('state','in',['draft'])],'invisible':[('state','in',['draft'])]}"/>
+
+                            </group>
+                        </group>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+        <record id="action_mandate_request" model="ir.actions.act_window">
+            <field name="name">Mandate Requests</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.mandate.request</field>
+
+            <field name="help">Mandate Requests</field>
+        </record>
+        <menuitem id="menu_hr_mandate_request"
+                  name="Mandate Requests"
+                  action="action_mandate_request"
+                  parent="hr.menu_hr_root"
+                  groups="ejad_erp_hr.hr_employee_mandate_menu"
+                  sequence="5"/>
+    </data>
+</openerp>

@@ -1,0 +1,11 @@
+@mixin sync_graph_layout() {
+    .o_graph_renderer {
+        background-color: transparent;
+
+        .o_graph_canvas_container {
+            canvas {
+                background-color: var(--btn-secondary);
+            }
+        }
+    }
+}

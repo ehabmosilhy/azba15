@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_0" model="dynamic.workflow.stage">
+            <field name="name">Draft</field>
+            <field name="sequence">0</field>
+            <field name="stage_type">is_first</field>
+            <field name="is_first_type">True</field>
+            <field name="stage_category">principal</field>
+        </record>
+
+<!--     بداية مراحل  العقد -->
+<!--        <record forcecreate="False" id="dynamic_workflow_stage_data_1" model="dynamic.workflow.stage">-->
+<!--            <field name="name">New</field>-->
+<!--            <field name="sequence">0</field>-->
+<!--            <field name="stage_type">is_first</field>-->
+<!--            <field name="is_first_type">True</field>-->
+<!--            <field name="stage_category">principal</field>-->
+<!--            <field name="contract_state">draft</field>-->
+<!--        </record>-->
+
+         <record forcecreate="False" id="dynamic_workflow_stage_data_2" model="dynamic.workflow.stage">
+            <field name="name">Running</field>
+             <field name="sequence">1</field>
+            <field name="stage_category">principal</field>
+            <field name="contract_state">open</field>
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_4" model="dynamic.workflow.stage">
+            <field name="name">Expired</field>
+            <field name="sequence">3</field>
+            <field name="stage_category">principal</field>
+            <field name="stage_type">is_success</field>
+            <field name="is_success_type">True</field>
+            <field name="contract_state">close</field>
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_5" model="dynamic.workflow.stage">
+            <field name="name">Cancelled</field>
+            <field name="sequence">4</field>
+            <field name="stage_type">is_refuse</field>
+            <field name="is_refuse_type">True</field>
+            <field name="stage_category">principal</field>
+            <field name="contract_state">cancel</field>
+        </record>
+<!--     نهاية   مراحل  العقد -->
+
+<!--     بداية   مراحل  نهاية الخدمة -->
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_21" model="dynamic.workflow.stage">
+            <field name="name">Apply Request</field>
+            <field name="sequence">1</field>
+            <field name="stage_category">principal</field>
+            <field name="endofservice_state">employee_request</field>
+
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_22" model="dynamic.workflow.stage">
+            <field name="name">Confirmed HR</field>
+            <field name="sequence">2</field>
+            <field name="stage_category">principal</field>
+            <field name="endofservice_state">approved_by_hr</field>
+
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_23" model="dynamic.workflow.stage">
+            <field name="name">Confirm Accountant</field>
+            <field name="sequence">3</field>
+            <field name="stage_category">principal</field>
+            <field name="endofservice_state">accountant</field>
+
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_24" model="dynamic.workflow.stage">
+            <field name="name">Confirm Financial Auditor</field>
+            <field name="sequence">4</field>
+            <field name="stage_category">principal</field>
+            <field name="endofservice_state">financial_auditor</field>
+
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_25" model="dynamic.workflow.stage">
+            <field name="name">Confirm Financial Manager</field>
+            <field name="sequence">5</field>
+            <field name="stage_category">principal</field>
+            <field name="endofservice_state">financial_manager</field>
+
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_26" model="dynamic.workflow.stage">
+            <field name="name">Confirm Financial Monitor</field>
+            <field name="sequence">6</field>
+            <field name="stage_category">principal</field>
+            <field name="endofservice_state">financial_monitor</field>
+
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_27" model="dynamic.workflow.stage">
+            <field name="name">Confirm administrative and Financial Manger</field>
+            <field name="sequence">7</field>
+            <field name="stage_category">principal</field>
+            <field name="endofservice_state">admin_financial_manager</field>
+
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_28" model="dynamic.workflow.stage">
+            <field name="name">General director approve</field>
+            <field name="sequence">8</field>
+            <field name="stage_category">principal</field>
+            <field name="endofservice_state">general_director_approve</field>
+
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_29" model="dynamic.workflow.stage">
+            <field name="name">Paid</field>
+            <field name="sequence">9</field>
+            <field name="stage_type">is_success</field>
+            <field name="is_success_type">True</field>
+            <field name="stage_category">principal</field>
+            <field name="endofservice_state">benefits_paid</field>
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_30" model="dynamic.workflow.stage">
+            <field name="name">Cancel</field>
+            <field name="sequence">10</field>
+            <field name="stage_type">is_refuse</field>
+            <field name="is_refuse_type">True</field>
+            <field name="stage_category">principal</field>
+            <field name="endofservice_state">cancel</field>
+        </record>
+
+<!--     نهاية   مراحل  نهاية الخدمة -->
+
+<!--     بداية مراحل  الترقيات -->
+        <record forcecreate="False" id="dynamic_workflow_stage_data_41" model="dynamic.workflow.stage">
+            <field name="name">Approved by Admin Affairs</field>
+            <field name="sequence">1</field>
+            <field name="stage_category">principal</field>
+            <field name="promotion_state">approved_by_admin_affairs</field>
+         </record>
+
+         <record forcecreate="False" id="dynamic_workflow_stage_data_42" model="dynamic.workflow.stage">
+            <field name="name">Approved by Promotion Group</field>
+             <field name="sequence">2</field>
+            <field name="stage_category">principal</field>
+            <field name="promotion_state">approved_by_promotion_group</field>
+         </record>
+
+         <record forcecreate="False" id="dynamic_workflow_stage_data_43" model="dynamic.workflow.stage">
+            <field name="name">Approved Administrative and Financial Manger</field>
+             <field name="sequence">3</field>
+            <field name="stage_category">principal</field>
+            <field name="promotion_state">approved_by_manager</field>
+         </record>
+
+         <record forcecreate="False" id="dynamic_workflow_stage_data_44" model="dynamic.workflow.stage">
+            <field name="name">Promotion Done</field>
+             <field name="sequence">4</field>
+            <field name="stage_category">principal</field>
+             <field name="stage_type">is_success</field>
+            <field name="is_success_type">True</field>
+            <field name="promotion_state">promotion_done</field>
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_45" model="dynamic.workflow.stage">
+            <field name="name">Refused</field>
+            <field name="sequence">5</field>
+            <field name="stage_type">is_refuse</field>
+            <field name="is_refuse_type">True</field>
+            <field name="stage_category">principal</field>
+            <field name="promotion_state">refuse</field>
+        </record>
+
+<!--     نهاية   مراحل  الترقيات -->
+
+
+<!--     بداية مراحل الحسميات -->
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_51" model="dynamic.workflow.stage">
+            <field name="name">Approved</field>
+             <field name="sequence">1</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="deductions_state">approve</field>
+         </record>
+
+         <record forcecreate="False" id="dynamic_workflow_stage_data_52" model="dynamic.workflow.stage">
+            <field name="name">Done</field>
+             <field name="sequence">2</field>
+            <field name="stage_type">is_success</field>
+            <field name="is_success_type">True</field>
+            <field name="stage_category">principal</field>
+            <field name="deductions_state">done</field>
+        </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_53" model="dynamic.workflow.stage">
+            <field name="name">Refused</field>
+            <field name="sequence">3</field>
+            <field name="stage_type">is_refuse</field>
+            <field name="is_refuse_type">True</field>
+            <field name="stage_category">principal</field>
+            <field name="deductions_state">refuse</field>
+        </record>
+
+<!--     نهاية مراحل الحسميات -->
+
+
+<!--     بداية مراحل الانتدابات -->
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_61" model="dynamic.workflow.stage">
+            <field name="name">Apply Request</field>
+             <field name="sequence">1</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">employee_request</field>
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_62" model="dynamic.workflow.stage">
+            <field name="name">Approved Direct Manager</field>
+             <field name="sequence">2</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">approved_by_direct_manger</field>
+         </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_63" model="dynamic.workflow.stage">
+            <field name="name">Approved Academic Adviser</field>
+             <field name="sequence">3</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">approved_by_academic_adviser</field>
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_64" model="dynamic.workflow.stage">
+            <field name="name">Confirm administrative and Financial Manger</field>
+             <field name="sequence">4</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">admin_financial_manager1</field>
+         </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_65" model="dynamic.workflow.stage">
+            <field name="name">Confirmed HR</field>
+             <field name="sequence">5</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">approved_by_hr</field>
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_66" model="dynamic.workflow.stage">
+            <field name="name">Issue Ticket</field>
+             <field name="sequence">6</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">issue_ticket</field>
+         </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_67" model="dynamic.workflow.stage">
+            <field name="name">End Task</field>
+             <field name="sequence">7</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">end_task</field>
+         </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_68" model="dynamic.workflow.stage">
+            <field name="name">Confirm End Task</field>
+             <field name="sequence">8</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">approve_end_task</field>
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_69" model="dynamic.workflow.stage">
+            <field name="name">confirm Accountant</field>
+             <field name="sequence">9</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">accountant</field>
+         </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_70" model="dynamic.workflow.stage">
+            <field name="name">Confirm Financial Auditor</field>
+             <field name="sequence">10</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">financial_auditor</field>
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_71" model="dynamic.workflow.stage">
+            <field name="name">Confirm Financial Manager</field>
+             <field name="sequence">11</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">financial_manager</field>
+         </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_72" model="dynamic.workflow.stage">
+            <field name="name">Confirm Financial Monitor</field>
+             <field name="sequence">12</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">financial_monitor</field>
+         </record>
+
+         <record forcecreate="False" id="dynamic_workflow_stage_data_73" model="dynamic.workflow.stage">
+            <field name="name">اعتماد المشرف على الادارة العامة للشئون الادارية و المالية</field>
+             <field name="sequence">13</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">admin_financial_manager</field>
+         </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_74" model="dynamic.workflow.stage">
+            <field name="name">General director approve</field>
+             <field name="sequence">14</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="mandate_state">general_director_approve</field>
+         </record>
+
+         <record forcecreate="False" id="dynamic_workflow_stage_data_75" model="dynamic.workflow.stage">
+            <field name="name">Paid</field>
+             <field name="sequence">15</field>
+            <field name="stage_type">is_success</field>
+            <field name="is_success_type">True</field>
+            <field name="stage_category">principal</field>
+            <field name="mandate_state">mandat_amount_paid</field>
+        </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_76" model="dynamic.workflow.stage">
+            <field name="name">Cancel</field>
+            <field name="sequence">16</field>
+            <field name="stage_type">is_refuse</field>
+            <field name="is_refuse_type">True</field>
+            <field name="stage_category">principal</field>
+            <field name="mandate_state">cancel</field>
+        </record>
+
+<!--     نهاية مراحل الانتدابات -->
+
+<!--     بداية مراحل الاجازات العادية-->
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_101" model="dynamic.workflow.stage">
+            <field name="name">تم تقديم الطلب</field>
+             <field name="sequence">1</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="holidays_state">confirm</field>
+         </record>
+<!--        <record forcecreate="False" id="dynamic_workflow_stage_data_102" model="dynamic.workflow.stage">-->
+<!--            <field name="name">تمت موافقة المدير الطبي للجامعة</field>-->
+<!--             <field name="sequence">2</field>-->
+<!--            <field name="stage_category">principal</field>-->
+<!--            <field name="is_return_to_investor_stage">True</field>-->
+<!--            <field name="holidays_state">medical_manager</field>-->
+<!--         </record>-->
+<!--        <record forcecreate="False" id="dynamic_workflow_stage_data_103" model="dynamic.workflow.stage">-->
+<!--            <field name="name">تمت موافقة المدير المباشر</field>-->
+<!--             <field name="sequence">3</field>-->
+<!--            <field name="stage_category">principal</field>-->
+<!--            <field name="is_return_to_investor_stage">True</field>-->
+<!--            <field name="holidays_state">direct_manager_approve</field>-->
+<!--         </record>-->
+
+<!--        <record forcecreate="False" id="dynamic_workflow_stage_data_104" model="dynamic.workflow.stage">-->
+<!--            <field name="name">تمت موافقة مدير /معتمد الإدارة</field>-->
+<!--             <field name="sequence">4</field>-->
+<!--            <field name="stage_category">principal</field>-->
+<!--            <field name="is_return_to_investor_stage">True</field>-->
+<!--            <field name="holidays_state">dept_manager_approve</field>-->
+<!--         </record>-->
+<!--        <record forcecreate="False" id="dynamic_workflow_stage_data_105" model="dynamic.workflow.stage">-->
+<!--            <field name="name">تمت موافقة وكيل الجامعة للشؤون الأكادمية</field>-->
+<!--             <field name="sequence">5</field>-->
+<!--            <field name="stage_category">principal</field>-->
+<!--            <field name="is_return_to_investor_stage">True</field>-->
+<!--            <field name="holidays_state">academic_manager_approve</field>-->
+<!--         </record>-->
+<!--        <record forcecreate="False" id="dynamic_workflow_stage_data_106" model="dynamic.workflow.stage">-->
+<!--            <field name="name">تمت موافقة مدقق الموارد البشرية</field>-->
+<!--             <field name="sequence">6</field>-->
+<!--            <field name="stage_category">principal</field>-->
+<!--            <field name="is_return_to_investor_stage">True</field>-->
+<!--            <field name="holidays_state">hr_checker</field>-->
+<!--         </record>-->
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_107" model="dynamic.workflow.stage">
+            <field name="name">Second Approval</field>
+             <field name="sequence">7</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="holidays_state">validate1</field>
+         </record>
+
+         <record forcecreate="False" id="dynamic_workflow_stage_data_108" model="dynamic.workflow.stage">
+            <field name="name">مدير إدارة الموارد البشرية</field>
+             <field name="sequence">8</field>
+            <field name="stage_type">is_success</field>
+            <field name="is_success_type">True</field>
+            <field name="stage_category">principal</field>
+            <field name="holidays_state">validate</field>
+        </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_109" model="dynamic.workflow.stage">
+            <field name="name">Cancelled</field>
+             <field name="sequence">9</field>
+            <field name="stage_category">principal</field>
+            <field name="holidays_state">cancel</field>
+        </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_110" model="dynamic.workflow.stage">
+            <field name="name">تم الرفض</field>
+            <field name="sequence">10</field>
+            <field name="stage_type">is_refuse</field>
+            <field name="is_refuse_type">True</field>
+            <field name="stage_category">principal</field>
+            <field name="holidays_state">refuse</field>
+        </record>
+<!--     نهاية مراحل الاجازات العادية -->
+
+
+
+<!--     بداية مراحل الاجازات المرضية-->
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_131" model="dynamic.workflow.stage">
+            <field name="name">تم تقديم الطلب</field>
+             <field name="sequence">1</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="holidays_state">confirm</field>
+         </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_132" model="dynamic.workflow.stage">
+            <field name="name">تمت موافقة المدير الطبي </field>
+             <field name="sequence">2</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="holidays_state">medical_manager</field>
+         </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_133" model="dynamic.workflow.stage">
+            <field name="name">تمت موافقة المدير المباشر</field>
+             <field name="sequence">3</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="holidays_state">direct_manager_approve</field>
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_134" model="dynamic.workflow.stage">
+            <field name="name">تمت موافقة مدير /معتمد الإدارة</field>
+             <field name="sequence">4</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="holidays_state">dept_manager_approve</field>
+         </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_135" model="dynamic.workflow.stage">
+            <field name="name">تمت موافقة الوكيل ة</field>
+             <field name="sequence">5</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="holidays_state">academic_manager_approve</field>
+         </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_136" model="dynamic.workflow.stage">
+            <field name="name">تمت موافقة مدقق الموارد البشرية</field>
+             <field name="sequence">6</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="holidays_state">hr_checker</field>
+         </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_137" model="dynamic.workflow.stage">
+            <field name="name">Second Approval</field>
+             <field name="sequence">7</field>
+            <field name="stage_category">principal</field>
+            <field name="is_return_to_investor_stage">True</field>
+            <field name="holidays_state">validate1</field>
+         </record>
+
+         <record forcecreate="False" id="dynamic_workflow_stage_data_138" model="dynamic.workflow.stage">
+            <field name="name">مدير إدارة الموارد البشرية</field>
+             <field name="sequence">8</field>
+            <field name="stage_type">is_success</field>
+            <field name="is_success_type">True</field>
+            <field name="stage_category">principal</field>
+            <field name="holidays_state">validate</field>
+        </record>
+        <record forcecreate="False" id="dynamic_workflow_stage_data_139" model="dynamic.workflow.stage">
+            <field name="name">Cancelled</field>
+             <field name="sequence">9</field>
+            <field name="stage_category">principal</field>
+            <field name="holidays_state">cancel</field>
+        </record>
+
+        <record forcecreate="False" id="dynamic_workflow_stage_data_130" model="dynamic.workflow.stage">
+            <field name="name">تم الرفض</field>
+            <field name="sequence">10</field>
+            <field name="stage_type">is_refuse</field>
+            <field name="is_refuse_type">True</field>
+            <field name="stage_category">principal</field>
+            <field name="holidays_state">refuse</field>
+        </record>
+<!--     نهاية مراحل الاجازات المرضية -->
+
+    </data>
+</odoo>

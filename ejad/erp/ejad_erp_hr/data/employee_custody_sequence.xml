@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_employee_custody_request" model="ir.sequence">
+        <field name="name">Custody Request</field>
+        <field name="code">employee.custody</field>
+        <field name="padding">6</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+    <record id="seq_employee_mandate_request" model="ir.sequence">
+        <field name="name">Mandate requests</field>
+        <field name="code">hr.mandate.request</field>
+        <field name="padding">6</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+    <record id="seq_employee_promotion" model="ir.sequence">
+        <field name="name">Employee Promotion</field>
+        <field name="code">employee.promotion</field>
+        <field name="padding">6</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+    <record id="seq_hr_endofservice" model="ir.sequence">
+        <field name="name">End of service Seq Promotion</field>
+        <field name="code">hr.end.of.service</field>
+        <field name="padding">6</field>
+        <field name="number_increment">1</field>
+        <field name="prefix">EOSV/</field>
+        <field name="implementation">no_gap</field>
+    </record>
+</odoo>

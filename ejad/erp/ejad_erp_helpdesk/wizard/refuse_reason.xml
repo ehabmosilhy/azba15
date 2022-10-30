@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+ 
+    <!--    refuse request-->
+    <record id="helpdesk_refuse_wizard_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.refuse.wizard.form</field>
+        <field name="model">helpdesk.refuse.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Request refuse reason">
+                <label string="رفض" for="refuse_reason"/>
+                <field name="refuse_message"/>
+                <footer>
+                    <button string='رفض' name="refuse_reason" type="object" class="oe_highlight"/>
+                    أو
+                    <button string="إلغاء" class="oe_link" special="cancel"/>
+                </footer>
+           </form>
+        </field>
+    </record>
+    <record id="helpdesk_refuse_wizard_action" model="ir.actions.act_window">
+        <field name="name">رفض</field>
+        <field name="res_model">helpdesk.refuse.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="helpdesk_refuse_wizard_view_form"/>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

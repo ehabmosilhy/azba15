@@ -1,0 +1,127 @@
+$al-colors: $brand-secondary,
+$brand-primary,
+lighten(#000, 46.7%),
+$text-success,
+$text-primary,
+$text-info !default;
+
+$al-colors-secondary: lighten(#000, 46.7%),
+#F06050,
+#F4A460,
+#F7CD1F,
+#6CC1ED,
+#814968,
+#EB7E7F,
+#2C8397,
+#475577,
+#D6145F,
+#30C381,
+#9365B8,
+#ff1e00,
+#bf9600,
+#0003b3,
+#ff006a,
+#cc3300,
+#ffea00,
+#00cc85,
+#007ab3,
+#6900cc,
+#ff0048,
+#c2cc00,
+#00ffc8,
+#008cff,
+#bf0036,
+#b24400,
+#d0ff00,
+#00ffea,
+#0062b3,
+#ea00ff,
+#ff0026,
+#8bcc00,
+#00bfaf,
+#006aff,
+#af00bf,
+#bf001d,
+#bf6300,
+#8cff00,
+#00f2ff,
+#004ab3,
+#ff00d0,
+#ffa600,
+#3acc00,
+#00b6bf,
+#0048ff,
+#bf7c00,
+#04ff00,
+#00d0ff,
+#0036bf,
+#ff008c,
+#00bf49,
+#0092b3,
+#0004ff,
+#b20062,
+#649173 !default;
+
+$al-colors-complete: join(set-nth(set-nth($al-colors, 1, $brand-primary), 6, $brand-secondary),
+$al-colors-secondary) !default;
+
+$al-brand-complete: join(set-nth(set-nth($al-colors, 1, $brand-primary), 6, $brand-secondary),
+$al-colors-secondary) !default;
+
+.o_web_client {
+    @for $i from 1 through length($al-brand-complete) {
+        $color: nth($al-brand-complete, $i);
+
+        .o_calendar_view .fc-view {
+            .fc-event.o_calendar_color_#{$i} {
+                border-color: $color;
+                color: darken($color, 35%);
+
+                .fc-bg {
+                    background: mix($color, white) !important;
+                }
+
+                &.o_cw_custom_hover,
+                &.o_cw_custom_highlight {
+                    box-shadow: 0 12px 12px -5px rgba($color, 0.3);
+                    color: color-yiq($color);
+
+                    .fc-bg {
+                        background: $color !important;
+                    }
+                }
+
+                &:not(.o_calendar_hatched):not(.o_calendar_striked) {
+                    background: $color !important;
+
+                    .fc-bg {
+                        background: mix($color, white) !important;
+                    }
+                }
+
+            }
+        }
+
+        .o_cw_filter_color_#{$i} {
+            .o_cw_filter_input_bg {
+                border-color: $color;
+                background: $color;
+                color: color-yiq($color);
+            }
+        }
+
+        .o_cw_popover.o_calendar_color_#{$i} {
+            $color-subdle: mix(white, $color, 90%);
+
+            .card-header,
+            .card-header .popover-header {
+                background-color: $color-subdle;
+                color: color-yiq($color-subdle);
+            }
+
+            .card-header {
+                border-color: mix($card-border-color, mix(white, $color));
+            }
+        }
+    }
+}

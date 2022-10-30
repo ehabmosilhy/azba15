@@ -1,0 +1,15 @@
+.o_web_client {
+    &.o_rtl {
+
+        .o_sidebar_drw.fa.fa-chevron-left,
+        .o_sidebar_drw.fa.fa-chevron-right {
+            transform: rotate(-360deg);
+        }
+
+        .o_label_help {
+            &:after {
+                margin-right: 5px;
+            }
+        }
+    }
+}

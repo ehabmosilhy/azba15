@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="seq_ac_operation_incoming" model="ir.sequence">
+            <field name="name">AC Incoming Operation</field>
+            <field name="code">ac.operation.incoming</field>
+            <field name="prefix">AC-IN/%(y)s/</field>
+            <field name="padding">4</field>
+            <field name="use_date_range">True</field>
+        </record>
+
+        <record id="seq_ac_operation_incoming_dept" model="ir.sequence">
+            <field name="name">AC Dept Incoming Operation</field>
+            <field name="code">ac.operation.incoming.dept</field>
+        </record>
+
+        <record id="seq_ac_operation_outgoing_dept" model="ir.sequence">
+            <field name="name">AC Dept Incoming Operation</field>
+            <field name="code">ac.operation.outgoing.dept</field>
+        </record>
+
+        <record id="seq_ac_operation_outgoing_emp_dept" model="ir.sequence">
+            <field name="name">AC Emp Dept Incoming Operation</field>
+            <field name="code">ac.operation.outgoing.emp.dept</field>
+        </record>
+
+        <record id="seq_ac_operation_outgoing_dept_dept" model="ir.sequence">
+            <field name="name">AC Dept Dept Incoming Operation</field>
+            <field name="code">ac.operation.outgoing.dept.dept</field>
+        </record>
+
+        <record id="seq_ac_operation_outgoing_internal_dept" model="ir.sequence">
+            <field name="name">AC internal Dept Incoming Operation</field>
+            <field name="code">ac.operation.outgoing.internal.dept</field>
+        </record>
+
+        <record id="seq_ac_operation_outgoing_generalization_dept" model="ir.sequence">
+            <field name="name">AC generalization Dept Incoming Operation</field>
+            <field name="code">ac.operation.outgoing.generalization.dept</field>
+        </record>
+
+
+        <record id="seq_ac_global_operation_outgoing" model="ir.sequence">
+            <field name="name">AC Global Outgoing Operation</field>
+            <field name="code">ac.operation.goutgoing</field>
+            <field name="prefix">AC-GOUT/%(y)s/</field>
+            <field name="padding">4</field>
+            <field name="use_date_range">True</field>
+        </record>
+
+
+        <record id="seq_ac_operation_outgoing" model="ir.sequence">
+            <field name="name">AC Outgoing Operation</field>
+            <field name="code">ac.operation.outgoing</field>
+            <field name="prefix">AC-OUT/%(y)s/</field>
+            <field name="padding">4</field>
+            <field name="use_date_range">True</field>
+        </record>
+
+        <record id="seq_ac_operation_internal" model="ir.sequence">
+            <field name="name">AC Internal Operation</field>
+            <field name="code">ac.operation.internal</field>
+            <field name="prefix">AC-INTER/%(y)s/</field>
+            <field name="padding">4</field>
+            <field name="use_date_range">True</field>
+        </record>
+
+        <record id="seq_ac_operation_department" model="ir.sequence">
+            <field name="name">AC Department Operation</field>
+            <field name="code">ac.operation.department</field>
+            <field name="prefix">AC-DOUT/%(y)s/</field>
+            <field name="padding">4</field>
+            <field name="use_date_range">True</field>
+        </record>
+
+        <record id="seq_ac_operation_move" model="ir.sequence">
+            <field name="name">AC Operation Move</field>
+            <field name="code">ac.operation.move</field>
+            <field name="prefix">AC-MV/%(y)s/</field>
+            <field name="padding">4</field>
+            <field name="use_date_range">True</field>
+        </record>
+
+        <record id="seq_ac_generalization" model="ir.sequence">
+            <field name="name">AC Generalization</field>
+            <field name="code">ac.operation.generalization</field>
+            <field name="prefix">AC-GEN/%(y)s/</field>
+            <field name="padding">4</field>
+            <field name="use_date_range">True</field>
+        </record>
+
+    </data>
+</odoo>

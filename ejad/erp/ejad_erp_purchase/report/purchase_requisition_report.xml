@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main template -->
+    <template id="print_po_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <!--<t t-call="ejad_erp_purchase.nauss_header"/>-->
+                <!--<t t-call="ejad_erp_purchase.nauss_footer"/>-->
+                <div class="header">
+                </div>
+
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <h3>قسم المشتريات</h3>
+                        <h2 style="text-align:center;">تعميد بالتوريد</h2>
+
+                        <div>
+                            <strong>اسم المورد :</strong>
+                            <span t-field="o.vendor_id"/>
+                        </div>
+                        <div class="col-xs-12">
+
+                            <span t-field="o.report_introduction"/>
+
+                        </div>
+                        <![CDATA[&nbsp;]]>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <strong>رقم التسلسل</strong>
+                                    </th>
+                                    <th>
+                                        <strong>رقم الصنف</strong>
+                                    </th>
+                                    <th class="text-center">
+                                        <strong>اسم الصنف و وصفه</strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong>الكمية المطلوبة</strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong>السعر الافرادي</strong>
+                                    </th>
+                                    <th class="text-right">
+                                        <strong>القيمة الاجمالية</strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="i" t-value="1"/>
+                                <tr t-foreach="o.line_ids" t-as="line">
+                                    <td class="text-center">
+                                        <span t-esc="i"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.product_id.default_code"/>
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            <span t-field="line.product_id.name"/>
+                                        </strong>
+                                        <br/>
+                                        <span t-field="line.product_id.name"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="line.product_qty"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="line.price_unit"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-field="line.amount_total"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                    <t t-set="i" t-value="i+1"/>
+                                </tr>
+                                <tr class="text-center">
+                                    <td colspan="2">
+                                        <strong>الاجمالي</strong>
+                                    </td>
+                                    <td colspan="3">
+                                        <span t-esc="o.currency_id.amount_to_text(o.total_amount)"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.total_amount"
+                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <![CDATA[&nbsp;]]>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span t-field="o.report_conditions"/>
+
+                            </div>
+                        </div>
+                        <!--<div class="col-xs-12" style="height:50px;"></div>-->
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-6" style="text-align:right;">
+                                <strong>
+                                    <u>الرقابة المالية</u>
+                                </strong>
+                            </div>
+                            <div class="col-xs-6" style="text-align:right;">
+                                <u>
+                                    <strong>مدير قسم المشتريات</strong>
+                                </u>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3" style="text-align:right;">
+                                التوقيع
+                            </div>
+                            <div class="col-xs-3" style="text-align:right;">
+                                الاسم
+                            </div>
+
+                            <div class="col-xs-3" style="text-align:right;">
+                                التوقيع
+                            </div>
+                            <div class="col-xs-3" style="text-align:right;">
+                                الاسم
+                            </div>
+
+                        </div>
+                        <!--<div class="col-xs-12" style="height:50px;"></div>-->
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-12" style="text-align:center;">
+                                <strong>
+                                    رئيس
+                                    <br/>
+                                    جامعة نايف للعلوم الأمنية
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+
+            </t>
+        </t>
+    </template>
+    <report id="report_purchase_requisition" string="خطاب التعميد"
+            model="purchase.requisition" report_type="qweb-pdf"
+            name="ejad_erp_purchase.print_po_report"/>
+</odoo>

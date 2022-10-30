@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1071px" height="875px" viewBox="0 0 1071 875" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>Path 5</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="13.1731593%" y1="36.3575283%" x2="70.7814554%" y2="77.8559155%" id="linearGradient-1">
+            <stop stop-color="#F3FBFD" offset="0%"></stop>
+            <stop stop-color="#F7FFFD" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="site1" transform="translate(-369.000000, -834.000000)" fill="url(#linearGradient-1)">
+            <path d="M1440,930.659975 C1440,841.013593 982.008227,729.971939 949.50791,1032.36194 C917.007593,1334.75194 589.504401,1107.33467 479.003324,1127.82722 C405.33594,1141.48891 368.668916,1257.11352 369.002252,1474.70104 C384.805937,1593.84948 448.139888,1666.82294 559.004104,1693.6214 C725.300429,1733.8191 755.44819,1687.67254 974.508154,1641.64031 C1193.56812,1595.60808 1440,1788 1440,1511 C1440,1234 1440,1020.30636 1440,930.659975 Z" id="Path-5"></path>
+        </g>
+    </g>
+</svg>

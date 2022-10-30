@@ -1,0 +1,222 @@
+body {
+
+    &.o_web_client.oe_night_mode:not(.oe_base_menu),
+    &.o_web_client.oe_base_menu.oe_night_mode {
+        background-color: var(--night);
+        background-image: radial-gradient(circle, var(--night), var(--btn-secondary));
+        @include common-layout();
+        @include sync_window_chat_view();
+        @include sync_attendance_view();
+        @include m-control-panel-search();
+
+        &>header {
+            @include sync_header_layout();
+        }
+
+        &>div.o_action_manager {
+            @include home-menu();
+
+            &>.o_widget_Discuss {
+                div.o_control_panel {
+                    @include sync_control_panel_layout();
+                }
+
+                @include mail_view();
+            }
+
+            &>div.o_action {
+                background-color: var(--night-light);
+
+                &.o_view_controller {
+                    background-color: var(--night-light);
+                }
+
+                &>div.o_control_panel {
+                    @include sync_control_panel_layout();
+                }
+
+                &>.o_controller_with_searchpanel {
+                    .o_search_panel {
+                        @include sync_search_panel_layout();
+                    }
+
+                    summary {
+                        background-color: var(--btn-primary);
+                        box-shadow: inset 0px -3px 0px 0px var(--border);
+                    }
+
+                    .o_searchview_input_container {
+                        .o_searchview_facet {
+                            background-color: var(--night);
+                            border-color: var(--border);
+
+                            .o_facet_values {
+                                color: var(--font-color);
+                            }
+                        }
+                    }
+
+                    .o_lunch_content {
+                        width: 100%;
+                    }
+                }
+
+                div.o_content {
+                    background-color: var(--btn-secondary);
+                    border-right: 0;
+                    @include website_dashboards_view();
+                    @include web_settings_dashboard_view();
+                    @include sync_import_view();
+                    @include gernal_setting_view();
+                    @include sync_kanban_view();
+                    @include common-layout();
+                    @include sync_list_view();
+                    @include sync_graph_layout();
+                    @include sync_activity_layout();
+                    @include sync_pivot_view();
+                    @include sync_calander_view();
+                    @include sync_form_view();
+                    @include ni-lunch-view();
+                    @include ni-purchase-view();
+                }
+            }
+
+            @include ni_barcode_view();
+        }
+
+        .o_home_menu_background {
+            background-image: radial-gradient(circle, var(--night), var(--btn-secondary));
+        }
+
+        @include sync_model_view();
+        @include dropdown_view();
+
+        &.open_customize_theme {
+            .o_technical_modal {
+                .modal-dialog {
+                    .modal-content {
+                        &>.form-group {
+                            border-left: 1px solid var(--border);
+                        }
+                    }
+                }
+            }
+        }
+
+        &.ad_mobile {
+            .settings_tab {
+                background-color: var(--btn-primary) !important;
+            }
+
+            header {
+                .o_main_navbar {
+                    .o_menu_sections {
+                        &>li {
+                            .dropdown-header {
+                                background-color: var(--btn-primary) !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .o_mobile_search_panel {
+            .o_search_panel {
+                background-color: var(--btn-secondary);
+
+                .o_search_panel_field {
+                    .o_search_panel_category_value {
+                        background-color: var(--night-light);
+
+                        .o_search_panel_label_title {
+                            color: var(--font-color);
+                        }
+                    }
+                }
+
+                .list-group-item {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+
+    &.o_web_client.oe_night_mode:not(.oe_base_menu) {
+        &>header {
+            @include sync_header_vlayout();
+        }
+    }
+
+    &.o_web_client.oe_night_mode.oe_base_menu {
+        &>header {
+            .o_main_navbar {
+                .o_menu_systray {
+                    .o_mail_systray_dropdown {
+                        .o_mail_systray_dropdown_items {
+                            .o_mail_preview {
+                                background-color: transparent;
+                            }
+                        }
+                    }
+
+                    .o_switch_company_menu {
+                        .bg-white {
+                            background-color: var(--btn-secondary) !important;
+                        }
+                    }
+
+                    .o_user_menu {
+                        .__user {
+                            .__user_info {
+                                color: var(--font-color);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.o_web_client.oe_base_menu.oe_night_mode.ad_mobile {
+        header {
+            .o_main_navbar {
+                .menu_toggle {
+                    .icon {
+
+                        &:before,
+                        &:after {
+                            border-color: var(--night);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $screen-xs-max) {
+    body {
+
+        &.o_web_client.oe_night_mode:not(.oe_base_menu),
+        &.o_web_client.oe_base_menu.oe_night_mode {
+            &.ad_mobile {
+                .settings_tab {
+                    background-color: var(--btn-primary) !important;
+                }
+
+                header {
+                    .o_main_navbar {
+                        .o_menu_sections {
+                            &>li {
+                                .dropdown-header {
+                                    background-color: var(--btn-primary) !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,6 @@
+@mixin graph_view() {
+    .o_graph_renderer {
+        padding: var(--main-padding);
+        background-color: $white;
+    }
+}

@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- IT About Company -->
+    <template id="it_about_cmp" name="About Us Snippet 1">
+        <section class="follow-us" data-disp='about_us'>
+            <div class='container'>
+                <div class="title">
+                    <h2>تابعنا على وسائل التواصل الاجتماعى</h2>
+                </div>
+                <div class="row sct_btm_row">
+                    <div class='col-md-6'>
+                        <a class="twitter-timeline" data-height="600" href="https://twitter.com/ncwmsa?ref_src=twsrc%5Etfw">Tweets by ncwmsa</a>
+                        <script async="async" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    </div>
+                    <div class='col-md-6'>
+                        <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:6885983969121198080" height="600px" width="100%" frameborder="0" allowfullscreen="" title="Embedded post" __idm_id__="5193729"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <!-- About Healthcare Domain / Hospital -->
+    <template id="health_about_hospital" name="About Us Snippet 2">
+        <section class="vision-section" id="vision-section" data-disp='about_us'>
+            <div class='container'>
+                <div class="title">
+                    <h2>رؤية ورسالة المركز</h2>
+                </div>
+                <div class="row">
+                    <div class='col-sm-4'>
+                        <img src="/theme_scita/static/src/img/MWAN/Vision/Banner.png" class="banner img-fluid" alt="Banner"/>
+                    </div>
+                    <div class='col-sm-7'>
+                        <div class="info">
+                            <h5>رؤيتنا</h5>
+                            <p>نطمح إلى قطاع إدارة نفايات مستدام يعمل بمبادئ الاقتصاد الدائري وذلك لنساهم في تعزيز حماية البيئة ورفع جودة الحياة</p>
+
+                            <h5>رسالتنا</h5>
+                            <p>نعمل بأفضل المعايير الدولية والمحلية لتنظيم قطاع النفايات بفاعلية واستدامة من خلال ابتكارنا لأفضل الممارسات وتبني أحدث التقنيات</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="about_us_v_2" name="About Us Snippet 3">
+        <section class="about_us_v_2" data-disp='about_us'>
+            <div class='container'>
+                <div class='row sct_top_row'>
+                    <div class="col-md-12">
+                        <h2 class="section-title">About Us</h2>
+                    </div>
+                </div>
+                <div class="row sct_btm_row">
+                    <div class='col-md-6 sct_cmp_info'>
+                        <p class='sct_simple_text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt </p>
+                    </div>
+                    <div class='col-md-6 sct_cmp_list'>
+                        <ul class="sct_unorder_list">
+                            <li>
+                                <span class="fa fa-check"/><span class='text'>Lorem Ipsum is simply</span></li>
+                            <li>
+                                <span class="fa fa-check"/><span class='text'>Lorem Ipsum is simply</span></li>
+                            <li>
+                                <span class="fa fa-check"/><span class='text'>Lorem Ipsum is simply</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="about_us_v_3" name="About Us Snippet 4">
+        <section class="about_us_v_3" data-disp='about_us'>
+            <div class='container'>
+                <div class="row sct_btm_row">
+                    <div class='col-md-6 sct_cmp_info'>
+                    	<div class='sct_content_info'>
+	                        <h3 class='sct_title'>About us</h3>
+	                        <p class='sct_simple_text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt </p>
+	                    </div>
+                        <div class='sct_cst_btn'>
+                            <a href="/contactus" class="btn btn-primary scita_cstm_btn ">Read More</a>
+                        </div>
+                    </div>
+                    <div class='col-md-6 sct_cmp_img'>
+                    	<div class="video">
+                        	<img src="/theme_scita/static/src/img/it/about-obj.jpg" class="img img-fluid" alt="About Company"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="about_us_v_4" name="About Us Snippet 5">
+        <section class="about_us_v_4" data-disp='about_us'>
+            <div class='container'>
+                <div class="row sct_btm_row">
+                    <div class='col-md-6 sct_cmp_img'>
+                    	<div class="video">
+                        	<img src="/theme_scita/static/src/img/it/about-obj.jpg" class="img img-fluid" alt="About Company"/>
+                        </div>
+                    </div>
+                    <div class='col-md-6 sct_cmp_info'>
+                    	<div class='sct_content_info'>
+	                        <h3 class='sct_title'>40 years,we passionate about achieving better result for our client</h3>
+	                        <div class="navigation-tab">
+	                            <!-- Nav tabs -->
+	                            <ul class="nav nav-tabs" role="tablist">
+	                                <li class="nav-item">
+	                                    <a class="nav-link active" data-toggle="tab" href="#about_4_item1">What we do</a>
+	                                </li>
+	                                <li class="nav-item">
+	                                    <a class="nav-link" data-toggle="tab" href="#about_4_item2">Client results</a>
+	                                </li>
+	                                <li class="nav-item">
+	                                    <a class="nav-link" data-toggle="tab" href="#about_4_item3">
+	                                    Social impact</a>
+	                                </li>
+	                            </ul>
+	                            <!-- Tab panes -->
+	                            <div class="tab-content">
+	                                <div class="tab-pane fade in active show" id="about_4_item1" role="tabpanel">
+	                                    <div class='row sct_serv_row'>
+	                                        <div class='col-md-12'>
+	                                        	<div class='sct_base_class'>
+		                                            <div class='sct_text_info'>
+		                                               <p class='sct_simple_text'>What we do Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed</p>
+		                                            </div>
+		                                            <div class='sct_cst_btn'>
+							                            <a href="/contactus" class="btn btn-primary scita_cstm_btn ">Get in touch</a>
+							                        </div>
+	                                        	</div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="tab-pane fade" id="about_4_item2" role="tabpanel">
+	                                    <div class='row sct_serv_row'>
+	                                        <div class='col-md-12'>
+	                                        	<div class='sct_base_class'>
+		                                            <div class='sct_text_info'>
+		                                               <p class='sct_simple_text'>Client results Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed</p>
+		                                            </div>
+		                                            <div class='sct_cst_btn'>
+							                            <a href="/contactus" class="btn btn-primary scita_cstm_btn ">Get in touch</a>
+							                        </div>
+	                                        	</div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="tab-pane fade" id="about_4_item3" role="tabpanel">
+	                                    <div class='row sct_serv_row'>
+	                                        <div class='col-md-12'>
+	                                        	<div class='sct_base_class'>
+		                                            <div class='sct_text_info'>
+		                                               <p class='sct_simple_text'>Social impact Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed</p>
+		                                            </div>
+		                                            <div class='sct_cst_btn'>
+							                            <a href="/contactus" class="btn btn-primary scita_cstm_btn ">Get in touch</a>
+							                        </div>
+	                                        	</div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="about_us_v_5" name="About Us Snippet 6">
+        <section class="about_us_v_5" data-disp='about_us'>
+            <div class='container'>
+                <div class='row sct_top_row'>
+                    <div class="col-md-12">
+                        <h2 class="section-title">About Us</h2>
+                        <p class='sct_simple_text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                    </div>
+                </div>
+                <div class="row sct_btm_row">
+                    <div class='col-md-6 sct_cmp_title'>
+                        <div class='sct_base_class'>
+                            <h3 class='sct_title'>Trusted and Professional business consultant to fulfill your dreams.</h3>
+                            <div class='sct_cst_btn'>
+                                <p class='sct_simple_text'>Our story</p>
+                                <a href="https://www.youtube.com/watch?v=07d2dXHYb94" class="btn" target="_blank"><span class="fa fa-play"/></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-6 sct_cmp_info'>
+                        <p class='sct_simple_text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt </p>
+                        <p class='sct_simple_text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
+                        <div class='sct_cst_btn'>
+                            <a href="/contactus" class="btn">Read more</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="accordion_v_1" name="Accordion Snippet 1">
+        <section class="accordion_v_1 s_faq_collapse" data-disp='accordion'>
+            <div class='container'>
+                <div class='row sct_top_row'>
+                    <div class="col-md-12">
+                        <h2 class="section-title">Frequently Ask Question</h2>
+                    </div>
+                </div>
+                <div class="row sct_btm_row">
+                    <div class='col-md-12 sct_cmp_title'>
+                        <div id="myCollapse" class="accordion" role="tablist">
+                            <div class="card bg-white">
+                                <a href="#" role="tab" data-toggle="collapse" aria-expanded="true" class="card-header">Does hudly work with car?</a>
+                                <div class="collapse show" role="tabpanel" data-parent="#myCollapse">
+                                    <div class="card-body">
+                                        <p class="sct_simple_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry1.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card bg-white">
+                                <a href="#" role="tab" data-toggle="collapse" aria-expanded="false" class="collapsed card-header">Does hudly work with my phone?</a>
+                                <div class="collapse" role="tabpanel" data-parent="#myCollapse">
+                                    <div class="card-body">
+                                        <p class="sct_simple_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry2.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card bg-white">
+                                <a href="#" role="tab" data-toggle="collapse" aria-expanded="false" class="collapsed card-header">Lorem Ipsum is simply dummy text?</a>
+                                <div class="collapse" role="tabpanel" data-parent="#myCollapse">
+                                    <div class="card-body">
+                                        <p class="sct_simple_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry3.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="accordion_v_2" name="Accordion Snippet 2">
+        <section class="faqs-page accordion_v_2 s_faq_collapse" data-disp='accordion'>
+            <div class='container'>
+                <h3>قسم التراخيص</h3>
+                <div id="faqs-01" class="accordion" role="tablist">
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="true" class="card-header" role="tab">ماهي آلية الحصول على رخصة من المركز الوطني لإدارة النفايات؟</a>
+                        <div class="collapse show" role="tabpanel">
+                            <div class="card-body">
+                                <p>يمكنكم تقديم طلب الحصول على رخصة أو تصريح من خلال التسجيل بالموقع الالكتروني الخاص بالتراخيص عبر الرابط الآتي: <a href="http://licenses.ncwm.sa/">اضغط هنا</a> وللمزيد من التفاصيل نأمل الاطلاع على دليل المستخدم</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">كيف يمكن متابعة الطلب الذي تم تقديمه على الموقع الإلكتروني، وهل يلزم الحضور لمقر المركز للمتابعة؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>يمكنكم متابعة حالة الطلبات من خلال زيارة الموقع الالكتروني الخاص بالتراخيص والتصاريح دون الحاجة للحضور، كما تصلكم إشعارات الطلبات على بريدكم الإلكتروني المسجل في النظام.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">كيف يتم التواصل مع إدارة التراخيص بالمركز الوطني لإدارة النفايات؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>يمكنكم ارسال استفساراتكم عبر البريد الالكتروني الخاص بإدارة التراخيص والتصاريح License@mwan.gov.sa محدداً به نوع الطلب هل هو ترخيص أو تصريح ورقمه</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab"> هل يمكن التقديم اليدوي لطلبات التراخيص والتصاريح؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>يمكنكم فقط ارسال طلب ترخيص أو تصريح عن طريق الموقع الالكتروني الخاص بالتراخيص.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">ما هي الآلية المتبعة في حالة وجود اقتراح أو شكوى بخصوص التراخيص أو التصاريح؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>خلال نظام التقييم والاقتراحات والشكاوى الخاصة بإدارة التراخيص والتصاريح على الرابط التالي: (( اضغط هنا ))</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">لدي مشاكل تقنية بالمنصة ما هو الإجراء المتبع في هذه الحالة؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>يمكنكم التواصل عبر هذا البريد الالكتروني: itsupport@mwan.gov.sa</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">كيف يمكن تسليم شيكات المقابل المالي؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>حالياً عن طريق ارسال الشيك على العنوان الوطني للمركز (مرفق)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">ماهي متطلبات واشتراطات المركز في الأنشطة المتعلقة بإدارة النفايات؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>يمكنكم الاطلاع على جميع المتطلبات الاشتراطات الخاصة بالأنشطة التي يرخصها أو يصرح بها المركز على الرابط التالي: (( اضغط هنا ))</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">كيف يتم احتساب المقابل المالي؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>يتم احتساب آلية المقابل المالي عبر الرابط التالي: (( اضغط هنا ))</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">لدي تأهيل بيئي سابق من الهيئة العامة للأرصاد وحماية البيئة وأريد الحصول على ترخيص المركز بنشاط لم أجده لدى المركز الوطني لإدارة النفايات ما هو المتبع في هذه الحالة؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>ستجدون النشاط مدرج في مصفوفة إدارة النفايات الجديدة الخاصة بالمركز على الرابط التالي: (( اضغط هنا )) </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab"> أرغب بإصدار ترخيص يتعلق بالأنشطة البلدية ولم أجد النشاط بمنصة التراخيص؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>سيتم إضافة الأنشطة البلدية على المنصة الخاصة بالتراخيص.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>قسم الأنظمة والتشريعات</h3>
+                <div id="faqs-02" class="accordion">
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="true" class="card-header">ما هو تاريخ نفاذ نظام ادارة النفايات ؟</a>
+                        <div class="collapse show" role="tabpanel">
+                            <div class="card-body">
+                                <p>18 نوفمبر 2021م</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">ما هو تاريخ نفاذ اللائحة التنفيذية لنظام ادارة النفايات؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p> تكون اللائحة نافذه بعد اعتمادها من قبل معالي وزير البيئة والمياه والزراعة.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">هل يوجد جهة مختصة للنظر في مخالفات نظام إدارة النفايات؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p> نعم، يوجد لجنة مختصة للنظر في مخالفات أحكام نظام إدارة النفايات ولائحته التنفيذية</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">هل يوجد غرامات مالية بحق المخالف ؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>نعم يوجد هناك غرامات مالية وتختلف حسب طبيعة وجسامة المخالفة.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>قسم إدارة التواصل</h3>
+                <div id="faqs-03" class="accordion">
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="true" class="card-header">كيف يتم التقديم على الوظائف المتاحة لدى المركز الوطني لإدارة النفايات؟</a>
+                        <div class="collapse show" role="tabpanel">
+                            <div class="card-body">
+                                <p>أهلا بك، يمكنك التقديم على الوظائف المتاحة عبر الموقع الالكتروني للمركز الوطني لإدارة النفايات.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">ماهي آلية التواصل مع المركز في حال وجود فكرة أو مشروع؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>أهلا بك، يمكنك التواصل عن طريق ايميل info@mwan.gov.sa</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">كيف يمكنني الحصول على نظام إدارة النفايات المعمول به لدى المركز؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>يمكنك الاطلاع على نظام إدارة النفايات من خلال الموقع الالكتروني للمركز الوطني لإدارة النفايات.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>قسم الإدارة الفنية</h3>
+                <div id="faqs-04" class="accordion">
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="true" class="card-header"> هل يوجد دعم مالي للاختراعات والمشاريع ؟</a>
+                        <div class="collapse show" role="tabpanel">
+                            <div class="card-body">
+                                <p>لا يوجد دعم مالي يقدم من المركز؛ لأن دور المركز يقتصر في الاشراف والتنظيم على قطاع إدارة النفايات.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">هل يتبنى المركز الوطني لإدارة النفايات الاختراعات والأفكار المتعلقة بقطاع إدارة النفايات؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>لا، ليست من اختصاصات المركز.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">هل المركز يوجد له ذراع استثماري؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>لا يوجد له ذراع استثماري، ولكن من ضمن مهام المركز تحفيز الاستثمار في قطاع إدارة النفايات.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <a href="#" data-toggle="collapse" aria-expanded="false"  class="collapsed card-header" role="tab">ماهي مسؤولية المنتج الممتدة؟</a>
+                        <div class="collapse" role="tabpanel">
+                            <div class="card-body">
+                                <p>المقصود بها: تحمل المنتج والمستورد للمنتجات المستوردة أو المصنعة محليًا أو المشتقة من مادة أخرى، المعدة للبيع أو الاستهلاك، المسؤولية القانونية والمالية لإدارة البقايا والنفايات ومعالجتها والتخلص الآمن منها، خلال دورتها الحياتية.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

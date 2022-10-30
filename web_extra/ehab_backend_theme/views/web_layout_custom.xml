@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="ehab_backend_theme.layout" inherit_id="web.layout">
+        <xpath expr="//body" position="attributes">
+            <attribute name="t-attf-class">#{body_classname} uc_theme_#{request.env.user.font_type_values} #{'oe_base_menu' if request.env.user.base_menu == 'base_menu' else 'vertical_menu'}</attribute>
+        </xpath>
+        <xpath expr="//head" position="inside">
+            <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+            <meta name="theme-color" content="#2C336A" />
+            <script type="text/javascript">
+            if (odoo.define) {
+                odoo.define('ehab_backend_theme.ejadWebThemes', function(require) {
+                    var WebThemesDB = require('ehab_backend_theme.WebThemesDB');
+                    var __themesDB = new WebThemesDB();
+                    __themesDB.add_themes(<t t-raw="request.env['ir.web.theme'].sudo().get_json_themes()"/>);
+                    return __themesDB;
+                });
+            }
+            </script>
+        </xpath>
+    </template>
+</odoo>

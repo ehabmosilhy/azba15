@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hr_leave_return_filter" model="ir.ui.view">
+        <field name="name">hr.leave.return.filter</field>
+        <field name="model">hr.leave.return</field>
+        <field name="arch" type="xml">
+            <search string="Search leave return">
+                <field name="employee_id"/>
+                <field name="name"/>
+                <filter domain="[('state','in',('direct_manager', 'hr_approve'))]" string="To Approve" name="approve"/>
+                <separator/>
+                <filter string="My Team Time Off" name="my_team_leaves" domain="[('employee_id.parent_id.user_id', '=', uid)]" groups="hr_holidays.group_hr_holidays_manager" help="Time Off of Your Team Member"/>
+                <separator/>
+                <field name="department_id"/>
+                <field name="holiday_status_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="hr_leave_return_view_tree" model="ir.ui.view">
+        <field name="name">hr.holidays.return.view.tree</field>
+        <field name="model">hr.leave.return</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="state == 'refuse'" decoration-info="state == 'draft'" string="Time Off Requests">
+                <field name="name" string="إسم الطلب"/>
+                <field name="employee_id" string="أسم الموظف"/>
+                <field name="department_id" string="القسم"/>
+                <field name="holiday_status_id" string="نوع الإجازة"/>
+                <field name="request_return_date" string="تاريخ مباشرة العمل"/>
+                <field name="state" string="المرحلة"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hr_holidays_return_all_form" model="ir.ui.view">
+        <field name="name">hr.leave.return.form</field>
+        <field name="model">hr.leave.return</field>
+        <field name="arch" type="xml">
+            <form string="طلب مباشرة العمل">
+                <header>
+                     <button string="تقديم الطلب" name="action_direct_manager" states="draft" type="object"
+                            class="oe_highlight" />
+                    <button string="موافقة المدير المباشر" name="action_confirm" type="object"
+                            class="oe_highlight"  attrs="{'invisible': [('state', '!=', 'direct_manager')]}"/>
+                    <button string="موافقة مسؤول الموارد البشرية" name="action_validate" type="object" class="oe_highlight"
+                           states="hr_approve"  groups="ejad_erp_hr.group_hr_holiday_specialist"/>
+
+                    <button string="رفض" name="%(leave_return_refuse_wizard_action)d" type="action"
+                            attrs="{'invisible': [ ('state', 'not in', ('direct_manager','hr_approve'))]}"/>
+                    <button string="إرجاع الطلب الى الموظف" name="action_draft" type="object"
+                            attrs="{'invisible': [ ('state', 'not in', ('direct_manager','hr_approve'))]}"/>
+
+<!--                    <field name="message" style="color:red;"/>-->
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,direct_manager,hr_approve,validate,refuse"/>
+               </header>
+              <sheet>
+                   <div class="oe_title" name="title">
+                    <h2>
+                        <field name="name" attrs="{'readonly':[('state','not in',['draft','direct_manager','hr_approve'])]}" nolabel="1"/>
+                    </h2>
+                  </div>
+                  <group>
+                      <group>
+                          <field name="hr_leave_id" domain="[('state','=','validate')]" options="{'no_create_edit': True}"
+                                 string="الإجازة" attrs="{'readonly':[('state','not in',['draft','direct_manager','hr_approve'])]}"/>
+                          <field name="holiday_status_id" string="نوع الإجازة"/>
+                          <field name="request_date_from" string="من" class="oe_inline"/>
+                          <field name="request_date_to" string="إلى" class="oe_inline"/>
+                          <field name="number_of_days" string="عدد الأيام"/>
+                          <field name="description" string="الوصف"/>
+                      </group>
+                      <group>
+                          <field name="request_return_date" string="تاريخ مباشرة العمل" attrs="{'readonly':[('state','not in',['draft','direct_manager','hr_approve'])]}"/>
+                          <field name="action_type" string="نوع الإجراء" attrs="{'invisible': [('state', '=', 'draft')] , 'required': [('state', 'not in', 'draft')] ,'readonly':[('state','not in',['draft','direct_manager','hr_approve'])]}"/>
+                          <field name="days_off_add" string="عدد الأيام المضافة /المخصومة" attrs="{'invisible': [('action_type', 'not in', ('add_allocation','remove_allocation'))] ,'readonly':[('state','not in',['draft','direct_manager','hr_approve'])]}"/>
+                          <field name="employee_id" string="أسم الموظف"/>
+                          <field name="department_id" string="القسم"/>
+                          <field name="state" invisible="1"/>
+                          <field name="user_id" invisible="1"/>
+                      </group>
+                  </group>
+              </sheet>
+                 <div class="oe_chatter">
+            		<field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" widget="mail_activity"/>
+            		<field name="message_ids" widget="mail_thread" />
+            	</div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_holidays_return_form" model="ir.ui.view">
+        <field name="name">hr.leave.return.form</field>
+        <field name="model">hr.leave.return</field>
+        <field name="arch" type="xml">
+            <form string="طلب مباشرة العمل">
+                <header>
+                     <button string="تقديم الطلب" name="action_direct_manager" states="draft" type="object"
+                            class="oe_highlight" />
+                    <button string="موافقة المدير المباشر" name="action_confirm" type="object"
+                            class="oe_highlight"  attrs="{'invisible': [('state', '!=', 'direct_manager')]}"/>
+                    <button string="موافقة مسؤول الموارد البشرية" name="action_validate" type="object" class="oe_highlight"
+                           states="hr_approve"  groups="ejad_erp_hr.group_hr_holiday_specialist"/>
+
+                    <button string="رفض" name="%(leave_return_refuse_wizard_action)d" type="action"
+                            attrs="{'invisible': [ ('state', 'not in', ('direct_manager','hr_approve'))]}"/>
+                    <button string="إرجاع الطلب الى الموظف" name="action_draft" type="object"
+                            attrs="{'invisible': [ ('state', 'not in', ('direct_manager','hr_approve'))]}"/>
+
+<!--                    <field name="message" style="color:red;"/>-->
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,direct_manager,hr_approve,validate,refuse"/>
+               </header>
+              <sheet>
+                   <div class="oe_title" name="title">
+                    <h2>
+                        <field name="name" nolabel="1"/>
+                    </h2>
+                  </div>
+                  <group>
+                      <group>
+                          <field name="hr_leave_id" options="{'no_create_edit': True}" domain="[('state','=','validate'),('user_id','=',uid)]" context="{'employee_id':employee_id}"
+                                 attrs="{'readonly':[('state','not in',['draft','direct_manager','hr_approve'])]}" string="الإجازة"/>
+                          <field name="holiday_status_id" string="نوع الإجازة"/>
+                          <field name="request_date_from" string="من" class="oe_inline"/>
+                          <field name="request_date_to" string="إلى" class="oe_inline"/>
+                          <field name="number_of_days" string="عدد الأيام"/>
+                          <field name="description" string="الوصف"/>
+                      </group>
+                      <group>
+                          <field name="request_return_date" string="تاريخ مباشرة العمل" attrs="{'readonly':[('state','not in',['draft','direct_manager','hr_approve'])]}"/>
+                          <field name="action_type" string="نوع الإجراء" attrs="{'invisible': [('state', '=', 'draft')] , 'required': [('state', 'not in', 'draft')] ,'readonly':[('state','not in',['draft','direct_manager','hr_approve'])]}"/>
+                          <field name="days_off_add" string="عدد الأيام المضافة /المخصومة" attrs="{'invisible': [('action_type', 'not in', ('add_allocation','remove_allocation'))] ,'readonly':[('state','not in',['draft','direct_manager','hr_approve'])]}"/>
+                          <field name="employee_id" string="أسم الموظف"/>
+                          <field name="department_id" string="القسم"/>
+                          <field name="user_id" invisible="1"/>
+                      </group>
+                  </group>
+              </sheet>
+                 <div class="oe_chatter">
+            		<field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" widget="mail_activity"/>
+            		<field name="message_ids" widget="mail_thread" />
+            	</div>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_leave_return_action_all" model="ir.actions.act_window">
+        <field name="name">طلب مباشرة العمل</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.leave.return</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('ejad_erp_hr.hr_leave_return_view_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('ejad_erp_hr.view_hr_holidays_return_all_form')}),]"/>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+               إنشاء طلب مباشرة العمل
+            </p>
+        </field>
+    </record>
+
+    <record id="hr_leave_return_action_approve_department" model="ir.actions.act_window">
+        <field name="name">طلب مباشرة العمل</field>
+        <field name="res_model">hr.leave.return</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{
+            'search_default_my_team_leaves':1,
+            'search_default_approve':1}
+        </field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('ejad_erp_hr.hr_leave_return_view_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('ejad_erp_hr.view_hr_holidays_return_all_form')}),]"/>
+         <field name="search_view_id" ref="view_hr_leave_return_filter"/>
+        <field name="domain">[('employee_id.leave_manager_id', '=', uid)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                 إنشاء طلب مباشرة العمل
+            </p>
+        </field>
+    </record>
+
+    <record id="hr_leave_return_action_my" model="ir.actions.act_window">
+        <field name="name">طلب مباشرة العمل</field>
+        <field name="res_model">hr.leave.return</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="domain">[('user_id', '=', uid)]</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('ejad_erp_hr.hr_leave_return_view_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('ejad_erp_hr.view_hr_holidays_return_form')}),]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                إنشاء طلب مباشرة العمل
+            </p>
+        </field>
+    </record>
+
+     <menuitem
+        id="menu_open_department_leave_return_approve"
+        name="طلبات مباشرة العمل"
+        parent="hr_holidays.menu_hr_holidays_approvals"
+        action="hr_leave_return_action_approve_department"
+        sequence="2"/>
+
+<!--     <menuitem-->
+<!--        id="menu_open_employee_leave_return"-->
+<!--        name="طلبات مباشرة العمل"-->
+<!--        parent="hr_holidays.menu_hr_holidays_approvals"-->
+<!--        groups="hr_holidays.group_hr_holidays_manager,hr_holidays.group_hr_holidays_user"-->
+<!--        action="hr_leave_return_action_all"-->
+<!--        sequence="2"/>-->
+
+     <menuitem
+        id="hr_leave_return_menu_my"
+        name="طلبات مباشرة العمل"
+        parent="hr_holidays.menu_hr_holidays_my_leaves"
+        action="hr_leave_return_action_my"
+        sequence="3"/>
+
+</odoo>

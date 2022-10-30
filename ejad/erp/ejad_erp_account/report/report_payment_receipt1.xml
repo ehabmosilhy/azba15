@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_payment_receipt1">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div></div>
+                </div>
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:125%;">
+                       <t t-if="o.payment_type == 'inbound'">
+                           <div style="text-align:center;"><h3>
+                               <strong>سند قبض </strong></h3></div>
+                           <div style="text-align:center;"><h4>
+                               <strong>رقم السند: <span t-field="o.name"/></strong></h4></div>
+                        <div class="row mt64">
+
+                            <div class="col-6" t-if="o.partner_type">
+                                <t t-if="o.partner_type == 'customer'">
+                                    <strong>اسم دافع النقود: </strong>
+                                </t>
+                                <t t-if="o.partner_type == 'supplier'">
+                                    <strong>اسم دافع النقود: </strong>
+                                </t><span t-field="o.partner_id"/>
+                            </div>
+                            <div class="col-6" t-if="o.payment_date">
+                                <strong>التاريخ: </strong>
+                                <span t-field="o.payment_date" t-field-options='{"format": "dd-MM-yyyy"}'/>
+                            </div>
+                        </div>
+                        <div class="row mb64">
+                            <div class="col-6" t-if="o.amount">
+                                <strong>المبلغ: </strong><span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                             </div>
+                            <div class="col-6">
+                                <strong>طريقة الدفع: </strong><span t-esc="o.communication or 'نقدي'"/>
+                             </div>
+                            <div class="col-12">
+                                <strong>لقاء: </strong><span t-esc="o.note or '...........'"/>
+                            </div>
+                        </div>
+
+                        <br/>
+                        <div class="col-4">
+                            <strong>توقيع أمين الصندوق</strong>
+                         </div>
+                           <br/>
+                           <div class="col-4">
+                            <strong><span t-esc="o.env.user.name or '...........'"/></strong>
+                         </div>
+                        <table class="table table-condensed" t-if="o.invoice_ids">
+                            <thead>
+                                <tr>
+                                    <th>تاريخ المطالبة المالية</th>
+                                    <th>الرقم</th>
+                                    <th class="text-right">القيمة الأصلية</th>
+                                    <th class="text-right">المبلغ المدفوع</th>
+                                    <th class="text-right">الرصيد</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.invoice_ids" t-as="inv">
+                                    <td><span t-field="inv.date_invoice" t-field-options='{"format": "dd-MM-yyyy"}'/></td>
+                                    <td><span t-field="inv.number"/></td>
+                                    <td class="text-right"><span t-field="inv.amount_total"/></td>
+                                    <td class="text-right"><span t-esc="inv.amount_total - inv.residual" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                    <td class="text-right"><span t-field="inv.residual"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                       </t>
+
+
+
+
+                <t t-if="o.payment_type == 'outbound'">
+                        <h3><strong>Payment Receipt: <span t-field="o.name"/></strong></h3>
+                        <div class="row mt64">
+                            <div class="col-6" t-if="o.payment_date">
+                                <strong>التاريخ: </strong> <span t-field="o.payment_date" t-field-options='{"format": "dd-MM-yyyy"}'/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6" t-if="o.partner_type">
+                                <t t-if="o.partner_type == 'customer'">
+                                    <strong>اسم دافع النقود: </strong>
+                                </t>
+                                <t t-if="o.partner_type == 'supplier'">
+                                    <strong>المورد: </strong>
+                                </t><span t-field="o.partner_id"/>
+                            </div>
+                            <div class="col-6" t-if="o.payment_method_id">
+                                <strong>طريقة الدفع: </strong><span t-field="o.payment_method_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row mb64">
+                            <div class="col-6" t-if="o.amount">
+                                <strong>المبلغ: </strong><span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                             </div>
+                            <div class="col-6" t-if="o.communication">
+                                <strong>Memo: </strong><span t-field="o.communication"/>
+                             </div>
+                        </div>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>تاريخ</th>
+                                    <th>الرقم</th>
+                                    <th class="text-right">القيمة الأصلية</th>
+                                    <th class="text-right">المبلغ المدفوع</th>
+                                    <th class="text-right">الرصيد</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.invoice_ids" t-as="inv">
+                                    <td><span t-field="inv.date_invoice" t-field-options='{"format": "dd-MM-yyyy"}'/></td>
+                                    <td><span t-field="inv.number"/></td>
+                                    <td class="text-right"><span t-field="inv.amount_total"/></td>
+                                    <td class="text-right"><span t-esc="inv.amount_total - inv.residual" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                    <td class="text-right"><span t-field="inv.residual"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                       </t>
+                    </div>
+                    <div class="footer">
+                    <div></div>
+                </div>
+                </t>
+
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_bank_letter_payroll_wizard_form" model="ir.ui.view">
+            <field name="name">bank.letter.wizard.payroll.form</field>
+            <field name="model">bank.letter.payroll.wizard</field>
+            <field name="arch" type="xml">
+                <form string="خطاب البنك">
+                    <sheet>
+                        <group>
+                            <group>
+
+                                <field name="date"/>
+                                <field name="bank_name_id" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="journal_id"/>
+                                <field name="bank_id" invisible="1"/>
+                                <field name="payroll_advice_id" invisible="1"/>
+                                <field name="line_number" invisible="1"/>
+                                <field name="total_amount" invisible="1"/>
+                                <field name="bank_account_id" invisible="1"/>
+
+                            </group>
+
+                        </group>
+                        <group>
+                            <field name="line_ids">
+                            <tree string="Payment Lines" editable="bottom" create="false">
+                                <field name="employee_id"/>
+                                <field name="name"/>
+                                <field name="ifsc" invisible="1"/>
+                                <field name="bank_id" attrs="{'invisible':[('bank_id','=', False)]}"/>
+                                <field name="payslip_id" invisible="1"/>
+                                <field name="amount" string="المبلغ"/>
+                            </tree>
+                            </field>
+
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string='طباعة' name="print_bank_letter" type="object"
+                                class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+
+                </form>
+
+            </field>
+        </record>
+
+        <record id="action_bank_letter_payroll_wizard" model="ir.actions.act_window">
+            <field name="name">خطاب البنك</field>
+            <field name="res_model">bank.letter.payroll.wizard</field>
+
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bank_letter_payroll_wizard_form"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

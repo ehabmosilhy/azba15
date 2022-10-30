@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="nauss_header">
+        <div class="header text-center">
+            <!--<img src="/ejad_erp_account/static/img/header.jpg"-->
+                 <!--style="width:75%;max-height: 150px;"/>-->
+             <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)"  style="width:75%;max-height: 150px;"/>
+
+        </div>
+    </template>
+    <template id="nauss_footer">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <!--<t t-if="o and 'company_id' in o">-->
+        <!--<t t-set="company" t-value="o.company_id.sudo()"/>-->
+        <!--</t>-->
+        <!--<t t-if="not o or not 'company_id' in o">-->
+        <!--<t t-set="company" t-value="res_company"/>-->
+        <!--</t>-->
+
+        <template id="nauss_footer">
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+
+            <div class="footer o_background_footer">
+                <div class="text-center">
+                    <ul class="list-inline">
+                        <li t-if="company.phone" class="list-inline-item"><i class="fa fa-phone" role="img" aria-label="Phone" title="Phone"/> <span t-field="company.phone"/></li>
+                        <li t-if="company.email" class="list-inline-item"><i class="fa fa-at" role="img" aria-label="Email" title="Email"/> <span t-field="company.email"/></li>
+                        <li t-if="company.website" class="list-inline-item"><i class="fa fa-globe" role="img" aria-label="Website" title="Website"/> <span t-field="company.website"/></li>
+                        <li t-if="company.vat" class="list-inline-item"><i class="fa fa-building-o" role="img" aria-label="Fiscal number"/><t t-esc="company.country_id.vat_label or 'Tax ID'"/>: <span t-field="company.vat"/></li>
+                    </ul>
+                    <div class="text-muted">
+                        Page:
+                        <span class="page"/>
+                        of
+                        <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div class="footer">-->
+            <!--<img src="/ejad_erp_purchase/static/src/img/footer.png"-->
+            <!--style="width:100%;max-height: 120px;"-->
+            <!--/>-->
+            <!--</div>-->
+        </template>
+
+
+        <!--<div class="footer">-->
+        <!--<img src="/ejad_erp_purchase/static/src/img/footer.png"-->
+        <!--style="width:100%;max-height: 120px;"-->
+        <!--/>-->
+        <!--</div>-->
+    </template>
+
+
+    <template id="partner_ledger_external_layout">
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+
+        <div class="header text-center">
+            <img src="/ejad_erp_account/static/img/header.jpg"
+                 style="width:75%;max-height: 150px;"/>
+        </div>
+
+        <div class="article o_report_layout_standard">
+            <t t-raw="0"/>
+        </div>
+
+            <div class="footer o_background_footer">
+                <div class="text-center">
+                    <ul class="list-inline">
+                        <li t-if="company.phone" class="list-inline-item"><i class="fa fa-phone" role="img" aria-label="Phone" title="Phone"/> <span t-field="company.phone"/></li>
+                        <li t-if="company.email" class="list-inline-item"><i class="fa fa-at" role="img" aria-label="Email" title="Email"/> <span t-field="company.email"/></li>
+                        <li t-if="company.website" class="list-inline-item"><i class="fa fa-globe" role="img" aria-label="Website" title="Website"/> <span t-field="company.website"/></li>
+                        <li t-if="company.vat" class="list-inline-item"><i class="fa fa-building-o" role="img" aria-label="Fiscal number"/><t t-esc="company.country_id.vat_label or 'Tax ID'"/>: <span t-field="company.vat"/></li>
+                    </ul>
+                    <div class="text-muted">
+                        Page:
+                        <span class="page"/>
+                        of
+                        <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+    </template>
+
+    <!--<template id="custom_general_ledger_report" inherit_id="account.report_generalledger">-->
+    <!--<xpath expr="//t[@t-call='web.internal_layout']" position="before">-->
+    <!--<t t-call="ejad_erp_account.nauss_header"/>-->
+    <!--<t t-call="ejad_erp_account.nauss_footer"/>-->
+    <!--</xpath>-->
+    <!--<xpath expr="//t[@t-set='data_report_margin_top']" position="replace"/>-->
+    <!--<xpath expr="//t[@t-set='data_report_header_spacing']" position="replace"/>-->
+    <!--<xpath expr="//t[@t-set='data_report_dpi']" position="replace"/>-->
+
+    <!--<xpath expr="//div[@class='page']" position="inside">-->
+    <!--<style>-->
+    <!--table {-->
+    <!--font-family: 'AlMohanadFont' !important;;-->
+    <!--src: url('/ejad_erp_account/static/src/css/AL-MOHANAD_BOLD.TTF');-->
+    <!--font-size:12pt !important;-->
+    <!--margin-top:30px;-->
+    <!--}-->
+    <!--table th {-->
+    <!--text-align : center;-->
+    <!--}-->
+
+    <!--</style>-->
+    <!--</xpath>-->
+
+    <!--</template>-->
+    <!--<template id="custom_trail_balance_report" inherit_id="account.report_trialbalance">-->
+    <!--<xpath expr="//t[@t-call='web.internal_layout']" position="before">-->
+    <!--<t t-call="ejad_erp_account.nauss_header"/>-->
+    <!--<t t-call="ejad_erp_account.nauss_footer"/>-->
+    <!--</xpath>-->
+
+    <!--<xpath expr="//div[@class='page']" position="inside">-->
+    <!--<style>-->
+    <!--table {-->
+    <!--font-family: 'AlMohanadFont' !important;;-->
+    <!--src: url('/ejad_erp_account/static/src/css/AL-MOHANAD_BOLD.TTF');-->
+    <!--font-size:12pt !important;-->
+    <!--margin-top:30px;-->
+    <!--}-->
+    <!--table th {-->
+    <!--text-align : center;-->
+    <!--}-->
+
+    <!--</style>-->
+    <!--</xpath>-->
+
+    <!--</template>-->
+    <!--<template id="custom_partner_ledger_report" inherit_id="account.report_partnerledger">-->
+    <!--<xpath expr="//t[@t-call='web.internal_layout']" position="attributes">-->
+
+    <!--<attribute name="t-call">ejad_erp_account.partner_ledger_external_layout</attribute>-->
+
+    <!--</xpath>-->
+    <!--<xpath expr="//t[@t-set='data_report_margin_top']" position="replace"/>-->
+    <!--<xpath expr="//t[@t-set='data_report_header_spacing']" position="replace"/>-->
+    <!--<xpath expr="//t[@t-set='data_report_dpi']" position="replace"/>-->
+
+
+    <!--<xpath expr="//div[@class='page']" position="inside">-->
+    <!--<style>-->
+    <!--table {-->
+    <!--font-family: 'AlMohanadFont' !important;;-->
+    <!--src: url('/ejad_erp_account/static/src/css/AL-MOHANAD_BOLD.TTF');-->
+    <!--font-size:12pt !important;-->
+    <!--margin-top:30px;-->
+    <!--}-->
+    <!--table th {-->
+    <!--text-align : center;-->
+    <!--}-->
+
+    <!--</style>-->
+    <!--</xpath>-->
+
+    <!--</template>-->
+    <template id="custom_sale_purchase_journal_report" inherit_id="account.report_journal">
+<!--        <xpath expr="//t[@t-call='web.internal_layout']" position="before">-->
+<!--            <t t-call="ejad_erp_account.nauss_header"/>-->
+<!--            <t t-call="ejad_erp_account.nauss_footer"/>-->
+<!--        </xpath>-->
+        <xpath expr="//t[@t-set='data_report_margin_top']" position="replace"/>
+        <xpath expr="//t[@t-set='data_report_header_spacing']" position="replace"/>
+        <xpath expr="//t[@t-set='data_report_dpi']" position="replace"/>
+
+
+        <xpath expr="//div[@class='page']" position="inside">
+            <style>
+                table {
+                font-family: 'AlMohanadFont' !important;;
+                src: url('/ejad_erp_account/static/src/css/AL-MOHANAD_BOLD.TTF');
+                font-size:12pt !important;
+                margin-top:30px;
+                }
+                table th {
+                text-align : center;
+                }
+
+            </style>
+        </xpath>
+
+    </template>
+    <!--<template id="custom_report_agedpartnerbalance" inherit_id="account.report_agedpartnerbalance">-->
+    <!--<xpath expr="//t[@t-call='web.internal_layout']" position="before">-->
+    <!--<t t-call="ejad_erp_account.nauss_header"/>-->
+    <!--<t t-call="ejad_erp_account.nauss_footer"/>-->
+    <!--</xpath>-->
+
+
+    <!--<xpath expr="//div[@class='page']" position="inside">-->
+    <!--<style>-->
+    <!--table {-->
+    <!--font-family: 'AlMohanadFont' !important;;-->
+    <!--src: url('/ejad_erp_account/static/src/css/AL-MOHANAD_BOLD.TTF');-->
+    <!--font-size:12pt !important;-->
+    <!--margin-top:30px;-->
+    <!--}-->
+    <!--table th {-->
+    <!--text-align : center;-->
+    <!--}-->
+
+    <!--</style>-->
+    <!--</xpath>-->
+
+    <!--</template>-->
+    <!--<template id="custom_report_tax" inherit_id="account.report_tax">-->
+    <!--<xpath expr="//t[@t-call='web.internal_layout']" position="before">-->
+    <!--<t t-call="ejad_erp_account.nauss_header"/>-->
+    <!--<t t-call="ejad_erp_account.nauss_footer"/>-->
+    <!--</xpath>-->
+
+
+    <!--<xpath expr="//div[@class='page']" position="inside">-->
+    <!--<style>-->
+    <!--table {-->
+    <!--font-family: 'AlMohanadFont' !important;;-->
+    <!--src: url('/ejad_erp_account/static/src/css/AL-MOHANAD_BOLD.TTF');-->
+    <!--font-size:12pt !important;-->
+    <!--margin-top:30px;-->
+    <!--}-->
+    <!--table th {-->
+    <!--text-align : center;-->
+    <!--}-->
+
+    <!--</style>-->
+    <!--</xpath>-->
+
+    <!--</template>-->
+    <!--<template id="custom_report_financial" inherit_id="account.report_financial">-->
+    <!--<xpath expr="//t[@t-call='web.internal_layout']" position="before">-->
+    <!--<t t-call="ejad_erp_account.nauss_header"/>-->
+    <!--<t t-call="ejad_erp_account.nauss_footer"/>-->
+    <!--</xpath>-->
+
+
+    <!--<xpath expr="//div[@class='page']" position="inside">-->
+    <!--<style>-->
+    <!--table {-->
+    <!--font-family: 'AlMohanadFont' !important;;-->
+    <!--src: url('/ejad_erp_account/static/src/css/AL-MOHANAD_BOLD.TTF');-->
+    <!--font-size:12pt !important;-->
+    <!--margin-top:30px;-->
+    <!--}-->
+    <!--table th {-->
+    <!--text-align : center;-->
+    <!--}-->
+
+    <!--</style>-->
+    <!--</xpath>-->
+
+    <!--</template>-->
+
+</odoo>

@@ -1,0 +1,108 @@
+@mixin mail-xs() {
+    .o_action_manager {
+        .o_widget_Discuss {
+            .o_control_panel {
+                border-bottom: 0;
+
+                .o_cp_top {
+                    .o_cp_top_left {
+                        flex: 1;
+                        overflow: hidden;
+                    }
+
+                    @include search-option-mobile();
+                }
+            }
+
+            .o_Discuss {
+                .o_DiscussMobileMailboxSelection {
+                    min-height: var(--header-height);
+
+                    >button {
+                        border: 0;
+                        box-shadow: unset;
+                        background-color: transparent;
+                        color: var(--Label-value);
+
+                        &.o-active {
+                            @include border-animation();
+                        }
+                    }
+                }
+
+                .o_MobileMessagingNavbar {
+                    box-shadow: unset;
+                    border-top: 1px solid var(--border);
+
+                    .o_MobileMessagingNavbar_tab {
+                        box-shadow: unset;
+                        color: var(--Label-value);
+
+                        &.o-active {
+                            @include border-animation();
+                        }
+                    }
+                }
+
+                .o_NotificationList {
+                    .o_ThreadPreview.o-muted {
+                        background-color: $tr-hover;
+                    }
+                }
+
+                .o_ThreadView {
+                    .o_MessageList {
+                        .o_Message.o-not-discussion {
+                            background-color: $tr-hover;
+                        }
+                    }
+                }
+
+                .o_Discuss_mobileNewChannelButton,
+                .o_Discuss_mobileNewChatButton {
+                    margin-top: 8px;
+                    margin-bottom: 8px;
+                }
+
+                .o_Discuss_mobileAddItemHeader {
+                    padding: 7.5px 30px;
+
+                    .o_AutocompleteInput {
+                        border: 0;
+                        border-bottom: 1px solid var(--border);
+                        border-radius: 0;
+                        padding: 0;
+                        min-height: 34px;
+                        color: var(--Label-value);
+                        background-color: $body-bg;
+                        margin-bottom: 0;
+
+                        &:focus {
+                            @include border-animation();
+                        }
+                    }
+                }
+            }
+
+            &.ad_open_search {
+                .o_control_panel {
+                    z-index: 10;
+
+                    .o_cp_top {
+                        .o_search_options {
+                            display: flex !important;
+                        }
+                    }
+                }
+
+                .o_Discuss {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+}
+
+.o_web_client.ad_mobile {
+    @include mail-xs();
+}

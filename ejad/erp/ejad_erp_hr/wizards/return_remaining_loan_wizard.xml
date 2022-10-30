@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_loan_return_remaining_wizard" model="ir.ui.view">
+            <field name="name">loan.return.remaining.wizard.form</field>
+            <field name="model">loan.return.remaining.wizard</field>
+            <field name="arch" type="xml">
+                <form string="ارجاع متبقي مبلغ القرض">
+
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="loan_request_id" invisible="1"/>
+                                <field name="amount"/>
+
+                            </group>
+                            <group>
+                                <field name="payment_date"/>
+                                <field name="journal_id"/>
+
+                            </group>
+
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string='تأكيد' name="action_return_remaining_loan" type="object"
+                                class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+
+                </form>
+
+            </field>
+        </record>
+
+        <record id="action_loan_remaining_wizard" model="ir.actions.act_window">
+            <field name="name">استرجاع متبقي المبلغ </field>
+            <field name="res_model">loan.return.remaining.wizard</field>
+
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_loan_return_remaining_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

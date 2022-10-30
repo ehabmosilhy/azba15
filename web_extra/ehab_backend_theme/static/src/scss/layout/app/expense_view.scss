@@ -1,0 +1,11 @@
+@mixin expense-view() {
+    .o_expense_container {
+        .o_expense_card {
+            .content_center {
+                .o_expense_purple {
+                    color: var(--brand-primary);
+                }
+            }
+        }
+    }
+}

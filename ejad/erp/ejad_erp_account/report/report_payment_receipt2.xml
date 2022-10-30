@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_payment_receipt2">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div></div>
+                </div>
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size:125%;">
+                       <t t-if="o.payment_type == 'inbound'">
+                           <div style="text-align:center;"><h3>
+                               <strong>سند قبض فرعي </strong></h3></div>
+                           <div style="text-align:center;"><h4>
+                               <strong>رقم: <span t-field="o.name"/></strong></h4></div>
+                       <div class="row mt64">
+                            <div class="col-5">
+                                    <strong>التاريخ :</strong>
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                            </div>
+                            <div class="col-12">
+                                    <strong>المبلغ :</strong>
+                                    <span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                            </div>
+                        </div>
+                        <div class="row mt64">
+                            <div class="col-4">
+                                    <strong>البنك</strong>
+                                    <span t-field="o.journal_id.bank_id.name"/>
+                            </div>
+                            <div class="col-4">
+                                    <strong>تاريخ الحوالة:</strong>
+                                    <span t-field="o.payment_date" t-field-options='{"format": "dd/MM/yyyy"}'/>
+                            </div>
+                            <div class="col-4">
+                                <strong>رقم الحوالة: </strong>
+                                <span t-esc="o.bank_ref or ''"/>
+                            </div>
+                            <br/>
+                           <div class="col-12">
+                                <strong>الجهة : </strong>
+                                <strong t-if="not o.partner_id.parent_id">على حسابه الخاص</strong>
+                                <strong t-if="o.partner_id.parent_id"><span t-esc="o.partner_id.parent_id.name"/></strong>
+                             </div>
+                           <br/>
+                            <div class="col-12">
+                                <strong>البيان : </strong>
+                                <strong><span t-esc="o.note or ''"/></strong>
+                             </div>
+                           <br/>
+                           <div class="col-12">
+                                <strong>طريقة الدفع : </strong>
+                                <!--<strong t-if="o.journal_id.type == 'bank'">حوالة</strong>-->
+                                <strong><span t-field="o.payment_type_customer"/></strong>
+                            </div>
+                        </div>
+                        <br/>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">رقم الطالب</th>
+                                    <th class="text-center">المبلغ</th>
+                                    <th class="text-center">و ذلك عن</th>
+                                    <th class="text-center">اسم الطالب</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center"><span t-esc="o.partner_id.uni_id or ''"/></td>
+                                    <td class="text-center">
+                                    <span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                    <td class="text-center"><span t-esc="o.note or ''"/></td>
+                                    <td class="text-center"><span t-field="o.partner_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center"><strong>إجمــــالــي</strong></td>
+                                    <td class="text-center"><span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                    <td class="text-center" colspan="2"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/><br/>
+                        <br/><br/>
+                        <div class="col-4">
+                            <strong>الموظف المختص</strong>
+                         </div>
+                           <br/>
+                           <div class="col-4">
+                            <strong><span t-esc="o.env.user.name or '...........'"/></strong>
+                         </div>
+                       </t>
+                    </div>
+                    <div class="footer">
+                    <div></div>
+                </div>
+                </t>
+
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,1815 @@
+<odoo>
+	<template id="portal_my_home_applications" name="Portal My Home : document entries" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">My Applications</t>
+                <t t-set="url" t-value="'/my/applications'" />
+                <t t-set="count" t-value="application_count" />
+            </t>
+        </xpath>
+    </template>
+    <template id="portal_my_home_menu_breadcrumbs" name="Portal layout : breadcrumbs entries"
+              inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'Applications'"
+                t-attf-class="breadcrumb-item #{'active ' if not application else ''}">
+                <a t-if="application" t-attf-href="/my/applications?{{ keep_query() }}">My Applications</a>
+                <t t-else="">My Applications</t>
+            </li>
+            <li t-if="application" class="breadcrumb-item active">
+                <t t-if="application" t-esc="application.name"/>
+                <t t-else="">
+                    <em>My Applications</em>
+                </t>
+            </li>
+        </xpath>
+    </template>
+    
+    <template id="portal_my_application" name="All Applications">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Applications</t>
+            </t>
+            <t t-if="not applications">
+                <p>There are no Applications for your account.</p>
+            </t>
+            <t t-else="">
+                <div class="documents_portal_table">
+                    <t t-if="applications" t-call="portal.portal_table">
+                        <thead>
+                            <tr class="active">
+                                <th scope="col">Applied Job</th>
+                                <th scope="col">Department</th>
+                                <th scope="col">Appreciation</th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="applications" t-as="application">
+                            <tr>
+                                <td data-label="Applied Job">
+                                    <a t-att-href="'/my/applications/%s' % application.id">
+                                        <t t-esc="application.job_id and application.job_id.name or '#'" />
+                                    </a>
+                                </td>
+                                <td data-label="Department">
+                                    <span t-field="application.department_id and application.department_id.name" />
+                                </td>
+                                <td data-label="Appreciation">
+                                    <span t-field="application.priority" />
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+    
+    <template id="portal_job_application" name="My Application">
+        <t t-call="portal.portal_layout">
+        	<t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+        	<div class="mt32 mb32">
+	        	<t t-call="portal.portal_record_layout" >
+	                <t t-set="card_header">
+	                    <div class="row no-gutters">
+	                        <div class="col-md">
+	                            <h5 class="mb-1 mb-md-0">
+	                                <span t-if="application" t-field="application.name"/>
+	                                <span t-if="not application">No Application found</span>
+	                            </h5>
+	                        </div>
+	                        <div class="col-md text-md-right">
+	                            <small class="text-right">Stage:</small>
+				                <span t-field="application.stage_id.name" class=" badge badge-pill badge-info" title="Current stage of this Application"/>
+	                        </div>
+	                    </div>
+	                </t>
+	                <t t-set="card_body">
+	                	<div t-if="application">
+	                		<div class="container">
+		                		<div class="row">
+			                		<div class="col-md-6 col-12">
+					                    <div t-if="application.partner_name" class="row mb-4">
+					                        <strong class="col-lg-3">Applicant's Name</strong>
+					                        <span class="col-lg-9" t-field="application.partner_name"/>
+					                    </div>
+					                    <div t-if="application.job_id" class="row mb-4" >
+					                        <strong class="col-lg-3">Applied Job</strong>
+					                        <span class="col-lg-9" t-field="application.job_id.name"></span>
+					                    </div>
+					                    <div t-if="application.job_id and application.job_id.closing_date" class="row mb-4" >
+					                        <strong class="col-lg-3">Closing Date</strong>
+					                        <span class="col-lg-9" t-field="application.job_id.closing_date" t-options="{'widget': 'date'}"></span>
+					                    </div>
+					                </div>
+					                <div class="col-md-6 col-12">
+					                	<div t-if="application.department_id" class="row mb-4">
+					                        <strong class="col-lg-3">Department</strong>
+					                        <span class="col-lg-9" t-field="application.department_id.name"/>
+					                    </div>
+					                    <div t-if="application.priority" class="row mb-4" >
+					                        <strong class="col-lg-3">Appreciation</strong>
+					                        <span class="col-lg-9" t-field="application.priority"></span>
+					                    </div>
+					                </div>
+				                </div>
+			                </div>
+	                	</div>
+	               	</t>
+	            </t>
+	        </div>
+        </t>
+    </template>
+
+    <template id="job_portal_my_details" inherit_id="portal.portal_my_details">
+        <xpath expr="//form" position="replace">
+            <form action="/my/account" method="post">
+                <input type="hidden" name="csrf_token"
+                       t-att-value="request.csrf_token()"/>
+                <div class="row o_portal_details">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div t-if="error_message"
+                                     class="alert alert-danger">
+                                    <t t-foreach="error_message" t-as="err">
+                                        <t t-esc="err"/>
+                                        <br/>
+                                    </t>
+                                </div>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('name') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="name">
+                                    First Name
+                                </label>
+                                <input type="text" name="name"
+                                       class="form-control"
+                                       t-att-value="name or partner.name"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('name') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="name">
+                                    Middle Name
+                                </label>
+                                <input type="text" name="middlename"
+                                       class="form-control"
+                                       t-att-value="name or partner.middlename"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('name') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="name">Last
+                                    Name
+                                </label>
+                                <input type="text" name="lastname"
+                                       class="form-control"
+                                       t-att-value="name or partner.lastname"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('email') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="email">
+                                    Email
+                                </label>
+                                <input type="email" name="email"
+                                       class="form-control"
+                                       t-att-value="email or partner.email"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('phone') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="phone">
+                                    Phone
+                                </label>
+                                <input type="tel" name="phone"
+                                       class="form-control"
+                                       t-att-value="phone or partner.phone"/>
+                            </div>
+
+                            <div class="clearfix"/>
+                            <div t-attf-class="form-group #{error.get('company_name') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label label-optional"
+                                       for="company_name">Company Name
+                                </label>
+                                <p t-if="partner.commercial_partner_id.is_company"
+                                   class="form-control"
+                                   t-esc="partner.commercial_company_name"/>
+                                <input t-else="" type="text"
+                                       name="company_name" class="form-control"
+                                       t-att-value="company_name or partner.company_name"/>
+                            </div>
+                            <div t-if="has_check_vat"
+                                 t-attf-class="form-group #{error.get('vat') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label label-optional"
+                                       for="vat">VAT Number
+                                </label>
+                                <input type="text" name="vat"
+                                       class="form-control"
+                                       t-att-value="vat or partner.vat"/>
+                            </div>
+
+                            <div class="clearfix"/>
+                            <div t-attf-class="form-group #{error.get('street') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="street">
+                                    Street
+                                </label>
+                                <input type="text" name="street"
+                                       class="form-control"
+                                       t-att-value="street or partner.street"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('city') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="city">City
+                                </label>
+                                <input type="text" name="city"
+                                       class="form-control"
+                                       t-att-value="city or partner.city"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('zip') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="zipcode">Zip
+                                    / Postal Code
+                                </label>
+                                <input type="text" name="zipcode"
+                                       class="form-control"
+                                       t-att-value="zipcode or partner.zip"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('country_id') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="country_id">
+                                    Country
+                                </label>
+                                <select name="country_id" class="form-control">
+                                    <option value="">Country...</option>
+                                    <t t-foreach="countries or []"
+                                       t-as="country">
+                                        <option t-att-value="country.id"
+                                                t-att-selected="country.id == int(country_id) if country_id else country.id == partner.country_id.id">
+                                            <t t-esc="country.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('state_id') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label label-optional"
+                                       for="state_id">My State / Province
+                                </label>
+                                <select name="state_id" class="form-control">
+                                    <option value="">select...</option>
+                                    <t t-foreach="states or []" t-as="state">
+                                        <option t-att-value="state.id"
+                                                style="display:none;"
+                                                t-att-data-country_id="state.country_id.id"
+                                                t-att-selected="state.id == partner.state_id.id">
+                                            <t t-esc="state.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <input type="hidden" name="redirect"
+                                   t-att-value="redirect"/>
+                        </div>
+                        <section class="s_faq_collapse pt48 pb32">
+                            <div class="container">
+
+                                <div class="row s_col_no_bgcolor">
+                                    <div class="col-lg-12 pt16 pb16">
+                                        <div id="myCollapse" class="accordion" role="tablist">
+                                            <div class="card bg-white">
+                                                <a href="#" role="tab" data-toggle="collapse" aria-expanded="true"
+                                                   class="card-header o_default_snippet_text" data-parent="#myCollapse"
+                                                   data-target="#myCollapseTab1549624727365">Academic Experiences
+                                                </a>
+                                                <div class="collapse show" role="tabpanel"
+                                                     id="myCollapseTab1549624727365">
+                                                    <div class="card-body">
+                                                        <div class="row mt32 mb32">
+                                                            <div class="col-lg-12">
+
+                                                                <div class="">
+                                                                    <div id="home"
+                                                                         class="">
+                                                                        <div>
+                                                                            <button
+                                                                                    class="academic_btn btn btn-primary pull-right">
+                                                                                Add More
+                                                                            </button>
+                                                                        </div>
+                                                                        <p>Lorem ipsum dolor sit amet,
+                                                                            consectetur adipisicing elit, sed
+                                                                            do eiusmod tempor incididunt ut
+                                                                            labore et dolore magna aliqua.
+                                                                        </p>
+                                                                        <table id="academic_desc_table"
+                                                                               class="academic_desc_table table table-responsive mt32 mb32">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th scope="col">Name</th>
+                                                                                    <th scope="col">Study
+                                                                                        Field
+                                                                                    </th>
+                                                                                    <th scope="col">
+                                                                                        Organization
+                                                                                    </th>
+                                                                                    <th scope="col">Location
+                                                                                    </th>
+                                                                                    <th scope="col">Start
+                                                                                        Date
+                                                                                    </th>
+                                                                                    <th scope="col">End Date
+                                                                                    </th>
+                                                                                    <th scope="col">Grade</th>
+                                                                                    <th>
+                                                                                        <button class="btn"
+                                                                                                type="button"
+                                                                                                disabled="disabled">
+                                                                                            <i class="fa fa-pencil-square-o"></i>
+                                                                                        </button>
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        <button class="btn"
+                                                                                                type="button"
+                                                                                                disabled="disabled">
+                                                                                            <i class="fa fa-trash"></i>
+                                                                                        </button>
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr t-foreach="partner.academic_ids"
+                                                                                    t-as="academic_id">
+                                                                                    <td>
+                                                                                        <t t-esc="academic_id.name"/>    1111
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="academic_id.study_field"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="academic_id.organization"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="academic_id.location"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span class="academic_start_date"
+                                                                                              t-field="academic_id.start_date"
+                                                                                              t-options='{"format": "MM/dd/YYYY"}'></span>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span class="academic_end_date"
+                                                                                              t-field="academic_id.end_date"
+                                                                                              t-options='{"format": "MM/dd/YYYY"}'></span>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="academic_id.grade"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <button type="button"
+                                                                                                class="btn edit_academic"
+                                                                                                data-toggle="modal"
+                                                                                                t-att-data-academic_id="academic_id.id">
+                                                                                            <i class="fa fa-pencil-square-o"
+                                                                                            ></i>
+                                                                                        </button>
+<!--                                                                                        &lt;!&ndash; Modal &ndash;&gt;-->
+<!--                                                                                        <div t-attf-id="AcademicEditModal#{academic_id.id}"-->
+<!--                                                                                             class="modal fade"-->
+<!--                                                                                             role="dialog">-->
+<!--                                                                                            <div class="modal-dialog">-->
+<!--                                                                                                &lt;!&ndash; Modal content&ndash;&gt;-->
+<!--                                                                                                <div class="modal-content">-->
+<!--                                                                                                    <div class="modal-header">-->
+<!--                                                                                                        <button type="button"-->
+<!--                                                                                                                class="close"-->
+<!--                                                                                                                data-dismiss="modal"></button>-->
+<!--                                                                                                    </div>-->
+<!--                                                                                                    <div class="modal-body">-->
+<!--                                                                                                        <div class="academic_info">-->
+<!--                                                                                                            <form id="info"-->
+<!--                                                                                                                  class="info">-->
+<!--                                                                                                                <div class="form-group col-lg-6">-->
+<!--                                                                                                                    <label for="">-->
+<!--                                                                                                                        <i class="fa fa-asterisk color_red"-->
+<!--                                                                                                                           aria-hidden="true"></i>-->
+<!--                                                                                                                        Qualification-->
+<!--                                                                                                                    </label>-->
+<!--                                                                                                                    <input type="text"-->
+<!--                                                                                                                           t-att-value="academic_id.organization"-->
+<!--                                                                                                                           name="qualification"-->
+<!--                                                                                                                           class="form-control"-->
+<!--                                                                                                                    />-->
+<!--                                                                                                                </div>-->
+<!--                                                                                                                <div class="form-group col-lg-6">-->
+<!--                                                                                                                    <label for="">-->
+<!--                                                                                                                        <i class="fa fa-asterisk color_red"-->
+<!--                                                                                                                           aria-hidden="true"></i>-->
+<!--                                                                                                                        Field-->
+<!--                                                                                                                        of-->
+<!--                                                                                                                        study-->
+<!--                                                                                                                    </label>-->
+<!--                                                                                                                    <input type="text"-->
+<!--                                                                                                                           t-att-value="academic_id.study_field"-->
+<!--                                                                                                                           name="study_field"-->
+<!--                                                                                                                           class="form-control"-->
+<!--                                                                                                                    />-->
+<!--                                                                                                                </div>-->
+<!--                                                                                                                <div class="form-group col-lg-6">-->
+<!--                                                                                                                    <label for="">-->
+<!--                                                                                                                        <i class="fa fa-asterisk color_red"-->
+<!--                                                                                                                           aria-hidden="true"></i>-->
+<!--                                                                                                                        Institution-->
+<!--                                                                                                                    </label>-->
+<!--                                                                                                                    <input type="text"-->
+<!--                                                                                                                           name="organization"-->
+<!--                                                                                                                           class="form-control"-->
+<!--                                                                                                                           t-if="academic_id"-->
+<!--                                                                                                                           t-att-value="academic_id.organization"-->
+<!--                                                                                                                    />-->
+<!--                                                                                                                </div>-->
+<!--                                                                                                                <div class="form-group col-lg-6">-->
+<!--                                                                                                                    <label for="">-->
+<!--                                                                                                                        <i class="fa fa-asterisk color_red"-->
+<!--                                                                                                                           aria-hidden="true"></i>-->
+<!--                                                                                                                        Location-->
+<!--                                                                                                                    </label>-->
+<!--                                                                                                                    <input type="text"-->
+<!--                                                                                                                           name="location"-->
+<!--                                                                                                                           class="form-control"-->
+<!--                                                                                                                           t-if="academic_id"-->
+<!--                                                                                                                           t-att-value="academic_id.location"-->
+<!--                                                                                                                    />-->
+<!--                                                                                                                </div>-->
+<!--                                                                                                                <div class="form-group col-lg-6">-->
+<!--                                                                                                                    <label for="">-->
+<!--                                                                                                                        Start-->
+<!--                                                                                                                        Date-->
+<!--                                                                                                                    </label>-->
+<!--                                                                                                                    <div class="date">-->
+<!--                                                                                                                        <div class="input-group input-append date"-->
+<!--                                                                                                                             id="datePicker_start">-->
+<!--                                                                                                                            <input type="text"-->
+<!--                                                                                                                                   name="start_date"-->
+<!--                                                                                                                                   class="form-control jobportal_datepicker"-->
+<!--                                                                                                                                   t-if="academic_id"-->
+<!--                                                                                                                                   t-att-value="academic_id.start_date"/>-->
+<!--                                                                                                                            <span class="input-group-addon add-on">-->
+<!--                                                                                                                                <span class="fa fa-calendar"></span>-->
+<!--                                                                                                                            </span>-->
+<!--                                                                                                                        </div>-->
+<!--                                                                                                                    </div>-->
+<!--                                                                                                                </div>-->
+<!--                                                                                                                <div class="form-group col-lg-6">-->
+<!--                                                                                                                    <label for="">-->
+<!--                                                                                                                        Present-->
+<!--                                                                                                                    </label>-->
+<!--                                                                                                                    <input type="checkbox"-->
+<!--                                                                                                                           name="is_still"-->
+<!--                                                                                                                           id="is_still"-->
+<!--                                                                                                                           class="form-control"-->
+<!--                                                                                                                           t-if="academic_id"-->
+<!--                                                                                                                           t-att-value="academic_id.is_still"/>-->
+<!--                                                                                                                </div>-->
+<!--                                                                                                                <div class="form-group end_date_div col-lg-6">-->
+<!--                                                                                                                    <label for="">-->
+<!--                                                                                                                        End-->
+<!--                                                                                                                        Date-->
+<!--                                                                                                                    </label>-->
+<!--                                                                                                                    <div class="date">-->
+<!--                                                                                                                        <div class="input-group input-append date"-->
+<!--                                                                                                                             id="datePicker_end">-->
+<!--                                                                                                                            <input type="text"-->
+<!--                                                                                                                                   name="end_date"-->
+<!--                                                                                                                                   id="end_date"-->
+<!--                                                                                                                                   class="form-control jobportal_datepicker"-->
+<!--                                                                                                                                   t-if="academic_id"-->
+<!--                                                                                                                                   t-att-value="academic_id.end_date"/>-->
+<!--                                                                                                                            <span class="input-group-addon add-on">-->
+<!--                                                                                                                                <span class="fa fa-calendar"></span>-->
+<!--                                                                                                                            </span>-->
+<!--                                                                                                                        </div>-->
+<!--                                                                                                                    </div>-->
+<!--                                                                                                                </div>-->
+<!--                                                                                                                <div class="form-group col-lg-6">-->
+<!--                                                                                                                    <input type="hidden"-->
+<!--                                                                                                                           name="operation_type"/>-->
+<!--                                                                                                                    <input type="hidden"-->
+<!--                                                                                                                           name="opr_id"/>-->
+<!--                                                                                                                    <label for="">-->
+<!--                                                                                                                        Grade-->
+<!--                                                                                                                    </label>-->
+<!--                                                                                                                    <input type="text"-->
+<!--                                                                                                                           t-att-value="academic_id.grade"-->
+<!--                                                                                                                           name="grade"-->
+<!--                                                                                                                           class="form-control"/>-->
+<!--                                                                                                                </div>-->
+<!--                                                                                                            </form>-->
+<!--                                                                                                        </div>-->
+<!--                                                                                                    </div>-->
+<!--                                                                                                    <div class="modal-footer">-->
+<!--                                                                                                        <button t-att-data-academic_id="academic_id.id"-->
+<!--                                                                                                                type="button"-->
+<!--                                                                                                                class="edit_academic btn btn-default"-->
+<!--                                                                                                                id="edit_academic"-->
+<!--                                                                                                                data-dismiss="modal">-->
+<!--                                                                                                            Confirm-->
+<!--                                                                                                            Change-->
+<!--                                                                                                        </button>-->
+<!--                                                                                                        <button type="button"-->
+<!--                                                                                                                class="btn btn-default"-->
+<!--                                                                                                                data-dismiss="modal">-->
+<!--                                                                                                            Close-->
+<!--                                                                                                        </button>-->
+<!--                                                                                                    </div>-->
+<!--                                                                                                </div>-->
+<!--                                                                                            </div>-->
+<!--                                                                                        </div>-->
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <button type="button"
+                                                                                                t-att-data-academic_id="academic_id.id"
+                                                                                                class="btn delete_academic">
+                                                                                            <i class="fa fa-trash"></i>
+                                                                                        </button>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card bg-white">
+                                                <a href="#" role="tab" data-toggle="collapse" aria-expanded="false"
+                                                   class="collapsed card-header o_default_snippet_text"
+                                                   data-parent="#myCollapse" data-target="#myCollapseTab1549624727366">
+                                                    Professional Experiences
+                                                </a>
+                                                <div class="collapse" role="tabpanel" id="myCollapseTab1549624727366">
+                                                    <div class="card-body">
+                                                        <div class="row mt32 mb32">
+                                                            <div class="col-lg-12">
+
+                                                                <div class="tab-content">
+                                                                    <div id="menu1"
+                                                                         class="">
+
+                                                                        <div>
+                                                                            <button class="experience_btn btn btn-primary pull-right">
+                                                                                Add More
+                                                                            </button>
+                                                                        </div>
+                                                                        <p>Ut enim ad minim veniam, quis
+                                                                            nostrud exercitation ullamco
+                                                                            laboris nisi ut aliquip ex ea
+                                                                            commodo consequat.
+                                                                        </p>
+                                                                        <table id="exp_desc_table"
+                                                                               class="exp_desc_table table table-responsive mt32 mb32">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th scope="col">Name</th>
+                                                                                    <th scope="col">Start
+                                                                                        Date
+                                                                                    </th>
+                                                                                    <th scope="col">End Date
+                                                                                    </th>
+                                                                                    <th scope="col">
+                                                                                        Organization
+                                                                                    </th>
+                                                                                    <th scope="col">Location
+                                                                                    </th>
+                                                                                    <th scope="col">
+                                                                                        Description
+                                                                                    </th>
+                                                                                    <th scope="col">Notice
+                                                                                        Period
+                                                                                    </th>
+                                                                                    <th scope="col">Referee
+                                                                                        Name
+                                                                                    </th>
+                                                                                    <th scope="col">Referee
+                                                                                        Position
+                                                                                    </th>
+                                                                                    <th scope="col">Referee
+                                                                                        Contact
+                                                                                    </th>
+                                                                                    <th scope="col">Type</th>
+                                                                                    <th>
+                                                                                        <button class="btn"
+                                                                                                type="button"
+                                                                                                disabled="disabled">
+                                                                                            <i class="fa fa-pencil-square-o"></i>
+                                                                                        </button>
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        <button class="btn"
+                                                                                                type="button"
+                                                                                                disabled="disabled">
+                                                                                            <i class="fa fa-trash"></i>
+                                                                                        </button>
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr t-foreach="partner.experience_ids"
+                                                                                    t-as="experience_id">
+                                                                                    <td>
+                                                                                        <t t-esc="experience_id.name"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span class="exeperience_start_date"
+                                                                                              t-field="experience_id.start_date"
+                                                                                              t-options='{"format": "MM/dd/YYYY"}'></span>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span class="exeperience_end_date"
+                                                                                              t-field="experience_id.end_date"
+                                                                                              t-options='{"format": "MM/dd/YYYY"}'></span>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="experience_id.organization"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="experience_id.location"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="experience_id.description"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-if="experience_id.notice_period == 's_notice_period'">
+                                                                                            <span>Serving
+                                                                                                Notice Period
+                                                                                            </span>
+                                                                                        </t>
+                                                                                        <t t-if="experience_id.notice_period == '15days'">
+                                                                                            <span>15 Days or
+                                                                                                less
+                                                                                            </span>
+                                                                                        </t>
+                                                                                        <t t-if="experience_id.notice_period == '1month'">
+                                                                                            <span>1 Month
+                                                                                            </span>
+                                                                                        </t>
+                                                                                        <t t-if="experience_id.notice_period == '2months'">
+                                                                                            <span>2 Month
+                                                                                            </span>
+                                                                                        </t>
+                                                                                        <t t-if="experience_id.notice_period == '3months'">
+                                                                                            <span>3 Month
+                                                                                            </span>
+                                                                                        </t>
+                                                                                        <t t-if="experience_id.notice_period == 'above3months'">
+                                                                                            <span>More than 3
+                                                                                                Months
+                                                                                            </span>
+                                                                                        </t>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="experience_id.referee_name"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="experience_id.referee_position"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="experience_id.referee_contact"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-if="experience_id.type == 'full_time'">
+                                                                                            <span>Full Time
+                                                                                            </span>
+                                                                                        </t>
+                                                                                        <t t-if="experience_id.type == 'part_time'">
+                                                                                            <span>Part Time
+                                                                                            </span>
+                                                                                        </t>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-if="experience_id">
+                                                                                            <button id="edit_experience"
+                                                                                                    t-att-data-experience_id="experience_id.id"
+                                                                                                    type="button"
+                                                                                                    class="btn edit_experience"
+                                                                                                    data-toggle="modal">
+                                                                                                <i class="fa fa-pencil-square-o"
+                                                                                                ></i>
+                                                                                            </button>
+                                                                                            <!-- Modal -->
+                                                                                            <div t-attf-id="ExperienceEditModal#{experience_id.id}"
+                                                                                                 class="modal fade"
+                                                                                                 role="dialog">
+                                                                                                <div class="modal-dialog">
+                                                                                                    <!-- Modal content-->
+                                                                                                    <div class="modal-content">
+                                                                                                        <div class="modal-header">
+                                                                                                            <button type="button"
+                                                                                                                    class="close"
+                                                                                                                    data-dismiss="modal"></button>
+                                                                                                        </div>
+                                                                                                        <div class="modal-body">
+                                                                                                            <div class="academic_info">
+                                                                                                                <form id="info"
+                                                                                                                      class="info">
+                                                                                                                    <div class="row">
+                                                                                                                        <div class="form-group col-lg-6">
+                                                                                                                            <label for="">
+                                                                                                                                <i class="fa fa-asterisk color_red"
+                                                                                                                                   aria-hidden="true"></i>
+                                                                                                                                Job
+                                                                                                                                Position
+                                                                                                                            </label>
+                                                                                                                            <input type="text"
+                                                                                                                                   t-att-value="experience_id.name"
+                                                                                                                                   name="job_position"
+                                                                                                                                   class="form-control"
+                                                                                                                            />
+                                                                                                                        </div>
+                                                                                                                        <div class="form-group col-lg-6">
+                                                                                                                            <label for="">
+                                                                                                                                <i class="fa fa-asterisk color_red"
+                                                                                                                                   aria-hidden="true"></i>
+                                                                                                                                Institution
+                                                                                                                            </label>
+<!--                                                                                                                            <input type="text"-->
+<!--                                                                                                                                   name="organization"-->
+<!--                                                                                                                                   class="form-control"-->
+<!--                                                                                                                                   t-att-value="experience_id.organization"-->
+<!--                                                                                                                            />-->
+                                                                                                                        </div>
+                                                                                                                        <div class="form-group col-lg-6">
+                                                                                                                            <label for="">
+                                                                                                                                <i class="fa fa-asterisk color_red"
+                                                                                                                                   aria-hidden="true"></i>
+                                                                                                                                Location
+                                                                                                                            </label>
+                                                                                                                            <input type="text"
+                                                                                                                                   name="location"
+                                                                                                                                   class="form-control"
+                                                                                                                                   t-att-value="experience_id.location"
+                                                                                                                            />
+                                                                                                                        </div>
+                                                                                                                        <div class="form-group col-lg-6">
+                                                                                                                            <label for="">
+                                                                                                                                <i class="fa fa-asterisk color_red"
+                                                                                                                                   aria-hidden="true"></i>
+                                                                                                                                Job
+                                                                                                                                Type
+                                                                                                                            </label>
+                                                                                                                            <select class="type selectpicker form-control">
+                                                                                                                                <option t-att-selected="experience_id.type == 'full_time'"
+                                                                                                                                        value="full_time">
+                                                                                                                                    Full
+                                                                                                                                    Time
+                                                                                                                                </option>
+                                                                                                                                <option t-att-selected="experience_id.type == 'part_time'"
+                                                                                                                                        value="part_time">
+                                                                                                                                    Part
+                                                                                                                                    Time
+                                                                                                                                </option>
+                                                                                                                            </select>
+                                                                                                                        </div>
+                                                                                                                        <div class="form-group col-lg-6">
+                                                                                                                            <label for="">
+                                                                                                                                <i class="fa fa-asterisk color_red"
+                                                                                                                                   aria-hidden="true"></i>
+                                                                                                                                Notice
+                                                                                                                                Period
+                                                                                                                            </label>
+                                                                                                                            <select class="notice_period selectpicker form-control">
+                                                                                                                                <option t-att-selected="experience_id.notice_period == 's_notice_period'"
+                                                                                                                                        value="s_notice_period">
+                                                                                                                                    Serving
+                                                                                                                                    Notice
+                                                                                                                                    Period
+                                                                                                                                </option>
+                                                                                                                                <option t-att-selected="experience_id.notice_period == '15days'"
+                                                                                                                                        value="15days">
+                                                                                                                                    15
+                                                                                                                                    Days
+                                                                                                                                    or
+                                                                                                                                    less
+                                                                                                                                </option>
+                                                                                                                                <option t-att-selected="experience_id.notice_period == '1month'"
+                                                                                                                                        value="1month">
+                                                                                                                                    1
+                                                                                                                                    Month
+                                                                                                                                </option>
+                                                                                                                                <option t-att-selected="experience_id.notice_period == '2months'"
+                                                                                                                                        value="2months">
+                                                                                                                                    2
+                                                                                                                                    Months
+                                                                                                                                </option>
+                                                                                                                                <option t-att-selected="experience_id.notice_period == '3months'"
+                                                                                                                                        value="3months">
+                                                                                                                                    3
+                                                                                                                                    Months
+                                                                                                                                </option>
+                                                                                                                                <option t-att-selected="experience_id.notice_period == 'above3months'"
+                                                                                                                                        value="above3months">
+                                                                                                                                    More
+                                                                                                                                    than
+                                                                                                                                    3
+                                                                                                                                    Months
+                                                                                                                                </option>
+                                                                                                                            </select>
+                                                                                                                        </div>
+                                                                                                                        <div class="form-group col-lg-6">
+                                                                                                                            <label for="">
+                                                                                                                                <i class="fa fa-asterisk color_red"
+                                                                                                                                   aria-hidden="true"></i>
+                                                                                                                                Description
+                                                                                                                            </label>
+                                                                                                                            <input type="text"
+                                                                                                                                   name="description"
+                                                                                                                                   class="form-control"
+                                                                                                                                   t-att-value="experience_id.description"
+                                                                                                                            />
+                                                                                                                        </div>
+                                                                                                                        <div class="form-group col-lg-6">
+                                                                                                                            <label for="">
+                                                                                                                                <i class="fa fa-asterisk color_red"
+                                                                                                                                   aria-hidden="true"></i>
+                                                                                                                                Reference
+                                                                                                                                Name
+                                                                                                                            </label>
+                                                                                                                            <input type="text"
+                                                                                                                                   name="name_referee"
+                                                                                                                                   class="form-control"
+                                                                                                                                   t-att-value="experience_id.referee_name"
+                                                                                                                            />
+                                                                                                                        </div>
+                                                                                                                        <div class="form-group col-lg-6">
+                                                                                                                            <label for="">
+                                                                                                                                <i class="fa fa-asterisk color_red"
+                                                                                                                                   aria-hidden="true"></i>
+                                                                                                                                Reference
+                                                                                                                                Position:
+                                                                                                                            </label>
+                                                                                                                            <input type="text"
+                                                                                                                                   name="position_referee"
+                                                                                                                                   class="form-control"
+                                                                                                                                   t-att-value="experience_id.referee_position"
+                                                                                                                            />
+                                                                                                                        </div>
+                                                                                                                        <div class="form-group col-lg-6">
+                                                                                                                            <label for="">
+                                                                                                                                <i class="fa fa-asterisk color_red"
+                                                                                                                                   aria-hidden="true"></i>
+                                                                                                                                Reference
+                                                                                                                                Contact
+                                                                                                                            </label>
+                                                                                                                            <input type="number"
+                                                                                                                                   name="contact_referee"
+                                                                                                                                   class="form-control"
+                                                                                                                                   t-att-value="experience_id.referee_contact"
+                                                                                                                            />
+                                                                                                                        </div>
+                                                                                                                        <div class="form-group col-lg-6">
+                                                                                                                            <label for="">
+                                                                                                                                Start
+                                                                                                                                Date
+                                                                                                                            </label>
+                                                                                                                            <div class="date">
+                                                                                                                                <div class="input-group input-append date"
+                                                                                                                                     id="datePicker_start">
+                                                                                                                                    <input type="date"
+                                                                                                                                           name="start_date"
+                                                                                                                                           class="form-control"
+                                                                                                                                           t-att-value="experience_id.start_date"/>
+                                                                                                                                    <span class="input-group-addon add-on">
+                                                                                                                                        <span class="fa fa-calendar"></span>
+                                                                                                                                    </span>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="form-group end_date_div col-lg-6">
+                                                                                                                            <label for="">
+                                                                                                                                End
+                                                                                                                                Date
+                                                                                                                            </label>
+                                                                                                                            <div class="date">
+                                                                                                                                <div class="input-group input-append date"
+                                                                                                                                     id="datePicker_end">
+                                                                                                                                    <input type="date"
+                                                                                                                                           name="end_date"
+                                                                                                                                           id="end_date"
+                                                                                                                                           class="form-control"
+                                                                                                                                           t-att-value="experience_id.end_date"/>
+                                                                                                                                    <span class="input-group-addon add-on">
+                                                                                                                                        <span class="fa fa-calendar"></span>
+                                                                                                                                    </span>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="form-group col-lg-6">
+                                                                                                                            <input type="hidden"
+                                                                                                                                   name="operation_type"/>
+                                                                                                                            <input type="hidden"
+                                                                                                                                   name="opr_id"/>
+                                                                                                                            <label for="">
+                                                                                                                                Present:
+                                                                                                                            </label>
+                                                                                                                            <input type="checkbox"
+                                                                                                                                   name="is_still"
+                                                                                                                                   id="is_still"
+                                                                                                                                   class="form-control"
+                                                                                                                                   t-att-value="experience_id.is_still"/>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </form>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="modal-footer">
+                                                                                                            <button t-att-data-experience_id="experience_id.id"
+                                                                                                                    type="button"
+                                                                                                                    class="edit_experience_existing btn btn-default"
+                                                                                                                    id="edit_experience"
+                                                                                                                    data-dismiss="modal">
+                                                                                                                Confirm
+                                                                                                                Change
+                                                                                                            </button>
+                                                                                                            <button type="button"
+                                                                                                                    class="btn btn-default"
+                                                                                                                    data-dismiss="modal">
+                                                                                                                Close
+                                                                                                            </button>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </t>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <button type="button"
+                                                                                                t-att-data-experience_id="experience_id.id"
+                                                                                                class="btn delete_experience">
+                                                                                            <i class="fa fa-trash"></i>
+                                                                                        </button>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <t t-call="job_portal.job_portal_my_experience_details"></t>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card bg-white">
+                                                <a href="#" role="tab" data-toggle="collapse" aria-expanded="false"
+                                                   class="collapsed card-header o_default_snippet_text"
+                                                   data-parent="#myCollapse" data-target="#myCollapseTab1549624727367">
+                                                    Certifications
+                                                </a>
+                                                <div class="collapse" role="tabpanel" id="myCollapseTab1549624727367">
+                                                    <div class="card-body">
+                                                        <div class="row mt32 mb32">
+                                                            <div class="col-lg-12">
+
+                                                                <div class="tab-content">
+                                                                    <div id="menu2"
+                                                                         class="">
+
+                                                                        <div>
+                                                                            <button class="certification_btn btn btn-primary pull-right">
+                                                                                Add More
+                                                                            </button>
+                                                                        </div>
+                                                                        <p>Sed ut perspiciatis unde omnis iste
+                                                                            natus error sit voluptatem
+                                                                            accusantium doloremque laudantium,
+                                                                            totam rem aperiam.
+                                                                        </p>
+                                                                        <table id="certificate_desc_table"
+                                                                               class="table table-responsive mt32 mb32 certificate_desc_table">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th scope="col">Name</th>
+                                                                                    <th scope="col">Start
+                                                                                        Date
+                                                                                    </th>
+                                                                                    <th scope="col">End Date
+                                                                                    </th>
+                                                                                    <th scope="col">Grade</th>
+                                                                                    <th scope="col">
+                                                                                        Organization
+                                                                                    </th>
+                                                                                    <th scope="col">
+                                                                                        Certification
+                                                                                    </th>
+                                                                                    <th scope="col">Location
+                                                                                    </th>
+                                                                                    <th scope="col">
+                                                                                        Description
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        <button class="btn"
+                                                                                                type="button"
+                                                                                                disabled="disabled">
+                                                                                            <i class="fa fa-pencil-square-o"></i>
+                                                                                        </button>
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        <button class="btn"
+                                                                                                type="button"
+                                                                                                disabled="disabled">
+                                                                                            <i class="fa fa-trash"></i>
+                                                                                        </button>
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr t-foreach="partner.certification_ids"
+                                                                                    t-as="certification_id">
+                                                                                    <td>
+                                                                                        <t t-esc="certification_id.name"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span class="certification_start_date"
+                                                                                              t-field="certification_id.start_date"
+                                                                                              t-options='{"format": "MM/dd/YYYY"}'></span>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <span class="certification_end_date"
+                                                                                              t-field="certification_id.end_date"
+                                                                                              t-options='{"format": "MM/dd/YYYY"}'></span>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="certification_id.grade"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="certification_id.organization"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="certification_id.certification"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="certification_id.location"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <t t-esc="certification_id.description"/>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <button type="button"
+                                                                                                class="btn edit_certificate"
+                                                                                                data-toggle="modal"
+
+                                                                                                t-att-data-certification_id="certification_id.id">
+                                                                                            <i class="fa fa-pencil-square-o"
+                                                                                            ></i>
+                                                                                        </button>
+                                                                                        <!-- Modal -->
+                                                                        <!--              <div t-attf-id="CertificationEditModal#{certification_id.id}"
+                                                                                             class="modal fade"
+                                                                                             role="dialog">
+                                                                                            <div class="modal-dialog">
+
+                                                                                                <div class="modal-content">
+                                                                                                    <div class="modal-header">
+                                                                                                        <button type="button"
+                                                                                                                class="close"
+                                                                                                                data-dismiss="modal"></button>
+                                                                                                    </div>
+                                                                                                    <div class="modal-body">
+                                                                                                        <div class="academic_info">
+                                                                                                            <form id="info"
+                                                                                                                  class="info">
+                                                                                                                <div class="row">
+                                                                                                                    <div class="form-group col-lg-6">
+                                                                                                                        <label for="">
+                                                                                                                            <i class="fa fa-asterisk color_red"
+                                                                                                                               aria-hidden="true"></i>
+                                                                                                                            Qualification:
+                                                                                                                        </label>
+                                                                                                                        <input type="text"
+                                                                                                                               t-att-value="certification_id.name"
+                                                                                                                               name="name"
+                                                                                                                               class="form-control"
+                                                                                                                        />
+                                                                                                                    </div>
+                                                                                                                    <div class="form-group col-lg-6">
+                                                                                                                        <label for="">
+                                                                                                                            <i class="fa fa-asterisk color_red"
+                                                                                                                               aria-hidden="true"></i>
+                                                                                                                            Institution
+                                                                                                                        </label>
+
+                                                                                                                    </div>
+                                                                                                                    <div class="form-group col-lg-6">
+                                                                                                                        <label for="">
+                                                                                                                            <i class="fa fa-asterisk color_red"
+                                                                                                                               aria-hidden="true"></i>
+                                                                                                                            Certification
+                                                                                                                        </label>
+                                                                                                                        <input type="text"
+                                                                                                                               name="certification"
+                                                                                                                               class="form-control"
+                                                                                                                               t-if="certification_id"
+                                                                                                                               t-att-value="certification_id.certification"
+                                                                                                                        />
+                                                                                                                    </div>
+                                                                                                                    <div class="form-group col-lg-6">
+                                                                                                                        <label for="">
+                                                                                                                            <i class="fa fa-asterisk color_red"
+                                                                                                                               aria-hidden="true"></i>
+                                                                                                                            Location
+                                                                                                                        </label>
+                                                                                                                        <input type="text"
+                                                                                                                               name="location"
+                                                                                                                               class="form-control"
+                                                                                                                               t-if="certification_id"
+                                                                                                                               t-att-value="certification_id.location"
+                                                                                                                        />
+                                                                                                                    </div>
+                                                                                                                    <div class="form-group col-lg-6">
+                                                                                                                        <label for="">
+                                                                                                                            <i class="fa fa-asterisk color_red"
+                                                                                                                               aria-hidden="true"></i>
+                                                                                                                            Description
+                                                                                                                        </label>
+                                                                                                                        <input type="text"
+                                                                                                                               name="description"
+                                                                                                                               class="form-control"
+                                                                                                                               t-if="certification_id"
+                                                                                                                               t-att-value="certification_id.description"
+                                                                                                                        />
+                                                                                                                    </div>
+                                                                                                                    <div class="form-group col-lg-6">
+                                                                                                                        <label for="">
+                                                                                                                            Grade
+                                                                                                                        </label>
+                                                                                                                        <input type="text"
+                                                                                                                               t-att-value="certification_id.grade"
+                                                                                                                               name="grade"
+                                                                                                                               class="form-control"/>
+                                                                                                                    </div>
+                                                                                                                    <div class="form-group col-lg-6">
+                                                                                                                        <label for="">
+                                                                                                                            Start
+                                                                                                                            Date:
+                                                                                                                        </label>
+                                                                                                                        <div class="date">
+                                                                                                                            <div class="input-group input-append date"
+                                                                                                                                 id="datePicker_start">
+                                                                                                                                <input type="text"
+                                                                                                                                       name="start_date"
+                                                                                                                                       class="form-control jobportal_datepicker"
+                                                                                                                                       t-if="certification_id"
+                                                                                                                                       t-att-value="certification_id.start_date"/>
+                                                                                                                                <span class="input-group-addon add-on">
+                                                                                                                                    <span class="fa fa-calendar"></span>
+                                                                                                                                </span>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="form-group end_date_div col-lg-6">
+                                                                                                                        <label for="">
+                                                                                                                            End
+                                                                                                                            Date
+                                                                                                                        </label>
+                                                                                                                        <div class="date">
+                                                                                                                            <div class="input-group input-append date"
+                                                                                                                                 id="datePicker_end">
+                                                                                                                                <input type="text"
+                                                                                                                                       name="end_date"
+                                                                                                                                       id="end_date"
+                                                                                                                                       class="form-control jobportal_datepicker"
+                                                                                                                                       t-if="certification_id"
+                                                                                                                                       t-att-value="certification_id.end_date"/>
+                                                                                                                                <span class="input-group-addon add-on">
+                                                                                                                                    <span class="fa fa-calendar"></span>
+                                                                                                                                </span>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="form-group col-lg-6">
+                                                                                                                        <label for="">
+                                                                                                                            Present
+                                                                                                                        </label>
+                                                                                                                        <input type="checkbox"
+                                                                                                                               name="is_still"
+                                                                                                                               id="is_still"
+                                                                                                                               class="form-control"
+                                                                                                                               t-if="certification_id"
+                                                                                                                               t-att-value="certification_id.is_still"/>
+                                                                                                                        <input type="hidden"
+                                                                                                                               name="operation_type"/>
+                                                                                                                        <input type="hidden"
+                                                                                                                               name="opr_id"/>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </form>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="modal-footer">
+                                                                                                        <button t-att-data-certification_id="certification_id.id"
+                                                                                                                type="button"
+                                                                                                                class="edit_certificate btn btn-default"
+                                                                                                                id="edit_certificate"
+                                                                                                                data-dismiss="modal">
+                                                                                                            Confirm
+                                                                                                            Change
+                                                                                                        </button>
+                                                                                                        <button type="button"
+                                                                                                                class="btn btn-default"
+                                                                                                                data-dismiss="modal">
+                                                                                                            Close
+                                                                                                        </button>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                   -->
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <button type="button"
+                                                                                                t-att-data-certification_id="certification_id.id"
+                                                                                                class="btn delete_certificate">
+                                                                                            <i class="fa fa-trash"></i>
+                                                                                        </button>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <t t-call="job_portal.job_portal_my_certification_details"></t>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                         <!--   <script src="../../job_portal/static/src/js/main.js" /> -->
+                        </section>
+
+
+                        <div class="clearfix">
+                            <button type="submit"
+                                    class="btn btn-primary pull-right mb32 ">
+                                Confirm
+                                <span class="fa fa-long-arrow-right"/>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+  <t t-call="job_portal.job_portal_my_academic_details"></t>
+        </xpath>
+
+    </template>
+    <template id="job_portal_my_academic_details">
+        <div id="myModalAcademic" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-full-height">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            Add Academic
+                            Details
+                        </h4>
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal">
+                            &amp;times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Modal Body -->
+                        <div class="container-fluid">
+                            <div class="row panel panel-default">
+                                <div class="col-lg-12 panel-body">
+                                    <div id="infoEducation1">
+                                        <div class="row infoEducationGroup1">
+                                            <script>
+                                                function chngCSvalue(){
+                                                    var e = document.getElementById('inistitue');
+                                                    document.getElementById('country_id').value = e.options[e.selectedIndex].getAttribute("country_id");
+                                                    document.getElementById('state_id').value =  e.options[e.selectedIndex].getAttribute("state");
+                                                }
+
+                                                function onlyFloat(str)
+                                                {
+                                                    var floatValue = parseFloat(str.value);
+                                                    var max_degree = document.getElementById('max_grade').value;
+
+                                                    if(isNaN(floatValue) == true)
+                                                    {
+                                                        alert('من فضلك ادخل المعدل التراكمي بشكل سليم');
+                                                        str.value = '0';
+                                                    }
+                                                    else
+                                                    {
+                                                        if(floatValue > max_degree){
+                                                            alert('درجة المعدل التراكمي يجب ان لا تكن اكبر من الدرجة العظمى');
+                                                            str.value = '0';
+                                                        }
+                                                        else{
+
+                                                        }
+                                                    }
+                                                }
+
+                                            </script>
+                                            <style>
+                    .required:after {
+                    content:" *";
+                    color: red;
+                  }
+                </style>
+                                        <div class="form-group col-lg-6">
+                                            <label for="" class="required">
+                                                <i class="fa fa-asterisk color_red"
+                                                aria-hidden="true"></i>
+                                            الجهة التعليمية
+                                            </label>
+                                           <select name="inistitue" id="inistitue" class="form-control" onChange="chngCSvalue();">
+                                                <option value="">الجهة التعليمية...</option>
+                                                <t t-foreach="inistitue or []"
+                                                   t-as="inistitues">
+                                                    <option t-att-value="inistitues.id" t-att-country_id="inistitues.country_id.id" t-att-state="inistitues.state_id.id">
+                                                        <t t-esc="inistitues.name"/>
+                                                    </option>
+
+                                                </t>
+                                               <option value="other">أخرى</option>
+                                            </select>
+
+                                        </div>
+                                         <div class="form-group col-lg-6">
+                                                <label for="" class="required">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true"></i>
+                                                    الدوله
+                                                </label>
+                                               <select name="country_id" id="country_id"  class="form-control">
+                                                    <option value="">اختر...</option>
+                                                    <t t-foreach="countries or []"
+                                                       t-as="country">
+                                                        <option t-att-value="country.id"
+                                                                t-att-selected="country.id == int(country_id) if country_id else country.id == partner.country_id.id">
+                                                            <t t-esc="country.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="" class="required">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true"></i>
+                                                المدينة
+                                            </label>
+                                              <select name="state_id" id="state_id" class="form-control">
+                                                    <option value="">اختر ...</option>
+                                                    <t t-foreach="states" t-as="state">
+                                                        <option t-att-value="state.id" t-att-country_id="state.country_id.id">
+                                                            <t t-esc="state.name"/>
+                                                        </option>
+                                                    </t>
+
+                                              </select>
+                                             </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="" class="required">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true"></i>
+                                                    الدرجة العلمية
+                                                </label>
+                                                 <select name="qualification" id="qualification" class="form-control">
+                                                     <option value="">اختر ...</option>
+                                                     <option value="BA">بكالوريوس</option>
+                                                     <option value="MA">ماجستير</option>
+                                                     <option value="PH">دكتوراه</option>
+                                                     <option value="DIP">دبلوم</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="" class="required">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true"></i>
+                                                    التخصص
+                                                </label>
+                                                <select name="study_field" id="study_field" class="form-control">
+                                                    <option value="">اختر...</option>
+                                                    <t t-foreach="specializations" t-as="specialize">
+                                                        <option t-att-value="specialize.id">
+                                                            <t t-esc="specialize.name"/>
+                                                        </option>
+                                                    </t>
+                                              </select>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="" class="required">نوع المعدل التركمي </label>
+                                                <select id="max_grade" name="max_grade"   class="form-control" >
+                                                    <option value="4" >4</option>
+                                                    <option value="5" >5</option>
+                                                </select>
+                                                <label for="" class="required" >المعدل التراكمي</label>
+                                                <input type="text"
+                                                       name="grade"
+                                                       class="form-control"
+                                                       onChange="onlyFloat(this);"/>
+
+                                                <input type="hidden" name="operation_type"/>
+                                                <input type="hidden" name="opr_id"/>
+                                                <input type="hidden" name="tr_no"/>
+                                            </div>
+
+                                            <t t-call="job_portal.job_portal_common_fields_details"/>
+                                            <div class="form-group">
+                                                <label for="academic_ufile" class="required">مرفق الشهادة العلمية: </label>
+                                                <br/><input class="input-file" id="academic_ufile" type="file"
+                                                       name="academic_ufile"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                id="add_academic"
+                                class="btn btn-primary save_data">
+                            حفظ
+                        </button>
+                        <button type="button"
+                                class="btn btn-primary"
+                                data-dismiss="modal">
+                            اغلاق
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="job_portal_my_certification_details">
+        <div id="myModalCertification" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-full-height">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <h4 class="modal-title">
+                            Add Certification
+                            Details
+                        </h4>
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal">
+                            &amp;times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Modal Body -->
+                        <div class="container-fluid">
+                            <div class="row panel panel-default">
+                                <div class="col-lg-12 panel-body">
+                                    <div class="row infoCertificationGroup">
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true"></i>
+                                                Certification
+                                            </label>
+                                            <input type="text" name="name"
+                                                   class="form-control"
+                                            />
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for=""># Certification
+                                            </label>
+                                            <input type="text"
+                                                   name="certification"
+                                                   class="form-control"/>
+                                        </div>
+                                        <t t-call="job_portal.job_portal_common_fields_details"/>
+                                        <div class="form-group col-lg-6">
+                                            <label for="">Grade</label>
+                                            <input type="text" name="grade"
+                                                   class="form-control"/>
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true"></i>
+                                                Description
+                                            </label>
+                                            <input type="text"
+                                                   name="description"
+                                                   class="form-control"
+                                            />
+                                            <input type="hidden" name="operation_type"/>
+                                            <input type="hidden" name="opr_id"/>
+                                            <input type="hidden" name="tr_no"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                id="add_certification"
+                                class="btn btn-primary save_data">
+                            Save
+                        </button>
+                        <button type="button"
+                                class="btn btn-primary"
+                                data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="job_portal_my_experience_details">
+        <div id="myModalExperience" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-full-height">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <h4 class="modal-title">
+                            Add Experience
+                            Details
+                        </h4>
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal">
+                            &amp;times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Modal Body -->
+                        <div class="container-fluid">
+                            <div class="row panel panel-default">
+                                <div class="col-lg-12 panel-body">
+                                    <div id="infoExeperience">
+                                        <div class="row infoExeperienceGroup">
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true"></i>
+                                                    الوظيفه
+                                                </label>
+                                                <input type="text"
+                                                       name="job_position"
+                                                       class="form-control"
+                                                />
+                                            </div>
+                                            <t t-call="job_portal.job_portal_common_fields_details"/>
+                                              <div class="form-group col-lg-6 country_id_class">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true"></i>
+                                                    الدوله
+                                                </label>
+                                               <select name="country_id" id="country_id"  class="form-control">
+                                                    <option value="">اختر...</option>
+                                                    <t t-foreach="countries or []"
+                                                       t-as="country">
+                                                        <option t-att-value="country.id"
+                                                                t-att-selected="country.id == int(country_id) if country_id else country.id == partner.country_id.id">
+                                                            <t t-esc="country.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                        </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true"></i>
+                                                المدينة
+                                            </label>
+                                              <select name="state_id" id="state_id" class="form-control">
+                                                    <option value="">اختر ...</option>
+                                                    <t t-foreach="states" t-as="state">
+                                                        <option t-att-value="state.id" t-att-country_id="state.country_id.id" >
+                                                            <t t-esc="state.name"/>
+                                                        </option>
+                                                    </t>
+                                                   <option value="other">أخرى</option>
+
+                                              </select>
+                                             </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true"></i>
+                                                    العنوان
+                                                </label>
+                                                <input type="text"
+                                                       name="address"
+                                                       class="form-control"
+                                                />
+                                                </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true"></i>
+                                                    اسم الشركة
+                                                </label>
+                                                <input type="text"
+                                                       name="company_name"
+                                                       class="form-control"
+                                                />
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                            <label for="">
+                                                <i class="fa fa-asterisk color_red"
+                                                   aria-hidden="true"></i>
+                                                قطاع الشركة
+                                            </label>
+                                              <select name="sector_id" id="sector_id" class="form-control">
+                                                    <option value="">اختر ...</option>
+                                                    <t t-foreach="sectors" t-as="sector">
+                                                        <option t-att-value="sector.id">
+                                                            <t t-esc="sector.name"/>
+                                                        </option>
+                                                    </t>
+                                              </select>
+                                             </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="">
+                                                    <i class="fa fa-asterisk color_red"
+                                                       aria-hidden="true"></i>
+                                                    الوصف الوظيفي
+                                                </label>
+                                                <input type="text"
+                                                       name="description"
+                                                       class="form-control"
+                                                />
+                                            </div>
+                                            <div class="form-group col-lg-6">
+
+                                                <input type="hidden" name="operation_type"/>
+                                                <input type="hidden" name="opr_id"/>
+                                                <input type="hidden" name="tr_no"/>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                id="add_experience"
+                                class="btn btn-primary save_data">
+                            Save
+                        </button>
+                        <button type="button"
+                                class="btn btn-primary"
+                                data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </template>
+
+    <template id="job_portal_my_skills_details">
+        <div id="myModalskills" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-full-height">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            اضافة مهارة جديدة
+                        </h4>
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal">
+                            &amp;times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Modal Body -->
+                        <div class="container-fluid">
+                            <div class="row panel panel-default">
+                                <div class="col-lg-12 panel-body">
+                                    <div id="infoSkills1">
+                                         <style>
+                                            .required:after {
+                                                content:" *";
+                                                color: red;
+                                            }
+                                        </style>
+                                        <div class="row infoEducationGroup1">
+                                            <div class="form-group col-lg-6">
+                                                <label for="" class="required">وصف المهارة</label>
+                                                <input type="text" name="name" required="required" class="form-control"  />
+                                                <input type="hidden" name="operation_type"/>
+                                                <input type="hidden" name="opr_id"/>
+                                                <input type="hidden" name="tr_no"/>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                            <label for="" class="required">
+                                                <i class="fa fa-asterisk color_red"
+                                                aria-hidden="true"></i>
+                                            مستوى المهارة
+                                            </label>
+                                           <select name="skill_level" id="skill_level" class="form-control" >
+                                                <option value="">مستوى المهارة ...</option>
+                                                <option value="Beginner">مبتدىء</option>
+                                                <option value="Midlevel">متوسط</option>
+                                                <option value="Expert">خبير</option>
+                                            </select>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                id="add_skills"
+                                class="btn btn-primary save_data">
+                            حفظ
+                        </button>
+                        <button type="button"
+                                class="btn btn-primary"
+                                data-dismiss="modal">
+                            اغلاق
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+    <template id="job_portal_common_fields_details">
+
+
+        <div class="form-group col-lg-6">
+            <label for="">تاريخ البدء</label>
+            <div class="date">
+
+                <div class="input-group input-append date"
+                     id="datePicker_start">
+                    <div class="input-group-addon" style="background: lightgrey;
+    font-size: 16px;
+    padding: 5px;">
+                        <span class="input-group-addon add-on">
+                            <span class="input-group-addon add-on">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </span>
+                    </div>
+                    <input type="date"
+                           name="start_date"
+                           class="form-control"/>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group end_date_div col-lg-6">
+            <label for="">تاريخ الانتهاء</label>
+            <div class="date">
+                <div class="input-group input-append date"
+                     id="datePicker_end">
+                    <div class="input-group-addon" style="background: lightgrey;
+    font-size: 16px;
+    padding: 5px;">
+                        <span class="input-group-addon add-on">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                    <input type="date"
+                           name="end_date"
+                           id="end_date"
+                           class="form-control"/>
+
+                </div>
+            </div>
+        </div>
+
+
+      <!--  <div class="form-group col-lg-6">
+            <label for="">حتى الان ؟</label>
+            <input type="checkbox"
+                   name="is_still"
+                   id="is_still"
+                   class="form-control"/>
+        </div> -->
+    </template>
+   <!-- <template id="post_menu" name="Link to frontend portal"
+              inherit_id="website.layout">
+        <xpath expr="//ul[@id='top_menu']/li[hasclass('divider')]" position="before">
+            <li class="nav-item" groups="base.group_erp_manager">
+                <a class="nav-link post-job-menu" href="/post_job" role="menuitem">
+                    Post Job
+                </a>
+            </li>
+        </xpath>
+    </template>-->
+</odoo>

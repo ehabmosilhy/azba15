@@ -1,0 +1,77 @@
+@mixin ungroup-kanban() {
+    &.o_kanban_ungrouped {
+        padding: var(--main-padding);
+        background-color: $white;
+        border: 0;
+
+        .oe_kanban_card {
+            border: 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        &.o_theme_kanban {
+            margin: 0;
+        }
+
+        .o_kanban_record {
+            background-color: $body-bg;
+            justify-content: center;
+            margin: 5px !important;
+            outline: none;
+
+            .o_kanban_image {
+                +div {
+                    padding-left: 100px
+                }
+            }
+
+            &.o_kanban_record_has_image_fill {
+                .o_kanban_image+div {
+                    padding-left: 0;
+                }
+            }
+
+            .o_kanban_image_fill_left,
+            .o_kanban_image {
+                width: 90px;
+                border-radius: 50%;
+                background-size: cover;
+                background-position: center;
+                height: 90px;
+                border: 1px solid var(--brand-secondary);
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+
+            .o_kanban_record_top {
+                margin-bottom: 5px !important;
+            }
+
+            &.o_kanban_ghost {
+                padding: 0px;
+                margin: 0px 5px !important;
+                height: auto;
+            }
+
+            .col-6.text-right {
+                .badge.badge-secondary {
+                    .o_field_widget.badge {
+                        border: 0;
+                    }
+                }
+            }
+
+            .oe_kanban_content.fixed-bottom {
+                z-index: 6;
+            }
+        }
+
+        &.o_wvisitor_kanban {
+            .o_kanban_record {
+                flex: unset;
+                margin: 0 !important;
+            }
+        }
+    }
+}

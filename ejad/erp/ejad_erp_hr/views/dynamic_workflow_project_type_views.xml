@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="workflow_project_type_form" model="ir.ui.view">
+        <field name="name">workflow.project.type.form</field>
+        <field name="model">workflow.project.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="active"/>
+                    <field name="dynamic_workflow_category_id"/>
+                    <field name="color" />
+                    <field name="service_beneficiary_ids" widget="many2many_tags"/>
+                    <field name="additional_field_ids">
+                    <field name="simple_workflow" invisible="1"/>
+
+                        <tree>
+                            <field name="name" string="إسم الحقل حسب المشروع / الخدمة"/>
+                            <field name="additional_field_id" string="الحقل"/>
+                        </tree>
+                    </field>
+                </group>
+
+                <notebook>
+                    <field name="simple_workflow" invisible="1"/>
+                    <page name="stage_ids" string="Stages" attrs="{'invisible':[('simple_workflow','!=',True)]}">
+                        <field name="stage_ids">
+                                <tree string="Stages" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="is_refuse_type" readonly="1" />
+                                    <field name="is_success_type" readonly="1"/>
+                                    <field name="is_first_type" readonly="1"/>
+                                    <field name="contract_state" readonly="1"/>
+                                    <field name="endofservice_state" readonly="1"/>
+                                    <field name="promotion_state" readonly="1"/>
+                                    <field name="deductions_state" readonly="1"/>
+                                    <field name="mandate_state" readonly="1"/>
+                                    <field name="holidays_state" readonly="1"/>
+                                </tree>
+                        </field>
+                    </page>
+
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="workflow_project_type_tree" model="ir.ui.view">
+        <field name="name">workflow.project.type.tree</field>
+        <field name="model">workflow.project.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="dynamic_workflow_project_type_action" model="ir.actions.act_window">
+        <field name="name">Stages Settings</field>
+        <field name="res_model">workflow.project.type</field>
+
+        <field name="view_mode">tree,form</field>
+        <field name="domain" eval="[('dynamic_workflow_category_id.principal_category_id','=',ref('ejad_erp_hr.dynamic_workflow_category_data_1'))]"/>
+    </record>
+
+    <menuitem id="dynamic_workflow_settings_main_menu" name="Dynamic Workflow Settings"
+                  web_icon="ejad_erp_hr,static/description/web_icon_data.png"
+                  sequence="200" groups="ejad_erp_hr.group_dynamic_workflow_settings_main_menu"/>
+
+    <menuitem id="config_project_type_menu" name="Dynamic Workflow Settings"
+              parent="ejad_erp_hr.dynamic_workflow_settings_main_menu" sequence="1"/>
+
+    <menuitem id="dynamic_workflow_stage_menu" name="Stages" parent="config_project_type_menu"
+              action="dynamic_workflow_stage_action" sequence="1"/>
+
+    <menuitem id="config_dynamic_workflow_stage_menu" name="Stages Settings"
+              parent="config_project_type_menu" action="dynamic_workflow_project_type_action" sequence="2"/>
+
+</odoo>

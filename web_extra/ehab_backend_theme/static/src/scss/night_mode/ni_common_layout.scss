@@ -1,0 +1,891 @@
+@mixin common-layout() {
+    ::-webkit-input-placeholder {
+        color: white;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: var(--font-color);
+    }
+
+    .text-900 {
+        color: var(--font-color) !important;
+    }
+
+    .text-muted {
+        color: #a5a5a5 !important
+    }
+
+    .alert-info {
+        color: #1abcd7 !important;
+    }
+
+    .o_kanban_view.o_kanban_dashboard .o_kanban_record .o_kanban_card_manage_pane.container div[class*="col-"]>.o_kanban_card_manage_title {
+        color: var(--font-color);
+    }
+
+    .bg-white {
+        background-color: var(--night) !important;
+        border-color: var(--border) !important;
+    }
+
+    .o_ChatterTopbar_actions.o-has-active-button {
+        border-color: var(--border) !important;
+    }
+
+    .o_action_manager .o_action.o_view_controller .custom-radio .o_radio_input+label:before,
+    &.modal-open .modal-dialog .modal-content .custom-radio .o_radio_input+label:before,
+    .modal-dialog .modal-content .custom-radio .o_radio_input+label:before {
+        border: 2px solid var(--font-color);
+    }
+
+    &.open_mobile_menu>header .o_main_navbar:not(.oe_favorite_view)>.oe_menu_layout>ul.o_menu_systray>li .o_mail_systray_dropdown .o_mail_mobile_tabs {
+        box-shadow: none;
+        background-color: var(--night-light);
+
+        .o_mail_mobile_tab {
+            color: var(--font-color);
+
+            &.active {
+                background: unset;
+                border-top: 2px solid var(--btn-primary);
+
+                &>* {
+                    color: var(--font-color) !important;
+                }
+            }
+        }
+    }
+
+    .modal-content .o_cusomize_theme .o_right_panel input.form-control,
+    .o_kanban_view.o_kanban_dashboard .o_kanban_record .o_kanban_card_header_title .o_primary,
+    .o_kanban_view.o_kanban_dashboard .o_kanban_record .o_kanban_primary_left .o_primary>span:first-child,
+    .o_kanban_view.o_kanban_dashboard .o_kanban_record .oe_kanban_content>.o_title>h3 {
+        color: var(--font-color);
+    }
+
+    .o_mrp_bom_report_page {
+        background-color: var(--btn-secondary);
+    }
+
+    .o_input.o_mrp_bom_report_type {
+        background-color: var(--night);
+        color: var(--font-color);
+    }
+
+    .o_required_modifier {
+        --o-input-border-color: var(--night-hover);
+    }
+
+    .o_form_view.o_form_editable .o_form_sheet .o_hr_skills_group .o_group_name {
+        background-color: var(--night);
+    }
+
+    .ace-tm {
+        background-color: var(--night);
+        color: var(--font-color);
+
+        .ace_gutter {
+            background-color: var(--night-light);
+            color: var(--font-color);
+
+            .ace_gutter-active-line {
+                background-color: var(--btn-primary);
+            }
+        }
+    }
+
+    .o_list_view .o_list_table .o_data_row.o_selected_row>.o_data_cell:not(.o_readonly_modifier):not(.o_invisible_modifier):not(.o_handle_cell) {
+        background-color: transparent;
+    }
+
+    .select2-container {
+        .select2-choice {
+            background-color: #15202b;
+            border: 0;
+            outline: none;
+            box-shadow: none !important;
+            background-image: url('/ehab_backend_theme/static/src/img/up-and-down-arrows.svg');
+            background-size: 12px;
+            background-position: 98%;
+
+            &.o_import_field_icon {
+                &:before {
+                    border: 0;
+                    top: 0;
+                    bottom: 0;
+                    background-color: var(--night-hover);
+                }
+            }
+        }
+    }
+
+    &.open_customize_theme {
+        .o_dialog_container {
+            .modal-dialog {
+                .uc_dashboard_image {
+                    background-color: $bg-light !important;
+                    border-left: 0 !important;
+
+                    .uc_menu_image {
+                        box-shadow: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .o_RtcConfigurationMenu {
+        .o_RtcConfigurationMenu_optionDeviceSelect {
+            background-color: var(--night);
+            color: var(--font-color);
+            border: 0;
+        }
+
+        .o_RtcConfigurationMenu_button {
+            .fa {
+                color: var(--font-color);
+            }
+        }
+    }
+
+    .btn-primary {
+        background-color: var(--btn-primary);
+        color: var(--font-color);
+        border: 0;
+
+        &:hover,
+        &:active,
+        &:focus {
+            background-color: var(--btn-secondary) !important;
+            color: var(--font-color) !important;
+        }
+    }
+
+    .btn-secondary,
+    .btn-light {
+        background-color: var(--btn-secondary);
+        color: var(--font-color);
+        border: 0;
+
+        &:hover,
+        &:active,
+        &:focus {
+            background-color: var(--btn-primary) !important;
+            color: var(--font-color) !important;
+        }
+    }
+
+    .btn-link,
+    a {
+        color: var(--btn-primary);
+
+        &.fa-star-o,
+        &.fa-star {
+            color: gold;
+        }
+    }
+
+    a.btn-info,
+    pre {
+        color: var(--font-color);
+    }
+
+    input {
+        border: none;
+        background-color: var(--night) !important;
+        color: var(--font-color);
+
+        &.o_required_modifier {
+            border-bottom: 1px solid var(--btn-primary);
+        }
+
+        &:hover,
+        &:active,
+        &:focus {
+            box-shadow: none;
+            background-color: var(--night);
+        }
+
+        &::placeholder {
+            color: var(--font-color);
+        }
+    }
+
+    .o_list_view .o_list_table .text-primary {
+        color: var(--brand-primary) !important;
+    }
+
+    .oe_module_name>span {
+        color: var(--font-color);
+    }
+
+    .custom-checkbox {
+        .custom-control-label {
+            &:before {
+                border: 2px solid var(--checkbox) !important;
+                border-radius: 0;
+            }
+        }
+
+        .custom-control-input:disabled:checked~.custom-control-label:before {
+            background-color: var(--font-color);
+            opacity: 0.6;
+        }
+    }
+
+    .o_field_radio {
+        .custom-radio {
+            .custom-control-label {
+                &:before {
+                    outline: none;
+                }
+            }
+        }
+    }
+
+    div.o_boolean_toggle.custom-control.custom-checkbox>input.custom-control-input:checked+label.custom-control-label:before {
+        background-color: var(--btn-primary) !important;
+    }
+
+    .o_boolean_toggle {
+        .custom-control-label {
+            &:before {
+                border-radius: 16px;
+            }
+        }
+    }
+
+    .dropdown-menu:not(.bootstrap-datetimepicker-widget) {
+        background-color: var(--btn-secondary);
+        color: var(--font-color);
+        border-color: var(--border);
+
+        .fa {
+            color: var(--font-color);
+        }
+
+        a,
+        li,
+        .dropdown-item {
+            color: var(--font-color);
+
+            &:hover,
+            &.active,
+            &:active,
+            &:focus,
+            &.o_open_menu {
+                background-color: var(--btn-primary);
+            }
+        }
+
+        input,
+        select {
+            border: none;
+            background-color: var(--btn-secondary);
+            color: var(--font-color);
+
+            &:hover,
+            &:active,
+            &:focus {
+                box-shadow: none;
+            }
+
+            &::placeholder {
+                color: var(--font-color);
+            }
+        }
+
+        .custom-checkbox {
+            .custom-control-label {
+                color: var(--font-color);
+
+                &:before {
+                    outline: 1px solid var(--checkbox);
+                }
+            }
+        }
+
+        .dropdown-divider {
+            border-top-color: var(--border);
+        }
+
+        label {
+            color: var(--font-color);
+        }
+    }
+
+    .o_progressbar {
+        .o_progress {
+            background-color: var(--night-light);
+            border: 0;
+
+            .o_progressbar_complete {
+                background-color: var(--btn-primary);
+            }
+        }
+    }
+
+    .o_loading {
+        background-color: var(--btn-primary);
+    }
+
+    .o_list_view .text-danger,
+    .oe_import .oe_import_error_report .oe_import_report.text-error,
+    .oe_import .oe_import_error_report .o_list_view .oe_import_report.text-error,
+    .o_content form.oe_import>.oe_import_with_file>.oe_import_error_report>ul>.oe_import_report {
+        color: #ff394b !important;
+    }
+
+    .o_onboarding.o_onboarding_violet,
+    .o_onboarding.o_onboarding_violet .o_onboarding_wrap,
+    .o_onboarding.o_onboarding_blue .o_onboarding_wrap {
+        background-color: rgba(33, 33, 33, 0.7);
+        box-shadow: inset 0 -7px 20px -5px rgba(0, 0, 0, 0.7);
+        background-image: linear-gradient(to bottom, rgba(33, 33, 33, 0.3), #3b4855);
+    }
+
+    .o_onboarding.o_onboarding_violet,
+    .o_onboarding.o_onboarding_violet .o_onboarding_step_title,
+    .o_onboarding.o_onboarding_violet .o_onboarding_step_action,
+    .o_onboarding.o_onboarding_violet a.o_onboarding_all_done,
+    .o_onboarding.o_onboarding_violet .o_onboarding_all_done>.fa,
+    .o_onboarding.o_onboarding_violet .o_onboarding_btn_close {
+        color: var(--font-color) !important;
+    }
+
+    .badge-primary {
+        background-color: var(--btn-primary);
+        color: var(--font-color);
+        border-color: var(--btn-primary);
+    }
+
+    .note-editor {
+        border: 0 !important;
+
+        .note-toolbar {
+            background-color: var(--night-light) !important;
+            border-color: var(--border) !important;
+        }
+
+        .note-editing-area .note-editable {
+            background-color: var(--night);
+        }
+    }
+
+    .o_action.o_view_controller>.o_content .o_form_view .oe_form_field .note-editor .note-toolbar .btn-group button {
+        color: var(--font-color) !important;
+    }
+
+    .o_view_nocontent {
+        .o_nocontent_help {
+            color: var(--font-color);
+        }
+
+        .o_view_nocontent_empty_folder {
+            &:before {
+                color: var(--font-color);
+            }
+        }
+    }
+
+    #mb-signout.message-box.animated {
+        .mb-container {
+            background-color: var(--night);
+
+            .mb-middle {
+                .mb-footer {
+                    .oe_cu_logout_yes {
+                        background-color: var(--btn-primary);
+                        border: 0;
+                        color: var(--font-color);
+
+                        &:hover {
+                            background-color: var(--btn-secondary);
+                        }
+                    }
+
+                    .mb-control-close {
+                        background-color: var(--btn-secondary);
+                        border: 0;
+                        color: var(--font-color);
+
+                        &:hover {
+                            background-color: var(--btn-primary);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .o_popover {
+        background-color: var(--night);
+        border: 0;
+
+        .o_EmojisPopover {
+            color: white;
+        }
+
+        $popover: left,
+        right,
+        top,
+        bottom;
+
+        @each $type in $popover {
+            &.o_popover--#{$type} {
+                &:after {
+                    border-#{$type}-color: var(--night);
+                }
+            }
+        }
+
+        .o_popover_header {
+            background-color: var(--night);
+            border-color: var(--border);
+        }
+
+        .o_ActivityMarkDonePopover {
+            .o_ActivityMarkDonePopover_feedback {
+                background-color: var(--btn-secondary);
+                border: var(--border);
+                color: var(--font-color);
+
+            }
+        }
+
+        .popover-body {
+            .o_RtcOptionList {
+                .o_RtcOptionList_button {
+                    color: var(--font-color);
+
+                    &:hover,
+                    &:focus,
+                    &:active {
+                        background-color: var(--night-hover);
+                        border-radius: 0;
+                        box-shadow: none;
+                    }
+                }
+            }
+        }
+    }
+
+    .popover {
+        $popover: left, right, top, bottom;
+
+        @each $type in $popover {
+            &.bs-popover-#{$type} {
+                .arrow {
+
+                    &:before,
+                    &:after {
+                        border-#{$type}-color: var(--night);
+                    }
+                }
+
+                .popover-header {
+                    &:before {
+                        border-#{$type}-color: var(--night);
+                    }
+                }
+            }
+        }
+
+        .popover-body {
+            .table {
+                tr.table-info {
+                    background-color: var(--night);
+
+                    td {
+                        background-color: var(--night);
+                    }
+                }
+            }
+        }
+    }
+
+    .o_view_nocontent {
+        .o_nocontent_help {
+            background-color: var(--btn-secondary);
+            box-shadow: 0 0 120px 100px var(--btn-secondary);
+
+            .o_view_nocontent_expense_receipt {
+                color: var(--font-color);
+
+                .o_view_nocontent_expense_receipt {
+                    background-color: var(--btn-secondary);
+                }
+            }
+        }
+    }
+
+    .alert-info {
+        background-color: var(--night);
+        border-color: var(--border);
+    }
+}
+
+body.o_web_client.ad_mobile.oe_base_menu.oe_night_mode header nav.o_main_navbar .o_menu_sections .o_menu_sections_more .o-dropdown--menu .dropdown-header.bg-100 {
+    background-color: var(--btn-secondary) !important;
+    color: var(--font-color);
+}
+
+@mixin dropdown_view() {
+    .ui-autocomplete {
+        background-color: var(--night);
+
+        .ui-menu-item {
+            a {
+                color: var(--font-color);
+
+                &.ui-state-active {
+                    background-color: var(--btn-primary);
+                    color: var(--font-color);
+                }
+            }
+
+            &.ui-state-focus {
+                background-color: var(--btn-primary);
+                color: var(--font-color);
+
+                a {
+                    color: var(--font-color) !important;
+                }
+            }
+
+            &.o_m2o_dropdown_option {
+                a {
+                    color: var(--btn-primary);
+
+                    &.ui-state-active {
+                        background-color: var(--btn-primary);
+                        color: var(--font-color);
+                    }
+                }
+            }
+        }
+    }
+
+    .bootstrap-datetimepicker-widget {
+        background-color: var(--night);
+        border-color: var(--border);
+        color: var(--font-color);
+
+        .list-unstyled {
+
+            .picker-switch,
+            .datepicker-days,
+            .datepicker-months,
+            .datepicker-years,
+            .datepicker-decades,
+            .timepicker-picker {
+                table {
+                    thead {
+                        color: var(--font-color);
+                        background-color: var(--btn-primary);
+
+                        tr:last-child {
+                            color: var(--font-color);
+                            background-color: var(--night-light);
+                        }
+
+                        tr:first-child {
+                            th:hover {
+                                color: var(--font-color);
+                                background-color: var(--night-light);
+                            }
+                        }
+                    }
+
+                    td,
+                    th {
+                        border-color: var(--border);
+                        color: var(--font-color);
+
+                        &.day {
+                            &:hover {
+                                background: var(--btn-secondary);
+                            }
+
+                            &.today {
+                                &:before {
+                                    border-bottom-color: var(--btn-primary);
+                                }
+                            }
+                        }
+
+                        span {
+
+                            &:hover,
+                            &.active {
+                                background-color: var(--btn-primary);
+                                color: var(--font-color);
+                            }
+                        }
+                    }
+
+                    tbody {
+                        &>tr {
+                            &>td {
+                                span {
+                                    color: var(--font-color) !important;
+                                }
+                            }
+                        }
+
+                        a {
+
+                            .fa-clock-o,
+                            .fa-times,
+                            .fa-calendar,
+                            .fa-chevron-up,
+                            .fa-chevron-down {
+                                color: var(--btn-primary);
+
+                                &:hover {
+                                    background-color: var(--night-light);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .table-sm>tbody>tr>td.active,
+                .table-sm>tbody>tr>td .active {
+                    background-color: var(--btn-primary);
+                }
+            }
+
+            .table-condensed {
+                .fa-check {
+                    color: var(--btn-primary);
+                }
+            }
+        }
+
+        .timepicker {
+
+            .timepicker-picker,
+            .timepicker-hours,
+            .timepicker-minutes,
+            .timepicker-seconds {
+                tbody {
+                    tr {
+                        td {
+
+                            &.minute,
+                            &.hour,
+                            &.second {
+                                color: var(--font-color);
+
+                                &:hover {
+                                    background: var(--btn-primary);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .oe_import_selector,
+    .select2-drop {
+        background-color: var(--night);
+        color: var(--font-color);
+
+        .select2-result-sub,
+        .select2-results {
+            li {
+                color: var(--font-color);
+
+                &.select2-highlighted {
+                    background-color: var(--btn-primary);
+                }
+            }
+        }
+
+        .select2-search {
+            input {
+                background: url('/web/static/lib/select2/select2.png') no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(1, var(--night-light)), color-stop(1, var(--night-light)));
+            }
+        }
+    }
+
+    .o_field_selector.o_edit_mode {
+        &>.o_field_selector_popover {
+            .o_field_selector_popover_header {
+                background-color: var(--btn-primary);
+
+                &:before {
+                    border-bottom-color: var(--btn-primary);
+                }
+            }
+
+            .o_field_selector_popover_body {
+                ul.o_field_selector_page {
+                    li.o_field_selector_item {
+                        background-color: var(--btn-secondary);
+                        color: var(--font-color);
+                        border-color: var(--border);
+
+                        &.active {
+                            background-color: var(--btn-secondary);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .tooltip {
+        .tooltip-inner {
+            box-shadow: 0px 0px 1px 1px var(--border);
+            color: var(--font-color);
+            background-color: var(--night);
+        }
+
+        .oe_tooltip_string {
+            background-color: var(--btn-primary);
+            color: var(--font-color);
+        }
+
+        &.bs-tooltip-auto[x-placement^="top"] .arrow:before {
+            border-top-color: var(--night) !important;
+        }
+
+        &.bs-tooltip-auto[x-placement^="right"] .arrow:before {
+            border-right-color: var(--night) !important;
+        }
+
+        &.bs-tooltip-auto[x-placement^="left"] .arrow:before {
+            border-left-color: var(--night) !important;
+        }
+
+        &.bs-tooltip-auto[x-placement^="bottom"] .arrow:before {
+            border-bottom-color: var(--night) !important;
+        }
+    }
+
+    .popover {
+
+        .popover-header,
+        .card-header {
+            background-color: var(--night) !important;
+            color: var(--font-color) !important;
+            border-bottom: 0;
+        }
+
+        .popover-body,
+        .o_cw_body,
+        .o_cw_body .list-group-item {
+            background-color: var(--btn-secondary);
+            color: var(--font-color);
+
+            table {
+                color: var(--font-color);
+            }
+        }
+    }
+
+    // Multi Calender
+    .daterangepicker {
+        background-color: var(--btn-secondary);
+        color: var(--font-color);
+
+        .drp-calendar {
+            .calendar-table {
+                background-color: var(--btn-secondary);
+                border: 0;
+
+                table {
+                    thead {
+                        &>tr:first-child {
+                            background-color: var(--night);
+                            color: var(--font-color);
+                        }
+
+                        &>tr:not(:first-child) {
+                            background-color: var(--night-light);
+                            color: var(--font-color);
+                        }
+
+                        .prev,
+                        .next {
+                            span {
+                                border-color: var(--font-color);
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            td {
+                                color: var(--font-color);
+
+                                &.off {
+                                    background-color: var(--night);
+                                    color: var(--font-color);
+                                    border-radius: 0;
+                                }
+
+                                &:hover,
+                                &.in-range:not(.active) {
+                                    background-color: var(--night-light);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .calendar-time select {
+                color: var(--font-color);
+                background-color: var(--night);
+            }
+        }
+
+        .drp-buttons {
+            .btn-default {
+                background-color: var(--night-light);
+                color: var(--font-color);
+                border: 0;
+            }
+        }
+    }
+
+    .oe-commandbar-wrapper {
+        background-color: var(--night);
+
+        .oe-commandbar-mainWrapper {
+            .oe-commandbar-groupWrapper {
+                .oe-commandbar-groupName {
+                    color: var(--font-color);
+                }
+
+                .oe-commandbar-commandWrapper {
+                    &.active {
+                        background-color: var(--btn-primary);
+                    }
+                }
+
+                .oe-commandbar-commandLeftCol {
+                    .oe-commandbar-commandImg {
+                        background-color: var(--night-light);
+                        border: 0;
+                        color: var(--font-color);
+                    }
+                }
+
+                .oe-commandbar-commandDescription {
+                    color: var(--font-color);
+                }
+            }
+        }
+    }
+}

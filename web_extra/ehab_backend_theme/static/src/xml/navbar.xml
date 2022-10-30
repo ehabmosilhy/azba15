@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="web.NavBar.favroitMenu" owl="1">
+        <div class="o_main_navbar oe_favorite_view d-flex">
+            <ul id="av_full_view" t-on-click='onFullViewClicked'>
+                <i class="fa fa-bars" />
+            </ul>
+            <ul class="oe_full_button" t-on-click='onFullScreen'>
+                <li class="oe_full"><i class="fa fa-expand" /></li>
+            </ul>
+            <div class="oe_menu_layout oe_theme_menu_layout">
+                <nav class="oe_favorite_menu">
+                    <div class="oe_apps_menu" id="oe_shorting">
+                        <t t-foreach="onOpenMenu()" t-as="app" t-key="app.id">
+                            <div class="dropdown-item o_app oe_favorite" t-att-data-id="app.id" t-on-click="OpenMenu(app)">
+                                <div class="oe_menu_icon" t-attf-style="background-image: url({{app.theme_icon_data}});" />
+                                <span>
+                                    <t t-esc="app['favorite_menu_id'][1]" />
+                                </span>
+                            </div>
+                        </t>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </t>
+    <t t-name="web.NavBar.AppsMenu" t-inherit="web.NavBar.AppsMenu" t-inherit-mode="extension" owl="1">
+        <xpath expr="//Dropdown[contains(@class, 'o_navbar_apps_menu')]" position="attributes">
+            <attribute name="class">o_navbar_apps_menu menu_toggle</attribute>
+        </xpath>
+    </t>
+    <t t-name="ehab_backend_theme.CustomMenu" t-inherit="web.NavBar" t-inherit-mode="primary">
+        <xpath expr="//t[@t-call='web.NavBar.AppsMenu']" position="replace">
+            <a href="#" class="__menu_toggle" accesskey="h" t-on-click.prevent="CustomMenu.toggle()">
+                <div class="__icon">
+                    <span />
+                    <span />
+                    <span />
+                </div>
+            </a>
+            <a class="o_sub_menu_logo" href="/web">
+                <img src="/web/image/res.company/1/logo/180x55" class="img-fluid" alt="Logo"/>
+            </a>
+        </xpath>
+        <xpath expr="//nav[contains(@class, 'o_main_navbar')]" position="after">
+            <t t-call="web.NavBar.favroitMenu" />
+        </xpath>
+        <xpath expr="//div[contains(@class, 'o_menu_systray')]" position="replace">
+            <div t-if="window['ejadTheme'].base_menu == 'base_menu'" class="o_menu_systray" role="menu">
+                <t t-foreach="systrayItems" t-as="item" t-key="item.key">
+                    <NotUpdatable>
+                        <ErrorHandler onError="error => handleItemError(error, item)">
+                            <t t-component="item.Component" t-props="item.props" />
+                        </ErrorHandler>
+                    </NotUpdatable>
+                </t>
+            </div>
+            <div t-else="" class="__menu_systray __user_menu" role="menu">
+                <a role="button" data-hotkey="u" class="user_menu" data-toggle="collapse" data-target="#o_menu_systray" aria-expanded="true">
+                    <img class="rounded-circle" t-att-src="userData" />
+                </a>
+                <div id="o_menu_systray" class="o_menu_systray collapse">
+                    <t t-foreach="systrayItems" t-as="item" t-key="item.key">
+                        <NotUpdatable>
+                            <ErrorHandler onError="error => handleItemError(error, item)">
+                                <t t-component="item.Component" t-props="item.props" />
+                            </ErrorHandler>
+                        </NotUpdatable>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//t[@t-if='currentAppSections.length and !env.isSmall']" position="replace">
+            <t t-if="currentAppSections.length" t-call="web.NavBar.SectionsMenu">
+                <t t-set="currentAppName" t-value="currentApp.name" />
+                <t t-set="currentAppIcon" t-value="currentApp.themeIconData" />
+                <t t-set="sections" t-value="currentAppSections" />
+            </t>
+        </xpath>
+    </t>
+    <t t-inherit="web.NavBar.SectionsMenu" t-inherit-mode="extension">
+        <xpath expr="//t[@t-call='web.NavBar.SectionsMenu.MoreDropdown']" position="inside">
+            <t t-set="currentAppName" t-value="currentAppName" />
+            <t t-set="currentAppIcon" t-value="currentAppIcon" />
+        </xpath>
+    </t>
+    <t t-inherit="web.NavBar.SectionsMenu.MoreDropdown" t-inherit-mode="extension">
+        <xpath expr="//Dropdown" position="attributes">
+            <attribute name="t-on-click">CloseUserMenu</attribute>
+        </xpath>
+        <xpath expr="//t[@t-set-slot='toggler']" position="after">
+            <div class="__main_menu" t-if="window['ejadTheme'].base_menu == 'theme_menu' or env.isSmall">
+                <div class="__menu_icon" t-attf-style="background-image: url(data:image/png;base64,{{currentAppIcon}})" />
+                <span class="__menu_title" t-esc="currentAppName" />
+            </div>
+        </xpath>
+    </t>
+    <t t-name="ehab_backend_theme.UserMenu" t-inherit="web.UserMenu" t-inherit-mode="extension">
+        <xpath expr="//Dropdown" position="replace">
+            <div class="o_user_menu" t-if="window['ejadTheme'].base_menu == 'theme_menu'" t-on-dropdown-item-selected.stop="onDropdownItemSelected">
+                <div class="o-dropdown--menu dropdown-menu d-block">
+                    <div class="__user">
+                        <div class="__user_circle h1 rounded-circle">
+                            <t t-esc="user.name[0]" />
+                        </div>
+                        <div class="__user_info h4 mb-4 text-center">
+                            <div class="mb-2 __name">
+                                <t t-esc="user.name" />
+                            </div>
+                            <div class="__db_name">
+                                <t t-if="env.debug" t-esc="' (' + user.db.name + ')'" />
+                            </div>
+                        </div>
+                    </div>
+                    <t t-foreach="getElements()" t-as="element" t-key="element_index">
+                        <t t-if="!element.hide">
+                            <UserMenuItem t-if="element.type == 'item'" payload="{ callback: element.callback, id: element.id }" href="element.href" t-esc="element.description" />
+                            <div t-if="element.type == 'separator'" role="separator" class="dropdown-divider" />
+                        </t>
+                    </t>
+                </div>
+            </div>
+            <Dropdown t-else="" class="o_user_menu" t-on-dropdown-item-selected.stop="onDropdownItemSelected">
+                <t t-set-slot="toggler">
+                    <img class="rounded-circle o_user_avatar" t-att-src="source" alt="User" />
+                </t>
+                <div class="__user">
+                    <div class="__user_circle h1 rounded-circle">
+                        <t t-esc="user.name[0]" />
+                    </div>
+                    <div class="__user_info h4 mb-4 text-center">
+                        <div class="mb-2 __name">
+                            <t t-esc="user.name" />
+                        </div>
+                        <div class="__db_name">
+                            <t t-if="env.debug" t-esc="' (' + user.db.name + ')'" />
+                        </div>
+                    </div>
+                </div>
+                <t t-foreach="getElements()" t-as="element" t-key="element_index">
+                    <t t-if="!element.hide">
+                        <UserMenuItem t-if="element.type == 'item'" payload="{ callback: element.callback, id: element.id }" href="element.href" t-esc="element.description" />
+                        <div t-if="element.type == 'separator'" role="separator" class="dropdown-divider" />
+                    </t>
+                </t>
+            </Dropdown>
+        </xpath>
+    </t>
+    <t t-name="ehab_backend_theme.CustomMenuLayout" owl="1">
+        <div class="__home_menu">
+            <div class="__editor btn btn-primary" t-on-click="onEditMenu">
+                <span class="fa fa-pencil" />
+            </div>
+            <div class="__search_menu">
+                <span label="Search" class="fa fa-search o_search_icon" role="img" title="Search" />
+                <input class="o_search_input" t-ref="input" t-on-input="_filterapps()" name="search_menu" placeholder="Search..." type="text" aria-autocomplete="list" aria-activedescendant="result_app_0" aria-haspopup="listbox" aria-expanded="true" role="combobox" autofocus="1" autocomplete="off" />
+            </div>
+            <div class="__menu_item" t-ref="mainContent">
+                <MenuItem t-foreach="menuApps" t-as="app" t-key="app.id" class="o_app select_app" payload="app">
+                <span t-attf-class="o_favorite {{state.menuEdit ? '' : 'd-none'}} {{state.favoriteMenuById[app.id] ? 'fa fa-star' : 'fa fa-star-o'}}" t-on-click='_onClickFavorite(app)' />
+                <div t-att-href='getMenuItemHref(app)' t-on-click="onNavBarDropdownItemSelection(app)">
+                    <div class="__app_img" t-attf-style="background-image: url(data:image/png;base64,{{app.webIconData}})" />
+                    <span class="name" t-esc="app.label or app.name" />
+                </div>
+                </MenuItem>
+                <div class="__items_view" t-if="menuLinks.length">
+                    <t t-set="appsItems" t-value="menuLinks" />
+                    <a class="__items select_app" t-foreach="appsItems" t-as="appsItem" t-att-href="appsItem.href ? appsItem.href : ('#menu_id='+appsItem.id+'&amp;action_id='+appsItem.actionID)">
+                        <span class="__parent text-muted" t-esc="appsItem.parents" />
+                        <span class="my-2"> / </span>
+                        <span class="__label" t-esc="appsItem.label" />
+                    </a>
+                </div>
+            </div>
+            <div class="__active_company d-none mt-5 mb-5 text-center">
+                <img t-att-src="getCurrentCompany()" />
+            </div>
+        </div>
+    </t>
+</templates>

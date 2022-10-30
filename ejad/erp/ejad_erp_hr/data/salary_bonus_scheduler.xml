@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_employee_yearly_salary_bonus_action" model="ir.cron">
+            <field name="name">employee Yearly salary bonus</field>
+            <field name="interval_number">12</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="nextcall">2020-01-01 00:00:00</field>
+            <field name="model_id" ref="model_salary_bonus"/>
+            <field name="code">model.employee_yearly_salary_bonus()</field>
+            <field name="state">code</field>
+        </record>
+    </data>
+
+    <data noupdate="1">
+        <record id="ir_cron_employee_update_housing_action" model="ir.cron">
+            <field name="name">Contracts Update Housing</field>
+            <field name="interval_number">12</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="nextcall">2021-01-01 00:00:00</field>
+            <field name="model_id" ref="model_salary_bonus"/>
+            <field name="code">model.employee_update_housing()</field>
+            <field name="state">code</field>
+        </record>
+    </data>
+
+</odoo>

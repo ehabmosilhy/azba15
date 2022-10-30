@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+
+    <!--<delete	model="res.groups" id="purchase.group_purchase_user"/>-->
+    <!--<delete	model="res.groups" id="purchase.group_purchase_manager"/>-->
+
+    <!-- Begin procurement groups -->
+    <record id="group_purchase_user" model="res.groups">
+        <field name="name">مندوب مشتريات</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+
+    <record id="group_purchase_general_moderator" model="res.groups">
+        <field name="name">مشرف الشؤون العامة</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+
+    <record id="group_purchase_strategy_moderator" model="res.groups">
+        <field name="name">مشرف المشاريع الاستراتيجية</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+
+    <record id="group_purchase_academic_moderator" model="res.groups">
+        <field name="name">مشرف الشؤون الأكاديمية</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="group_show_product_qty_onhand" model="res.groups">
+        <field name="name">إظهار الكمية المتوفرة  للمنتج في طلب تأمين المواد</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+
+    <record id="group_purchase_std_commitee" model="res.groups">
+        <field name="name">اللجنة الدائمة للمشتريات والمشاريع</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+
+    <record id="group_purchase_manager" model="res.groups">
+        <field name="name">مدير قسم المشتريات</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+        <record id="hr_requisition_employee_itself_direct_manager" model="res.groups">
+        <field name="name">صلاحية المدير المباشر لنفس الموظف</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="hr_requisition_direct_manager" model="res.groups">
+        <field name="name">صلاحية المدير المباشر </field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="purchase_requisition_procurements_unit" model="res.groups">
+        <field name="name">مسؤول المشتريات </field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="purchase_support_services_manage" model="res.groups">
+        <field name="name">مدير إدارة الخدمات المساندة </field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="purchase_office_leader" model="res.groups">
+        <field name="name">قائد المكتب </field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="purchase_office_leader" model="res.groups">
+        <field name="name">قائد المكتب </field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="group_purchase_requisition_request_menu" model="res.groups">
+        <field name="name">قائمة طلبات التأمين </field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="group_purchase_requisition_request_project_menu" model="res.groups">
+        <field name="name">قائمة طلبات المشاريع </field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="group_direct_purchase_menu" model="res.groups">
+        <field name="name">قائمة الشراء المباشر</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="group_direct_internal_purchase_menu" model="res.groups">
+        <field name="name">قائمة الشراء المباشر الداخلي</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="group_purchase_order_menu" model="res.groups">
+        <field name="name">قائمة أوامر الشراء </field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="group_ta3med_purchase_menu" model="res.groups">
+        <field name="name">قائمة التعميد</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="group_vendors_menu" model="res.groups">
+        <field name="name">قائمة الموردين</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="group_product_menu" model="res.groups">
+        <field name="name">قائمة المنتجات</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+    <record id="group_purchase_reports_menu" model="res.groups">
+        <field name="name">قائمة التقارير</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+
+     <record id="group_managers_administrative_units" model="res.groups">
+        <field name="name">مدراء الوحدات الإدارية</field>
+       <field name="category_id" ref="base.module_category_inventory_purchase"/>
+       <field name="comment">يمنح لمدراء الوحدات الإدارية صلاحية إنشاء سجلات الشراء المباشر الداخلى</field>
+    </record>
+
+
+    <record id="group_chat_main_menu" model="res.groups">
+        <field name="name">قائمة المحادثاث</field>
+    </record>
+
+    <record id="group_financial_audit_unit" model="res.groups">
+        <field name="name">وحدة المراجعة المالية</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+
+    <record id="group_purchase_accountant" model="res.groups">
+        <field name="name">محاسب المشتريات</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+
+    <record model="ir.module.category" id="module_invoices_purchase">
+            <field name="name">فواتير المصروفات</field>
+        </record>
+
+    <record id="group_mdqq_accountant" model="res.groups">
+        <field name="name">مدقق الحسابات</field>
+        <field name="category_id" ref="module_invoices_purchase"/>
+    </record>
+
+    <record id="group_mgr_accountant" model="res.groups">
+        <field name="name"> المدير المالي</field>
+        <field name="category_id" ref="module_invoices_purchase"/>
+    </record>
+
+    <record id="group_murageb_accountant" model="res.groups">
+        <field name="name"> المراقب المالي</field>
+        <field name="category_id" ref="module_invoices_purchase"/>
+    </record>
+
+    <!-- TODO: return back purchase security group depend on employee permission levels-->
+    <!-- End procurement groups -->
+    <!--<data noupdate="0">-->
+        <!--&lt;!&ndash;   Purchase Request Model   &ndash;&gt;-->
+
+    <!--<record id="access_all_purchase_requests_data" model="ir.rule">-->
+            <!--<field name="name">قراءة كل طلبات تأمين المواد</field>-->
+            <!--<field name="model_id" ref="ejad_erp_purchase.model_purchase_requisition_request"/>-->
+            <!--<field name="domain_force">[(1, '=', 1)]</field>-->
+            <!--<field name="groups" eval="[(4, ref('ejad_erp_hr.access_all_requests'))]"/>-->
+    <!--</record>-->
+
+    <!--<record id="access_purchase_request_employee_management" model="ir.rule">-->
+            <!--<field name="name">قراءة طلبات تأمين المواد موظفين الادارة</field>-->
+            <!--<field name="model_id" ref="ejad_erp_purchase.model_purchase_requisition_request"/>-->
+            <!--<field name="domain_force">['|', ('employee_id.parent_id', '=', user.employee_ids and-->
+                <!--user.employee_ids[0].id or -1),-->
+                <!--('employee_id.department_id', 'child_of', user.employee_ids and-->
+                <!--user.employee_ids[0].department_id.id or [])]</field>-->
+            <!--<field name="groups" eval="[(4, ref('ejad_erp_hr.access_department_employee_only'))]"/>-->
+    <!--</record>-->
+
+    <!--<record id="access_purchase_request_employee_direct_manager" model="ir.rule">-->
+        <!--<field name="name">قراءة طلبات تأمين المواد الموظفين المرؤوسن</field>-->
+        <!--<field name="model_id" ref="ejad_erp_purchase.model_purchase_requisition_request"/>-->
+        <!--<field name="domain_force">['|', ('employee_id.parent_id', '=', user.employee_ids and-->
+                <!--user.employee_ids[0].id or -1),-->
+            <!--('employee_id.user_id', '=', user.id)]</field>-->
+        <!--<field name="groups" eval="[(4, ref('ejad_erp_hr.access_direct_employee_manager_only'))]"/>-->
+    <!--</record>-->
+
+    <!--<record id="access_self_purchase_request_employee" model="ir.rule">-->
+        <!--<field name="name">قراءة طلبات تأمين المواد الموظف نفسه</field>-->
+        <!--<field name="model_id" ref="ejad_erp_purchase.model_purchase_requisition_request"/>-->
+        <!--<field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>-->
+        <!--<field name="groups" eval="[(4, ref('ejad_erp_hr.access_general_employee_only'))]"/>-->
+    <!--</record>-->
+
+    <!--</data>-->
+
+</odoo>

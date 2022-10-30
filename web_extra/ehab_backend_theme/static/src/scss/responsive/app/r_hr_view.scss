@@ -1,0 +1,29 @@
+@mixin r-ht-view() {
+    .o_action_manager {
+        .o_action {
+            .o_content {
+                .o_hr_attendance_kiosk_mode_container {
+                    justify-content: center;
+
+                    .o_hr_attendance_kiosk_mode {
+                        flex: unset;
+                        padding: 5px !important;
+                        padding-bottom: 10px !important;
+                        justify-content: flex-start;
+
+                        .o_hr_attendance_user_badge {
+                            margin-top: 0;
+                            border-bottom: 6px solid var(--border);
+                            padding: 10px 0;
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.o_web_client.ad_mobile {
+    @include r-ht-view();
+}

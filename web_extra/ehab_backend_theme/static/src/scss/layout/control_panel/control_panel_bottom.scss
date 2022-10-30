@@ -1,0 +1,68 @@
+@mixin control-panel-bottom() {
+    @include slide-animation();
+
+    .o_cp_bottom_left {
+        justify-content: flex-end;
+        align-items: center;
+
+        .o_cp_buttons {
+            white-space: nowrap;
+
+            .btn {
+                margin: 0 3px;
+            }
+        }
+
+        .o-dropdown {
+            .fa-caret-down {
+                transform: rotate(180deg);
+            }
+        }
+
+        .dropdown-menu {
+            .dropdown-item {
+                padding: 3px 30px;
+
+                &:before {
+                    content: "";
+                    height: 20px;
+                    width: 20px;
+                    position: absolute;
+                    left: 6px;
+                    border: 2px solid var(--Label);
+                    color: transparent;
+                    background-color: transparent;
+                    text-align: center;
+                    top: auto;
+                    transform: none;
+                }
+
+                &.selected {
+                    &:before {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        content: "\f00c";
+                        color: var(--Label-value);
+                        background-color: transparent;
+                        font-size: 11px;
+                    }
+                }
+            }
+        }
+    }
+
+    .o_cp_bottom_right {
+        .o_cp_pager {
+            .btn-group {
+
+                .o_pager_previous,
+                .o_pager_next {
+                    border: 0;
+                    color: var(--button-box);
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+}

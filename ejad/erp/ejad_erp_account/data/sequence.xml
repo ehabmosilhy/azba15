@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_reverse_entry_request" model="ir.sequence">
+        <field name="name">Reverse Entry Request</field>
+        <field name="code">reverse.entry.request</field>
+        <field name="padding">6</field>
+        <field name="number_increment">1</field>
+        <field name="implementation">no_gap</field>
+    </record>
+    <record id="seq_payment_bank_seq" model="ir.sequence">
+        <field name="name">Payment Bank Cash Seq</field>
+        <field name="code">payment.bank.seq</field>
+        <field name="padding">6</field>
+        <field name="number_increment">1</field>
+        <field name="prefix">BANK/</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+    <record id="seq_payment_cash_seq" model="ir.sequence">
+        <field name="name">Payment Bank Cash Seq</field>
+        <field name="code">payment.cash.seq</field>
+        <field name="padding">6</field>
+        <field name="number_increment">1</field>
+        <field name="prefix">CASH/</field>
+        <field name="implementation">no_gap</field>
+    </record>
+
+</odoo>

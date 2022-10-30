@@ -1,0 +1,262 @@
+<odoo>
+    <template id="purchase_requisition_request_report">
+        <t t-call="web.html_container">
+
+            <t t-foreach="docs" t-as="o">
+                <!--<div class="header">-->
+                <!--<div></div>-->
+                <!--</div>-->
+                <!--<div class="footer">-->
+                <!--<div></div>-->
+                <!--</div>-->
+                <t t-call="ejad_erp_purchase.nauss_header"/>
+                <!--<t t-call="ejad_erp_purchase.nauss_footer"/>-->
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-xs-12" style="text-align:center">
+                                <h4>
+                                    طلب تامين مواد
+                                </h4>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+
+                            <div class="col-xs-8">
+
+                            </div>
+
+
+                            <div class="col-xs-4">
+                                رقم طلب تأمين المواد
+                                :
+                                <span t-field="o.name"/>
+
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-8">
+
+                            </div>
+
+
+                            <div class="col-xs-4">
+                                الجهة الطالبة
+                                :
+                                <span t-field="o.employee_id.department_id.name"/>
+
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-4">
+
+                            </div>
+                            <div class="col-xs-4">
+                                تاريخ الاحتياج:
+                                <span t-field="o.requested_date" t-field-options='{"format": "yyyy/MM/dd"}'/>
+
+                            </div>
+
+                            <div class="col-xs-4">
+                                تاريخ الطلب:
+                                <span t-field="o.date" t-field-options='{"format": "yyyy/MM/dd"}'/>
+
+                            </div>
+
+
+                        </div>
+                        <br/>
+                        <table class="table Black_border" style="border: 1px solid Black">
+
+                            <tr style="border-top: 1px solid Black">
+                                <td class="text-center">
+                                    <b>م.</b>
+                                </td>
+
+                                <td colspan="2" class="text-center">
+                                    <b>اسم الصنف</b>
+                                </td>
+
+                                <td colspan="2" class="text-center">
+                                    <b>الوصف</b>
+                                </td>
+                                <td class="text-center">
+                                    <b>العلامة التجارية</b>
+                                </td>
+                                <td class="text-center">
+                                    <b>الكمية</b>
+                                </td>
+                                <td class="text-center">
+                                    <b>الوحدة</b>
+                                </td>
+                            </tr>
+                            <t t-set="seq" t-value="1"/>
+
+                            <t t-foreach="o.line_ids" t-as="i">
+                                <tr>
+                                    <td>
+                                        <span t-esc="seq"/>
+                                    </td>
+                                    <td colspan="2">
+                                        <span t-esc="i.product_id.name"/>
+                                    </td>
+                                    <td colspan="2">
+                                        <span t-esc="i.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.trade_mark"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.requested_qty"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="i.product_uom_id.name"/>
+                                    </td>
+
+
+                                </tr>
+                                <t t-set="seq" t-value="seq+1"/>
+
+                            </t>
+
+                        </table>
+                        <div class="row" style="font-size:14 px">
+                            <!--<div class="col-xs-3">-->
+                                <!--التاريخ:-->
+                                <!--<div style="display: inline-block;border-bottom:1px dotted Black;width:120px;"></div>-->
+                            <!--</div>-->
+
+
+                            <!--<div class="col-xs-3">-->
+                                <!--التوقيع:-->
+                                <!--<div style="display: inline-block;border-bottom:1px dotted Black;width:120px;"></div>-->
+                            <!--</div>-->
+                            <div class="col-xs-9">
+                                <span style="padding:15px;margin:15px">الموظف المختص</span>
+
+                                الاسم:
+                                <span t-esc="o.employee_id.name"/>
+
+
+                            </div>
+
+                        </div>
+                        <br/>
+                        <div class="row" style="font-size:14 px">
+
+                            <!--<div class="col-xs-3">-->
+                                <!--التاريخ:-->
+                                <!--<div style="display: inline-block;border-bottom:1px dotted Black;width:120px;"></div>-->
+                            <!--</div>-->
+                            <!--<div class="col-xs-3">-->
+                                <!--التوقيع:-->
+                                <!--<div style="display: inline-block;border-bottom:1px dotted Black;width:120px;"></div>-->
+                            <!--</div>-->
+                            <div class="col-xs-9">
+                                <span style="padding:15px;margin:20px">المدير المباشر</span>
+
+                                الاسم:
+                                <span t-esc="o.sudo().employee_id.parent_id.name"/>
+
+
+                            </div>
+
+                        </div>
+                        <br/>
+                        <div class="row" style="font-size:14 px">
+                            <!--<div class="col-xs-3">-->
+                                <!--التاريخ:-->
+                                <!--<div style="display: inline-block;border-bottom:1px dotted Black;width:120px;"></div>-->
+                            <!--</div>-->
+
+                            <!--<div class="col-xs-3">-->
+                                <!--التوقيع:-->
+                                <!--<div style="display: inline-block;border-bottom:1px dotted Black;width:120px;"></div>-->
+                            <!--</div>-->
+                            <div class="col-xs-9">
+                                <span style="padding:15px;margin:4px">مسؤول الجهة الطالبة</span>
+
+                                الاسم:
+                                <div style="display: inline-block;border-bottom:1px dotted Black;width:120px;"></div>
+
+
+                            </div>
+
+                        </div>
+
+                        <style>
+
+                            .Black_border td{
+                            border: 1px solid Black !important;
+
+                            }
+                            .border_left td{
+                            border-left: 1px solid Black !important;
+                            border-bottom: none !important;
+                            border-top: none !important;
+
+                            }
+                            .border_right td{
+                            border: 1px solid Black !important;
+
+                            }
+                            .square {
+                            height:20 px;
+                            width:20 px;
+                            border:1px solid Black
+                            }
+                        </style>
+                    </div>
+        <div class="footer o_background_footer">
+            <div class="text-center" t-if="o.state in ('director','accepted','delivered','')">
+               تم الاعتماد الكترونياً و لا يحتاج الى توقيع
+            </div>
+            <div class="text-center">
+                <ul class="list-inline">
+                    <li t-if="o.env.user.company_id.phone">
+                        <i class="fa fa-phone"/>
+                        <span t-field="o.env.user.company_id.phone"/>
+                    </li>
+                    <li t-if="o.env.user.company_id.email">
+                        <i class="fa fa-at"/>
+                        <span t-field="o.env.user.company_id.email"/>
+                    </li>
+                    <li t-if="o.env.user.company_id.website">
+                        <i class="fa fa-globe"/>
+                        <span t-field="o.env.user.company_id.website"/>
+                    </li>
+                    <li t-if="o.env.user.company_id.vat">
+                        <i class="fa fa-building-o"/>
+                        <t t-esc="o.env.user.company_id.country_id.vat_label or 'Vat'"/>:
+                        <span t-field="o.env.user.company_id.vat"/>
+                    </li>
+                </ul>
+                <div t-field="o.env.user.company_id.report_footer"/>
+                <div class="text-muted">
+                    Page:
+                    <span class="page"/>
+                    of
+                    <span class="topage"/>
+                </div>
+            </div>
+        </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <report
+            id="purchase_requisition_request_report_action"
+            string="طلب تأمين مواد"
+            model="purchase.requisition.request"
+            report_type="qweb-pdf"
+            file="ejad_erp_purchase.purchase_requisition_request_report"
+            name="ejad_erp_purchase.purchase_requisition_request_report"
+    />
+</odoo>

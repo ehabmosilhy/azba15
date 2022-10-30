@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="SearchPanel.MobileViewActiveFilters" owl="1">
+        <div class="d-flex align-items-center h-100">
+            <i class="search_panel_collapse fa fa-fw fa-filter" />
+            <div class="selection_filter search_panel_collapse text-truncate ml-2 mr-auto">
+                <span t-if="emptySelection">Filters...</span>
+                <t t-else="!emptySelection">
+                    <span t-foreach="categories" t-as="category" t-key="category.id" class="filter_category mr-1">
+                        <i t-if="category.icon" t-attf-class="filter_icon fa {{category.icon}} mr-1" t-attf-style="{{category.color ? ('color: ' + category.color) : undefined}}" />
+                        <t t-esc="category.values.join('/')" />
+                    </span>
+                    <span t-foreach="filters" t-as="filter" t-key="filter.id" class="o_filter mr-1">
+                        <i t-if="filter.icon" t-attf-class="filter_icon fa {{filter.icon}} mr-1" t-attf-style="{{filter.color ? ('color: ' + filter.color) : undefined}}" />
+                        <t t-esc="filter.values.join(', ')" />
+                    </span>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

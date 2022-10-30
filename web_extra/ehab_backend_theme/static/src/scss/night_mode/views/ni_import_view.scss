@@ -1,0 +1,73 @@
+@mixin sync_import_view() {
+    .oe_import {
+        color: var(--font-color);
+
+        .oe_import_with_file {
+            .table-responsive {
+                thead {
+                    tr {
+
+                        &.oe_import_grid-header,
+                        &.oe_import_fields {
+                            td {
+                                background-color: var(--night);
+                                color: var(--font-color);
+                                border-color: var(--border);
+                            }
+
+                            .oe_import_match_field {
+                                .select2-choice {
+                                    background-color: var(--btn-secondary);
+                                    background-image: none;
+                                    color: var(--font-color);
+                                    border-color: var(--border);
+                                    box-shadow: none;
+
+                                    .select2-arrow {
+                                        background: var(--night-light);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                tbody {
+                    tr {
+                        background-color: var(--btn-secondary);
+
+                        td {
+                            color: var(--font-color);
+                            border-color: var(--border);
+                        }
+                    }
+                }
+
+                table.bg-white {
+                    background-color: var(--btn-secondary) !important;
+                }
+            }
+        }
+
+        .oe_import_box {
+            background-color: var(--btn-secondary) !important;
+            color: var(--font-color);
+
+            .oe_import_with_file {
+                background-color: transparent;
+            }
+
+            .oe_import_toggle {
+                color: var(--font-color);
+
+                &:before {
+                    color: var(--font-color);
+                }
+            }
+        }
+
+        .oe_import_with_file {
+            background-color: var(--btn-secondary);
+        }
+    }
+}

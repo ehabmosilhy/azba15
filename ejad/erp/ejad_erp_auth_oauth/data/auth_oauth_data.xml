@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo noupdate="1">
+    <record id="provider_microsoft" model="auth.oauth.provider">
+        <field name="name">Microsoft OAuth2</field>
+        <field name="auth_endpoint">https://login.microsoftonline.com/common/oauth2/v2.0/authorize</field>
+        <field name="scope">openid profile email</field>
+        <field name="validation_endpoint">https://login.microsoftonline.com/common/oauth2/v2.0/token</field>
+        <field name="css_class">fa fa-fw fa-windows</field>
+        <field name="body">Log in with Microsoft</field>
+        <field name="response_type">code</field>
+    </record>
+
+    <record model="ir.config_parameter" id="mixrosoft_url_redirect">
+        <field name="key">ejad_erp_auth_oauth.return_url</field>
+        <field name="value">http://localhost:8014/</field>
+    </record>
+
+</odoo>

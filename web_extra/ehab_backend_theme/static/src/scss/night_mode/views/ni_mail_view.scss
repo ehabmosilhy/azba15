@@ -1,0 +1,272 @@
+@mixin mail_view() {
+    .o_Discuss {
+        .o_DiscussSidebar {
+            background-color: var(--btn-secondary) !important;
+
+            .o_DiscussSidebar_item {
+
+                &.o-active,
+                &:hover {
+                    background-color: var(--night);
+                    box-shadow: inset 3px 0 0 var(--brand-secondary);
+                }
+            }
+        }
+
+        .o_DiscussSidebar_category {
+            .o_DiscussSidebarMailbox {
+
+                &.o-active,
+                &:hover {
+                    background-color: var(--night);
+                }
+            }
+        }
+
+        .o_DiscussSidebarCategory {
+            .o_DiscussSidebarCategory_content {
+                .o_DiscussSidebarCategoryItem {
+
+                    &.o-active,
+                    &:hover {
+                        background-color: var(--night);
+                    }
+                }
+            }
+        }
+
+        .o_Discuss_content {
+            border-right: 1px solid var(--border);
+
+            .o_ThreadView {
+                background-color: var(--btn-secondary);
+
+                .o_MessageList {
+                    background-color: var(--btn-secondary);
+
+                    .o_Message {
+                        background-color: var(--btn-secondary);
+
+                        &.o-not-discussion {
+                            border-bottom: 1px solid var(--border);
+                            background-color: var(--night-light);
+                        }
+                    }
+                }
+
+                .o_Message_core {
+                    .o_AttachmentList_partialList {
+                        .o_Attachment.o-has-card-details {
+                            background-color: var(--night);
+                        }
+                    }
+                }
+
+                .o_Composer {
+                    background-color: var(--night);
+
+                    .o_Composer_coreMain {
+                        background-color: var(--btn-secondary);
+
+                        .o_ComposerTextInput {
+                            background-color: var(--btn-secondary);
+
+                            .o_ComposerTextInput_textarea {
+                                background-color: var(--btn-secondary);
+                                color: var(--font-color);
+                            }
+                        }
+
+                        .o_Composer_buttons {
+                            .o_Composer_toolButtons {
+                                background-color: transparent;
+                            }
+
+                            .o_Composer_button {
+                                color: white;
+                                background-color: var(--night-light);
+
+                                &:hover {
+                                    background-color: var(--btn-primary);
+                                }
+                            }
+                        }
+
+                        .o_Composer_actionButtons {
+                            .o_Composer_actionButton {
+                                background-color: var(--btn-primary);
+                                color: white;
+
+                                &:hover {
+                                    background-color: var(--btn-secondary);
+                                }
+                            }
+                        }
+                    }
+
+                    .o_Composer_coreFooter {
+                        .o_AttachmentList {
+                            .o_AttachmentList_partialList {
+                                .o_Attachment {
+                                    background-color: var(--night-light);
+
+                                    .o_Attachment_asideItemUploaded {
+                                        color: var(--btn-primary);
+                                    }
+
+                                    .o_Attachment_asideItemUnlink {
+                                        background-color: var(--btn-primary);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .o_ThreadView_core {
+                    .o_MessageList_empty {
+                        color: var(--font-color);
+                    }
+                }
+            }
+
+            &>hr {
+                border-color: var(--border);
+            }
+
+            .o_mail_sidebar_title {
+
+                h4,
+                .o_add {
+                    color: var(--font-color);
+                }
+            }
+
+            .o_mail_add_thread>input {
+                background-color: var(--night-light);
+                border: 0;
+                color: var(--font-color);
+            }
+
+            .o_MessageList_separator {
+                .o_MessageList_separatorLine {
+                    border-color: var(--border);
+                }
+
+                .o_MessageList_separatorLabel {
+                    background-color: transparent !important;
+                }
+            }
+
+            .o_ThreadViewTopbar {
+                background-color: var(--night-light);
+                border: 0 !important;
+
+                .o_ThreadViewTopbar_actions {
+                    background-color: var(--night-light);
+                    border-top: 0 !important;
+
+                    .o_PopoverView {
+                        background-color: var(--night-light);
+                        border: 0;
+                    }
+                }
+
+                .o_ThreadViewTopbar_threadDescription,
+                .o_ThreadViewTopbar_threadName {
+
+                    &.o-threadDescriptionEditable,
+                    &.o-threadNameEditable {
+                        background-color: transparent;
+                        border: 0;
+                    }
+                }
+            }
+
+            .o_ThreadView_bottomPart {
+                .o_MessageList {
+                    .o_Message {
+                        .o_Message_actionListContainer {
+                            .o_MessageActionList {
+                                background-color: var(--night);
+                                border: 0;
+                            }
+                        }
+                    }
+
+                    .o_AttachmentList {
+                        .o_AttachmentList_attachment {
+                            border: 0;
+
+                            .o_AttachmentCard {
+                                background-color: var(--night) !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.o-mobile {
+            background-color: var(--night);
+            border-color: var(--border);
+
+            .o_DiscussMobileMailboxSelection {
+                border-bottom: 0 !important;
+
+                >button {
+                    background-color: var(--btn-secondary);
+
+                    &.o-active {
+                        background-color: var(--night-hover);
+                    }
+                }
+            }
+
+            .o_ThreadViewTopbar {
+                background-color: var(--btn-secondary);
+                border: 0 !important;
+            }
+
+            .o_ThreadView {
+                background-color: var(--night);
+
+                .o_MessageList {
+                    background-color: var(--night);
+
+                    .o_Message {
+                        background-color: var(--btn-secondary);
+                    }
+
+                    .o_MessageList_separator {
+                        .o_MessageList_separatorLabel {
+                            background-color: var(--night-light);
+                        }
+                    }
+                }
+            }
+
+            .o_MobileMessagingNavbar {
+                background-color: var(--btn-secondary);
+            }
+
+            .o_NotificationList {
+                .o_ThreadPreview {
+                    background-color: var(--btn-secondary);
+                }
+
+                .o_NotificationList_separator {
+                    border-color: var(--border);
+                }
+            }
+
+            .o_MobileMessagingNavbar {
+                .o_MobileMessagingNavbar_tab {
+                    &.o-active {
+                        background: var(--btn-primary);
+                    }
+                }
+            }
+        }
+    }
+}

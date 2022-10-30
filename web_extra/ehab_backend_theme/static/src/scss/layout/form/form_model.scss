@@ -1,0 +1,411 @@
+// Wizard form view - [stop]
+.o_web_client {
+    .modal-backdrop.in {
+        opacity: 1;
+        background-color: $bg-light;
+    }
+
+    .modal-dialog {
+        .modal-content {
+            box-shadow: $box-shadow;
+            @include ad-notbook-editer();
+
+            .modal-body.o_act_window {
+                .o_form_view {
+                    @include form_view_layout();
+
+                    .toggle_btn_chatter {
+                        display: none;
+                    }
+                }
+
+                .o_form_nosheet {
+                    @include form_panel();
+
+                    .o_external_button {
+                        color: var(--brand-secondary);
+                        box-shadow: none;
+                        background-color: transparent;
+
+                        &:hover,
+                        &:focus,
+                        &:active {
+                            color: darken($brand-secondary, 7%);
+                            box-shadow: none;
+                            background-color: transparent;
+                        }
+                    }
+                }
+            }
+
+            .modal-body.o_export {
+                .o_export_panel {
+                    display: flex;
+                    width: 100%;
+                    position: relative;
+                    height: 100%;
+
+                    .o_left_panel,
+                    .o_center_panel,
+                    .o_right_panel {
+                        flex: 1 1 auto;
+                        position: relative;
+                        padding: 15px;
+                        left: auto;
+                        right: auto;
+                        height: auto;
+                        border: 1px solid var(--border);
+
+                        .o_left_field_panel,
+                        .o_right_field_paneo_tree_columnl {
+                            border: 0;
+
+                            .o_field_tree_structure {
+                                .o_required {
+                                    border-bottom: none;
+                                    @include border-animation();
+                                }
+
+                                .o_selected {
+                                    &>.o_tree_column {
+                                        background-color: var(--brand-secondary);
+                                    }
+                                }
+                            }
+                        }
+
+                        .o_fields_list {
+                            color: var(--Label-value);
+                            border: 0;
+                        }
+
+                        .o_save_list {
+                            input {
+                                margin: 0 10px;
+                                border: 0;
+                                border-bottom: 1px solid var(--border);
+
+                                &:focus {
+                                    @include border-animation();
+                                }
+                            }
+                        }
+                    }
+
+                    .o_center_panel {
+                        margin: 0 15px;
+                        border: 0;
+                    }
+                }
+            }
+
+            .modal-footer {
+                text-align: right;
+                justify-content: flex-end;
+                padding: 8px;
+
+                table.o_group.o_inner_group {
+                    width: 100%;
+                }
+
+                button {
+                    margin-left: 5px;
+                    padding: 4px 8px;
+                }
+
+                .o_external_button {
+                    color: var(--brand-secondary);
+
+                    &:active,
+                    &:hover,
+                    &:focus {
+                        background-color: transparent;
+                        color: darken($brand-secondary, 7%);
+                    }
+                }
+            }
+
+            .modal-header {
+                .close {
+                    color: var(--button-box);
+                    opacity: 1;
+                    font-size: $font-size-4;
+                    padding: 0px 10px;
+                    margin: 0;
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+
+                h4 {
+                    flex: 1 1 100%;
+                }
+            }
+        }
+
+        &.o_select_media_dialog {
+            .modal-content {
+                .modal-body {
+                    .nav.nav-tabs {
+                        .nav-item.ml-auto.search {
+                            margin: 0;
+                            width: 50%;
+
+                            .form-group {
+                                margin: 0;
+                            }
+                        }
+
+                        .nav-item.search:not(.ml-auto) {
+                            display: table;
+                            text-align: right;
+                            width: 100%;
+                            padding: 10px 0px;
+
+                            .btn-group {
+                                a:first-child {
+                                    margin-right: 5px;
+                                }
+
+                                a {
+                                    color: var(--brand-secondary);
+
+                                    &:hover {
+                                        background-color: var(--brand-secondary);
+                                        color: $white;
+                                    }
+
+                                    &.disable {
+                                        cursor: not-allowed;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .tab-content {
+                        .tab-pane.fade {
+                            .form-inline {
+                                .card {
+                                    border: 0;
+
+                                    .form-inline {
+                                        .btn-group {
+                                            width: 100%;
+                                            padding: 10px 0;
+                                        }
+
+                                        .input-group {
+                                            .input-group-append {
+                                                margin-left: 15px;
+                                            }
+                                        }
+
+                                        input {
+                                            border: 0;
+                                            border-bottom: 1px solid var(--border);
+                                            border-radius: 0;
+                                            color: var(--Label-value);
+                                            padding: 0;
+                                            min-height: 24px;
+
+                                            &:focus {
+                                                box-shadow: none;
+                                                @include border-animation();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .o_planner_dialog {
+        &>.modal-dialog>.modal-content>.modal-header {
+            background-color: var(--brand-primary);
+
+            .close {
+                color: $white;
+            }
+
+            .modal-title {
+                .progress {
+                    .progress-bar {
+                        background-color: var(--brand-secondary);
+                        border: 1px solid $white;
+                    }
+                }
+            }
+        }
+
+        &>.modal-dialog>.modal-content>.modal-body {
+            &>.o_planner_menu {
+                &>li {
+                    text-indent: 0px;
+                    padding: 5px 18px;
+
+                    a {
+                        padding-left: 10px;
+                    }
+
+                    &.active {
+                        &>a {
+                            color: var(--link);
+
+                            &:hover {
+                                color: darken($link, 7%);
+                            }
+                        }
+                    }
+
+                    &>a {
+                        &:hover {
+                            color: darken($link, 7%);
+                        }
+                    }
+                }
+
+                h4 {
+                    color: $text-muted;
+                }
+
+                .fa-check {
+                    &:before {
+                        content: "\f00c";
+                        position: absolute;
+                        height: 20px;
+                        width: 20px;
+                        left: 0px;
+                        border: 2px solid var(--Label);
+                        color: var(--Label-value);
+                        background-color: transparent;
+                        text-align: center;
+                    }
+                }
+            }
+
+            &>.o_planner_page {
+                &.marked {
+                    &:after {
+                        color: var(--brand-primary);
+                    }
+                }
+
+                h1 {
+                    font-weight: bold;
+
+                    &[data-icon]:before {
+                        color: var(--button-box);
+                    }
+                }
+
+                .panel.panel-success {
+                    border-color: var(--border);
+
+                    .panel-heading {
+                        background-color: rgba($brand-success, .10);
+                        border-radius: 0px;
+                        color: $brand-success;
+                        border-top-right-radius: 0px;
+                        border-top-left-radius: 0px;
+                    }
+                }
+
+                .alert-info,
+                .well {
+                    background-color: $tr-hover;
+                    border: 0;
+                    color: var(--Label-value);
+                }
+
+                .label.odoo_purple,
+                .btn.odoo_purple {
+                    background-color: var(--brand-secondary);
+                    color: $white;
+
+                    .fa {
+                        color: $white;
+                    }
+                }
+
+                .o_planner_notebook {
+                    background-color: $tr-hover;
+                    border: 0;
+                    color: var(--Label-value);
+                    font-family: 'roboto';
+
+                    &>li {
+                        border: 0;
+
+                        &:hover {
+                            background-color: rgba($brand-primary, .10);
+                        }
+
+                        span {
+                            color: var(--brand-secondary);
+                        }
+                    }
+                }
+
+                .o_planner_notebook_line_separator {
+                    border: 0;
+                }
+
+                .o_planner_notebook_header select,
+                .o_planner_notebook_container .o_planner_notebook textarea,
+                .o_planner_notebook_container .o_planner_notebook input[type="text"] {
+                    background-color: transparent;
+                    background: transparent;
+                    border: 0;
+                    height: 34px !important;
+                    border-bottom: 1px solid var(--border);
+                    color: var(--Label-value);
+
+                    &:focus {
+                        @include border-animation();
+                    }
+                }
+
+                .o_planner_notebook_header a {
+                    color: var(--Label-value);
+                }
+
+                .o_planner_paragraphs {
+                    &>.icon {
+                        color: var(--button-box);
+                    }
+                }
+
+                .fa {
+                    color: var(--button-box);
+                }
+
+                table,
+                thead,
+                td,
+                tr,
+                th {
+                    border-color: var(--border);
+                }
+
+                h1,
+                h2,
+                h3,
+                h4,
+                h5,
+                h6,
+                strong {
+                    color: var(--Label-value);
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+
+// Wizard form view - [stop]

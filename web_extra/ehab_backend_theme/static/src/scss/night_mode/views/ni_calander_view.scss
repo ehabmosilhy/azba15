@@ -1,0 +1,170 @@
+@mixin sync_calander_view() {
+    .o_calendar_container {
+        &>.o_calendar_view {
+            background-color: var(--night-light);
+
+            &>.o_calendar_widget {
+                &>.fc-view-container {
+                    table {
+                        .fc-head {
+                            background-color: var(--night);
+
+                            tr {
+                                .fc-head-container {
+                                    border-bottom-color: var(--border);
+
+                                    .fc-widget-header {
+                                        table {
+                                            thead {
+                                                tr {
+                                                    th {
+                                                        color: var(--font-color);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .fc-body {
+                            background-color: var(--night-light);
+
+                            tr {
+                                td {
+                                    color: var(--font-color);
+                                }
+                            }
+
+                            .fc-event-container {
+                                &>a {
+                                    color: $white;
+                                }
+                            }
+
+                            .fc-widget-content {
+                                table tbody tr td:not(.fc-time) {
+                                    border-top-color: var(--border);
+                                }
+                            }
+                        }
+
+                        .fc-today {
+                            background-color: var(--btn-secondary) !important;
+                        }
+
+                        .fc-day-grid {
+                            background-color: var(--night-light);
+                        }
+                    }
+                }
+
+                .fc-dayGridMonth-view,
+                .fc-month-view {
+                    .fc-day-number {
+                        color: var(--font-color);
+                    }
+                }
+
+                .fc-agendaWeek-view,
+                .fc-agendaDay-view {
+                    div.fc-day-grid+hr.fc-widget-header {
+                        background-color: var(--border);
+                        border-color: var(--border);
+                    }
+
+                    .fc-slats tr:first-child td.fc-widget-content:last-child {
+                        box-shadow: inset 0 1px 0 var(--border);
+                    }
+                }
+
+                .fc-divider {
+                    background-color: var(--border);
+                }
+
+                .o_calendar_disabled {
+                    background-color: var(--btn-secondary) !important;
+                }
+            }
+        }
+
+        &>.o_calendar_sidebar_container {
+            background-color: var(--btn-secondary);
+            border-left: 0;
+            color: var(--font-color);
+
+            .o_calendar_mini {
+                .ui-datepicker {
+                    border-radius: 0;
+                    padding: 0;
+                    padding-bottom: 5px;
+                    background-color: var(--night-light);
+
+                    .ui-datepicker-header {
+                        background-color: var(--night);
+                        color: var(--font-color);
+                        border: 0;
+
+                        &>a {
+                            .ui-icon {
+                                &:before {
+                                    color: var(--font-color);
+                                }
+                            }
+                        }
+                    }
+
+                    .ui-datepicker-calendar {
+                        background-color: var(--night-light);
+
+                        thead,
+                        tbody {
+                            &>tr {
+
+                                &>th,
+                                &>td {
+                                    color: var(--font-color);
+                                    background-color: var(--night-light);
+
+                                    &>a {
+                                        color: var(--font-color);
+                                        background-color: var(--night-light);
+
+                                        &.ui-state-active {
+                                            border-bottom: 1px solid var(--font-color);
+                                        }
+                                    }
+
+                                    &.ui-state-disabled {
+                                        .ui-state-default {
+                                            color: var(--font-color);
+                                        }
+                                    }
+                                }
+
+                                &>td.ui-datepicker-week-end:first-child>a.ui-state-default {
+                                    color: var(--font-color);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .o_calendar_filter {
+                &>h5 {
+                    color: var(--font-color);
+                }
+
+                div[data-target="#o_cw_filter_collapse_Attendees"] {
+                    color: var(--font-color);
+                }
+            }
+        }
+    }
+}
+
+.oe_night_mode .o_calendar_view .o_calendar_widget td {
+    border-color: var(--border);
+}

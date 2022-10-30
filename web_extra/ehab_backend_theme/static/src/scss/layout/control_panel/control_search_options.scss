@@ -1,0 +1,183 @@
+@mixin dropdown-btn-checkbox() {
+
+    .o_menu_item,
+    .o-searchview-custom-private,
+    .o_item_option {
+        padding: 3px 30px;
+        color: var(--Label-value);
+        position: relative;
+        background-color: transparent;
+
+        &:before {
+            content: "";
+            height: 20px;
+            width: 20px;
+            position: absolute;
+            left: 0px;
+            border: 2px solid var(--Label);
+            color: transparent;
+            background-color: transparent;
+            text-align: center;
+            transform: unset;
+            top: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        &.selected {
+            background-color: $tr-hover;
+
+            &:before {
+                content: "\f00c";
+                color: var(--Label-value);
+                background-color: transparent;
+                text-align: center;
+            }
+        }
+
+        &:hover {
+            background-color: $tr-hover;
+        }
+    }
+
+    .o_generator_menu {
+        .o_add_filter_menu {
+            .btn {
+                padding: 6px 8px;
+            }
+        }
+    }
+}
+
+// Filter, Group BY, Favroit , ComparisonMenu Dropdown
+@mixin cp_search_option() {
+    .o_search_options {
+        position: absolute !important;
+        top: var(--control-panel-h);
+        bottom: var(--control-panel-m);
+        right: 0px;
+        background-color: white;
+        z-index: 11;
+        margin-top: 0;
+        width: 260px;
+
+        .o-dropdown.btn-group {
+            flex: 1;
+            position: initial;
+            cursor: pointer;
+            display: inline-block;
+            user-select: none;
+            white-space: nowrap;
+
+            >button.dropdown-toggle {
+                font-size: $font-size-n;
+                background: $white;
+                color: var(--button-box);
+                border-radius: 0;
+                padding: 10px;
+                width: 100%;
+                margin: 0;
+                border: 0;
+                outline: none;
+                box-shadow: none;
+
+                .o_dropdown_title {
+                    font-size: 0;
+                }
+
+                &>.fa {
+                    &:before {
+                        font-size: $font-size-1;
+                    }
+                }
+
+                &>.caret {
+                    display: none;
+                }
+
+                &:hover {
+                    color: var(--button-box);
+                }
+
+                &:focus {
+                    color: var(--button-box);
+                    background-color: $white;
+                }
+            }
+
+            >.dropdown-menu {
+                .dropdown-menu {
+                    position: relative;
+                    top: auto !important;
+                    left: auto !important;
+                    right: auto;
+                    bottom: auto;
+                    width: 100%;
+                    box-shadow: none;
+                    border: 0;
+                    margin: 0;
+                    overflow: unset;
+                }
+            }
+
+            .dropdown {
+                &.show {
+                    .dropdown-toggle {
+                        &:after {
+                            transform: translate(-0.6em, 0.6em) rotate(90deg) !important;
+                        }
+                    }
+                }
+            }
+
+            .dropdown-item {
+                &.focus {
+                    background-color: $tr-hover;
+                }
+
+                &.dropdown-toggle {
+                    &.focus {
+                        &:after {
+                            transform: rotate(90deg);
+                            top: 0.6em;
+                            right: 0.6em;
+                        }
+                    }
+                }
+            }
+
+            .o-dropdown:not(.o_add_custom_filter_menu):not(.o_add_custom_group_menu):not(.o_add_to_board):not(.o_add_favorite) {
+                .dropdown-menu {
+                    padding-left: 20px;
+                }
+            }
+
+            .dropdown-divider {
+                width: 100%;
+            }
+
+            &.show {
+                &>button.dropdown-toggle:not(.dropdown-item) {
+                    @include border-animation();
+                    background-color: $white;
+                }
+
+                >.dropdown-menu {
+                    @include o-position-absolute(33px !important, 0, 0, 0 !important);
+                    width: 100%;
+                    box-shadow: unset;
+                    border: 0;
+                    bottom: 0;
+                    right: 0;
+                    padding: 10px;
+                    margin: 0;
+                    max-height: unset;
+                }
+            }
+        }
+
+        @include dropdown-btn-checkbox();
+    }
+}

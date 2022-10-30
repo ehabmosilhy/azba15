@@ -1,0 +1,91 @@
+@mixin Message-view() {
+    .o_MessageList_separator {
+        .o_MessageList_separatorLabelDate {
+            background-color: $white;
+            color: var(--Label);
+        }
+    }
+
+    .o_MessageList_message {
+        padding: 5px 0px;
+        background-color: transparent;
+
+        .o_Message_core {
+            .o_Message_header {
+                &>.o_Message_authorName {
+                    color: var(--heading);
+                }
+
+                .o_Message_headerCommands {
+                    opacity: 0.6;
+
+                    i {
+                        color: gold;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            .o_Message_core {
+                .o_Message_headerCommands {
+                    opacity: 1;
+                }
+            }
+        }
+
+        .o_MessageInReplyToView {
+            .o_MessageInReplyToView_author {
+                color: var(--Label) !important;
+            }
+
+            .o_MessageInReplyToView_body {
+                color: var(--Label-value) !important;
+            }
+        }
+    }
+
+    .o_MessageList_item {
+        &.o_Message_active {
+            background-color: $tr-hover;
+        }
+
+        .o_Message_actionListContainer {
+            .o_MessageActionList {
+                border-color: var(--border);
+
+                .o_MessageActionList_action:hover {
+                    background-color: $tr-hover;
+                }
+            }
+        }
+
+        .o_MessageInReplyToView {
+            .o_MessageInReplyToView_author {
+                color: var(--Label) !important;
+            }
+
+            .o_MessageInReplyToView_body {
+                color: var(--Label-value) !important;
+            }
+        }
+
+        .o_MessageReactionGroup {
+            border: 0;
+            background-color: transparent;
+
+            .o_MessageReactionGroup_count {
+                background-color: var(--brand-secondary);
+                color: white;
+                min-width: 20px;
+                height: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 4px;
+            }
+        }
+
+        @include Composer-view();
+    }
+}

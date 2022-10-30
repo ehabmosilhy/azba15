@@ -1,0 +1,72 @@
+@mixin website_dashboards_view() {
+    .o_dashboards {
+        @include common-layout();
+
+        .o_website_dashboard {
+            background-color: var(--btn-secondary);
+
+            .o_website_dashboard_content {
+                .row {
+                    .o_box {
+                        background-color: var(--btn-secondary);
+                        color: var(--font-color);
+
+                        &>h2 {
+                            color: var(--btn-primary);
+                        }
+                    }
+
+                    .o_demo_background {
+                        .o_layer {
+                            background-color: rgba($night, .7)
+                        }
+                    }
+
+                    .o_demo_message {
+                        color: var(--font-color);
+                    }
+                }
+            }
+        }
+    }
+
+    .o_view_nocontent {
+        .o_view_nocontent_smiling_face {
+            color: var(--font-color);
+
+            &:before {
+                color: var(--font-color);
+            }
+        }
+
+        .o_nocontent_help {
+            color: var(--font-color);
+
+            &>p {
+                color: var(--font-color);
+            }
+        }
+    }
+}
+
+@mixin web_settings_dashboard_view() {
+    .o_web_settings_dashboard {
+        background: var(--night-light);
+
+        .o_web_settings_dashboard_col {
+            &>div {
+                background-color: var(--btn-secondary);
+                color: var(--font-color);
+                @include common-layout();
+
+                a {
+                    color: var(--btn-primary);
+                }
+
+                hr {
+                    border-color: var(--border);
+                }
+            }
+        }
+    }
+}

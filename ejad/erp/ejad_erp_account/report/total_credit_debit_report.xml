@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <template id="trail_balance_report_add_total" inherit_id="account.report_trialbalance">
+
+        <xpath expr="//tbody" position="inside">
+            <tr style="font-weight: bold;">
+
+                <td colspan="2">
+                    <strong>
+                        الإجمالي
+                    </strong>
+                </td>
+                <td class="text-right">
+                    <strong>
+                        <span t-esc="total_accounts['total_debit']"
+                              t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                    </strong>
+                </td>
+                <td class="text-right">
+                    <strong>
+
+                        <span t-esc="total_accounts['total_credit']"
+                              t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                    </strong>
+                </td>
+                <strong>
+                    <td class="text-right">
+
+                        <span t-esc="total_accounts['total_balance']"
+                              t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                    </td>
+                </strong>
+            </tr>
+
+        </xpath>
+
+    </template>
+    <template id="report_generalledger_report_add_total" inherit_id="account.report_generalledger">
+
+        <xpath expr="//tbody" position="inside">
+            <tr style="font-weight: bold;">
+
+                <td colspan="6">
+                    <strong>
+                        الإجمالي
+                    </strong>
+                </td>
+                <td class="text-right">
+                    <strong>
+                        <span t-esc="total_accounts['total_debit']"
+                              t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                    </strong>
+                </td>
+                <td class="text-right">
+                    <strong>
+
+                        <span t-esc="total_accounts['total_credit']"
+                              t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                    </strong>
+                </td>
+                <strong>
+                    <td class="text-right">
+
+                        <span t-esc="total_accounts['total_balance']"
+                              t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                    </td>
+                </strong>
+            </tr>
+
+        </xpath>
+
+    </template>
+
+</odoo>

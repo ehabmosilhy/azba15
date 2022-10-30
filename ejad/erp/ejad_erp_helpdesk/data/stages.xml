@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Stages -->
+        <record id="helpdesk_stage_100" model="helpdesk.stage">
+            <field name="sequence">100</field>
+            <field name="name">المدير المباشر</field>
+            <field name="positions">direct_manager</field>
+        </record>
+        <record id="helpdesk_stage_101" model="helpdesk.stage">
+            <field name="sequence">101</field>
+            <field name="name">مدير الادارة</field>
+            <field name="positions">dept_manager</field>
+        </record>
+        <record id="helpdesk_stage_102" model="helpdesk.stage">
+            <field name="sequence">102</field>
+            <field name="name">منسق النظام</field>
+        </record>
+        <record id="helpdesk_stage_103" model="helpdesk.stage">
+            <field name="sequence">103</field>
+            <field name="name">المراقب المالي</field>
+        </record>
+        <record id="helpdesk_stage_104" model="helpdesk.stage">
+            <field name="sequence">104</field>
+            <field name="name">المراجعة الداخلية</field>
+            <field name="is_close">true</field>
+        </record>
+
+        <record id="helpdesk_stage_105" model="helpdesk.stage">
+            <field name="sequence">105</field>
+            <field name="name">إلغاء</field>
+            <field name="is_refused">true</field>
+            <field name="is_close">true</field>
+        </record>
+
+<!--   inherits stages to update it with next and previous stages after create all stages     -->
+         <record id="ejad_erp_helpdesk.helpdesk_stage_100" model="helpdesk.stage">
+            <field name="sequence">100</field>
+            <field name="name">المدير المباشر</field>
+            <field name="positions">direct_manager</field>
+            <field name="next_stage" ref="ejad_erp_helpdesk.helpdesk_stage_101"/>
+        </record>
+         <record id="ejad_erp_helpdesk.helpdesk_stage_101" model="helpdesk.stage">
+            <field name="sequence">101</field>
+            <field name="name">مدير الادارة</field>
+            <field name="positions">dept_manager</field>
+            <field name="next_stage" ref="ejad_erp_helpdesk.helpdesk_stage_102"/>
+            <field name="prev_stage" ref="ejad_erp_helpdesk.helpdesk_stage_100"/>
+        </record>
+        <record id="ejad_erp_helpdesk.helpdesk_stage_102" model="helpdesk.stage">
+            <field name="sequence">102</field>
+            <field name="name">منسق النظام</field>
+            <field name="next_stage" ref="ejad_erp_helpdesk.helpdesk_stage_103"/>
+            <field name="prev_stage" ref="ejad_erp_helpdesk.helpdesk_stage_101"/>
+        </record>
+        <record id="ejad_erp_helpdesk.helpdesk_stage_103" model="helpdesk.stage">
+            <field name="sequence">103</field>
+            <field name="name">المراقب المالي</field>
+            <field name="next_stage" ref="ejad_erp_helpdesk.helpdesk_stage_104"/>
+            <field name="prev_stage" ref="ejad_erp_helpdesk.helpdesk_stage_102"/>
+        </record>
+        <record id="ejad_erp_helpdesk.helpdesk_stage_104" model="helpdesk.stage">
+            <field name="sequence">104</field>
+            <field name="name">المراجعة الداخلية</field>
+            <field name="prev_stage" ref="ejad_erp_helpdesk.helpdesk_stage_103"/>
+            <field name="is_close">true</field>
+        </record>
+
+    </data>
+</odoo>

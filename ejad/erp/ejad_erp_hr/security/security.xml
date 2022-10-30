@@ -1,0 +1,1073 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+
+    <record id="group_salary_letter_config" model="res.groups">
+        <field name="name">اعداد خطاب التعريف</field>
+    </record>
+
+      <record model="ir.module.category" id="module_hr_payslip">
+        <field name="name">صلاحيات كشف الرواتب / دفع قسائم الدفع</field>
+        <field name="description">كشف الرواتب</field>
+        <field name="sequence">6</field>
+    </record>
+
+      <record model="ir.module.category" id="module_hr_promotion">
+        <field name="name">صلاحيات نظام الترقيات</field>
+        <field name="description">صلاحيات العقود</field>
+        <field name="sequence">6</field>
+    </record>
+
+      <record model="ir.module.category" id="module_hr_contact_ejad">
+        <field name="name">صلاحيات العقود</field>
+        <field name="description">صلاحيات العقود</field>
+        <field name="sequence">6</field>
+    </record>
+
+     <record model="ir.module.category" id="module_hr_recruitment">
+        <field name="name">صلاحيات التوظيف</field>
+        <field name="description">صلاحيات التوظيف</field>
+        <field name="sequence">6</field>
+    </record>
+
+      <record model="ir.module.category" id="module_nauss_holidays">
+        <field name="name">صلاحيات الإجازات</field>
+        <field name="description">صلاحيات الإجازات</field>
+        <field name="sequence">1</field>
+    </record>
+ <record id="group_holidays_menu" model="res.groups">
+            <field name="name">قائمة الإجازات</field>
+            <field name="category_id" ref="module_nauss_holidays"/>
+            <field name="comment">صلاحية قائمة الإجازات تعطى المستخدم صلاحية إستثنائية لرؤية القائمة الرئيسية للإجازات </field>
+    </record>
+    <record id="hr_holidays.menu_hr_holidays_root" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6,0,[ref('ejad_erp_hr.group_holidays_menu')])]"/>
+    </record>
+      <record model="ir.module.category" id="module_nauss_endservice">
+        <field name="name">صلاحيات نهاية الخدمة</field>
+        <field name="description">صلاحيات نهاية الخدمة</field>
+        <field name="sequence">7</field>
+    </record>
+
+    <record id="group_salary_approval" model="res.groups">
+        <field name="name">صلاحيات رواتب الموظف</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">يمنح للمستخدم صلاحية الموافقة على كشف رواتب الموظف</field>
+    </record>
+
+    <record id="group_academic_adviser" model="res.groups">
+        <field name="name">الوكيل</field>
+    </record>
+<!--    <record id="group_hr_checker" model="res.groups">-->
+<!--        <field name="name">مدقق الموارد البشرية</field>-->
+<!--        <field name="category_id" ref="base.module_category_human_resources"/>-->
+<!--    </record>-->
+<!--    <record id="group_hr_refuse_holidays_balance" model="res.groups">-->
+<!--        <field name="name">رفض رصيد الاجازات</field>-->
+<!--        <field name="category_id" ref="module_nauss_holidays"/>-->
+<!--    </record>-->
+<!--    <record id="group_hr_reset_draft_holidays" model="res.groups">-->
+<!--        <field name="name">ارجاع الاجازات الى مسودة</field>-->
+<!--        <field name="category_id" ref="module_nauss_holidays"/>-->
+<!--          <field name="comment">يمنح للمستخدم صلاحية تعديل/حذف/إنشاء سجلات الوظائف</field>-->
+<!--    </record>-->
+    <record id="group_hr_employees_attachments" model="res.groups">
+        <field name="name">مرفقات سجل الموظفين</field>
+         <field name="category_id" ref="base.module_category_human_resources"/>
+         <field name="comment">يمنح للمستخدم صلاحية رؤية الجزء الخاص بالمرفقات التابعة لكل موظف فى سجلات الموظفين</field>
+    </record>
+<!--    <record id="group_hr_manger" model="res.groups">-->
+<!--        <field name="name">مدير إدارة الموارد البشرية</field>-->
+<!--         <field name="category_id" ref="base.module_category_human_resources"/>-->
+<!--           <field name="comment">مدير إدارة الموارد البشرية هى صلاحية تمنح لمدير إدارة الموارد البشرية لمباشرة المهام التابعة له</field>-->
+<!--    </record>-->
+    <record id="group_medical_manager" model="res.groups">
+        <field name="name">المدير الطبي للجامعة</field>
+    </record>
+    <record id="group_admin_affairs" model="res.groups">
+        <field name="name">قسم الشؤون الإدارية</field>
+    </record>
+    <record id="group_promotion_group" model="res.groups">
+        <field name="name">لجنة الترقيات</field>
+        <field name="category_id" ref="module_hr_promotion"/>
+        <field name="comment">لجنة الترقيات يمنح للمستخدم صلاحية إنشاء و رؤية وتعديل سجلات الترقيات</field>
+    </record>
+    <record id="group_finance_admin_manger" model="res.groups">
+        <field name="name">مدير الشؤون المالية والإدارية</field>
+    </record>
+    <record id="group_contract_edit_create" model="res.groups">
+        <field name="name">تعديل/حذف/إنشاء العقود</field>
+        <field name="category_id" ref="module_hr_contact_ejad"/>
+         <field name="comment">يمنح للمستخدم صلاحية تعديل/حذف/إنشاء العقود</field>
+    </record>
+    <record id="group_job_edit_create" model="res.groups">
+        <field name="name">تعديل/حذف/إنشاء الوظائف</field>
+         <field name="category_id" ref="module_hr_recruitment"/>
+         <field name="comment">يمنح للمستخدم صلاحية تعديل/حذف/إنشاء سجلات الوظائف</field>
+    </record>
+    <record id="access_join_upgrade_date_create" model="res.groups">
+        <field name="name">تعديل تاريخ التعيين و تاريخ آخر ترقية</field>
+        <field name="category_id" ref="module_hr_promotion"/>
+         <field name="comment">تعديل تاريخ التعيين و تاريخ آخر ترقية يمنح للمستخدم صلاحية تعديل تاريخ التعيين و تاريخ آخر ترقية</field>
+    </record>
+    <record id="access_employee_edit_create" model="res.groups">
+        <field name="name">تعديل و اضافة الموظفين</field>
+         <field name="category_id" ref="base.module_category_human_resources"/>
+         <field name="comment">يمنح للمستخدم صلاحية تعديل/إنشاء سجلات الموظفين</field>
+    </record>
+    <record id="access_attendance_edit_create" model="res.groups">
+        <field name="name">تعديل و اضافة سجلات الحضور و الانصراف</field>
+        <field name="category_id" ref="base.module_category_human_resources"/>
+         <field name="comment">يمنح للمستخدم صلاحية تعديل/إنشاء سجلات الحضور و الانصراف</field>
+    </record>
+    <!--payment advices-->
+    <record model="ir.module.category" id="module_hr_payroll_advice">
+        <field name="name">صلاحيات اشعارات الدفع</field>
+        <field name="description">صلاحيات اشعارات الدفع</field>
+        <field name="sequence">6</field>
+    </record>
+    <record id="access_payment_advice_create" model="res.groups">
+        <field name="name">اضافة اشعارات الدفع</field>
+        <field name="category_id" ref="module_hr_payroll_advice"/>
+    </record>
+    <record id="access_payment_advice_edit" model="res.groups">
+        <field name="name">تعديل اشعارات الدفع</field>
+        <field name="category_id" ref="module_hr_payroll_advice"/>
+    </record>
+    <record id="access_payment_advice_unlink" model="res.groups">
+        <field name="name">حذف اشعارات الدفع</field>
+        <field name="category_id" ref="module_hr_payroll_advice"/>
+    </record>
+    <record id="access_payment_advice_read" model="res.groups">
+        <field name="name">قراءة اشعارات الدفع</field>
+        <field name="category_id" ref="module_hr_payroll_advice"/>
+    </record>
+    <record id="access_payment_advice_menu" model="res.groups">
+        <field name="name">قائمة اشعارات الدفع</field>
+        <field name="category_id" ref="module_hr_payroll_advice"/>
+    </record>
+    <record id="access_confirm_sheet" model="res.groups">
+        <field name="name">الموافقة على اشعارات الدفع</field>
+        <field name="category_id" ref="module_hr_payroll_advice"/>
+    </record>
+    <record id="access_compute_advice" model="res.groups">
+        <field name="name">حسب ورقة اشعارات الدفع</field>
+        <field name="category_id" ref="module_hr_payroll_advice"/>
+    </record>
+    <record id="access_action_pay" model="res.groups">
+        <field name="name">دفع اشعارات الدفع</field>
+        <field name="category_id" ref="module_hr_payroll_advice"/>
+    </record>
+    <record id="access_cancel_sheet" model="res.groups">
+        <field name="name">الغاء ورقة اشعارات الدفع</field>
+        <field name="category_id" ref="module_hr_payroll_advice"/>
+    </record>
+    <record id="access_set_to_draft" model="res.groups">
+        <field name="name">وضع اشعارات الدفع فى المسودة</field>
+        <field name="category_id" ref="module_hr_payroll_advice"/>
+    </record>
+
+    <!---->
+    <record model="ir.module.category" id="module_holiday_approval">
+        <field name="name">صلاحيات الموافقة على الإجازات</field>
+        <field name="description">صلاحيات الموافقة على الإجازات</field>
+        <field name="sequence">6</field>
+    </record>
+
+    <record id="group_support_services_manager" model="res.groups">
+        <field name="name">مدير إدارة الخدمات المساندة</field>
+<!--        <field name="category_id" ref="module_holiday_approval"/>-->
+        <field name="implied_ids" eval="[(6,0,[ref('hr_holidays.group_hr_holidays_manager'),ref('ejad_erp_hr.group_holidays_menu')])]"/>
+        <field name="category_id" ref="module_nauss_holidays"/>
+        <field name="comment">مدير إدارة الخدمات المساندة يمنح له صلاحية الموافقة على الإجازات</field>
+    </record>
+    <record id="group_hr_holiday_specialist" model="res.groups">
+        <field name="name">مسؤول الموارد البشرية</field>
+<!--        <field name="category_id" ref="module_holiday_approval"/>-->
+        <field name="implied_ids" eval="[(6,0,[ref('hr_holidays.group_hr_holidays_user'),ref('ejad_erp_hr.group_holidays_menu')])]"/>
+        <field name="category_id" ref="module_nauss_holidays"/>
+         <field name="comment">مسؤول الموارد البشرية يمنح له صلاحية الموافقة على الإجازات</field>
+    </record>
+    <record id="group_hr_holiday_office_leader" model="res.groups">
+        <field name="name">قائد المكتب</field>
+<!--        <field name="category_id" ref="module_holiday_approval"/>-->
+        <field name="implied_ids" eval="[(4,ref('ejad_erp_hr.group_holidays_menu'))]"/>
+        <field name="category_id" ref="module_nauss_holidays"/>
+         <field name="comment">قائد المكتب يمنح له صلاحية الموافقة على الإجازات</field>
+    </record>
+
+
+    <!--payslip-->
+
+    <record id="access_payslip_create" model="res.groups">
+        <field name="name">اضافة كشف رواتب</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+       <field name="comment">اضافة كشف رواتب يمنح للمستخدم صلاحية إنشاء كشف رواتب جديد</field>
+    </record>
+    <record id="group_export_payroll_excel" model="res.groups">
+        <field name="name">تصدير الرواتب إلى إكسل</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+       <field name="comment">تصدير الرواتب إلى إكسل يمنح للمستخدم صلاحية إستخراج كشفوف الرواتب بصيغة إكسيل</field>
+    </record>
+
+    <record id="group_export_payroll_excel1" model="res.groups">
+        <field name="name">تصدير الرواتب إلى إكسل بعد اعتماد الموارد البشرية</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">تصدير الرواتب إلى إكسل بعد اعتماد الموارد البشرية يمنح للمستخدم صلاحية إستخراج كشفوف الرواتب المعتمدة من الموارد البشرية بصيغة إكسيل </field>
+    </record>
+
+    <record id="access_payslip_edit" model="res.groups">
+        <field name="name">تعديل كشف رواتب</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">تعديل كشف رواتب يمنح للمستخدم صلاحية التعديل على كشفوف الرواتب</field>
+    </record>
+    <record id="access_payslip_unlink" model="res.groups">
+        <field name="name">حذف كشف رواتب</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">حذف كشف رواتب يمنح للمستخدم صلاحية الحذف على كشفوف الرواتب</field>
+    </record>
+    <record id="access_payslip_read" model="res.groups">
+        <field name="name">قراءة كشف رواتب</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">قراءة كشف رواتب يمنح للمستخدم صلاحية رؤية كشفوف الرواتب</field>
+    </record>
+    <record id="access_payslip_menu" model="res.groups">
+        <field name="name">قائمة كشف رواتب</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">قائمة كشف رواتب يمنح للمستخدم صلاحية رؤية قائمة كشفوف الرواتب</field>
+    </record>
+    <record id="access_configuration_menu" model="res.groups">
+        <field name="name">اعداد شئون الرواتب</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">اعداد شئون الرواتب يمنح للمستخدم صلاحية رؤية قائمة الاعداد الخاصة بشئون الرواتب</field>
+    </record>
+    <record id="group_print_bank_letter" model="res.groups">
+        <field name="name">طباعة خطاب البنك</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">طباعة خطاب البنك يمنح للمستخدم صلاحية رؤية و طباعة خطاب البنك</field>
+    </record>
+
+    <!---->
+    <!--payment advices-->
+    <record model="ir.module.category" id="module_hr_loan">
+        <field name="name">صلاحيات القروض</field>
+        <field name="description">صلاحيات القروض</field>
+        <field name="sequence">6</field>
+    </record>
+    <record id="access_loan_create" model="res.groups">
+        <field name="name">اضافة القروض</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح للمستخدم صلاحية إنشاء سجلات القروض</field>
+    </record>
+    <record id="access_loan_edit" model="res.groups">
+        <field name="name">تعديل القروض</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح للمستخدم صلاحية تعديل سجلات القروض</field>
+    </record>
+    <record id="access_loan_unlink" model="res.groups">
+        <field name="name">حذف القروض</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح للمستخدم صلاحية حذف سجلات القروض</field>
+    </record>
+    <record id="access_loan_read" model="res.groups">
+        <field name="name">قراءة القروض</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح للمستخدم صلاحية رؤية سجلات القروض</field>
+    </record>
+    <record id="group_edit_loan_amount" model="res.groups">
+        <field name="name">تعديل مبلغ القرض</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح للمستخدم صلاحية التعديل على مبلغ القرض</field>
+    </record>
+    <record id="group_return_remaining_amount" model="res.groups">
+        <field name="name">تسجيل إرجاع متبقي مبلغ القرض من الموظف</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح للمستخدم صلاحية رؤية زرار تسجيل إرجاع متبقي مبلغ القرض من الموظف</field>
+    </record>
+    <record id="access_loan_menu" model="res.groups">
+        <field name="name">قائمة القروض</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح للمستخدم صلاحية رؤية قائمة القروض داخل الموارد اليشرية</field>
+    </record>
+    <!--Buttons-->
+    <record id="access_loan_employee" model="res.groups">
+        <field name="name">تأكيد استحقاق الموظف</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح للمستخدم صلاحية الموافقة او الرفض  على استحقاق الموظف للقروض</field>
+    </record>
+    <record id="access_financial_transaction" model="res.groups">
+        <field name="name">تدقيق المعاملة المالية</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح لاعضاء تدقيق المعاملة المالية صلاحية الموافقة او الرفض  على القروض</field>
+    </record>
+    <record id="access_financial_management" model="res.groups">
+        <field name="name">اعتماد الادارة المالية</field>
+        <field name="category_id" ref="module_hr_loan"/>
+         <field name="comment">يمنح لاعضاء الادارة المالية صلاحية الموافقة او الرفض على القروض</field>
+    </record>
+    <record id="access_controller" model="res.groups">
+        <field name="name">اعتماد المراقب المالي</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح للمراقب المالي صلاحية الموافقة او الرفض  على القروض</field>
+    </record>
+    <record id="access_university_president" model="res.groups">
+        <field name="name">اعتماد المشرف على الادارة العامة للشئون الادارية و المالية</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح للمشرف على الادارة العامة للشئون الادارية و المالية صلاحية الموافقة او الرفض على القروض</field>
+    </record>
+    <record id="group_bank_letter_loan" model="res.groups">
+        <field name="name">طباعة خطاب البنك</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح للمستخدم صلاحية رؤية زرار طباعة خطاب البنك</field>
+    </record>
+    <record id="access_payment_process" model="res.groups">
+        <field name="name">اتمام عملية الصرف</field>
+        <field name="category_id" ref="module_hr_loan"/>
+        <field name="comment">يمنح للمستخدم صلاحية الموافقة النهائية على عملية صرف القرض</field>
+    </record>
+
+    <!---->
+
+    <record model="ir.module.category" id="module_nauss_mandate">
+        <field name="name">صلاحيات الإنتدابات</field>
+        <field name="description">صلاحيات الإنتدابات</field>
+        <field name="sequence">6</field>
+    </record>
+
+    <record model="ir.module.category" id="module_hr_deduction_category">
+        <field name="name">صلاحيات الحسميات</field>
+        <field name="description">صلاحيات الحسميات</field>
+        <field name="sequence">6</field>
+    </record>
+
+    <record id="hr_empoyee_upgrade_menu" model="res.groups">
+        <field name="name">قائمة الترقيات</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_promotion"/>
+        <field name="comment">صلاحية قائمة الترقيات يمنح للمستخدم رؤية قائمة الترقيات</field>
+
+    </record>
+    <record id="hr_promotion_user" model="res.groups">
+        <field name="name">مستخدم الترقيات</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_promotion"/>
+        <field name="comment"> صلاحية مستخدم الترقيات يمنح للمستخدم إنشاء و رؤية وتعديل سجلات الترقيات</field>
+
+    </record>
+    <record id="group_promotion_approve1" model="res.groups">
+        <field name="name">مدراء الوحدات الإدارية</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_promotion"/>
+       <field name="comment">يمنح لمدراء الوحدات الإدارية صلاحية الموافقة او الرفض على الترقيات</field>
+
+    </record>
+    <record id="group_promotion_approve2" model="res.groups">
+        <field name="name">أخصائي الموارد البشرية</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_promotion"/>
+         <field name="comment">يمنح لأخصائي الموارد البشرية صلاحية الموافقة او الرفض على الترقيات</field>
+
+    </record>
+    <record id="group_promotion_approve3" model="res.groups">
+        <field name="name">مدير إدارة الخدمات المساندة</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_promotion"/>
+         <field name="comment">يمنح لمدير إدارة الخدمات المساندة صلاحية الموافقة او الرفض على الترقيات</field>
+
+    </record>
+    <record id="group_promotion_approve4" model="res.groups">
+        <field name="name">قائد المكتب</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_promotion"/>
+        <field name="comment">يمنح لقائد المكتب صلاحية الموافقة او الرفض على الترقيات</field>
+
+    </record>
+
+    <record id="contract_access_waiting_approval_1" model="res.groups">
+        <field name="name">أخصائي الموارد البشرية</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_contact_ejad"/>
+        <field name="comment">يمنح لأخصائي الموارد البشرية صلاحية الموافقة على العقود</field>
+    </record>
+    <record id="contract_access_waiting_approval_2" model="res.groups">
+        <field name="name">مدير إدارة الخدمات المساندة</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_contact_ejad"/>
+        <field name="comment">يمنح لمدير إدارة الخدمات المساندة صلاحية الموافقة على العقود</field>
+    </record>
+    <record id="contract_access_waiting_approval_3" model="res.groups">
+        <field name="name">قائد المكتب</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_contact_ejad"/>
+        <field name="comment">يمنح لقائد المكتب صلاحية الموافقة النهائية على العقود</field>
+    </record>
+
+    <record id="group_hr_recruitment_stage1" model="res.groups">
+        <field name="name">أخصائي الموارد البشرية</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_recruitment"/>
+        <field name="comment">يمنح لأخصائي الموارد البشرية صلاحية الموافقة على التوظيف</field>
+    </record>
+    <record id="group_hr_recruitment_stage2" model="res.groups">
+        <field name="name">مداء الوحدات الإدارية</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_recruitment"/>
+        <field name="comment">يمنح لمداء الوحدات الإدارية صلاحية الموافقة على التوظيف</field>
+    </record>
+    <record id="group_hr_recruitment_stage3" model="res.groups">
+        <field name="name">مدير إدارة الخدمات المساندة</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_recruitment"/>
+        <field name="comment">يمنح لمدير إدارة الخدمات المساندة صلاحية الموافقة على التوظيف</field>
+    </record>
+    <record id="group_hr_recruitment_stage4" model="res.groups">
+        <field name="name">قائد المكتب</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_recruitment"/>
+        <field name="comment">يمنح لقائد المكتب صلاحية الموافقة النهائية على التوظيف</field>
+    </record>
+
+    <record model="ir.module.category" id="module_hr_alaram">
+        <field name="name">صلاحيات تنبيهات العقود</field>
+        <field name="description">صلاحيات تنبيهات العقود</field>
+        <field name="sequence">6</field>
+    </record>
+
+    <record id="hr_alarm_menu" model="res.groups">
+        <field name="name">قائمة تنبيهات العقود</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_contact_ejad"/>
+         <field name="comment">قائمة تنبيهات العقود يمنح للمستخدم صلاحية رؤية قائمة تنبيهات العقود</field>
+    </record>
+
+    <record id="hr_end_service_menu" model="res.groups">
+        <field name="name">قائمة نهاية الخدمة</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_nauss_endservice"/>
+        <field name="comment">يمنح للمستخدم صلاحية رؤية قائمة نهاية الخدمة</field>
+    </record>
+
+<!--    <record id="hr_employee_sub_menu" model="res.groups">-->
+<!--        <field name="name">قائمة الموظفين</field>-->
+<!--        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>-->
+<!--        <field name="category_id" ref="base.module_category_human_resources"/>-->
+<!--        <field name="comment">تمنح صلاحية للمستخدم برؤية قائمة الموظفين</field>-->
+<!--    </record>-->
+
+    <record id="hr_departments_sub_menu" model="res.groups">
+        <field name="name">قائمة الأقسام</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="base.module_category_human_resources"/>
+         <field name="comment">تمنح صلاحية للمستخدم برؤية قائمة الأقسام</field>
+    </record>
+
+    <record id="hr_employee_configuration_sub_menu" model="res.groups">
+        <field name="name">قائمة إعدادات شئون الموظفين</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="base.module_category_human_resources"/>
+         <field name="comment">تمنح صلاحية للمستخدم برؤية قائمة الإعدادات الخاصة بشئون الموظفين</field>
+    </record>
+
+
+    <record id="hr_alarm_done" model="res.groups">
+        <field name="name">تحديد تنبيهات العقود كمنتهي</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_contact_ejad"/>
+        <field name="comment">تحديد تنبيهات العقود كمنتهي يمنح للمستخدم صلاحية رؤية زرار تنبيهات العقود للتنبة فبل موعد انتهاء العقد</field>
+    </record>
+
+    <record id="deduction_hr_auditor" model="res.groups">
+        <field name="name">مدقق الموارد البشرية</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_deduction_category"/>
+    </record>
+
+    <record id="deduction_hr_manager" model="res.groups">
+        <field name="name">مدير الموارد البشرية</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_hr_deduction_category"/>
+    </record>
+    <!--deduction-->
+    <record id="access_deduction_create" model="res.groups">
+        <field name="name">اضافة الحسميات</field>
+        <field name="category_id" ref="module_hr_deduction_category"/>
+    </record>
+    <record id="access_deduction_edit" model="res.groups">
+        <field name="name">تعديل الحسميات</field>
+        <field name="category_id" ref="module_hr_deduction_category"/>
+    </record>
+    <record id="access_deduction_unlink" model="res.groups">
+        <field name="name">حذف الحسميات</field>
+        <field name="category_id" ref="module_hr_deduction_category"/>
+    </record>
+    <record id="access_deduction_read" model="res.groups">
+        <field name="name">قراءة الحسميات</field>
+        <field name="category_id" ref="module_hr_deduction_category"/>
+    </record>
+    <record id="access_deduction_menu" model="res.groups">
+        <field name="name">قائمة الحسميات</field>
+        <field name="category_id" ref="module_hr_deduction_category"/>
+    </record>
+    <!---->
+
+    <record id="group_academic_adviser_mandate" model="res.groups">
+        <field name="name">الوكيل</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+    </record>
+    <record id="group_hr_mandate" model="res.groups">
+        <field name="name">مسؤول الموارد البشرية</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+
+    </record>
+
+    <record id="group_ticket_issue" model="res.groups">
+        <field name="name">مسؤول التذاكر</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+
+    </record>
+    <record id="group_mandate_bank_letter" model="res.groups">
+        <field name="name">طباعة خطاب البنك</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+
+    </record>
+
+    <record id="group_accountant" model="res.groups">
+        <field name="name">مختص الحسابات</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+    </record>
+    <record id="group_financial_auditor" model="res.groups">
+        <field name="name">مدقق مالي</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+    </record>
+    <record id="group_financial_manager" model="res.groups">
+        <field name="name">مدير مالي</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+    </record>
+    <record id="group_financial_monitor" model="res.groups">
+        <field name="name">مراقب المالي</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+    </record>
+    <record id="group_admin_financial_manager" model="res.groups">
+        <field name="name">مدير الشؤون الإدارية والمالية</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+    </record>
+    <record id="group_mandate_payment_register" model="res.groups">
+        <field name="name">صرف مبالغ الإنتداب</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+    </record>
+
+    <record id="hr_employee_mandate_menu" model="res.groups">
+        <field name="name">قائمة الانتدابات</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+    </record>
+    <record id="hr_mandate_employee_itself_direct_manager" model="res.groups">
+        <field name="name">صلاحية المدير المباشر لنفس الموظف</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+    </record>
+    <record id="hr_mandate_direct_manager" model="res.groups">
+        <field name="name">صلاحية المدير المباشر</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+    </record>
+
+    <record id="group_financial_info_mandate" model="res.groups">
+        <field name="name">ايام الانتداب و مبلغ الانتداب</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+    </record>
+
+    <record id="group_hr_setting" model="res.groups">
+        <field name="name">اعدادت الموارد البشرية</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_mandate"/>
+    </record>
+    <!--- benefits -->
+
+
+    <record id="group_endservice_payment_register" model="res.groups">
+        <field name="name">صرف مبالغ نهايه الخدمة</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_endservice"/>
+        <field name="comment">يمنح للمستخدم صلاحية الموافقة على مبلغ نهايه الخدمة للموظف</field>
+    </record>
+    <record id="group_end_service_bank_letter" model="res.groups">
+        <field name="name">طباعة خطاب البنك</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="module_nauss_endservice"/>
+        <field name="comment">يمنح للمستخدم صلاحية رؤية و طباعة خطاب البنك نهايه الخدمة</field>
+    </record>
+
+    <!--payslip Batch-->
+    <record model="ir.module.category" id="module_hr_payslip_batch">
+        <field name="name">صلاحيات دفع قسائم الدفع</field>
+        <field name="description">صلاحيات دفع قسائم الدفع</field>
+        <field name="sequence">6</field>
+    </record>
+    <record id="group_return_payslip_batch_draft" model="res.groups">
+        <field name="name">إرجاع دفع قسائم الدفع إلى مسودة</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">إرجاع دفع قسائم الدفع إلى مسودة يمنح للمستخدم صلاحية تغيير حالة قسائم الدفع إلى مسودة</field>
+    </record>
+
+    <record id="access_payslip_batch_create" model="res.groups">
+        <field name="name">اضافة دفع قسائم الدفع</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">اضافة دفع قسائم الدفع يمنح للمستخدم صلاحية إنشاء قسائم الدفع جديدة</field>
+    </record>
+    <record id="access_payslip_batch_edit" model="res.groups">
+        <field name="name">تعديل دفع قسائم الدفع</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">تعديل دفع قسائم الدفع يمنح للمستخدم صلاحية التعديل على قسائم الدفع</field>
+    </record>
+    <record id="access_payslip_batch_unlink" model="res.groups">
+        <field name="name">حذف دفع قسائم الدفع</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">حذف دفع قسائم الدفع يمنح للمستخدم صلاحية الحذف على قسائم الدفع</field>
+    </record>
+    <record id="access_payslip_batch_read" model="res.groups">
+        <field name="name">قراءة دفع قسائم الدفع</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">قراءة دفع قسائم الدفع يمنح للمستخدم صلاحية رؤية سجلات قسائم الدفع</field>
+    </record>
+    <record id="access_payslip_batch_menu" model="res.groups">
+        <field name="name">قائمة دفع قسائم الدفع</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">قائمة دفع قسائم الدفع يمنح للمستخدم صلاحية رؤية قائمة دفع قسائم الدفع</field>
+    </record>
+
+    <record id="access_waiting_approval_1" model="res.groups">
+        <field name="name">أخصائي الموارد البشرية</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">أخصائي الموارد البشرية يمنح للمستخدم صلاحية لمباشرة المهام التابعة لأخصائي الموارد البشرية</field>
+    </record>
+    <record id="access_waiting_approval_2" model="res.groups">
+        <field name="name">مدراء الوحدات الإدارية</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">مدراء الوحدات الإدارية هى صلاحية تمنح لمدراء الوحدات الإدارية لمباشرة المهام التابعة لهم</field>
+    </record>
+    <record id="access_waiting_approval_3" model="res.groups">
+        <field name="name">مدير إدارة الخدمات المساندة</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+        <field name="comment">مدير إدارة الخدمات المساندة هى صلاحية تمنح لمدير إدارة الخدمات المساندة لمباشرة المهام التابعة له</field>
+    </record>
+    <record id="access_waiting_approval_4" model="res.groups">
+        <field name="name">قائد المكتب</field>
+        <field name="category_id" ref="module_hr_payroll_advice"/>
+    </record>
+    <!--<record id="access_waiting_approval_5" model="res.groups">-->
+    <!--<field name="name">اعتماد المدير المالي</field>-->
+    <!--<field name="category_id" ref="module_hr_payslip_batch"/>-->
+    <!--</record>-->
+    <!--<record id="access_waiting_approval_6" model="res.groups">-->
+    <!--<field name="name">اعتماد المراقب المالي</field>-->
+    <!--<field name="category_id" ref="module_hr_payslip_batch"/>-->
+    <!--</record>-->
+    <!--<record id="access_waiting_approval_7" model="res.groups">-->
+    <!--<field name="name">اعتماد مدير الشئون المالية و الإدارية</field>-->
+    <!--<field name="category_id" ref="module_hr_payslip_batch"/>-->
+    <!--</record>-->
+    <!--<record id="access_close_payslip_run" model="res.groups">-->
+    <!--<field name="name">اغلاق دفع قسائم الدفع</field>-->
+    <!--<field name="category_id" ref="module_hr_payslip_batch"/>-->
+    <!--</record>-->
+    <record id="access_compute_total_line" model="res.groups">
+        <field name="name">حسب مجموع دفع قسائم الدفع</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+         <field name="comment">حسب مجموع دفع قسائم الدفع تمنح صلاحية للمستخدم برؤية زرار الخاص بإحتساب مجموع دفع قسائم الدفع</field>
+    </record>
+    <record id="access_generate_payslip" model="res.groups">
+        <field name="name">توليد كشوف الرواتب</field>
+        <field name="category_id" ref="module_hr_payslip"/>
+         <field name="comment">توليد كشوف الرواتب تمنح صلاحية للمستخدم برؤية كلا من زرار الخاص بتوليد كشوف الرواتب وأيضا زرار إعادة احتساب توليد كشوف الرواتب</field>
+    </record>
+
+    <record id="hr_holiday_create_old_date_request" model="res.groups">
+        <field name="name">السماح بإنشاء طلب إجازة قبل التاريخ الحالي بدون قيود</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_nauss_holidays"/>
+         <field name="comment">تمنح صلاحية للمستخدم بإنشاء طلب إجازة بتاريخ سابق بدون قيود</field>
+    </record>
+    <record id="hr_holiday_exceed_number_of_days_per_year" model="res.groups">
+        <field name="name">السماح بإنشاء طلب إجازة يتجاوز عدد الأيام المسموح بها خلال السنة</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_nauss_holidays"/>
+        <field name="comment">تمنح صلاحية للمستخدم بإنشاء طلب إجازة بعدد أيام أكثر من المسموح بها خلال السنة</field>
+    </record>
+
+    <record id="hr_holiday_employee_itself_direct_manager" model="res.groups">
+        <field name="name">صلاحية المدير المباشر لنفس الموظف</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_nauss_holidays"/>
+         <field name="comment">إعطاء خاصية المدير المباشر لنفس الموظف ليتمكن من مباشرة المهام التابعة بالمدير المباشر </field>
+    </record>
+    <record id="hr_holidays_direct_manager" model="res.groups">
+        <field name="name">صلاحية المدير المباشر</field>
+        <field name="implied_ids" eval="[(6,0,[ref('base.group_user'),ref('hr_holidays.group_hr_holidays_responsible'),ref('ejad_erp_hr.group_holidays_menu')])]"/>
+        <field name="category_id" ref="module_nauss_holidays"/>
+         <field name="comment">تمنح صلاحية للمدير المباشر بمباشرة المهام التابعة له</field>
+    </record>
+
+    <record id="hr_holidays_dept_manger" model="res.groups">
+        <field name="name">صلاحية مدير/معتمد الإدارة</field>
+        <field name="implied_ids" eval="[(6,0,[ref('base.group_user'),ref('ejad_erp_hr.group_holidays_menu')])]"/>
+        <field name="category_id" ref="module_nauss_holidays"/>
+         <field name="comment">تمنح صلاحية لمدير/معتمد الإدارة بمباشرة المهام التابعة له</field>
+    </record>
+
+    <record id="hr_holidays_access_direct_manger" model="res.groups">
+        <field name="name">صلاحية إجازات المرئوسين</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="module_nauss_holidays"/>
+         <field name="comment">تمنح للمستخدم رؤية الاجازات الخاصة به وايضا الاجازات الخاصة بالموظفين التابعين له</field>
+    </record>
+
+    <record id="access_hr_attendance_department_employee_only" model="res.groups">
+        <field name="name">صلاحية قراءة حضور موظفي الادارة فقط</field>
+        <field name="category_id" ref="base.module_category_human_resources"/>
+        <field name="comment">تمنح صلاحية للمستخدمين برؤية سجلات حضور موظفي الادارة فقط</field>
+    </record>
+
+     <record id="access_all_hr_leaves" model="res.groups">
+            <field name="name">صلاحية رؤية الاجازات الخاصة بكل موظف</field>
+            <field name="category_id" ref="module_nauss_holidays"/>
+            <field name="comment">تمنح صلاحية للمستخدم برؤية كل طلبات الإجازة الخاصة بة</field>
+     </record>
+
+      <record id="access_direct_employee_manager_only" model="res.groups">
+            <field name="name">صلاحية موظفين مستوى واحد فقط</field>
+             <field name="category_id" ref="base.module_category_human_resources"/>
+             <field name="comment">تمنح صلاحية للمستخدم برؤية البروفايل الخاص بة و كل الموظفين التابعين له</field>
+        </record>
+
+      <record id="access_general_employee_only" model="res.groups">
+            <field name="name">صلاحية موظف عام فقط</field>
+             <field name="category_id" ref="base.module_category_human_resources"/>
+             <field name="comment">تمنح صلاحية للمستخدم برؤية البروفايل الخاص بة</field>
+        </record>
+
+    <record id="hr.group_hr_user" model="res.groups">
+        <field name="name">Officer</field>
+        <field name="category_id" ref="base.module_category_human_resources_employees"/>
+        <field name="implied_ids" eval="[(6, 0, [ref('ejad_erp_hr.access_direct_employee_manager_only'),ref('base.group_private_addresses'), ref('base.group_user'), ref('ejad_erp_hr.access_all_hr_leaves'), ref('ejad_erp_hr.access_general_employee_only')])]"/>
+        <field name="comment">The user will be able to approve document created by employees.</field>
+    </record>
+
+     <function model="ir.model.data" name="write">
+            <function model="ir.model.data" name="search">
+                <value eval="[('module','=','ejad_erp_hr'),('name','=','access_all_loans')]"/>
+
+            </function>
+            <value eval="{'noupdate':False}"/>
+        </function>
+
+        <record id="access_all_loans" model="res.groups">
+            <field name="name">صلاحية كل القروض</field>
+            <field name="category_id" ref="module_hr_loan"/>
+            <field name="comment">يمنح للمستخدم صلاحية رؤية كل سجلات القروض</field>
+        </record>
+
+        <function model="ir.model.data" name="write">
+            <function model="ir.model.data" name="search">
+                <value eval="[('module','=','ejad_erp_hr'),('name','=','access_all_mandates')]"/>
+
+            </function>
+            <value eval="{'noupdate':False}"/>
+        </function>
+
+       <record id="access_all_mandates" model="res.groups">
+            <field name="name">صلاحية كل الانتدابات</field>
+             <field name="category_id" ref="module_nauss_mandate"/>
+        </record>
+
+    <function model="ir.model.data" name="write">
+            <function model="ir.model.data" name="search">
+                <value eval="[('module','=','ejad_erp_hr'),('name','=','access_general_employee_only')]"/>
+
+            </function>
+            <value eval="{'noupdate':False}"/>
+        </function>
+
+    <function model="ir.model.data" name="write">
+            <function model="ir.model.data" name="search">
+                <value eval="[('module','=','ejad_erp_hr'),('name','=','access_direct_employee_manager_only')]"/>
+
+            </function>
+            <value eval="{'noupdate':False}"/>
+        </function>
+
+    <function model="ir.model.data" name="write">
+            <function model="ir.model.data" name="search">
+                <value eval="[('module','=','ejad_erp_hr'),('name','=','access_department_employee_only')]"/>
+
+            </function>
+            <value eval="{'noupdate':False}"/>
+        </function>
+
+        <record id="access_department_employee_only" model="res.groups">
+            <field name="name">صلاحية موظفين مستويات أدنى فقط</field>
+             <field name="category_id" ref="base.module_category_human_resources"/>
+             <field name="comment">تمنح صلاحية للمستخدم برؤية البروفايل و سجلات الاجازات لكل الموظفين التابعين له </field>
+        </record>
+
+    <function model="ir.model.data" name="write">
+            <function model="ir.model.data" name="search">
+                <value eval="[('module','=','ejad_erp_hr'),('name','=','access_all_employee')]"/>
+
+            </function>
+            <value eval="{'noupdate':False}"/>
+        </function>
+
+        <record id="access_all_employee" model="res.groups">
+            <field name="name">صلاحية كل الموظفين</field>
+             <field name="category_id" ref="base.module_category_human_resources"/>
+             <field name="comment">تمنح صلاحية للمستخدم برؤية البروفايل الخاص لكل الموظفين </field>
+        </record>
+
+    <function model="ir.model.data" name="write">
+            <function model="ir.model.data" name="search">
+                <value eval="[('module','=','ejad_erp_hr'),('name','=','access_archive_employee')]"/>
+
+            </function>
+            <value eval="{'noupdate':False}"/>
+        </function>
+
+        <record id="access_archive_employee" model="res.groups">
+            <field name="name">أرشفة الموظفين</field>
+             <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="comment">تمنح صلاحية للمستخدم بأرشفة سجلات الموظفين اي جعل سجل الموظف غير نشط على النظام</field>
+        </record>
+
+       <function model="ir.model.data" name="write">
+            <function model="ir.model.data" name="search">
+                <value eval="[('module','=','ejad_erp_hr'),('name','=','group_menu_hr_attendance_root_custom')]"/>
+
+            </function>
+            <value eval="{'noupdate':False}"/>
+        </function>
+
+     <record id="group_menu_hr_attendance_root_custom" model="res.groups">
+            <field name="name">صلاحية قائمة الحضور الإضافية</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+           <field name="comment">تمنح صلاحية للمستخدم برؤية قائمة الحضور الإضافية</field>
+        </record>
+
+    <data noupdate="1">
+
+        <record id="access_all_custodies" model="res.groups">
+            <field name="name">صلاحية كل العهد</field>
+        </record>
+
+        <record id="access_all_requests" model="res.groups">
+            <field name="name">صلاحية كل تأمين المواد</field>
+        </record>
+
+        <record id="group_dynamic_workflow_settings_main_menu" model="res.groups">
+            <field name="name">صلاحية إعدادات المراحل</field>
+        </record>
+    </data>
+
+    <data noupdate="1">
+        <!---->
+
+        <!--  Record Rules   -->
+
+        <!--   HR Employee Model   -->
+
+
+        <record id="access_all_employees_data" model="ir.rule">
+            <field name="name">قراءة كل الموظفين</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_all_employee'))]"/>
+        </record>
+
+        <record id="access_employee_management" model="ir.rule">
+            <field name="name">قراءة موظفين الادارة</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">['|', ('parent_id', '=', user.employee_ids and
+                user.employee_ids[0].id or -1),
+                ('department_id', 'child_of', user.employee_ids and
+                user.employee_ids[0].department_id.id or [])]
+            </field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_department_employee_only'))]"/>
+        </record>
+
+        <record id="access_employee_direct_manager" model="ir.rule">
+            <field name="name">قراءة الموظفين المرؤوسن</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">['|', ('parent_id', '=', user.employee_ids and
+                user.employee_ids[0].id or -1),
+                ('user_id', '=', user.id)]
+            </field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_direct_employee_manager_only'))]"/>
+        </record>
+
+        <record id="access_self_employee" model="ir.rule">
+            <field name="name">قراءة الموظف نفسه</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_general_employee_only'))]"/>
+        </record>
+
+
+        <!--   HR Mandate Request Model   -->
+
+        <record id="access_all_mandate_requests_data" model="ir.rule">
+            <field name="name">قراءة كل الانتدابات</field>
+            <field name="model_id" ref="ejad_erp_hr.model_hr_mandate_request"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_all_mandates'))]"/>
+        </record>
+
+        <record id="access_mandate_request_employee_management" model="ir.rule">
+            <field name="name">قراءة انتدابات موظفين الادارة</field>
+            <field name="model_id" ref="ejad_erp_hr.model_hr_mandate_request"/>
+            <field name="domain_force">['|', ('employee_id.parent_id', '=', user.employee_ids and
+                user.employee_ids[0].id or -1),
+                ('employee_id.department_id', 'child_of', user.employee_ids and
+                user.employee_ids[0].department_id.id or [])]
+            </field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_department_employee_only'))]"/>
+        </record>
+
+        <record id="access_mandate_request_employee_direct_manager" model="ir.rule">
+            <field name="name">قراءة انتدابات الموظفين المرؤوسن</field>
+            <field name="model_id" ref="ejad_erp_hr.model_hr_mandate_request"/>
+            <field name="domain_force">['|', ('employee_id.parent_id', '=', user.employee_ids and
+                user.employee_ids[0].id or -1),
+                ('employee_id.user_id', '=', user.id)]
+            </field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_direct_employee_manager_only'))]"/>
+        </record>
+
+        <record id="access_self_mandate_request_employee" model="ir.rule">
+            <field name="name">قراءة انتدابات الموظف نفسه</field>
+            <field name="model_id" ref="ejad_erp_hr.model_hr_mandate_request"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_general_employee_only'))]"/>
+        </record>
+
+
+        <!--   HR Loan Model   -->
+
+        <record id="access_all_loans_data" model="ir.rule">
+            <field name="name">قراءة كل القروض</field>
+            <field name="model_id" ref="ejad_erp_hr.model_hr_loan"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_all_loans'))]"/>
+        </record>
+
+        <record id="access_loan_employee_management" model="ir.rule">
+            <field name="name">قراءة قروض موظفين الادارة</field>
+            <field name="model_id" ref="ejad_erp_hr.model_hr_loan"/>
+            <field name="domain_force">['|', ('employee_id.parent_id', '=', user.employee_ids and
+                user.employee_ids[0].id or -1),
+                ('employee_id.department_id', 'child_of', user.employee_ids and
+                user.employee_ids[0].department_id.id or [])]
+            </field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_department_employee_only'))]"/>
+        </record>
+
+        <record id="access_loan_employee_direct_manager" model="ir.rule">
+            <field name="name">قراءة قروض الموظفين المرؤوسن</field>
+            <field name="model_id" ref="ejad_erp_hr.model_hr_loan"/>
+            <field name="domain_force">['|', ('employee_id.parent_id', '=', user.employee_ids and
+                user.employee_ids[0].id or -1),
+                ('employee_id.user_id', '=', user.id)]
+            </field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_direct_employee_manager_only'))]"/>
+        </record>
+
+        <record id="access_self_loan_employee" model="ir.rule">
+            <field name="name">قراءة قروض الموظف نفسه</field>
+            <field name="model_id" ref="ejad_erp_hr.model_hr_loan"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_general_employee_only'))]"/>
+        </record>
+
+
+        <!--   HR Holidays Model   -->
+
+        <record id="access_all_holidays_data" model="ir.rule">
+            <field name="name">قراءة كل الاجازات</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_all_hr_leaves'))]"/>
+        </record>
+
+        <record id="access_holidays_employee_management" model="ir.rule">
+            <field name="name">قراءة اجازات موظفين الادارة</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+            <field name="domain_force">['|', ('employee_id.parent_id', '=', user.employee_ids and
+                user.employee_ids[0].id or -1),
+                ('employee_id.department_id', 'child_of', user.employee_ids and
+                user.employee_ids[0].department_id.id or [])]
+            </field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_department_employee_only'))]"/>
+        </record>
+
+        <record id="access_holidays_employee_direct_manager" model="ir.rule">
+            <field name="name">قراءة اجازات الموظفين المرؤوسن</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+            <field name="domain_force">['|', ('employee_id.parent_id', '=', user.employee_ids and
+                user.employee_ids[0].id or -1),
+                ('employee_id.user_id', '=', user.id)]
+            </field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_direct_employee_manager_only'))]"/>
+        </record>
+
+        <record id="access_self_holidays_employee" model="ir.rule">
+            <field name="name">قراءة اجازات الموظف نفسه</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_general_employee_only'))]"/>
+        </record>
+
+        <record id="access_all_sick_holidays" model="ir.rule">
+            <field name="name">قراءة كل الاجازات المرضية</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+            <field name="domain_force">[('holiday_status_id.is_sick_holiday', '=', True)]</field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.group_medical_manager'))]"/>
+        </record>
+
+        <record id="access_hr_attendance_department_employee" model="ir.rule">
+            <field name="name">قراءة حضور موظفين الادارة</field>
+            <field name="model_id" ref="hr_attendance.model_hr_attendance"/>
+            <field name="domain_force">['|', ('employee_id.parent_id', '=', user.employee_ids and
+                user.employee_ids[0].id or -1),
+                ('employee_id.department_id', 'child_of', user.employee_ids and
+                user.employee_ids[0].department_id.id or [])]
+            </field>
+            <field name="groups" eval="[(4, ref('ejad_erp_hr.access_hr_attendance_department_employee_only'))]"/>
+        </record>
+
+
+    </data>
+
+</odoo>

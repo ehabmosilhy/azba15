@@ -1,0 +1,7 @@
+@mixin ni-lunch-view() {
+    .o_lunch_content {
+        .o_lunch_banner {
+            background-color: var(--btn-secondary);
+        }
+    }
+}

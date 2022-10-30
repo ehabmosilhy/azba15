@@ -1,0 +1,68 @@
+<odoo>
+    <data>
+        <record id="contract_alarm_form_view" model="ir.ui.view">
+          <field name="name">hr.contract.alarm.form.view</field>
+          <field name="model">hr.contract.alarm</field>
+          <field name="arch" type="xml">
+               <form string = "Contract Alarm" col="4" create="false" edit="false" delete="false" >
+               <header>
+                   <button class="oe_highlight" name="done" states="n" type="object" string="Mark as done" groups="ejad_erp_hr.hr_alarm_done"/>
+                   <field name="state" widget="statusbar"/>
+               </header>
+              <sheet>
+                  <group col="4" colspan="4">
+                      <field name="employee_id" class="field1"/>
+                      <field name="contract_id" class="field2"/>
+                      <field name="remain" class="field3"/>
+                      <field name="end_date" class="field3"/>
+                  </group>
+              </sheet>
+              </form>
+             </field>
+            </record>
+
+        <record id="contract_alarm_tree_view" model="ir.ui.view">
+          <field name="name">hr.contract.alarm.tree.view</field>
+          <field name="model">hr.contract.alarm</field>
+          <field name="arch" type="xml">
+               <tree create="false" edit="false" delete="false" string="Contract Alarm" decoration-danger="remain == '7 days'" decoration-primary="remain=='12 days'" decoration-info="remain== '32 days'" decoration-success="remain=='45 days'">
+                    <field name="employee_id"/>
+                    <field name="contract_id"/>
+                    <field name="remain"/>
+                    <field name="end_date"/>
+                    <field name="state"/>
+               </tree>
+          </field>
+        </record>
+
+
+         <record id="contract_alarm_action" model="ir.actions.act_window">
+            <field name="name">Contract Alarm</field>
+            <field name="res_model">hr.contract.alarm</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+      <record id="hr_contract_view" model="ir.ui.view">
+        <field name="name">hr.contract.form.view.inherit.ref</field>
+        <field name="model">hr.contract</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute name="readonly">True</attribute>
+                <attribute name="required">False</attribute>
+            </field>
+             <!--  <field name="wage" position="before">
+                  <field name="mobile_limit"/>
+                  <field name="grade_allowance"/>
+
+              </field> -->
+        </field>
+    </record>
+        <menuitem name="Contract Alarm" id="contract_alarm_menu" sequence="5" parent="hr.menu_hr_root" action="contract_alarm_action" groups="ejad_erp_hr.hr_alarm_menu"/>
+
+
+       
+    </data>
+</odoo>

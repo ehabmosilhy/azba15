@@ -1,0 +1,111 @@
+@mixin gernal_setting_view() {
+    &.oe_base_settings {
+        .oe_form_configuration.o_base_settings {
+            .o_control_panel {
+                background-color: var(--night-light);
+                border: 0 !important;
+
+                .o_panel {
+                    .o_setting_search {
+                        input {
+                            background-color: var(--btn-secondary);
+                            padding: 0 10px;
+                        }
+
+                        .searchIcon {
+                            color: white;
+                        }
+                    }
+
+                    .title {
+                        color: var(--btn-primary) !important;
+                    }
+
+                    .breadcrumb {
+                        background-color: transparent;
+
+                        .breadcrumb-item {
+                            &.active {
+                                color: var(--night-hover);
+                            }
+                        }
+                    }
+                }
+
+                .o_form_statusbar {
+                    background-color: var(--night-light) !important;
+                    border-top: 0 !important;
+                }
+            }
+
+            .o_setting_container {
+                .settings_tab {
+                    background-color: var(--btn-secondary);
+                    border-right: 1px solid var(--border);
+
+                    .tab {
+                        .app_name {
+                            color: var(--font-color);
+                        }
+
+                        &.selected,
+                        &:hover {
+                            background-color: var(--night);
+                            box-shadow: inset 3px 0 0 var(--btn-primary);
+                        }
+                    }
+                }
+
+                .settingSearchHeader {
+                    background-color: var(--night);
+                }
+
+                .settings {
+                    background-color: var(--btn-secondary);
+
+                    &>.app_settings_block h2 {
+                        background-color: transparent;
+                        color: var(--font-color);
+                    }
+
+                    .o_settings_container {
+                        .o_setting_right_pane {
+                            border-color: var(--border);
+
+                            .o_form_label {
+                                color: var(--font-color);
+                            }
+
+                            select.o_input,
+                            input,
+                            .o_input {
+                                border: 0;
+                                background-color: var(--night) !important;
+                                color: var(--font-color);
+
+                                &::placeholder {
+                                    color: var(--font-color);
+                                }
+
+                                .badge {
+                                    background-color: var(--btn-secondary);
+                                    color: var(--font-color);
+                                    box-shadow: inset 0 0 0 2px var(--font-color);
+                                }
+                            }
+
+                            .badge.badge-primary {
+                                background-color: var(--btn-primary);
+                                color: var(--font-color);
+                            }
+
+                            .btn-link {
+                                color: var(--btn-primary);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

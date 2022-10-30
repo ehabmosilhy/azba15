@@ -1,0 +1,215 @@
+body.oe_night_mode {
+    --brand-primary: #d3a722;
+    --brand-secondary: #5bade9;
+    --button-box: #f3f3f3;
+    --heading: #f3f3f3;
+    --Label: #f3f3f3;
+    --Label-value: #f3f3f3;
+    --link: #5bade9;
+    --notbook: #5bade9;
+    --tooltip: #5bade9;
+    --border: #636363;
+    --menu-main-title: #f3f3f3;
+    --font-color: #f3f3f3;
+    --night: rgb(21, 32, 43);
+    --night-light: #273442;
+    --night-hover: #5bade9;
+    --btn-secondary: #3b4856;
+    --checkbox: #cccccc;
+    --btn-primary: #5bade9;
+}
+
+body.light_mode_on {
+    --light-color: #f8f9fa;
+}
+
+
+body {
+    --control-panel-h: 51px;
+    --control-panel-m: 51px;
+    --control-panel-b: 0;
+    --menu-width: 65px;
+    --panel-width: 65px;
+    --fonts: 'roboto';
+    --left-menu-position: 0;
+    --grid-area: brand;
+    --button-width-r: -35px;
+    --flex-basis-r: calc(100% + 65px);
+    --main-padding: 5px 10px;
+    // Font Weight
+    --font-weight-4: 400;
+    --font-weight-5: 500;
+    --font-weight-7: 700;
+    --font-weight-b: bold;
+    --base-panel-padding: 0 8px 0 30px;
+
+    &.ad_full_view {
+        --flex-basis-r: 100%;
+        --button-width-r: 35px;
+        --panel-width: 0;
+        --grid-area: apps;
+        --left-menu-position: -65px;
+    }
+
+    &.uc_theme_open_sans {
+        --fonts: 'open_sans';
+    }
+
+    &.uc_theme_alice {
+        --fonts: 'alice';
+    }
+
+    &.uc_theme_abel {
+        --fonts: 'abel';
+    }
+
+    &.uc_theme_montserrat {
+        --fonts: 'montserrat';
+    }
+
+    &.uc_theme_lato {
+        --fonts: 'lato';
+    }
+
+    &.oe_base_menu {
+        --control-panel-h: 44px;
+        --control-panel-m: 44px;
+        --base-panel-padding: 0 8px;
+    }
+
+    &.ad-chat-window:not(.o_no_thread_window_window):not(.ad_mobile) {
+        --control-panel-b: 40px;
+    }
+
+    &.ad-chat-window.oe_base_menu:not(.o_no_thread_window_window):not(.ad_mobile) {
+        --control-panel-m: 85px;
+    }
+
+    &.ad-chat-window:not(.oe_base_menu):not(.o_no_thread_window_window):not(.ad_mobile) {
+        --control-panel-m: 92px;
+    }
+
+    &.o_fullscreen {
+        --left-menu-position: -65px;
+        --panel-width: 0;
+
+        #av_full_view {
+            display: none !important;
+        }
+    }
+}
+
+$white: white;
+$black: #000;
+//main menu color
+$menu-dark-color: #000001;
+$body-bg: $white;
+// Hover Color
+$tr-hover: rgba($brand-primary, .03);
+$tr-header: rgb(237, 237, 237);
+// Background Light
+$bg-light: rgba($brand-primary, .5);
+
+//ni color
+$night: rgb(21, 32, 43);
+
+$normal-color: var(--Label-value);
+$font-color: $Label-value;
+
+$link-hover-decoration: none;
+$box-shadow: 5px 8px 12px -4px $bg-light;
+
+// Bootstrap color for list row
+$text-info: #00b3e5;
+$text-danger: #ca0c05;
+$text-success: #00aa00;
+$text-warning: #e47e01;
+$text-primary: #005ba9;
+$text-muted: #717171;
+
+// Denger-light
+$text-danger-light: rgba($text-danger, .01);
+
+//== Colors
+$brand-success: #00a04a;
+$brand-info: #87c0d1;
+$brand-warning: #f0ad4e;
+$brand-danger: #dc6965;
+$brand-optinal: #F9F9F9;
+
+// Base color change
+$o-community-color: var(--brand-secondary);
+$screen-sm: 768px;
+$screen-sm-min: $screen-sm;
+$screen-md: 992px;
+$screen-md-min: $screen-md;
+$screen-desktop: $screen-md-min;
+$screen-lg: 1200px;
+$screen-lg-min: $screen-lg;
+$screen-lg-desktop: $screen-lg-min;
+$screen-xs-max: ($screen-sm-min - 1);
+$screen-xs-max: ($screen-sm-min - 1);
+$screen-sm-max: ($screen-md-min - 1);
+$screen-md-max: ($screen-lg-min - 1);
+
+//== Buttons
+$btn-default-bg: $white;
+$btn-default-border: var(--border);
+$btn-primary-bg: var(--brand-secondary);
+$btn-primary-border: var(--brand-secondary);
+$btn-primary-color: $white;
+$btn-borrdere-radius: 0;
+
+// Font sizing
+$font-size-13: 11px;
+$font-size-12: 100%;
+$font-size-11: 120px;
+$font-size-10: 50px;
+$font-size-9: 36px;
+$font-size-8: 16px;
+$font-size-7: 30px;
+$font-size-4: 22px;
+$font-size-5: 20px;
+$font-size-6: 19px;
+$font-size-0: 18px;
+$font-size-1: 13px;
+$font-size-2: 12px;
+$font-size-3: 10px;
+$font-size-n: 0px;
+
+$calender-tag-info: #00b3e5;
+$calender-tag-danger: #ca0c05;
+$calender-tag-success: #00aa00;
+$calender-tag-warning: #e47e01;
+$calender-tag-primary: #005ba9;
+$calender-tag-muted: #717171;
+
+// Webclient Variables
+$o-brand-odoo: $brand-primary;
+$o-brand-primary: $brand-primary;
+$o-main-text-color: #4c4c4c;
+$o-main-color-muted: $text-muted;
+
+:root {
+    --blue: #007bff;
+    --indigo: #6610f2;
+    --purple: #6f42c1;
+    --pink: #e83e8c;
+    --red: #dc3545;
+    --orange: #fd7e14;
+    --yellow: #ffc107;
+    --green: #28a745;
+    --teal: #20c997;
+    --cyan: #17a2b8;
+    --white: #fff;
+    --gray: $text-muted;
+    --gray-dark: #343a40;
+    --primary: var(--brand-primary);
+    --secondary: var(--brand-secondary);
+    --success: $text-success;
+    --info: $text-info;
+    --warning: $brand-warning;
+    --danger: $text-danger;
+    --light: #f8f9fa;
+    --dark: #343a40;
+}

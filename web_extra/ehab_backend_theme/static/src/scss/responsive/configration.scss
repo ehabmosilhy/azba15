@@ -1,0 +1,121 @@
+@mixin configration-xs() {
+    .o_action_manager {
+        .o_action.o_view_controller {
+            .o_content {
+                .o_form_view.oe_form_configuration.o_base_settings {
+                    padding: 0px;
+
+                    .o_control_panel {
+                        height: auto;
+                        min-height: 52px;
+
+                        .o_form_statusbar {
+                            left: 0px;
+
+                            .o_statusbar_buttons {
+                                width: 100%;
+
+                                .btn-group {
+                                    width: 100%;
+
+                                    >a.btn-primary {
+                                        display: none;
+                                    }
+
+                                    .dropdown-menu {
+                                        display: flex !important;
+                                        position: relative !important;
+                                        transform: unset !important;
+                                        top: 0px !important;
+                                        left: 0px !important;
+                                        will-change: unset !important;
+                                        box-shadow: unset;
+                                        width: 100%;
+                                        padding: 0;
+                                        border: 0;
+
+                                        &>li {
+                                            flex: 1;
+                                            margin: 0 5px;
+
+                                            >button {
+                                                height: 38px;
+                                                margin: 0;
+                                                width: 100%;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .o_panel {
+                            .o_setting_search {
+                                .searchIcon {
+                                    top: 0;
+                                    bottom: 0;
+                                    justify-content: center;
+                                    align-items: center;
+                                    display: flex;
+                                }
+                            }
+                        }
+
+                        .o_form_statusbar {
+                            padding: 2px 15px;
+                            justify-content: center;
+                        }
+                    }
+
+                    .o_setting_container {
+                        .settings_tab {
+                            background-color: var(--brand-secondary);
+
+                            .tab {
+                                .app_name {
+                                    color: $white;
+                                }
+
+                                &:hover {
+                                    background-color: var(--brand-secondary);
+                                    box-shadow: none;
+                                }
+                            }
+
+                            .tab.selected {
+                                height: 40px !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.oe_base_menu {
+        .o_action_manager {
+            .o_action {
+                .o_content {
+                    .o_form_view.oe_form_configuration.o_base_settings {
+                        .o_control_panel {
+                            height: auto;
+                            min-height: 45px;
+
+                            .o_panel {
+                                .o_setting_search {
+                                    .searchIcon {
+                                        top: 7px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.o_web_client.ad_mobile {
+    @include configration-xs();
+}

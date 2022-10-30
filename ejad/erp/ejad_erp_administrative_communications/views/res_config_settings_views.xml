@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ac</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="71"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="NAUSS AC" string="الاتصالات الإدارية"
+                     data-key="ejad_erp_administrative_communications" groups="ejad_erp_administrative_communications.group_operation_settings">
+                    <h2>الأرشفة</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" title="">
+                            <div class="o_setting_left_pane">
+
+                            </div>
+                            <div class="o_setting_right_pane">
+                                الأرشفة التلقائية كل <field name="default_ac_archive_days"/> يوم.
+                                <div class="text-muted">
+                                    أرشفة المعاملات المحفوظة تلقائيا إذا مرّ عليها عدد أيّام معيّن من بعد الحفظ
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Host &amp; Port</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" title="">
+                            <div class="o_setting_left_pane">
+
+                            </div>
+
+                            <div class="o_setting_right_pane">
+                                Host &amp; Port : <field name="default_host" placeholder="localhost:8069"/>
+                                <div class="text-muted">
+                                    Default host and port
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>الاشعار على المعاملات</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box" title="">
+                            <div class="o_setting_left_pane">
+
+                            </div>
+
+                            <div class="o_setting_right_pane">
+                                نسبة الاشعار على المعاملات : <field name="default_operation_notification"/> %
+                                <div class="text-muted">
+                                    يتم تحديد نسبة من خلالها يتم ارسال تنبيهات بخصوص المعاملات غير المنجزة قبل تاريخ الانجاز
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

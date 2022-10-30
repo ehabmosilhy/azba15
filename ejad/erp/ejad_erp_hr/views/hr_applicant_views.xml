@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_applicant_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.applicant.form</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stage_id']" position="replace">
+                    <button name="action_dept_manager" string="موافقة أخصائي الموارد البشرية" type="object"
+                             attrs="{'invisible': [('stage_id','!=',%(ejad_erp_hr.stage_job1)d)]}"
+                            class="oe_highlight" groups="ejad_erp_hr.group_hr_recruitment_stage1"/>
+                    <button name="action_support_service_manager" string="موافقة مدراء الوحدات الإدارية" type="object"
+                             attrs="{'invisible': [('stage_id','!=',%(ejad_erp_hr.stage_job2)d)]}"
+                            class="oe_highlight" groups="ejad_erp_hr.group_hr_recruitment_stage2"/>
+                    <button name="action_office_leader" string="موافقة مدير إدارة الخدمات المساندة" type="object"
+                             attrs="{'invisible': [('stage_id','!=',%(ejad_erp_hr.stage_job3)d)]}"
+                            class="oe_highlight" groups="ejad_erp_hr.group_hr_recruitment_stage3"/>
+                    <button name="action_done" string="موافقة قائد المكتب" type="object"
+                             attrs="{'invisible': [('stage_id','!=',%(ejad_erp_hr.stage_job4)d)]}"
+                            class="oe_highlight" groups="ejad_erp_hr.group_hr_recruitment_stage4"/>
+                    <field name="stage_id" widget="statusbar"
+                           attrs="{'invisible': [('active', '=', False),('emp_id', '=', False)]}"/>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

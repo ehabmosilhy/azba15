@@ -1,0 +1,5 @@
+<odoo>
+    <record model="hr.recruitment.source" id="source_website_company">
+        <field name="name">Company Website</field>
+    </record>
+</odoo>

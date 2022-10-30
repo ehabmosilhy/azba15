@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="wiz_operation_transfer_view_form" model="ir.ui.view">
+        <field name="name">wiz.ac.operation.transfer.form</field>
+        <field name="model">wiz.ac.operation.transfer</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="is_multi_guidance"/>
+                </group>
+                <separator string="وجهة الإحالة" attrs="{'invisible':[('is_multi_guidance','=', True)]}"/>
+                <group>
+                    <group>
+                        <field name="destination" attrs="{'invisible':[('is_multi_guidance','=', True)],'required':[('is_multi_guidance','!=', True)]}"/>
+                    </group>
+                    <group>
+                        <field name="department_id" widget="many2many_tags"
+                               attrs="{'invisible':['|', ('destination','not in',['department']), ('is_multi_guidance','=', True)]}" />
+                        <field name="assigned_employee_id" attrs="{'invisible':['|', ('destination','not in',['employee']),('is_multi_guidance','=', True)]}"
+                               options="{'no_create': True, 'no_open': True}"/>
+                    </group>
+                </group>
+                <group attrs="{'invisible':['&amp;','&amp;',('department_id','=',False),('assigned_employee_id','=',False),('destination','not in',['global_out'])]}">
+                    <group>
+                        <field name="transfer_guidance" attrs="{'invisible':[('is_multi_guidance','=', True)],'required':[('is_multi_guidance','!=', True)]}"/>
+                    </group>
+                    <group>
+                        <field name="notes" attrs="{'invisible':[('is_multi_guidance','=', True)]}"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="التفاصيل">
+                        <field name="line_ids" attrs="{'invisible':[('is_multi_guidance','!=', True)],'required':[('is_multi_guidance','=', True)]}">
+                            <tree editable="bottom">
+                                <field name="transfer_ref"/>
+                                <field name="transfer_guidance"/>
+                                <!--<field name="department_deadline_date" attrs="{'readonly':[('is_readonly_date','=', True)]}"/>-->
+                                 <field name="department_deadline_date"/>
+                                <field name="notes"/>
+                                <field name="is_readonly_date" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+
+                <footer>
+                    <button name="action_transfer_operation" string="إحالة" type="object"
+                            class="btn btn-sm btn-primary" confirm="هل أنت متأكد من الموافقة على الإحالة؟"/>
+                    <button string="إلغاء" class="btn btn-sm btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="ac_operation_transfer_action" model="ir.actions.act_window">
+        <field name="name">إحالة المعاملة</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wiz.ac.operation.transfer</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wiz_operation_transfer_view_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

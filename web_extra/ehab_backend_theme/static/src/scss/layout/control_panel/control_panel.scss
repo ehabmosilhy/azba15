@@ -1,0 +1,105 @@
+@mixin control-panel() {
+    >.o_action_manager {
+        --control-panel-position: 0px;
+
+        >.o_widget_Discuss,
+        >.o_action {
+            >.o_control_panel {
+                display: flex;
+                min-height: var(--control-panel-h);
+                border-bottom: 1px solid var(--border);
+                padding: 0 8px 0 30px;
+                z-index: 7;
+
+                .o_cp_top {
+                    @include control-panel-top();
+                }
+
+                .o_cp_bottom {
+                    @include o-position-absolute(auto, 0, var(--control-panel-b), 0);
+                    display: flex;
+                    flex-direction: row-reverse;
+                    margin: 0;
+                    padding: 0 8px 0 30px;
+                    border-top: 1px solid var(--border);
+                    min-height: var(--control-panel-h);
+                    background-color: white;
+                    z-index: 1;
+                    @include control-panel-bottom();
+                }
+            }
+        }
+
+        >.o_action {
+
+            &.ad_open_search,
+            &.o_open_sidebar {
+                --control-panel-position: 260px;
+
+                >.o_content,
+                .o_onboarding_container {
+                    margin-right: var(--control-panel-position);
+                }
+
+                >.o_content {
+                    border-right: 1px solid var(--border);
+                }
+
+                .o_control_panel.o_hidden+.o_content {
+                    --control-panel-position: 0px;
+                }
+            }
+
+            &:not(.ad_open_search) {
+                .o_control_panel {
+                    .o_search_options:not(.o_mobile_search_filter) {
+                        display: flex;
+                        left: auto;
+                        flex-wrap: wrap;
+
+                        .ad_has_options {
+                            right: -260px;
+                        }
+                    }
+                }
+            }
+
+            >.content {
+                margin-bottom: var(--control-panel-m);
+                margin-right: var(--control-panel-position);
+            }
+        }
+    }
+
+    &.oe_base_menu {
+        >.o_action_manager {
+            >.o_action {
+                >.o_control_panel {
+                    padding: 0 8px;
+                }
+            }
+
+            >.o_widget_Discuss {
+                >.o_control_panel {
+                    padding-left: 8px;
+                }
+            }
+        }
+    }
+
+    .modal {
+        .modal-dialog {
+            .modal-content {
+                .modal-body {
+                    .o_action {
+                        .o_control_panel {
+                            @include cp-search-view();
+                            @include control-panel-bottom();
+                            @include model-search-view();
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

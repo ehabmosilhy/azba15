@@ -1,0 +1,104 @@
+<odoo>
+    <template id="account_invoice_report">
+        <t t-call="web.html_container">
+
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div></div>
+                </div>
+                <div class="footer">
+                    <div></div>
+                </div>
+                <t t-call="web.internal_layout">
+                    <div  class="page">
+                        <span t-field="o.invoice_report_html"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <!--<template id="account_invoice_report_html">-->
+        <!--<t t-call="web.html_container">-->
+
+            <!--<t t-foreach="docs" t-as="o">-->
+                <!--<div class="header">-->
+                    <!--<div></div>-->
+                <!--</div>-->
+                <!--<div class="footer">-->
+                    <!--<div></div>-->
+                <!--</div>-->
+                <!--<t t-call="web.internal_layout">-->
+                    <!--<div class="page">-->
+
+                        <!--<table class="table table-bordered">-->
+                            <!--<thead>-->
+                                <!--<tr>-->
+                                    <!--<th class="text-center">#</th>-->
+                                    <!--<th class="text-center">الرقم الجامعي</th>-->
+                                    <!--<th class="text-center">اسم الطالب</th>-->
+                                    <!--<th class="text-center">برنامج الدراسة</th>-->
+                                    <!--<th class="text-center">الرسوم الدراسية</th>-->
+                                    <!--<th class="text-center">السجل المدني</th>-->
+                                <!--</tr>-->
+                            <!--</thead>-->
+                            <!--<t t-foreach="o.invoice_line_ids" t-as="line">-->
+                                <!--<tr>-->
+                                    <!--<td>-->
+                                        <!--<span t-field="line.partner_id1.uni_id"/>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>-->
+                                        <!--<span t-field="line.partner_id1.name"/>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>-->
+                                        <!--<span t-field="line.partner_id1.name"/>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>-->
+                                        <!--<span t-field="line.price_unit"/>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>-->
+                                        <!--<span t-field="line.partner_id1.identify_number"/>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                            <!--</t>-->
+                        <!--</table>-->
+                        <!--<div>-->
+                            <!--<span>للدراسة لدى الجامعة وحيث لم يردنا حتي تاريخه إشعار بتسديد المبلغ المستحق وقدرة-->
+                            <!--</span>-->
+                            <!--<span t-esc="o.currency_id.amount_to_text(o.amount_total)"/>-->
+                            <!--(<span t-esc="o.amount_total"/>)-->
+                        <!--</div>-->
+
+                    <!--</div>-->
+                <!--</t>-->
+
+
+            <!--</t>-->
+        <!--</t>-->
+    <!--</template>-->
+    <report
+            id="account_invoice_report_action"
+            string="Print"
+            model="account.move"
+            report_type="qweb-pdf"
+            file="ejad_erp_account.account_invoice_report"
+            name="ejad_erp_account.account_invoice_report"
+            menu="False"
+    />
+    <!--<report-->
+            <!--id="account_invoice_report_html_action"-->
+            <!--string="Print"-->
+            <!--model="account.invoice"-->
+            <!--report_type="qweb-pdf"-->
+            <!--file="ejad_erp_account.account_invoice_report_html"-->
+            <!--name="ejad_erp_account.account_invoice_report_html"-->
+            <!--menu="False"-->
+    <!--/>-->
+</odoo>

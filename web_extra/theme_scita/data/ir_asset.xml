@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="theme_scita.primary_variables_font_scss" model="theme.ir.asset">
+        <field name="key">theme_scita.primary_variables_font_scss</field>
+        <field name="name">Primary variables Font SCSS</field>
+        <field name="bundle">web._assets_primary_variables</field>
+        <field name="directive">before</field>
+        <field name="path">/theme_scita/static/src/scss/scita_fonts.scss</field>
+        <field name="target">/website/static/src/scss/primary_variables.scss</field>
+    </record>
+    <record id="theme_scita.theme_scita_button_option_1" model="theme.ir.asset">
+        <field name="key">theme_scita.theme_scita_button_option_1</field>
+        <field name="name">Theme Scita Button Option 1</field>
+        <field name="bundle">web.assets_frontend</field>
+        <field name="directive">before</field>
+        <field name="path">theme_scita/static/src/scss/button/button_styles.scss</field>
+        <field name="target">/theme_scita/static/src/scss/comman.scss</field>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="theme_scita.theme_scita_button_option_2" model="theme.ir.asset">
+        <field name="key">theme_scita.theme_scita_button_option_2</field>
+        <field name="name">Theme Scita Button Option 2</field>
+        <field name="bundle">web.assets_frontend</field>
+        <field name="directive">before</field>
+        <field name="path">theme_scita/static/src/scss/button/button_style_2.scss</field>
+        <field name="target">/theme_scita/static/src/scss/comman.scss</field>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="theme_scita.theme_scita_button_option_3" model="theme.ir.asset">
+        <field name="key">theme_scita.theme_scita_button_option_3</field>
+        <field name="name">Theme Scita Button Option 3</field>
+        <field name="bundle">web.assets_frontend</field>
+        <field name="directive">before</field>
+        <field name="path">theme_scita/static/src/scss/button/button_style_3.scss</field>
+        <field name="target">/theme_scita/static/src/scss/comman.scss</field>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="theme_scita.theme_scita_button_option_4" model="theme.ir.asset">
+        <field name="key">theme_scita.theme_scita_button_option_4</field>
+        <field name="name">Theme Scita Button Option 4</field>
+        <field name="bundle">web.assets_frontend</field>
+        <field name="directive">before</field>
+        <field name="path">theme_scita/static/src/scss/button/button_style_4.scss</field>
+        <field name="target">/theme_scita/static/src/scss/comman.scss</field>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="theme_scita.theme_scita_button_option_5" model="theme.ir.asset">
+        <field name="key">theme_scita.theme_scita_button_option_5</field>
+        <field name="name">Theme Scita Button Option 5</field>
+        <field name="bundle">web.assets_frontend</field>
+        <field name="directive">before</field>
+        <field name="path">theme_scita/static/src/scss/button/button_style_5.scss</field>
+        <field name="target">/theme_scita/static/src/scss/comman.scss</field>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="theme_scita.theme_scita_button_option_6" model="theme.ir.asset">
+        <field name="key">theme_scita.theme_scita_button_option_6</field>
+        <field name="name">Theme Scita Button Option 6</field>
+        <field name="bundle">web.assets_frontend</field>
+        <field name="directive">before</field>
+        <field name="path">theme_scita/static/src/scss/button/button_style_6.scss</field>
+        <field name="target">/theme_scita/static/src/scss/comman.scss</field>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="theme_scita.theme_scita_button_option_7" model="theme.ir.asset">
+        <field name="key">theme_scita.theme_scita_button_option_7</field>
+        <field name="name">Theme Scita Button Option 7</field>
+        <field name="bundle">web.assets_frontend</field>
+        <field name="directive">before</field>
+        <field name="path">theme_scita/static/src/scss/button/button_style_7.scss</field>
+        <field name="target">/theme_scita/static/src/scss/comman.scss</field>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="theme_scita.theme_scita_button_option_8" model="theme.ir.asset">
+        <field name="key">theme_scita.theme_scita_button_option_8</field>
+        <field name="name">Theme Scita Button Option 8</field>
+        <field name="bundle">web.assets_frontend</field>
+        <field name="directive">before</field>
+        <field name="path">theme_scita/static/src/scss/button/button_style_8.scss</field>
+        <field name="target">/theme_scita/static/src/scss/comman.scss</field>
+        <field name="active" eval="False"/>
+    </record>
+</odoo>

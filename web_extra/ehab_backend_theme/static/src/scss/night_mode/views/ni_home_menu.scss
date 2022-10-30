@@ -1,0 +1,9 @@
+@mixin home-menu() {
+    .__home_menu {
+        .__search_menu {
+            input {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+            }
+        }
+    }
+}

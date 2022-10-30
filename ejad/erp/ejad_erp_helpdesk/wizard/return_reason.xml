@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="helpdesk_return_wizard_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.return.wizard.form</field>
+        <field name="model">helpdesk.return.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Request return reason">
+                <label string="سبب الإرجاع" for="return_reason"/>
+                <field name="return_message"/>
+                <footer>
+                    <button string='إرجاع' name="return_reason" type="object" class="oe_highlight"/>
+                    أو
+                    <button string="إلغاء" class="oe_link" special="cancel"/>
+                </footer>
+           </form>
+        </field>
+    </record>
+
+    <record id="helpdesk_return_wizard_action" model="ir.actions.act_window">
+        <field name="name">إرجاع</field>
+        <field name="res_model">helpdesk.return.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="helpdesk_return_wizard_view_form"/>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

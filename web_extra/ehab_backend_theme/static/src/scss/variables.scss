@@ -1,0 +1,30 @@
+$brand-primary: #2C336A;
+$brand-secondary: #2C336A;
+$button-box: #343a40;
+$heading: #8A8684;
+$Label: #343a40;
+$Label-value: #343a40;
+$link: #39B3E8;
+$notbook: #343a40;
+$tooltip: #1d2939;
+$border: #d1d4d7;
+$menu-main-title: #8A8684;
+
+:root {
+    --brand-primary: #2C336A;
+    --brand-secondary: #2C336A;
+    --button-box: #343a40;
+    --heading: #8A8684;
+    --Label: #343a40;
+    --Label-value: #343a40;
+    --link: #39B3E8;
+    --notbook: #343a40;
+    --tooltip: #1d2939;
+    --border: #d1d4d7;
+    --menu-main-title: #343a40;
+    --font-color: var(--Label-value);
+}
+
+head {
+    --brand-primary: #2C336A;
+}

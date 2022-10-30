@@ -1,0 +1,268 @@
+<odoo>
+
+    <record id="hr_view_employee_form_inherit_familyinfo"
+            model="ir.ui.view">
+        <field name="name">hr.view.employee.form.inherit.familyinfo</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='birthday']"
+                   position="after">
+            </xpath>
+            <xpath expr="//page"
+                   position="replace"/>
+
+            <notebook position="inside">
+
+                <page string="Academic Experiences"
+                      groups="base.group_user,base.group_hr_user">
+                    <field name="academic_ids"
+                           context="{'default_employee_id': active_id}">
+                        <tree string="Academic Experiences">
+                            <field name="name" string="Qualification"/>
+                            <field name="study_field"/>
+                            <field name="organization"
+                                   string="Institution"/>
+                            <field name="location"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="grade"/>
+                        </tree>
+                        <form string="Academic Experience">
+                            <group>
+                                <group name="main">
+                                    <field name="name"
+                                           string="Qualification"/>
+                                    <field name="study_field"/>
+                                    <field name="start_date"/>
+                                    <field name="is_still"
+                                           string="Present"/>
+                                    <field name="end_date"
+                                           attrs="{'invisible':[('is_still', '=', True)]}"/>
+                                    <field name="grade"/>
+                                </group>
+                                <group>
+                                    <field name="organization"
+                                           string="Institution"/>
+                                    <field name="location"/>
+                                </group>
+                            </group>
+                            <separator string="Activities" colspan="4"/>
+                            <field name="activities"/>
+                            <separator string="Description" colspan="4"/>
+                            <field name="description" colspan="4"
+                                   nolabel="1"/>
+                        </form>
+                    </field>
+                </page>
+                <page string="Professional Experiences"
+                      groups="base.group_user,base.group_hr_user">
+                    <field name="experience_ids"
+                           context="{'default_employee_id': active_id}">
+                        <tree string="Professional Experiences">
+                            <field name="name" string="Position"/>
+                            <field name="organization" string="Employer"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </tree>
+                        <form string="Professional Experience">
+                            <group>
+                                <group name="main">
+                                    <field name="name" string="Position"/>
+
+                                </group>
+                                <group>
+                                    <field name="start_date"/>
+                                    <field name="is_still"
+                                           string="Present"/>
+                                    <field name="end_date"
+                                           attrs="{'invisible':[('is_still', '=', True)]}"/>
+                                    <!-- todo: notice_period is no longer used in employee form-->
+
+                                </group>
+
+                            </group>
+                            <separator string="Description" colspan="4"/>
+                            <field name="description" colspan="4"
+                                   nolabel="1"/>
+                        </form>
+                    </field>
+                </page>
+                <page string="Certifications"
+                      groups="base.group_user,base.group_hr_user">
+                    <field name="certification_ids"
+                           context="{'default_employee_id': active_id}">
+                        <tree string="Certifications">
+                            <field name="name" string="Certification"/>
+                            <field name="certification"
+                                   string="# Certificate"/>
+                            <field name="organization" string="Issued By"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </tree>
+                        <form string="Certifications">
+                            <group>
+                                <group name="main">
+                                    <field name="name"
+                                           string="Certification"/>
+                                    <field name="certification"
+                                           string="# Certification"/>
+                                    <field name="start_date"/>
+                                    <field name="is_still"/>
+                                    <field name="end_date"
+                                           attrs="{'invisible':[('is_still', '=', True)]}"/>
+                                </group>
+                                <group>
+                                    <field name="organization"
+                                           string="Issued By"/>
+                                    <field name="location"/>
+                                </group>
+                            </group>
+                            <separator string="Description" colspan="4"/>
+                            <field name="description" colspan="4"
+                                   nolabel="1"/>
+                        </form>
+                    </field>
+                </page>
+                <page string="Family" groups="base.group_hr_user">
+                    <group>
+                        <group string="Spouse">
+                            <field name="fam_spouse"/>
+                            <field name="fam_spouse_employer"/>
+                            <field name="fam_spouse_tel"/>
+                        </group>
+                        <group string="Parents">
+                            <field name="fam_father"/>
+                            <field name="fam_father_date_of_birth"/>
+                            <field name="fam_mother"/>
+                            <field name="fam_mother_date_of_birth"/>
+                        </group>
+                    </group>
+                    <group string="Children">
+                        <field name="fam_children_ids" nolabel="1"/>
+                    </group>
+                </page>
+                <page string="reference" groups="base.group_hr_user">
+                    <group string="Job reference">
+                        <field name="ref_name"/>
+                        <field name="ref_org"/>
+                        <field name="ref_rel"/>
+                        <field name="ref_contact"/>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+
+
+    <record id="view_institute_form" model="ir.ui.view">
+        <field name="name">view.institute.form</field>
+        <field name="model">hr.institute</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name"  string="اسم الجامعه او المعهد" required="True" />
+                    <field name="country_id" string="الدولة" />
+                    <field name="state_id" string="المدينة" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <!-- Tree view of Institutes -->
+    <record id="view_institute_tree" model="ir.ui.view">
+        <field name="name">view.institute.tree</field>
+        <field name="model">hr.institute</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" string="اسم الجامعه او المعهد" />
+                <field name="country_id" string="الدولة" />
+                <field name="state_id" string="المدينة" />
+            </tree>
+        </field>
+    </record>
+    <!-- Action for Institute -->
+    <record id="action_hr_institute" model="ir.actions.act_window">
+        <field name="name">المعاهد والجامعات</field>
+        <field name="res_model">hr.institute</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+ <menuitem id="emp_institute_menu"
+           parent="hr_recruitment.menu_hr_recruitment_configuration"
+           action="action_hr_institute"
+           groups="hr.group_hr_manager,hr.group_hr_user"
+           sequence="1" />
+
+    <!-- Form view of specializations -->
+    <record id="view_specialization_form" model="ir.ui.view">
+        <field name="name">view.specializations.form</field>
+        <field name="model">hr.specializations</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name" required="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <!-- Tree view of specializations -->
+    <record id="view_specializations_tree" model="ir.ui.view">
+        <field name="name">view.specializations.tree</field>
+        <field name="model">hr.specializations</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <!-- Action for specializations -->
+    <record id="action_hr_specializations" model="ir.actions.act_window">
+        <field name="name">التخصص العلمي</field>
+        <field name="res_model">hr.specializations</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+ <menuitem id="emp_specialization_menu"
+           parent="hr_recruitment.menu_hr_recruitment_configuration"
+           action="action_hr_specializations"
+           groups="hr.group_hr_manager,hr.group_hr_user"
+           sequence="1" />
+
+
+
+       <!-- Form view of Sectors -->
+    <record id="view_sectors_form" model="ir.ui.view">
+        <field name="name">view.sectors.form</field>
+        <field name="model">hr.sectors</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name" required="True" />
+                </group>
+            </form>
+        </field>
+    </record>
+    <!-- Tree view of Sectors -->
+    <record id="view_sectors_tree" model="ir.ui.view">
+        <field name="name">view.sectors.tree</field>
+        <field name="model">hr.sectors</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+    <!-- Action for specializations -->
+    <record id="action_hr_sectors" model="ir.actions.act_window">
+        <field name="name">قطاعات الشركات</field>
+        <field name="res_model">hr.sectors</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+ <menuitem id="emp_sectors_menu"
+           parent="hr_recruitment.menu_hr_recruitment_configuration"
+           action="action_hr_sectors"
+           groups="hr.group_hr_manager,hr.group_hr_user"
+           sequence="1" />
+</odoo>

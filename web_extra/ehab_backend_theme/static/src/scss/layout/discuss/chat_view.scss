@@ -1,0 +1,56 @@
+@mixin Chat-window() {
+    .o_ChatWindowManager {
+        z-index: 1050;
+        background-color: $white;
+
+        .o_ChatWindowHeader {
+            background-color: var(--brand-primary);
+            border-radius: 0;
+
+            .o_ThreadIcon_online {
+                color: $brand-success;
+            }
+
+            .o_ThreadIcon_idle {
+                color: $brand-warning;
+            }
+        }
+
+        .o_ChatWindow_newMessageForm {
+            .o_AutocompleteInput {
+                min-height: 34px;
+                border: 0;
+                border-bottom: 1px solid var(--border);
+
+                &:focus {
+                    @include border-animation();
+                }
+            }
+        }
+
+        .o_ChatWindow_thread {
+            background-color: $white !important;
+            padding: 0px;
+
+            .o_Composer {
+                @include Composer-view();
+            }
+        }
+
+        .o_ThreadView_bottomPart {
+            @include Rtc-call();
+        }
+    }
+
+    &.ad-chat-window:not(.o_no_thread_window_window):not(.ad_mobile) {
+        .o_action_manager {
+            .o_action {
+                .o_control_panel {
+                    .o_cp_bottom {
+                        border-bottom: 1px solid var(--border);
+                    }
+                }
+            }
+        }
+    }
+}

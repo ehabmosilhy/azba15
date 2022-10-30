@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_training_courses">
+            <t t-call="web.html_container">
+                <!--<t t-set="data_report_margin_top" t-value="12"/>-->
+                <!--<t t-set="data_report_header_spacing" t-value="9"/>-->
+                <!--<t t-set="data_report_dpi" t-value="110"/>-->
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="ejad_erp_account.nauss_header"/>
+                    <t t-call="ejad_erp_account.nauss_footer"/>
+                    <t t-call="web.external_layout">
+                        <div  style="direction:rtl;" class="page">
+                            <h2>تقرير كشف رسوم الدورات المستحقة</h2>
+
+                            <br/>
+                            <br/>
+                            <div t-if="data['form']['date_to'] or data['form']['date_from']" class="row">
+                                <div class="col-3">
+                                    <t t-if="data['form']['date_to']">
+                                        <strong>إلى تاريخ
+                                        </strong>
+                                        <span t-esc="data['form']['date_to']"/>
+                                    </t>
+                                </div>
+                                <div class="col-3">
+                                    <t t-if="data['form']['date_from']">
+                                        <strong>من تاريخ :
+
+                                        </strong>
+                                        <span t-esc="data['form']['date_from']"/>
+                                    </t>
+
+
+                                </div>
+
+                            </div>
+                            <br/>
+
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            الجهة/الطالب
+                                            <br/>
+                                            Client
+                                        </th>
+                                        <th class="text-center">
+                                            الدورة التدريبة
+                                            <br/>
+                                            Training Course
+                                        </th>
+                                        <!--<th>Ref</th>-->
+                                        <th class="text-center">
+                                            الإجمالي
+                                            <br/>
+
+                                            Total
+                                        </th>
+                                        <th class="text-center">
+                                            المدفوع
+                                            <br/>
+
+                                            Paid
+                                        </th>
+                                        <th class="text-center">المتبقي
+                                            <br/>
+                                            Remaining
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong style="font-size:16 px" t-esc="o.name"/>
+                                        </td>
+                                        <t t-foreach="sum_partner_courses(data, o)" t-as="total">
+                                            <td class="text-right">
+                                                <strong style="font-size:14 px" t-esc="total"
+                                                        t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                    <tr t-foreach="lines(data, o)" t-as="line">
+                                        <td>
+                                            <span t-esc="line.partner_id1.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="line.product_id.name"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="line.price_subtotal"
+                                                  t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                        </td>
+                                        <td class="text-right">
+                                        </td>
+                                        <td class="text-right">
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+
+            </t>
+        </template>
+
+        <report
+                id="action_training_course_report"
+                model="report.ejad_erp_account.report_training_courses"
+                string="تقرير كشف رسوم الدورات المستحقة"
+                report_type="qweb-pdf"
+                name="ejad_erp_account.report_training_courses"
+                file="ejad_erp_account.report_training_courses"
+        />
+    </data>
+</openerp>

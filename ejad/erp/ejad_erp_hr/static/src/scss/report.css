@@ -1,0 +1,990 @@
+@font-face
+{
+    font-family: "Din-Next-Regular";
+    src: url("/ejad_erp_hr/static/src/fonts/din-next-lt-w23-regular.ttf");
+}
+body
+{
+    font-family: "Din-Next-Regular", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: right;
+    padding: 0 !important;
+}
+.header
+{
+    display: none
+}
+
+/* Start Main Report */
+.report-header
+{
+    background: url("/ejad_erp_hr/static/src/img/report/header-background.png") left center no-repeat;
+    background-size: cover;
+}
+header
+{
+    padding: 20px;
+    height: 100%;
+    page-break-after: always;
+}
+.mom-logo
+{
+    margin-right: auto;
+    display: block;
+}
+header .report-title
+{
+    color: #fff;
+    width: 50%;
+    min-height: 250px;
+    padding: 20px;
+    margin: 100px 0;
+    border: 2px solid #fff;
+    border-radius: 30px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+header .report-title h3
+{
+    font-size: 40px
+}
+header .report-title h4
+{
+    font-size: 28px
+}
+header .report-title h4 .initiative-name
+{
+    padding-right: 10px
+}
+header .report-title h5
+{
+    font-size: 20px;
+}
+header .report-title h5 span
+{
+    display: inline-block;
+}
+header .report-title h5 .sequence
+{
+    color: #DAC6AA;
+}
+header .report-title h6 .project-name
+{
+    padding-right: 10px
+}
+
+.report-content
+{
+    background: url("/ejad_erp_hr/static/src/img/report/content-background.png") left center no-repeat;
+    background-size: cover;
+    padding: 20px
+}
+.report-content .report-tables
+{
+    width: 90%;
+    margin: 10px auto;
+}
+.report-content .report-tables h2
+{
+    background: #229180;
+    color: #fff;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 15px;
+    border-radius: 5px 0
+}
+.report-content .report-tables table
+{
+    border-collapse: separate;
+    border-spacing: 4px;
+    font-size: 14px;
+    text-align: center;
+}
+.report-content .report-tables table th,
+.report-content .report-tables table td
+{
+    vertical-align: middle;
+    border: none;
+}
+.report-content .report-tables table tr
+{
+    background: #f2f2f2;
+}
+.report-content .report-tables table .row-title
+{
+    background: #01927E;
+    color: #fff;
+}
+.report-content .report-tables table .cell-title
+{
+    background: #035E84;
+    color: #fff;
+}
+.report-content .report-tables table .task-stage
+{
+    background: #05AF7B;
+    color: #fff;
+}
+/* End Main Report */
+
+/* Start Financial Report */
+.financial-header
+{
+    background: url("/ejad_erp_hr/static/src/img/report/financial-header-background.png") left center no-repeat;
+    background-size: cover;
+}
+.financial-content
+{
+    background: none;
+    padding: 0;
+}
+.financial-content .report-tables
+{
+    width: 95%;
+    padding: 20px 0;
+    page-break-after:always;
+}
+.financial-content .report-tables h3
+{
+    color: #229180;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+.financial-content .report-tables h3 img
+{
+    width: 30px;
+    margin-left: 15px;
+}
+.financial-content .report-tables h4
+{
+    color: #035E84;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-right: 40px;
+}
+.financial-content .report-tables h4 img
+{
+    width: 25px;
+    margin-left: 15px;
+}
+.financial-content .report-tables table
+{
+    border-collapse: separate;
+    border-spacing: 2px;
+}
+.financial-content .report-tables table tr
+{
+    background: #fff;
+}
+.financial-content .report-tables table .cell-title
+{
+    background: #02927E;
+}
+.financial-content .report-tables table tbody td
+{
+    border-bottom: 2px solid #F1EBE0
+}
+.financial-content .report-tables table tbody tr:last-of-type td
+{
+    border-bottom: none
+}
+.financial-content .report-tables table tfoot tr
+{
+    background: #DCD2C1;
+}
+.financial-content .report-tables table tfoot tr td
+{
+    font-weight: bold
+}
+.financial-content .report-tables .table.chart .cell-title
+{
+    background: #005E84;
+}
+.financial-content .report-tables .report-tables:last-of-type
+{
+    page-break-after: initial;
+}
+/* End Financial Report */
+
+/* Start Detailed Report */
+.detailed-header
+{
+    background: url("/ejad_erp_hr/static/src/img/report/detailed-header-background.png") right bottom no-repeat;
+    background-size: cover;
+    padding-right: 30%;
+}
+.detailed-header header .report-title
+{
+    border: none;
+    width: 80%
+}
+.detailed-header header .report-title h4
+{
+    font-size: 34px;
+    font-weight: bold;
+    margin-bottom: 30px
+}
+.detailed-header header .report-title h5
+{
+    font-size: 26px;
+    font-weight: bold;
+}
+.detailed-header header .report-title h4 .initiative-name
+{
+    padding-right: 0
+}
+.detailed-header ul,
+.detailed-report-header ul
+{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.detailed-header ul li img,
+.detailed-report-header ul li img
+{
+    height: 70px;
+    margin-left: 25px
+}
+.detailed-content
+{
+    background: none
+}
+.detailed-content .content-header
+{
+    padding-top: 20px
+}
+.detailed-content .content-header h2
+{
+    font-size: 28px;
+    color: #035e84
+}
+.detailed-content .content-header img
+{
+    padding: 0 10px
+}
+.detailed-content .content-header img:last-of-type
+{
+    border-right: 1px solid #035e84;
+    padding-left: 0
+}
+.detailed-content .report-tables
+{
+    width: 100%;
+    padding: 20px 0;
+    page-break-after:always;
+}
+.detailed-content .report-tables aside ul
+{
+    border: 1px solid #00b17b;
+    margin-bottom: 0;
+    text-align: center
+}
+.detailed-content .report-tables aside ul li,
+.detailed-content .report-tables .initiative-status ul li
+{
+    background: #7f7f7f;
+    color: #fff;
+    padding: 10px 5px;
+    border-bottom: 1px solid #fff
+}
+.detailed-content .report-tables aside ul li:last-of-type
+{
+    border-bottom: none;
+}
+.detailed-content .report-tables aside ul li.active,
+.detailed-content .report-tables .initiative-status ul li.active
+{
+    background: #00b17b
+}
+.detailed-content .report-tables .initiative-status ul
+{
+    width: 100%;
+    margin-bottom: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.detailed-content .report-tables .initiative-status ul li
+{
+    padding: 5px;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    text-align: center;
+    border: 1px solid #fff;
+}
+.detailed-content .report-tables .initiative-status ul li.active
+{
+    background: #00b17b
+}
+.detailed-content .report-tables table
+{
+    border-spacing: 2px;
+}
+.detailed-content .report-tables table .cell-title
+{
+    background: #d9d9d9;
+    color: #000
+}
+.detailed-content .report-tables .periodic-table table,
+.detailed-content .report-tables .risk-table table
+{
+    border-collapse: collapse;
+    border-spacing: initial;
+    border: 1px solid #eaeaea;
+    margin-bottom: 20px;
+}
+.detailed-content .report-tables .periodic-table table th,
+.detailed-content .report-tables .periodic-table table td,
+.detailed-content .report-tables .risk-table table th,
+.detailed-content .report-tables .risk-table table td
+{
+    border: 1px solid #eaeaea;
+    padding: 0.75rem 5px;
+}
+.detailed-content .report-tables .periodic-table table td
+{
+    background: #fff;
+}
+.detailed-content .report-tables .periodic-table table thead tr th
+{
+    background: #d9d9d9;
+    font-weight: normal
+}
+.detailed-content .report-tables .periodic-table table thead tr:first-of-type th
+{
+    background: #7f7f7f;
+    color: #fff
+}
+.detailed-content .report-tables .risk-table h4
+{
+    background: #7f7f7f;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+.detailed-content .report-tables .risk-table table thead tr th
+{
+    background: #00b17b;
+    color: #fff;
+    font-weight: normal
+}
+.detailed-content .report-tables .risk-table table thead tr th[colspan="3"],
+.detailed-content .report-tables .risk-table table thead tr th[colspan="4"]
+{
+    background: #00483e
+}
+.detailed-content .report-tables .financial-information-table table thead tr th
+{
+    background: #02927e
+}
+.detailed-content .report-tables .initiative-card table tr td,
+.detailed-content .report-tables .initiative-card table tr td *
+{
+    text-align: right;
+    font-size: 12px !important;
+    font-family: "Din-Next-Regular" !important;
+    font-weight: 100 !important;
+    color: #333 !important;
+}
+.detailed-content .report-tables .initiative-card table tr td.cell-title:first-of-type,
+.detailed-content .report-tables .initiative-card table tr td.cell-title:first-of-type span,
+.detailed-content .report-tables .contact-information table tr th
+{
+    background: #7f7f7f;
+    color: #fff !important;
+}
+/* End Detailed Report */
+
+/* Start Meeting Report */
+.meeting-header .report-title
+{
+    border: none
+}
+.meeting-content header .report-title
+{
+    width: 65%
+}
+.meeting-content .meeting-info table tr th
+{
+    font-size: 18px;
+    background: #cab086;
+    color: #fff;
+    padding: 15px;
+}
+.meeting-content .meeting-info table tbody td
+{
+    border-bottom: none
+}
+.meeting-content .meeting-info p
+{
+    font-size: 16px;
+    margin-bottom: 0;
+    color: #333;
+    text-align: right;
+}
+.meeting-content .meeting-info .attendance
+{
+    padding: 10px;
+    margin-bottom: 10px;
+    min-height: 30px;
+    background: #00AA78;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+}
+.meeting-content .meeting-info .attendance:last-of-type
+{
+    background: #045C85;
+    margin-bottom: 0
+}
+.meeting-content .meeting-summary h3
+{
+    background: #045C85;
+    color: #fff;
+    border-radius: 8px 0;
+    padding: 10px 15px;
+}
+.meeting-content .meeting-summary ul li,
+.meeting-content .meeting-summary ul li *
+{
+    font-size: 14px !important;
+    font-family: Din-Next-Regular, sans-serif !important;
+}
+.meeting-content .meeting-status h3
+{
+    background: #229180;
+    color: #fff;
+    border-radius: 8px 0;
+    padding: 10px 15px;
+    display: inline-block;
+    width: 50%;
+}
+.meeting-content .meeting-status table tr
+{
+    background: #f2f2f2;
+}
+.meeting-content .meeting-status table tr th
+{
+    background: #005E84;
+    color: #fff
+}
+.meeting-content .meeting-status table tbody td
+{
+    border-bottom: none
+}
+.meeting-content .meeting-content .report-tables table .cell-title
+{
+    background: #035E84;
+    color: #fff;
+}
+/* End Meeting Report */
+
+/* Start Charter Report */
+.charter-header
+{
+    background: none
+}
+.charter-page
+{
+    page-break-after: always;
+}
+.last-page
+{
+    page-break-after: initial !important
+}
+.charter-header header
+{
+    page-break-after: initial;
+}
+.charter-header .header-info
+{
+    padding: 20px;
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+.charter-header .header-info h4
+{
+    color: #00937F;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.charter-header .header-info h5
+{
+    color: #434343;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.charter-header .header-info hr
+{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.charter-header .description
+{
+    padding: 20px
+}
+.charter-header .description h3
+{
+    color: #00937F;
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center
+}
+.charter-header .description p
+{
+    font-size: 14px
+}
+.charter-content
+{
+    background: none
+}
+.charter-content .report-tables
+{
+    width: 100%;
+}
+.charter-content .report-tables h2
+{
+    color: #229180;
+    background: none;
+    font-size: 24px;
+    font-weight: 100;
+    text-align: center;
+    margin-bottom: 30px
+}
+.charter-content .report-tables .table.table-of-contents td
+{
+    text-align: left
+}
+.charter-content .report-tables .table.table-of-contents td.number
+{
+    display: none
+}
+.charter-content .report-tables .title
+{
+    text-align: center
+}
+.charter-content .report-tables .title h5
+{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px
+}
+.charter-content .report-tables .title h3,
+.charter-content .report-tables .title .data-info
+{
+    padding: 15px;
+    border: 1px solid #000;
+    margin-bottom: 30px
+}
+.data-info *
+{
+    font-size: 14px !important;
+    text-align: right;
+    all: unset !important;
+    color: #333 !important;
+    font-weight: 400 !important;
+    font-family: "Din-Next-Regular", sans-serif !important;
+}
+.charter-content .report-tables .title .data-info p
+{
+    display: block !important;
+    text-align: right !important;
+}
+.charter-content .report-tables .title .data-info table
+{
+    width: 100% !important;
+    text-align: right
+}
+.charter-content .report-tables .title .data-info table tr
+{
+    background: none;
+}
+.charter-content .report-tables .title .data-info table tr td
+{
+    border-left: none !important
+}
+.charter-content  .report-tables table .cell-title
+{
+    background: #00b17b;
+    color: #fff
+}
+.charter-content  .report-tables .requirments h5
+{
+    background: #00b17b;
+    color: #fff !important;
+    padding: 10px;
+    display: table;
+    margin: 20px auto
+}
+.charter-content  .report-tables .requirments p
+{
+    text-decoration: underline;
+    text-align: right;
+    font-size: 16px
+}
+.charter-content  .report-tables .requirments ul
+{
+    list-style: circle;
+    text-align: right;
+}
+.charter-content  .report-tables .requirments ul li
+{
+    font-size: 16px
+    margin-bottom: 5px
+}
+/* End Charter Report */
+
+/* Start Detailed Report */
+.detailed-report-header ul
+{
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.detailed-report-content .content-header img
+{
+    height: 50px;
+    border: none !important
+}
+.detailed-report-content h2.main-title
+{
+    background: #229180;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 100;
+    padding: 15px 20px;
+    border-radius: 10px 0;
+}
+.detailed-report-content.detailed-content .report-tables table .cell-title,
+.detailed-report-content.detailed-content .report-tables table .cell-title span
+{
+    background: #035E84;
+    color: #fff !important
+}
+.detailed-report-content .report-tables .periodic-table table thead tr:first-of-type th,
+.detailed-report-content .report-tables .risk-table table thead tr th,
+.detailed-report-content .report-tables .risk-table table thead tr th[colspan="3"],
+.detailed-report-content .report-tables .risk-table table thead tr th[colspan="4"]
+{
+    background: #229180
+}
+.detailed-report-content .report-tables .risk-table table thead tr:nth-of-type(2) th
+{
+    background: #035E84;
+    color: #fff;
+}
+.detailed-report-content .report-tables aside ul
+{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border: none;
+}
+.detailed-report-content .report-tables aside ul li
+{
+    background: #f2f2f2;
+    padding: 10px;
+    font-size: 10px;
+    border-radius: 5px;
+    margin: 0 5px;
+}
+.detailed-report-content .report-tables aside ul li.active
+{
+    background: #035E84;
+}
+/* End Detailed Report */
+
+/* Start Project Status Info */
+.project-status-info,
+.project-status-info ul
+{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-bottom: 0;
+}
+.project-status-info h6
+{
+    padding-left: 15px;
+    margin-bottom: 0;
+}
+.project-status-info ul li
+{
+    width: auto;
+    background: #e9eaec;
+    color: #fff;
+    padding: 0 30px;
+    padding-right: 45px;
+    margin-left: 17px;
+    font-size: 12px;
+    font-weight: bold;
+    position: relative;
+    height: 30px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.project-status-info ul li:before
+{
+    content: "";
+    border-width: 15px;
+    border-style: solid;
+    border-color: transparent #fff transparent transparent;
+    position: absolute;
+    right: -2px
+}
+.project-status-info ul li:after
+{
+    content: "";
+    border-width: 15px;
+    border-style: solid;
+    border-color: transparent #e9eaec transparent transparent;
+    position: absolute;
+    left: -30px;
+    top: 0;
+}
+.project-status-info ul li.completed
+{
+    background: #664388;
+}
+.project-status-info ul li.completed:after
+{
+    border-color: transparent #664388 transparent transparent
+}
+.project-status-info ul li.process
+{
+    background: #00b050;
+}
+.project-status-info ul li.process:after
+{
+    border-color: transparent #00b050 transparent transparent
+}
+.project-status-info ul li.little-late
+{
+    background: #ffc000;
+}
+.project-status-info ul li.little-late:after
+{
+    border-color: transparent #ffc000 transparent transparent
+}
+.project-status-info ul li.late
+{
+    background: #c00000;
+}
+.project-status-info ul li.late:after
+{
+    border-color: transparent #c00000 transparent transparent
+}
+.project-status-info ul li.pending
+{
+    background: #7f7f7f;
+}
+.project-status-info ul li.pending:after
+{
+    border-color: transparent #7f7f7f transparent transparent
+}
+/* End Project Status Info */
+
+/* Start Timeline Steps */
+.timeline
+{
+    background: #fff;
+    margin: 30px auto;
+    padding: 50px 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.075);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.075);
+}
+.timeline h2
+{
+    font-size: 22px;
+    font-weight: bold;
+    color: #005E85;
+    text-align: center;
+    margin-bottom: 40px
+}
+.timeline-steps
+{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: 0 10px;
+}
+.timeline-steps > .d-flex:first-of-type .step:first-of-type .status .step-connection:first-of-type,
+.timeline-steps > .d-flex:last-of-type .step:last-of-type .status .step-connection:last-of-type
+{
+    display: none
+}
+.timeline-steps .step
+{
+    margin-bottom: 30px;
+    text-align: center
+}
+.timeline-steps .step .status
+{
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.timeline-steps .step .status .circle-wrapper
+{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.timeline-steps .step .status .circle-wrapper i
+{
+    font-size: 16px;
+    background: #00AF7C;
+    height: 30px;
+    width: 30px;
+    color: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+.timeline-steps .step .status .step-connection
+{
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    border: 1px dotted #CCD5DB;
+    min-width: 50px
+}
+.full-steps.timeline-steps .step:first-of-type .status .step-connection:first-of-type,
+.full-steps.timeline-steps .step:last-of-type .status .step-connection:last-of-type
+{
+    display: none
+}
+.full-steps.timeline-steps .step:first-of-type .status .circle-wrapper
+{
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+.full-steps.timeline-steps .step:last-of-type .status .circle-wrapper
+{
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+.timeline-steps h5.state_update_period
+{
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background: #005E85;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    top: 5px;
+    font-size: 12px;
+}
+.timeline-steps .step h6
+{
+    font-size: 12px;
+    font-weight: bold;
+    color: #8A8684;
+    padding: 10px 5px 0;
+    margin-bottom: 0;
+}
+.full-steps.timeline-steps .step:first-of-type h6,
+.timeline-steps > .d-flex:first-of-type .step:first-of-type h6,
+.timeline-steps > .d-flex:first-of-type .step:first-of-type p
+{
+    text-align: right;
+    padding-right: 0
+}
+.full-steps.timeline-steps .step:last-of-type h6,
+.timeline-steps > .d-flex:last-of-type .step:last-of-type h6,
+.timeline-steps > .d-flex:last-of-type .step:last-of-type p
+{
+    text-align: left;
+    padding-left: 0
+}
+.timeline-steps .step p
+{
+    font-size: 12px;
+    color: #8A8684;
+    margin-bottom: 0;
+}
+.timeline-steps .step p.create_date
+{
+    font-weight: bold;
+}
+.timeline-steps h5
+{
+    font-size: 14px;
+    margin-bottom: 0;
+}
+/* End Timeline Steps */
+
+/* Start Timeline Report Info */
+.timeline-report-info h6,
+.timeline-report-info p
+{
+    font-weight: bold;
+    padding-top: 10px
+}
+/* End Timeline Report Info */

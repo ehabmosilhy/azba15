@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_ac">
+        <t t-call="web.html_container">
+            <div class="header">
+                <div></div>
+            </div>
+            <t t-call="web.external_layout">
+                <div class="page" style="border-radius:25px;border:2px solid;padding:10px;height: 1000px;">
+                    <h3>
+                        <strong><span t-esc="title"/></strong>
+                    </h3>
+                    <br/>
+                    <div>
+                        <t t-if="data['date_from']"><strong>من </strong> <span t-esc="data['date_from']" t-options="{'widget': 'date'}"/></t>
+                        <t t-if="data['date_to']"><strong> الى  </strong><span t-esc="data['date_to']" t-options="{'widget': 'date'}"/></t>
+                    </div>
+                    <br/>
+                    <table t-if="data['report_type'] == 'transfer'" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">المعاملة</th>
+                                <th class="text-center">تاريخ الحركة</th>
+                                <th class="text-center">النوع</th>
+                                <th class="text-center">من</th>
+                                <th class="text-center">إلى</th>
+                                <th class="text-center">الموظف المشرف</th>
+                            </tr>
+                        </thead>
+                        <tr t-foreach="lines" t-as="line">
+                            <td><span t-esc="line.operation_id.name"/></td>
+                            <td><span t-field="line.date" t-field-options="{&quot;format&quot;: &quot;dd-MM-yyyy&quot;}"/></td>
+                            <td><span t-esc="line.type"/></td>
+                            <td><span t-esc="line.src_name"/></td>
+                            <td><span t-esc="line.dest_name"/></td>
+                            <td><span t-esc="line.user_id.name"/></td>
+                        </tr>
+                    </table>
+
+                    <t t-set="values"
+                       t-value="dict([('draft', 'مسودة'),('open', 'قيد الإجراء'),('done', 'منتهية'),('canceled', 'ملغاة')])"/>
+                    <t t-set="priority"
+                       t-value="dict([('0', 'عادي'),('1', 'متوسط'),('2', 'عاجل'),('3', 'عاجل جدا')])"/>
+
+
+                    <table t-if="not data['report_type'] == 'transfer'" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">رقم المعاملة</th>
+                                <th class="text-center">التاريخ</th>
+                                <th class="text-center">الموضوع</th>
+                                <th class="text-center">الجهة المعنية</th>
+                                <th class="text-center">الحالة</th>
+                                <th class="text-center">الأولوية</th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="lines" t-as="line">
+                            <t t-if="line.external_partner_ids">
+                                <tr t-foreach="line.external_partner_ids" t-as="partner">
+                                    <td><span t-esc="line.name"/></td>
+                                    <td><span t-field="line.date" t-field-options="{&quot;format&quot;: &quot;dd-MM-yyyy&quot;}"/></td>
+                                    <td><span t-esc="line.subject"/></td>
+                                    <td>
+                                        <span t-esc="partner.name"/><br/>
+                                    </td>
+                                    <td><span t-esc="values[line.state]"/></td>
+                                    <td><span t-esc="priority[line.priority]"/></td>
+                                </tr>
+                            </t>
+
+                            <tr t-if="not line.external_partner_ids">
+                                <td><span t-esc="line.name"/></td>
+                                <td><span t-field="line.date" t-field-options="{&quot;format&quot;: &quot;dd-MM-yyyy&quot;}"/></td>
+                                <td><span t-esc="line.subject"/></td>
+                                <td>
+                                    <!--<t t-foreach="line.external_partner_ids" t-as="partner">-->
+                                        <!--<span t-esc="partner.name"/><br/>-->
+                                    <!--</t>-->
+                                </td>
+                                <td><span t-esc="values[line.state]"/></td>
+                                <td><span t-esc="priority[line.priority]"/></td>
+                            </tr>
+                        </t>
+
+                        <!--<tr t-foreach="lines" t-as="line">-->
+                            <!--<td><span t-esc="line.name"/></td>-->
+                            <!--<td><span t-esc="line.date"/></td>-->
+                            <!--<td><span t-esc="line.subject"/></td>-->
+                            <!--<td>-->
+                                <!--<t t-foreach="line.external_partner_ids" t-as="partner">-->
+                                    <!--<span t-esc="partner.name"/><br/>-->
+                                <!--</t>-->
+                            <!--</td>-->
+                            <!--<td><span t-esc="values[line.state]"/></td>-->
+                            <!--<td><span t-esc="priority[line.priority]"/></td>-->
+                        <!--</tr>-->
+                    </table>
+                    <div class="footer">
+                        <div></div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- QWeb Reports -->
+    <report
+        id="action_admin_com_reporting"
+        model="report.ejad_erp_administrative_communications.report_ac"
+        string="تقارير النظام"
+        report_type="qweb-pdf"
+        name="ejad_erp_administrative_communications.report_ac"
+        file="ejad_erp_administrative_communications.report_ac"
+    />
+</odoo>

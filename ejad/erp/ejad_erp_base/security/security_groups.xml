@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+
+    <record id="group_financial_department" model="res.groups">
+        <field name="name">الإدارة المالية</field>
+    </record>
+
+    <record id="group_inventory_department" model="res.groups">
+        <field name="name">إدارة المستودعات</field>
+    </record>
+    <record id="group_inventory_purchases_manager" model="res.groups">
+        <field name="name">المشرف على المشتريات والمستودعات</field>
+    </record>
+
+    <record id="group_general_director" model="res.groups">
+        <field name="name">الرئيس </field>
+    </record>
+    <record id="group_change_user_password" model="res.groups">
+        <field name="name">السماح بتغير كلمة السر للمستخدم</field>
+    </record>
+
+</odoo>

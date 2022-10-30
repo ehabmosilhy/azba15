@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+        <report
+            id="action_purchase_department_report"
+            model="report.ejad_erp_purchase.report_purchase_department"
+            string="Department Reports"
+            report_type="qweb-pdf"
+            name="ejad_erp_purchase.report_purchase_department"
+            file="ejad_erp_purchase.report_purchase_department"
+        />
+
+        <report
+            id="action_purchase_user_report"
+            model="report.ejad_erp_purchase.report_purchase_user"
+            string="Purchase User Reports"
+            report_type="qweb-pdf"
+            name="ejad_erp_purchase.report_purchase_user"
+            file="ejad_erp_purchase.report_purchase_user"
+        />
+
+        <report
+            id="action_material_price_report"
+            model="report.ejad_erp_purchase.report_material_price"
+            string="Materials Reports"
+            report_type="qweb-pdf"
+            name="ejad_erp_purchase.report_material_price"
+            file="ejad_erp_purchase.report_material_price"
+        />
+    </data>
+</odoo>

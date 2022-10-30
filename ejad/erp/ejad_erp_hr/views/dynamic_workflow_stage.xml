@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--inherit view model form-->
+    <!--<record id="dynamic_workflows_inherit_view_model_fields_form" model="ir.ui.view">-->
+        <!--<field name="name">add fields to fields form</field>-->
+        <!--<field name="model">ir.model.fields</field>-->
+        <!--<field name="inherit_id" ref="base.view_model_fields_form"/>-->
+        <!--<field name="arch" type="xml">-->
+
+          <!--<xpath expr="//field[@name='model_id']" position="after">-->
+               <!--<field name="field_permission"/>-->
+                <!--<field name="project_type_ids"/>-->
+          <!--</xpath>-->
+        <!--</field>-->
+    <!--</record>-->
+
+    <record id="dynamic_workflow_stage_form" model="ir.ui.view">
+        <field name="name">dynamic.workflow.stage.form</field>
+        <field name="model">dynamic.workflow.stage</field>
+        <field name="arch" type="xml">
+            <form create="1" edit="1" delete="1">
+                <group>
+                    <field name="name" string="إسم العرض"/>
+                    <field name="technical_name" string="الإسم التقني"/>
+                    <field name="contract_state"/>
+                    <field name="endofservice_state"/>
+                    <field name="promotion_state"/>
+                    <field name="deductions_state"/>
+                    <field name="mandate_state"/>
+                    <field name="holidays_state"/>
+                    <field name="description" widget="html"/>
+                    <field name="stage_type"/>
+                    <!--<field name="is_refuse_type" readonly="1"/>-->
+                    <!--<field name="is_first_type" readonly="1"/>-->
+                    <!--<field name="is_success_type" readonly="1"/>-->
+                    <field name="project_type_ids"/>
+                    <field name="employee_ids" widget="many2many_tags"/>
+                    <field name="department_ids" widget="many2many_tags"/>
+                    <field name="group_ids" widget="many2many_tags"/>
+                    <field name="field_ids">
+                        <tree>
+                            <field name="field_id"/>
+                            <field name="field_permission"/>
+                            <field name="is_required"/>
+                            <field name="project_type_ids"/>
+                        </tree>
+                        <form>
+                            <group>
+                                <field name="field_id"/>
+                                <field name="field_permission"/>
+                                <field name="is_required"/>
+                                <field name="project_type_ids"/>
+                            </group>
+                        </form>
+                    </field>
+                    <field name="is_allow_move_other_stage" string="إمكانية الانتقال الى مرحلة اخري"/>
+                    <field name="parent_id" attrs="{'invisible':[('is_allow_move_other_stage','!=',True)],'required':[('is_allow_move_other_stage','=',True)]}"/>
+                    <field name="designation" string="تعيين موظف"/>
+                    <field name="designation_office" string="تعيين مكتب"/>
+                    <field name="achievement_duration" />
+                    <field name="stage_category" string="فئة المرحلة"/>
+                    <field name="secondary_stage_ids" string="المراحل الفرعية" domain="[('stage_category','=','secondary')]" attrs="{'invisible':[('stage_category','!=','principal')]}" widget="many2many_tags"/>
+                    <field name="principal_stage_id" string="المرحلة الرئيسية" domain="[('stage_category','=','principal')]" attrs="{'invisible':[('stage_category','!=','secondary')]}" />
+
+                    <field name="send_request_to_direct_manager"/>
+                    <field name="is_initial_approve_stage"/>
+                    <field name="is_return_to_investor_stage"/>
+
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="dynamic_workflow_stage_tree" model="ir.ui.view">
+        <field name="name">dynamic.workflow.stage.tree</field>
+        <field name="model">dynamic.workflow.stage</field>
+        <field name="arch" type="xml">
+            <tree create="1" edit="1" delete="1">
+                <field name="name" string="إسم العرض"/>
+                <field name="technical_name" string="الإسم التقني"/>
+                <field name="stage_type"/>
+                <field name="employee_ids" widget="many2many_tags"/>
+                <field name="department_ids" widget="many2many_tags"/>
+                <field name="group_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+    <record id="dynamic_workflow_stage_action" model="ir.actions.act_window">
+        <field name="name">Dynamic Workflow stage</field>
+        <field name="res_model">dynamic.workflow.stage</field>
+
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+</odoo>

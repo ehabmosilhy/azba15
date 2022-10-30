@@ -1,0 +1,1438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--  Services varient snippet -->
+    <template id="it_grids_service" name="Service Snippet 1">
+        <section class="it_grids_service" style="background-image: url(/theme_scita/static/src/img/it/service-bg.png);" data-disp="service">
+            <div class='container'>
+                <div class='row sct_top_row'>
+                    <div class="col-md-12">
+                        <h2 class="section-title btm_seprator">Services Offered</h2>
+                    </div>
+                </div>
+                <div class="row sct_btm_row">
+                    <div class='col-md-6 sct_cmp_img'>
+                        <img src="/theme_scita/static/src/img/it/service-obj.png" class="img img-fluid" alt="About Company"/>
+                    </div>
+                    <div class='col-md-6 sct_cmp_info'>
+                        <div class='sct_cmp_content'>
+                            <h3 class='sct_blue_text'>Grids of various services</h3>
+                            <p class='sct_simple_text'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        </div>
+                        <div class='sct_icon_img it-icon'>
+                            <ul>
+                                <li>
+                                    <div class="icon-based">
+                                        <img src="/theme_scita/static/src/img/it/cloud-db.png" class="img img-fluid" alt="cloud db"/>
+                                    </div>
+                                    <h4>Cloud databases</h4>
+                                </li>
+                                <li>
+                                    <div class="icon-based">
+                                        <img src="/theme_scita/static/src/img/it/file-explore.png" class="img img-fluid" alt="file explore"/>
+                                    </div>
+                                    <h4>File backups</h4>
+                                </li>
+                                <li>
+                                    <div class="icon-based">
+                                        <img src="/theme_scita/static/src/img/it/email-server.png" class="img img-fluid" alt="email server"/>
+                                    </div>
+                                    <h4>Email servers</h4>
+                                </li>
+                                <li>
+                                    <div class="icon-based">
+                                        <img src="/theme_scita/static/src/img/it/file-explore.png" class="img img-fluid" alt="file explore"/>
+                                    </div>
+                                    <h4>File storage</h4>
+                                </li>
+                                <li>
+                                    <div class="icon-based">
+                                        <img src="/theme_scita/static/src/img/it/ecommerce.png" class="img img-fluid" alt="ecommerce"/>
+                                    </div>
+                                    <h4>ECommerce</h4>
+                                </li>
+                                <li>
+                                    <div class="icon-based">
+                                        <img src="/theme_scita/static/src/img/it/remote-desktop.png" class="img img-fluid" alt="remote desktop"/>
+                                    </div>
+                                    <h4>Remote desktop</h4>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class='sct_cst_btn'>
+                            <a href="/shop" class="btn btn-primary scita_cstm_btn  it_btn">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="service_varient_1" name="Service Snippet 2">
+        <section class="service_varient_1" data-disp="service">
+            <div class="container">
+                <div class="row sct_top_row">
+                    <div class='col-md-12'>
+                        <div class="sct_section_title">
+                            <h2 class="section-title blue_line">Services</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row sct_btm_row">
+                    <div class="col-md-3 sct_sers_box">
+                        <span class='fa fa-user-md'/>
+                        <h3 class="sct_title">Experience Physicians</h3>
+                        <p class='sct_simple_text'>
+                           Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod
+                        </p>
+                    </div>
+                    <div class="col-md-3 sct_sers_box">
+                        <span class='fa fa-heartbeat'/>
+                        <h3 class="sct_title">Experience Physicians</h3>
+                        <p class='sct_simple_text'>
+                           Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod
+                        </p>
+                    </div>
+                    <div class="col-md-3 sct_sers_box">
+                        <span class='fa fa-user-md'/>
+                        <h3 class="sct_title">Experience Physicians</h3>
+                        <p class='sct_simple_text'>
+                           Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod
+                        </p>
+                    </div>
+                    <div class="col-md-3 sct_sers_box">
+                        <span class='fa fa-medkit'/>
+                        <h3 class="sct_title">Experience Physicians</h3>
+                        <p class='sct_simple_text'>
+                           Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="service_varient_2" name="Service Snippet 3">
+        <section class="our-rules-page service_varient_2" data-disp="service">
+            <div class="container">
+                <div class="title">
+                    <h5>قيمنا</h5>
+                    <p>تدل القيم على العديد من المبَادئ التوجيّهية التي يقوم عليها مركز موان وتمثل أولويات ثابتة وراسِخة لدى أفرادها، وتهدف إلى بناء خطة عمل كاملة ومتماسكة كي تتوافق مع رسالتنا ورؤيتنا المستقبلية:</p>
+                </div>
+                <div class='row'>
+                    <div class='col-sm d-flex'>
+                        <div class='item'>
+                            <div class='icon'>
+                                <img src="/theme_scita/static/src/img/MWAN/Rules-Page/01.png" class="img-fluid" alt="Icon"/>
+                            </div>
+                            <div class='info'>
+                                <h5>التنظيم</h5>
+                                <p>نحرص على تنظيم جميع أنشطة النفايات وذلك عبر إيجاد أفضل الحلول المُتكاملة لإدارته.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm d-flex'>
+                        <div class='item'>
+                            <div class='icon'>
+                                <img src="/theme_scita/static/src/img/MWAN/Rules-Page/02.png" class="img-fluid" alt="Icon"/>
+                            </div>
+                            <div class='info'>
+                                <h5>الاهتمام</h5>
+                                <p>تكمن الأولويّة القصوى لدينا في حماية البيئة والصحة العامة لدى المجتمع.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm d-flex'>
+                        <div class='item'>
+                            <div class='icon'>
+                                <img src="/theme_scita/static/src/img/MWAN/Rules-Page/03.png" class="img-fluid" alt="Icon"/>
+                            </div>
+                            <div class='info'>
+                                <h5>الاستدامة</h5>
+                                <p>تحقيق الاستِدامة عبر تطبيقنا لمبادئ الاقتصاد والمحافظة على الموارد الطبيعية.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm d-flex'>
+                        <div class='item'>
+                            <div class='icon'>
+                                <img src="/theme_scita/static/src/img/MWAN/Rules-Page/04.png" class="img-fluid" alt="Icon"/>
+                            </div>
+                            <div class='info'>
+                                <h5>الابداع والابتكار</h5>
+                                <p>ندعم ونشجع كافة الأبحاث والأساليب الحديّثة المتعلقة بإدارة النفايات.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm d-flex'>
+                        <div class='item'>
+                            <div class='icon'>
+                                <img src="/theme_scita/static/src/img/MWAN/Rules-Page/05.png" class="img-fluid" alt="Icon"/>
+                            </div>
+                            <div class='info'>
+                                <h5>الإنجاز</h5>
+                                <p>نلتزم بكافة المعايير والمُمارسات بداية من الإتقان وصولًا للإنجاز.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="service_varient_3" name="Service Snippet 4">
+        <section class="service_varient_3" data-disp="service">
+            <div class="container">
+                <div class="sct_section_title">
+                    <h2>Our Services</h2>
+                </div>
+                <div class="row">
+                    <div class='col-md-4'>
+                        <div class='sct_sers_box'>
+                            <div class='service_img'>
+                                <img src="/theme_scita/static/src/img/header-1-slide-1.jpg" class="img img-fluid" alt='web icon'/>
+                            </div>
+                            <div class="sct_text_info">
+                                <h3 class='sct_title'>Aggriculture Engineering</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4'>
+                        <div class='sct_sers_box'>
+                            <div class='service_img'>
+                                <img src="/theme_scita/static/src/img/header-1-slide-1.jpg" class="img img-fluid" alt='web icon'/>
+                            </div>
+                            <div class="sct_text_info">
+                                <h3 class='sct_title'>Aggriculture Engineering</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4'>
+                        <div class='sct_sers_box'>
+                            <div class='service_img'>
+                                <img src="/theme_scita/static/src/img/header-1-slide-1.jpg" class="img img-fluid" alt='web icon'/>
+                            </div>
+                            <div class="sct_text_info">
+                                <h3 class='sct_title'>Aggriculture Engineering</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4 offset-lg-2'>
+                        <div class='sct_sers_box'>
+                            <div class='service_img'>
+                                <img src="/theme_scita/static/src/img/header-1-slide-1.jpg" class="img img-fluid" alt='web icon'/>
+                            </div>
+                            <div class="sct_text_info">
+                                <h3 class='sct_title'>Aggriculture Engineering</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4'>
+                        <div class='sct_sers_box'>
+                            <div class='service_img'>
+                                <img src="/theme_scita/static/src/img/header-1-slide-1.jpg" class="img img-fluid" alt='web icon'/>
+                            </div>
+                            <div class="sct_text_info">
+                                <h3 class='sct_title'>Aggriculture Engineering</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="service_varient_4" name="Service Snippet 5">
+        <section class="leaders" data-disp="service">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="item">
+                            <div class="info">
+                                <h5>معالي المهندس/ عبد الرحمن بن عبد المحسن الفضلي</h5>
+                                <p>رئيس مجلس الإدارة / وزير البيئة والمياه والزراعة</p>
+                            </div>
+                            <div class='user'>
+                                <img src="/theme_scita/static/src/img/MWAN/Leaders/01.png" class="img-fluid" alt='Leader'/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="item">
+                            <div class="info">
+                                <h5>أ. ايهاب بن غازي حشانى</h5>
+                                <p>ممثل وزارة البلدية والشؤون البلدية / نائب رئيس مجلس الإدارة</p>
+                            </div>
+                            <div class='user'>
+                                <img src="/theme_scita/static/src/img/MWAN/Leaders/02.png" class="img-fluid" alt='Leader'/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="item">
+                            <div class="info">
+                                <h5>د. اسامة بن ابراهيم فقيها</h5>
+                                <p>ممثل وزارة البيئة والمياه والزراعة</p>
+                            </div>
+                            <div class='user'>
+                                <img src="/theme_scita/static/src/img/MWAN/Leaders/03.png" class="img-fluid" alt='Leader'/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="item">
+                            <div class="info">
+                                <h5>م. خليل ابراهيم الوطبان</h5>
+                                <p>ممثل وزارة الاقتصاد والتخطيط</p>
+                            </div>
+                            <div class='user'>
+                                <img src="/theme_scita/static/src/img/MWAN/Leaders/04.png" class="img-fluid" alt='Leader'/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="item">
+                            <div class="info">
+                                <h5>د. عبد الله بن مفرح عسيري</h5>
+                                <p>ممثل وزارة الصحة</p>
+                            </div>
+                            <div class='user'>
+                                <img src="/theme_scita/static/src/img/MWAN/Leaders/avatar.png" class="img-fluid" alt='Leader'/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="item">
+                            <div class="info">
+                                <h5>م. عبد المجيد بن عبد الله الميمون</h5>
+                                <p>ممثل وزارة الصناعة والثروة المعدنية</p>
+                            </div>
+                            <div class='user'>
+                                <img src="/theme_scita/static/src/img/MWAN/Leaders/avatar.png" class="img-fluid" alt='Leader'/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="item">
+                            <div class="info">
+                                <h5>أ. فيصل بن فهد الموسى</h5>
+                                <p>ممثل وزارة الاستثمار</p>
+                            </div>
+                            <div class='user'>
+                                <img src="/theme_scita/static/src/img/MWAN/Leaders/avatar.png" class="img-fluid" alt='Leader'/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="item">
+                            <div class="info">
+                                <h5>د. وليد بن احمد الشلفان</h5>
+                                <p>عضو مجلس الإدارة</p>
+                            </div>
+                            <div class='user'>
+                                <img src="/theme_scita/static/src/img/MWAN/Leaders/avatar.png" class="img-fluid" alt='Leader'/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="item">
+                            <div class="info">
+                                <h5>د. طلعت بن حسن حبيب</h5>
+                                <p>عضو مجلس الإدارة</p>
+                            </div>
+                            <div class='user'>
+                                <img src="/theme_scita/static/src/img/MWAN/Leaders/avatar.png" class="img-fluid" alt='Leader'/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="item">
+                            <div class="info">
+                                <h5>د. عبد الله بن فيصل السباعي</h5>
+                                <p>عضو مجلس الإدارة والرئيس التنفيذي المكلف</p>
+                            </div>
+                            <div class='user'>
+                                <img src="/theme_scita/static/src/img/MWAN/Leaders/avatar.png" class="img-fluid" alt='Leader'/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="service_varient_5" name="Service Snippet 6">
+        <section class="service_varient_5" data-disp="service">
+            <div class="container">
+                <div class="row sct_top_row">
+                    <div class='col-md-12'>
+                        <div class="sct_section_title">
+                            <h2 class="section-title"><span class='green_color'>Our</span> Services</h2>
+                            <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row sct_mid_row">
+                    <div class='col-md-4'>
+                        <div class='sct_sers_box'>
+                            <div class='sct_title_div'>
+                                <div class='sct_left_side'>
+                                    <h3 class='sct_title'>Content Marketing</h3>
+                                    <p class='sct_simple_text sct_green_line'>Market Plan</p>
+                                </div>
+                                <div class='sct_right_side'>
+                                    <img src="/theme_scita/static/src/img/health/health-statics-2.png" class="img img-fluid" alt='web icon'/>
+                                </div>
+                            </div>
+                            <div class="sct_text_info">
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4'>
+                        <div class='sct_sers_box'>
+                            <div class='sct_title_div'>
+                                <div class="sct_left_side">
+                                    <h3 class='sct_title'>Saving Investments</h3>
+                                    <p class='sct_simple_text sct_green_line'>Finance Plan</p>
+                                </div>
+                                <div class='sct_right_side'>
+                                    <img src="/theme_scita/static/src/img/health/health-statics-2.png" class="img img-fluid" alt='web icon'/>
+                                </div>
+                            </div>
+                            <div class="sct_text_info">
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4'>
+                        <div class='sct_sers_box'>
+                            <div class='sct_title_div'>
+                                <div class='sct_left_side'>
+                                    <h3 class='sct_title'>Details Report</h3>
+                                    <p class='sct_simple_text sct_green_line'>Detail Plan</p>
+                                </div>
+                                <div class='sct_right_side'>
+                                    <img src="/theme_scita/static/src/img/health/health-statics-2.png" class="img img-fluid" alt='web icon'/>
+                                </div>
+                            </div>
+                            <div class="sct_text_info">
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row sct_btm_row">
+                    <div class='col-md-4'>
+                        <div class='sct_sers_box'>
+                            <div class='sct_title_div'>
+                                <div class='sct_left_side'>
+                                    <h3 class='sct_title'>Investment Plan</h3>
+                                    <p class='sct_simple_text sct_green_line'>Business Plan</p>
+                                </div>
+                                <div class='sct_right_side'>
+                                    <img src="/theme_scita/static/src/img/health/health-statics-2.png" class="img img-fluid" alt='web icon'/>
+                                </div>
+                            </div>
+                            <div class="sct_text_info">
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4'>
+                        <div class='sct_sers_box'>
+                            <div class='sct_title_div'>
+                                <div class='sct_left_side'>
+                                    <h3 class='sct_title'>Media Marketing</h3>
+                                    <p class='sct_simple_text sct_green_line'>Marketing Plan</p>
+                                </div>
+                                <div class='sct_right_side'>
+                                    <img src="/theme_scita/static/src/img/health/health-statics-2.png" class="img img-fluid" alt='web icon'/>
+                                </div>
+                            </div>
+                            <div class="sct_text_info">
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4'>
+                        <div class='sct_sers_box'>
+                            <div class='sct_title_div'>
+                                <div class='sct_left_side'>
+                                    <h3 class='sct_title'>Finance Analysis</h3>
+                                    <p class='sct_simple_text sct_green_line'>Finance Plan</p>
+                                </div>
+                                <div class='sct_right_side'>
+                                    <img src="/theme_scita/static/src/img/health/health-statics-2.png" class="img img-fluid" alt='web icon'/>
+                                </div>
+                            </div>
+                            <div class="sct_text_info">
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="service_varient_6" name="Service Snippet 7">
+        <section class="service_varient_6" data-disp="service">
+            <div class="container">
+                <div class="row sct_top_row">
+                    <div class='col-md-12'>
+                        <div class="sct_section_title">
+                            <h2 class="section-title sct_green_line">Our Services</h2>
+                            <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row sct_mid_row">
+                    <div class='col-md-4 sct_thumb'>
+                        <div class='sct_sers_box'>
+                            <div class='service_icon'>
+                                <span class="fa fa-pencil-square-o"/>
+                            </div>
+                            <div class='sct_text_info'>
+                                <h3 class='sct_title'>Content Marketing</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4 sct_thumb'>
+                        <div class='sct_sers_box'>
+                            <div class='service_icon'>
+                                <span class="fa fa-pencil-square-o"/>
+                            </div>
+                            <div class='sct_text_info'>
+                                <h3 class='sct_title'>Saving Investments</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4 sct_thumb'>
+                        <div class='sct_sers_box'>
+                            <div class='service_icon'>
+                                <span class="fa fa-pencil-square-o"/>
+                            </div>
+                            <div class='sct_text_info'>
+                                <h3 class='sct_title'>Details Report</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row sct_btm_row">
+                    <div class='col-md-4 sct_thumb'>
+                        <div class='sct_sers_box'>
+                            <div class='service_icon'>
+                                <span class="fa fa-pencil-square-o"/>
+                            </div>
+                            <div class='sct_text_info'>
+                                <h3 class='sct_title'>Investment Plan</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4 sct_thumb'>
+                        <div class='sct_sers_box'>
+                            <div class='service_icon'>
+                                <span class="fa fa-pencil-square-o"/>
+                            </div>
+                            <div class='sct_text_info'>
+                                <h3 class='sct_title'>Media Marketing</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4 sct_thumb'>
+                        <div class='sct_sers_box'>
+                            <div class='service_icon'>
+                                <span class="fa fa-pencil-square-o"/>
+                            </div>
+                            <div class='sct_text_info'>
+                                <h3 class='sct_title'>Finance Analysis</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="service_varient_7" name="Service Snippet 8">
+        <section class="our-rules" id="our-rules" data-disp="service">
+            <div class="container">
+                <div class="row">
+                    <div class='col-md-4'>
+                        <div class="title">
+                            <h2>قيمنا</h2>
+                            <p>تدل القيم على العديد من المبَادئ التوجيّهية التي يقوم عليها مركز موان وتمثل أولويات ثابتة وراسِخة لدى أفرادها، وتهدف إلى بناء خطة عمل كاملة ومتماسكة كي تتوافق مع رسالتنا ورؤيتنا المستقبلية:</p>
+                        </div>
+                    </div>
+                    <div class='col-md-8'>
+                        <div class='row' style="justify-content: center;">
+                            <div class='col-sm-4'>
+                                <div class='item'>
+                                    <div class='icon'>
+                                        <img src="/theme_scita/static/src/img/MWAN/Rules/01.png" class="img-fluid" alt="Icon"/>
+                                    </div>
+                                    <div class='info'>
+                                        <h5>التنظيم</h5>
+                                        <p>نحرص على تنظيم جميع أنشطة النفايات وذلك عبر إيجاد أفضل الحلول المُتكاملة لإدارته.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-sm-4'>
+                                <div class='item'>
+                                    <div class='icon'>
+                                        <img src="/theme_scita/static/src/img/MWAN/Rules/02.png" class="img-fluid" alt="Icon"/>
+                                    </div>
+                                    <div class='info'>
+                                        <h5>الاهتمام</h5>
+                                        <p>تكمن الأولويّة القصوى لدينا في حماية البيئة والصحة العامة لدى المجتمع.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-sm-4'>
+                                <div class='item'>
+                                    <div class='icon'>
+                                        <img src="/theme_scita/static/src/img/MWAN/Rules/03.png" class="img-fluid" alt="Icon"/>
+                                    </div>
+                                    <div class='info'>
+                                        <h5>الاستدامة</h5>
+                                        <p>تحقيق الاستِدامة عبر تطبيقنا لمبادئ الاقتصاد والمحافظة على الموارد الطبيعية.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-sm-4'>
+                                <div class='item'>
+                                    <div class='icon'>
+                                        <img src="/theme_scita/static/src/img/MWAN/Rules/04.png" class="img-fluid" alt="Icon"/>
+                                    </div>
+                                    <div class='info'>
+                                        <h5>الابداع والابتكار</h5>
+                                        <p>ندعم ونشجع كافة الأبحاث والأساليب الحديّثة المتعلقة بإدارة النفايات.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-sm-4'>
+                                <div class='item'>
+                                    <div class='icon'>
+                                        <img src="/theme_scita/static/src/img/MWAN/Rules/05.png" class="img-fluid" alt="Icon"/>
+                                    </div>
+                                    <div class='info'>
+                                        <h5>الإنجاز</h5>
+                                        <p>نلتزم بكافة المعايير والمُمارسات بداية من الإتقان وصولًا للإنجاز.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="service_varient_11" name="Service Snippet 10">
+        <section class="service_varient_11" data-disp="service">
+            <div class="container">
+                <div class="row">
+                    <div class='col-lg-3 col-md-6 sct_thumb'>
+                        <div class='sct_sers_box'>
+                            <div class='service_icon'>
+                                <span class="fa fa-pencil-square-o"/>
+                            </div>
+                            <div class='sct_text_info'>
+                                <h3 class='sct_title'>Financial Research</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-lg-3 col-md-6 sct_thumb'>
+                        <div class='sct_sers_box'>
+                            <div class='service_icon'>
+                                <span class="fa fa-pencil-square-o"/>
+                            </div>
+                            <div class='sct_text_info'>
+                                <h3 class='sct_title'>Market Research</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-lg-3 col-md-6 sct_thumb'>
+                        <div class='sct_sers_box'>
+                            <div class='service_icon'>
+                                <span class="fa fa-pencil-square-o"/>
+                            </div>
+                            <div class='sct_text_info'>
+                                <h3 class='sct_title'>Pharma Research</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-lg-3 col-md-6 sct_thumb'>
+                        <div class='sct_sers_box'>
+                            <div class='service_icon'>
+                                <span class="fa fa-pencil-square-o"/>
+                            </div>
+                            <div class='sct_text_info'>
+                                <h3 class='sct_title'>Media Research</h3>
+                                <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.Lorem ipsum dolor amet, adipiscing, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="service_varient_14" name="Service Snippet 13">
+        <section class="our-targets service_varient_14" data-disp="service">
+            <div class="container">
+                <div class="row">
+                    <div class='col-sm-4'>
+                        <div class='item'>
+                            <div class='icon'>
+                                <img src="/theme_scita/static/src/img/MWAN/Targets/green/01.png" class="img-fluid" alt="Icon"/>
+                            </div>
+                            <div class='info'>
+                                <h5>إدارة ناجحة</h5>
+                                <p>من خلال تنظيمنا الفعال لقطاع إدارة النفايات عبر كامل سلسلة القيمة</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm-4'>
+                        <div class='item'>
+                            <div class='icon'>
+                                <img src="/theme_scita/static/src/img/MWAN/Targets/green/02.png" class="img-fluid" alt="Icon"/>
+                            </div>
+                            <div class='info'>
+                                <h5>بيئة مستدامة</h5>
+                                <p>من خلال تحفيزنا للاستثمار وتعظيم مشاركة القطاع الخاص</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm-4'>
+                        <div class='item'>
+                            <div class='icon'>
+                                <img src="/theme_scita/static/src/img/MWAN/Targets/green/03.png" class="img-fluid" alt="Icon"/>
+                            </div>
+                            <div class='info'>
+                                <h5>الحد من تخلص النفايات</h5>
+                                <p>عبر استخدامنا لأفضل الممارسات والتقنيات لاسترداد الموارد</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-sm-4'>
+                        <div class='item'>
+                            <div class='icon'>
+                                <img src="/theme_scita/static/src/img/MWAN/Targets/green/04.png" class="img-fluid" alt="Icon"/>
+                            </div>
+                            <div class='info'>
+                                <h5>تعزيز الوعى العام</h5>
+                                <p>عبر تشجيعنالبدأ إعادة التدوير والاستخدام للحد من إنتاج النفايات</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm-4'>
+                        <div class='item'>
+                            <div class='icon'>
+                                <img src="/theme_scita/static/src/img/MWAN/Targets/green/05.png" class="img-fluid" alt="Icon"/>
+                            </div>
+                            <div class='info'>
+                                <h5>البحث والابتكار</h5>
+                                <p>من خلال تشجيعنا للبحوث فى جميع المجالات المتعلقة بإدارة النفايات</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-sm-4'>
+                        <div class='item'>
+                            <div class='icon'>
+                                <img src="/theme_scita/static/src/img/MWAN/Targets/green/06.png" class="img-fluid" alt="Icon"/>
+                            </div>
+                            <div class='info'>
+                                <h5>تعزيز القدرات والكفاءات</h5>
+                                <p>من خلال تشجيعنا للقوى العاملة فى القطاع</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="service_varient_13" name="Service Snippet 12">
+        <section class="service_varient_13" data-disp="service">
+            <div class="container">
+                <div class="row sct_top_row">
+                    <div class='col-md-12'>
+                        <div class="sct_section_title">
+                            <h2 class="section-title">What We Do </h2>
+                            <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row sct_btm_row">
+                    <div class='col-md-4 sct_thumb'>
+                        <div class='sct_left_box'>
+                            <div class='sct_sers_box'>
+                                <div class='service_icon'>
+                                    <span class="fa fa-pencil-square-o"/>
+                                </div>
+                                <div class='sct_text_info'>
+                                    <h3 class='sct_title'>Healthcare</h3>
+                                    <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                                </div>
+                            </div>
+                            <div class='sct_sers_box'>
+                                <div class='service_icon'>
+                                    <span class="fa fa-pencil-square-o"/>
+                                </div>
+                                <div class='sct_text_info'>
+                                    <h3 class='sct_title'>Healthcare</h3>
+                                    <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                                </div>
+                            </div>
+                            <div class='sct_sers_box'>
+                                <div class='service_icon'>
+                                    <span class="fa fa-pencil-square-o"/>
+                                </div>
+                                <div class='sct_text_info'>
+                                    <h3 class='sct_title'>Healthcare</h3>
+                                    <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-4 sct_mid_box'>
+                        <div class='sct_img_column'>
+                            <img src="/theme_scita/static/src/img/service_v_13_mid.png" class="img img-fluid" alt='web icon'/>
+                        </div>
+                    </div>
+                    <div class='col-md-4 sct_thumb'>
+                        <div class='sct_right_box'>
+                            <div class='sct_sers_box'>
+                                <div class='service_icon'>
+                                    <span class="fa fa-pencil-square-o"/>
+                                </div>
+                                <div class='sct_text_info'>
+                                    <h3 class='sct_title'>Finance Analysis</h3>
+                                    <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                                </div>
+                            </div>
+                            <div class='sct_sers_box'>
+                                <div class='service_icon'>
+                                    <span class="fa fa-pencil-square-o"/>
+                                </div>
+                                <div class='sct_text_info'>
+                                    <h3 class='sct_title'>Finance Analysis</h3>
+                                    <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                                </div>
+                            </div>
+                            <div class='sct_sers_box'>
+                                <div class='service_icon'>
+                                    <span class="fa fa-pencil-square-o"/>
+                                </div>
+                                <div class='sct_text_info'>
+                                    <h3 class='sct_title'>Finance Analysis</h3>
+                                    <p class="sct_simple_text">Lorem ipsum dolor amet, adipiscing, sed do   eiusmod tempor incididunt ut labore dolore magna aliqua.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="service_varient_10" name="Service Snippet 9">
+        <section class="faqs-page service_varient_10 s_faq_collapse" data-disp="service">
+            <div class="container">
+                <div class="row sct_btm_row">
+                    <div class="col-md-12 sct_service_nav">
+                        <div class="navigation-tab">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#faq-item-01">قسم التراخيص</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#faq-item-02">قسم الأنظمة والتشريعات</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#faq-item-03">قسم إدارة التواصل</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#faq-item-04">قسم الإدارة الفنية</a>
+                                </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active show" id="faq-item-01">
+                                    <div id="faqs-01" class="accordion" role="tablist">
+                                        <div class="card active">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="true" class="card-header">ماهي آلية الحصول على رخصة من المركز الوطني لإدارة النفايات؟</a>
+                                            <div class="collapse show" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>يمكنكم تقديم طلب الحصول على رخصة أو تصريح من خلال التسجيل بالموقع الالكتروني الخاص بالتراخيص عبر الرابط الآتي: (( اضغط هنا )) وللمزيد من التفاصيل نأمل الاطلاع على دليل المستخدم</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">كيف يمكن متابعة الطلب الذي تم تقديمه على الموقع الإلكتروني، وهل يلزم الحضور لمقر المركز للمتابعة؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>يمكنكم متابعة حالة الطلبات من خلال زيارة الموقع الالكتروني الخاص بالتراخيص والتصاريح دون الحاجة للحضور، كما تصلكم إشعارات الطلبات على بريدكم الإلكتروني المسجل في النظام.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">كيف يتم التواصل مع إدارة التراخيص بالمركز الوطني لإدارة النفايات؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>يمكنكم ارسال استفساراتكم عبر البريد الالكتروني الخاص بإدارة التراخيص والتصاريح License@mwan.gov.sa محدداً به نوع الطلب هل هو ترخيص أو تصريح ورقمه</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header"> هل يمكن التقديم اليدوي لطلبات التراخيص والتصاريح؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>يمكنكم فقط ارسال طلب ترخيص أو تصريح عن طريق الموقع الالكتروني الخاص بالتراخيص.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">ما هي الآلية المتبعة في حالة وجود اقتراح أو شكوى بخصوص التراخيص أو التصاريح؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>خلال نظام التقييم والاقتراحات والشكاوى الخاصة بإدارة التراخيص والتصاريح على الرابط التالي: (( اضغط هنا ))</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">لدي مشاكل تقنية بالمنصة ما هو الإجراء المتبع في هذه الحالة؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>يمكنكم التواصل عبر هذا البريد الالكتروني: itsupport@mwan.gov.sa</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">كيف يمكن تسليم شيكات المقابل المالي؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>حالياً عن طريق ارسال الشيك على العنوان الوطني للمركز (مرفق)</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">ماهي متطلبات واشتراطات المركز في الأنشطة المتعلقة بإدارة النفايات؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>يمكنكم الاطلاع على جميع المتطلبات الاشتراطات الخاصة بالأنشطة التي يرخصها أو يصرح بها المركز على الرابط التالي: (( اضغط هنا ))</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">كيف يتم احتساب المقابل المالي؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>يتم احتساب آلية المقابل المالي عبر الرابط التالي: (( اضغط هنا ))</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">لدي تأهيل بيئي سابق من الهيئة العامة للأرصاد وحماية البيئة وأريد الحصول على ترخيص المركز بنشاط لم أجده لدى المركز الوطني لإدارة النفايات ما هو المتبع في هذه الحالة؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>ستجدون النشاط مدرج في مصفوفة إدارة النفايات الجديدة الخاصة بالمركز على الرابط التالي: (( اضغط هنا )) </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header"> أرغب بإصدار ترخيص يتعلق بالأنشطة البلدية ولم أجد النشاط بمنصة التراخيص؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>سيتم إضافة الأنشطة البلدية على المنصة الخاصة بالتراخيص.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="faq-item-02">
+                                    <div id="faqs-02" class="accordion" role="tablist">
+                                        <div class="card active">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="true" class="card-header">ما هو تاريخ نفاذ نظام ادارة النفايات ؟</a>
+                                            <div class="collapse show" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>18 نوفمبر 2021م</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">ما هو تاريخ نفاذ اللائحة التنفيذية لنظام ادارة النفايات؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p> تكون اللائحة نافذه بعد اعتمادها من قبل معالي وزير البيئة والمياه والزراعة.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">هل يوجد جهة مختصة للنظر في مخالفات نظام إدارة النفايات؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p> نعم، يوجد لجنة مختصة للنظر في مخالفات أحكام نظام إدارة النفايات ولائحته التنفيذية</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">هل يوجد غرامات مالية بحق المخالف ؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>نعم يوجد هناك غرامات مالية وتختلف حسب طبيعة وجسامة المخالفة.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="faq-item-03">
+                                    <div id="faqs-03" class="accordion" role="tablist">
+                                        <div class="card active">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="true" class="card-header">كيف يتم التقديم على الوظائف المتاحة لدى المركز الوطني لإدارة النفايات؟</a>
+                                            <div class="collapse show" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>أهلا بك، يمكنك التقديم على الوظائف المتاحة عبر الموقع الالكتروني للمركز الوطني لإدارة النفايات.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">ماهي آلية التواصل مع المركز في حال وجود فكرة أو مشروع؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>أهلا بك، يمكنك التواصل عن طريق ايميل info@mwan.gov.sa</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">كيف يمكنني الحصول على نظام إدارة النفايات المعمول به لدى المركز؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>يمكنك الاطلاع على نظام إدارة النفايات من خلال الموقع الالكتروني للمركز الوطني لإدارة النفايات.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="faq-item-04">
+                                    <div id="faqs-04" class="accordion" role="tablist">
+                                        <div class="card active">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="true" class="card-header"> هل يوجد دعم مالي للاختراعات والمشاريع ؟</a>
+                                            <div class="collapse show" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>لا يوجد دعم مالي يقدم من المركز؛ لأن دور المركز يقتصر في الاشراف والتنظيم على قطاع إدارة النفايات.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">هل يتبنى المركز الوطني لإدارة النفايات الاختراعات والأفكار المتعلقة بقطاع إدارة النفايات؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>لا، ليست من اختصاصات المركز.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">هل المركز يوجد له ذراع استثماري؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>لا يوجد له ذراع استثماري، ولكن من ضمن مهام المركز تحفيز الاستثمار في قطاع إدارة النفايات.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <a href="#" data-toggle="collapse" role="tab" aria-expanded="false" class="collapsed card-header">ماهي مسؤولية المنتج الممتدة؟</a>
+                                            <div class="collapse" role="tabpanel">
+                                                <div class="card-body">
+                                                    <p>المقصود بها: تحمل المنتج والمستورد للمنتجات المستوردة أو المصنعة محليًا أو المشتقة من مادة أخرى، المعدة للبيع أو الاستهلاك، المسؤولية القانونية والمالية لإدارة البقايا والنفايات ومعالجتها والتخلص الآمن منها، خلال دورتها الحياتية.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="service_varient_12" name="Service Snippet 11">
+        <section class="mwan-tasks" data-disp="service">
+            <div class="container">
+                <div class="title">
+                    <h2>مهام المركز</h2>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 sct_service_nav">
+                        <div class="navigation-tab">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#serv_12_item1">
+                                        <div class="icon">
+                                            <img src="/theme_scita/static/src/img/MWAN/Tasks/01.png" class="img-fluid" alt="Icon"/>
+                                        </div>
+                                        <span>إدارة النفايات</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#serv_12_item2">
+                                        <div class="icon">
+                                            <img src="/theme_scita/static/src/img/MWAN/Tasks/02.png" class="img-fluid" alt="Icon"/>
+                                        </div>
+                                        <span>الاستثمار</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#serv_12_item3">
+                                        <div class="icon">
+                                            <img src="/theme_scita/static/src/img/MWAN/Tasks/03.png" class="img-fluid" alt="Icon"/>
+                                        </div>
+                                        <span>الرخص والتصاريح</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#serv_12_item4">
+                                        <div class="icon">
+                                            <img src="/theme_scita/static/src/img/MWAN/Tasks/04.png" class="img-fluid" alt="Icon"/>
+                                        </div>
+                                        <span>بناء القدرات</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#serv_12_item5">
+                                        <div class="icon">
+                                            <img src="/theme_scita/static/src/img/MWAN/Tasks/05.png" class="img-fluid" alt="Icon"/>
+                                        </div>
+                                        <span>البحث والابتكار</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active show" id="serv_12_item1" role="tabpanel">
+                                    <div class='info'>
+                                        <p>عبر تنظيمنا لجميع أنشطة استيراد النفايات بداية من تصديرها وصولًا إلى التخلص النهائي منها ويتضمن بذلك العناية والحماية الكاملة لمواقع التخلص منها.</p>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="serv_12_item2" role="tabpanel">
+                                    <div class='info'>
+                                        <p>نشجع ونحفز الاستثمار في القطاع بكافة أنواع باستثناء المواد المشعة وذلك لخلق فرص استثمارية لتحقيق الاستدامة المالية.</p>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="serv_12_item3" role="tabpanel">
+                                    <div class='info'>
+                                        <p>منح التراخيص باشتراطاته وضوابطه لجميع المستفيدين من كافة المنشآت والمستثمرين وأصحاب المصلحة في أنشطة إدارة النفايات.</p>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="serv_12_item4" role="tabpanel">
+                                    <div class='info'>
+                                        <p>إقامة البرامج التدريبية وورش العمل المتعلقة بإدارة النفايات لرفع مستوى الأداء.</p>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="serv_12_item5" role="tabpanel">
+                                    <div class='info'>
+                                        <p>تشجيع البحث والابتكار في مجالات الإدارة المتكاملة.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="helth_portfolio_tabs_snippets" name="Service Snippet 14">
+        <section class="helth_service_tabs oe_img_bg" style="background-image: url(/theme_scita/static/src/img/health/health-service-bg.jpg);" data-disp="service">
+            <div class="container">
+                <div class='row sct_top_row'>
+                    <div class="col-md-12">
+                        <h2 class="section-title"><span class='left_right_seprator light-seprator'>Special High-quality Services</span></h2>
+                    </div>
+                </div>
+                <div class="row sct_btm_row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active"
+                                            id="nav_tabs_link_1"
+                                            data-toggle="tab"
+                                            href="#nav_tabs_content_1"
+                                            role="tab"
+                                            aria-controls="nav_tabs_content_1"
+                                            aria-selected="true">
+                                            <div class='tab_icon'>
+                                                <div class='tab_img'>
+                                                    <img src="/theme_scita/static/src/img/health/health-emrg-icon.png" class="img img-fluid light_img" alt="Emergency"/>
+                                                    <img src="/theme_scita/static/src/img/health/health-emrg-icon-dark.png" class="img img-fluid dark_img" alt="Emergency"/>
+                                                </div>
+                                                <h3 class='tab_title'><span class='light-seprator'>Emergency</span></h3>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                            id="nav_tabs_link_2"
+                                            data-toggle="tab"
+                                            href="#nav_tabs_content_2"
+                                            role="tab"
+                                            aria-controls="nav_tabs_content_2"
+                                            aria-selected="false">
+                                            <div class='tab_icon'>
+                                                <div class='tab_img'>
+                                                    <img src="/theme_scita/static/src/img/health/health-tool-icon.png" class="img img-fluid light_img" alt="Tools"/>
+                                                    <img src="/theme_scita/static/src/img/health/health-tool-icon-dark.png" class="img img-fluid dark_img" alt="Tools"/>
+                                                </div>
+                                                <h3 class='tab_title'><span class='light-seprator'>Tools</span></h3>
+                                            </div>    
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                            id="nav_tabs_link_3"
+                                            data-toggle="tab"
+                                            href="#nav_tabs_content_3"
+                                            role="tab"
+                                            aria-controls="nav_tabs_content_3"
+                                            aria-selected="false">
+                                            <div class='tab_icon'>
+                                                <div class='tab_img'>
+                                                    <img src="/theme_scita/static/src/img/health/health-appointment-icon.png" class="img img-fluid light_img" alt="Appointment"/> 
+                                                    <img src="/theme_scita/static/src/img/health/health-appointment-icon-dark.png" class="img img-fluid dark_img" alt="Appointment"/> 
+                                                </div>
+                                                <h3 class='tab_title'><span class='light-seprator'>Appointment</span></h3>
+                                            </div>
+                                            
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                            id="nav_tabs_link_4"
+                                            data-toggle="tab"
+                                            href="#nav_tabs_content_4"
+                                            role="tab"
+                                            aria-controls="nav_tabs_content_3"
+                                            aria-selected="false">
+                                            <div class='tab_icon'>
+                                                <div class='tab_img'>
+                                                    <img src="/theme_scita/static/src/img/health/health-insurance-icon.png" class="img img-fluid light_img" alt=" Insurances"/>
+                                                    <img src="/theme_scita/static/src/img/health/health-insurance-icon-dark.png" class="img img-fluid dark_img" alt=" Insurances"/>
+                                                </div>
+                                                <h3 class='tab_title'><span class='light-seprator'>Insurances</span></h3>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body tab-content">
+                                <div class="tab-pane fade show active"
+                                    id="nav_tabs_content_1"
+                                    role="tabpanel"
+                                    aria-labelledby="nav_tabs_link_1">
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                            <div class='helth_tab_info'>
+                                                <p class='sct_simple_text'>Ut wisi enim ad minim veniam, quis laore nostrud exerci tation ulm hedi corper turet suscipit lobortis nisl ut aliquip erat volutpat autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nis ipsum aliquenean. Ut wisi enim ad minim veniam, quis laore nostrud exerci tation ulm hedi corper turet suscipit lobortis nisl ut aliquip erat volutpat autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nis ipsum aliquenean emergency.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade"
+                                    id="nav_tabs_content_2"
+                                    role="tabpanel"
+                                    aria-labelledby="nav_tabs_link_2">
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                            <div class='helth_tab_info'>
+                                                <p class='sct_simple_text'>Ut wisi enim ad minim veniam, quis laore nostrud exerci tation ulm hedi corper turet suscipit lobortis nisl ut aliquip erat volutpat autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nis ipsum aliquenean. Ut wisi enim ad minim veniam, quis laore nostrud exerci tation ulm hedi corper turet suscipit lobortis nisl ut aliquip erat volutpat autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nis ipsum aliquenean Appointment Tools.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade"
+                                    id="nav_tabs_content_3"
+                                    role="tabpanel"
+                                    aria-labelledby="nav_tabs_link_3">
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                            <div class='helth_tab_info'>
+                                                <p class='sct_simple_text'>Ut wisi enim ad minim veniam, quis laore nostrud exerci tation ulm hedi corper turet suscipit lobortis nisl ut aliquip erat volutpat autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nis ipsum aliquenean. Ut wisi enim ad minim veniam, quis laore nostrud exerci tation ulm hedi corper turet suscipit lobortis nisl ut aliquip erat volutpat autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nis ipsum aliquenean Appointment.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade"
+                                    id="nav_tabs_content_4"
+                                    role="tabpanel"
+                                    aria-labelledby="nav_tabs_link_4">
+                                    <div class='row'>
+                                        <div class='col-md-12'>
+                                            <div class='helth_tab_info'>
+                                                <p class='sct_simple_text'>Ut wisi enim ad minim veniam, quis laore nostrud exerci tation ulm hedi corper turet suscipit lobortis nisl ut aliquip erat volutpat autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nis ipsum aliquenean. Ut wisi enim ad minim veniam, quis laore nostrud exerci tation ulm hedi corper turet suscipit lobortis nisl ut aliquip erat volutpat autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nis ipsum aliquenean Insurances.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="health_department_snippets" name="Service Snippet 15">
+        <!-- Tab style 2 -->
+        <section class="health_dept_snippet_1 tab-right-vertical oe_img_bg" style="background-image: url(/theme_scita/static/src/img/health/health-department-bg.jpg);" data-disp="service">
+            <div class="container">
+                <div class='row sct_top_row'>
+                    <div class="col-md-12">
+                        <h2 class="section-title"><span class='left_right_seprator light-seprator'>Departments</span></h2>
+                    </div>
+                </div>
+                <div class="row sct_btm_row">
+                    <div class="col-md-12">
+                        <div class="vertical scita-health-tabs">
+                            <div class="tab-section">
+                                <div class='row'>
+                                    <div class="col-md-8">
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade active show" id="home1">
+                                                <div class='row'>
+                                                    <div class='col-md-4 sct_dept_img'>
+                                                        <img src="/theme_scita/static/src/img/health/health-department-main-obj.png" class="img img-fluid" alt="Expert"/>
+                                                    </div>
+                                                    <div class='col-md-8'>
+                                                        <div class='sct_dept_info'>
+                                                            <h3 class='sct_dept_title'>Neurology</h3>
+                                                            <p class='sct_simple_text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                                                        </div>
+                                                        <div class="sct_helth_btn">
+                                                            <a href="/contactus" class="btn btn_border btn-primary scita_cstm_btn ">Make an appointment</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="profile1">
+                                                <div class='row'>
+                                                    <div class='col-md-4 sct_dept_img'>
+                                                        <img src="/theme_scita/static/src/img/health/health-department-main-obj.png" class="img img-fluid" alt="Expert"/>
+                                                    </div>
+                                                    <div class='col-md-8'>
+                                                        <div class='sct_dept_info'>
+                                                            <h3 class='sct_dept_title'>Dental</h3>
+                                                            <p class='sct_simple_text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                                                        </div>
+                                                        <div class="sct_helth_btn">
+                                                            <a href="/contactus" class="btn btn_border btn-primary scita_cstm_btn ">Make an appointment</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="messages1">
+                                                <div class='row'>
+                                                    <div class='col-md-4 sct_dept_img'>
+                                                        <img src="/theme_scita/static/src/img/health/health-department-main-obj.png" class="img img-fluid" alt="Expert"/>
+                                                    </div>
+                                                    <div class='col-md-8'>
+                                                        <div class='sct_dept_info'>
+                                                            <h3 class='sct_dept_title'>X-ray</h3>
+                                                            <p class='sct_simple_text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                                                        </div>
+                                                        <div class="sct_helth_btn">
+                                                            <a href="/contactus" class="btn btn_border btn-primary scita_cstm_btn ">Make an appointment</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="settings1">
+                                                <div class='row'>
+                                                    <div class='col-md-4 sct_dept_img'>
+                                                        <img src="/theme_scita/static/src/img/health/health-department-main-obj.png" class="img img-fluid" alt="Expert"/>
+                                                    </div>
+                                                    <div class='col-md-8'>
+                                                        <div class='sct_dept_info'>
+                                                            <h3 class='sct_dept_title'>Pulmonary</h3>
+                                                            <p class='sct_simple_text'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                                                        </div>
+                                                        <div class="sct_helth_btn">
+                                                            <a href="/contactus" class="btn btn_border btn-primary scita_cstm_btn ">Make an appointment</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 tabs">
+                                        <ul class="nav nav-tabs tabs-left" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" data-toggle="tab" name="home1" href="#home1">
+                                                    <div class='tab_icon'>
+                                                        <div class='tab_img'>
+                                                            <img src="/theme_scita/static/src/img/health/health-obj-light-1.png" class="img img-fluid light_img" alt=" Neurology"/>
+                                                            <img src="/theme_scita/static/src/img/health/health-obj-dark-1.png" class="img img-fluid dark_img" alt=" Neurology"/>
+                                                        </div>
+                                                        <h3 class='tab_title'><span class='light-seprator'>Neurology</span></h3>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" name="profile1" href="#profile1">
+                                                    <div class='tab_icon'>
+                                                        <div class='tab_img'>
+                                                            <img src="/theme_scita/static/src/img/health/health-obj-light-4.png" class="img img-fluid light_img" alt=" Dental"/>
+                                                            <img src="/theme_scita/static/src/img/health/health-obj-dark-4.png" class="img img-fluid dark_img" alt=" Dental"/>
+                                                        </div>
+                                                        <h3 class='tab_title'><span class='light-seprator'>Dental</span></h3>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" name="messages1" href="#messages1">
+                                                    <div class='tab_icon'>
+                                                        <div class='tab_img'>
+                                                            <img src="/theme_scita/static/src/img/health/health-obj-light-2.png" class="img img-fluid light_img" alt=" X-ray"/>
+                                                            <img src="/theme_scita/static/src/img/health/health-obj-dark-2.png" class="img img-fluid dark_img" alt=" X-ray"/>
+                                                        </div>
+                                                        <h3 class='tab_title'><span class='light-seprator'>X-ray</span></h3>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" name="settings1" href="#settings1">
+                                                    <div class='tab_icon'>
+                                                        <div class='tab_img'>
+                                                            <img src="/theme_scita/static/src/img/health/health-obj-light-3.png" class="img img-fluid light_img" alt=" Pulmonary"/>
+                                                            <img src="/theme_scita/static/src/img/health/health-obj-dark-3.png" class="img img-fluid dark_img" alt=" Pulmonary"/>
+                                                        </div>
+                                                        <h3 class='tab_title'><span class='light-seprator'>Pulmonary</span></h3>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <!--   Services snippet End-->
+</odoo>

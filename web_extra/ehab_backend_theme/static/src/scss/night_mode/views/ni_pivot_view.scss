@@ -1,0 +1,62 @@
+@mixin sync_pivot_view() {
+    .o_pivot {
+        background-color: var(--btn-secondary);
+
+        table {
+            border-color: var(--btn-secondary);
+            background: transparent;
+
+            thead,
+            tfoot {
+                background: transparent;
+
+                &>tr {
+
+                    &>th,
+                    &>td {
+                        border-color: var(--border);
+                        color: var(--font-color);
+                        background-color: var(--btn-secondary);
+                    }
+
+                    &>th:last-child {
+                        box-shadow: inset -1px 0px var(--border);
+                    }
+                }
+            }
+
+            tbody {
+                &>tr {
+                    background-color: var(--btn-secondary);
+                    color: var(--font-color);
+
+                    &>td {
+                        &.o_pivot_cell_value {
+                            color: var(--font-color);
+                        }
+
+                        &.o_pivot_header_cell_opened,
+                        &.o_pivot_header_cell_closed {
+                            background-color: var(--btn-secondary);
+                        }
+
+                        border-color: var(--border);
+
+                        &.o_res_name_cell {
+                            color: var(--night-hover);
+                        }
+
+                        &:last-child {
+                            box-shadow: inset -1px 0px var(--border);
+                        }
+                    }
+
+                    &>th {
+                        color: var(--font-color);
+                        border: 1px solid var(--border);
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,270 @@
+@mixin favroit-menu-layout() {
+    #av_full_view {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @include o-position-absolute(var(--header-height-rev), auto, auto, var(--menu-width));
+        padding: 0 8px;
+        height: var(--header-height);
+
+        i.fa {
+            font-size: 16px;
+            color: var(--brand-primary);
+        }
+    }
+
+    .oe_full_button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @include o-position-absolute(auto, auto, var(--control-panel-b), var(--menu-width));
+        color: var(--brand-primary);
+        height: var(--control-panel-h);
+        padding: 0 8px;
+    }
+
+    .oe_menu_layout {
+        margin: 0 auto;
+        width: inherit;
+        overflow: auto;
+
+        .oe_favorite_menu {
+            .oe_favorite {
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 5px 0;
+                font-size: 10px;
+
+                .oe_menu_icon {
+                    width: 30px;
+                    height: 30px;
+                    margin: 0px auto;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                }
+
+                &>span {
+                    padding-top: 5px;
+                    display: block;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                &.ui-sortable-placeholder.ui-sortable-handle {
+                    visibility: visible !important;
+                    position: relative;
+
+                    &:before {
+                        content: "";
+                        background-color: $white;
+                        width: 5px;
+                        height: 5px;
+                        border-radius: 50%;
+                        display: flex;
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        margin: auto;
+                        top: 0;
+                        bottom: 0;
+                        box-shadow: 0 0 6px 3px $white;
+                        z-index: 1;
+                    }
+
+                    &:after {
+                        content: "";
+                        background-color: $white;
+                        width: 19px;
+                        height: 1px;
+                        border-radius: 16px;
+                        display: inline-block;
+                        margin: auto;
+                        vertical-align: middle;
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        top: 0;
+                        box-shadow: inset 0 0 12px 1px $white;
+                        bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@mixin dropdown-menu-panel() {
+    .dropdown-item {
+        position: relative;
+        border-left: 18px solid transparent;
+        margin: 0;
+
+        &:before {
+            content: "";
+            position: absolute;
+            display: block;
+            background-color: #dee2e6;
+            width: 1px;
+            height: 100%;
+            left: 6px;
+            bottom: 50%;
+            margin-right: 12px;
+        }
+
+        &:after {
+            content: "";
+            position: absolute;
+            display: block;
+            background-color: #dee2e6;
+            width: 8px;
+            height: 1px;
+            left: 6px;
+            top: 50%;
+            bottom: auto;
+            margin-right: 5px;
+        }
+
+        &.o_dropdown_menu_group_entry {
+            padding-left: 20px;
+        }
+
+        &.focus {
+            background-color: transparent;
+            color: var(--brand-secondary);
+        }
+    }
+
+    .dropdown-header {
+        position: relative;
+        z-index: 1;
+        font-size: 13px;
+        margin: 0;
+        background-color: white;
+        padding-bottom: 0.5rem;
+
+        &:last-of-type {
+            &:before {
+                height: 100000%;
+            }
+        }
+    }
+}
+
+@mixin left-menu-horizontal {
+    &.oe_base_menu {
+        >header {
+            nav.o_main_navbar {
+                background-color: white;
+                color: var(--Label);
+                border-bottom: 0;
+                height: var(--header-height);
+
+                .o_menu_sections {
+                    .dropdown {
+                        .dropdown-menu {
+                            @include dropdown-menu-panel();
+
+                            .dropdown-header {
+                                background-color: var(--btn-secondary);
+
+                                &:before {
+                                    content: "";
+                                    position: absolute;
+                                    display: block;
+                                    background-color: #dee2e6;
+                                    width: 1px;
+                                    height: 100%;
+                                    left: 8px;
+                                    bottom: 50%;
+                                    margin-right: 12px;
+                                }
+
+                                &:after {
+                                    content: "";
+                                    position: absolute;
+                                    display: block;
+                                    background-color: #dee2e6;
+                                    width: 8px;
+                                    height: 1px;
+                                    left: 8px;
+                                    top: 50%;
+                                    bottom: auto;
+                                    margin-right: 5px;
+                                }
+                            }
+
+                            .dropdown-menu_group {
+                                color: var(--menu-main-title);
+                            }
+                        }
+                    }
+                }
+
+                .__menu_toggle {
+                    font-size: 24px;
+                    display: flex;
+                    width: var(--panel-width);
+                    justify-content: center;
+                    padding: 0;
+                    align-items: center;
+                    background-color: var(--brand-primary);
+                    color: white;
+                    overflow: hidden;
+                }
+
+                .o_menu_brand {
+                    margin-left: 30px;
+                    padding: 0 5px;
+                    grid-area: var(--grid-area);
+                }
+
+                .o_menu_systray {
+                    .dropdown-toggle {
+                        padding: 0 5px;
+                        min-width: 35px;
+                        justify-content: center;
+                    }
+
+                    .dropdown-menu {
+                        margin-top: 1px;
+                    }
+
+                    .o_user_menu {
+                        img {
+                            width: 35px;
+                            height: 35px;
+                            margin: auto;
+                        }
+                    }
+                }
+
+                // Color customize
+                &>a:not(.__menu_toggle),
+                .dropdown .dropdown-toggle,
+                .o_menu_sections .dropdown .dropdown-toggle,
+                .o_mail_systray_item .dropdown-toggle,
+                .o_menu_sections .dropdown-item {
+                    color: var(--Label);
+                    background-color: transparent;
+
+                    &:hover,
+                    &:focus {
+                        color: var(--Label);
+                        background-color: transparent;
+                    }
+                }
+            }
+
+            .oe_favorite_view {
+                @include o-position-absolute(var(--header-height), auto, 0, var(--left-menu-position));
+                width: var(--menu-width);
+                height: auto;
+                background-color: var(--brand-primary);
+                @include favroit-menu-layout();
+            }
+        }
+    }
+}

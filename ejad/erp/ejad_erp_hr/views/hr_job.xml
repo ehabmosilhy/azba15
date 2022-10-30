@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="job_hr_inherit" model="ir.ui.view">
+            <field name="name">hr.job.inherit</field>
+            <field name="model">hr.job</field>
+            <field name="inherit_id" ref="hr.view_hr_job_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[1]" position="after">
+                    <group>
+                        <group string="المكافات">
+
+                            <field name="reward_dean_of_college_center"/>
+                            <field name="reward_deputy_college_center"/>
+
+                            <field name="reward_admin_college_center" />
+                            <field name="reward_manager_college"/>
+
+
+                            <label for="reward_security_department"/>
+
+                            <div class="o_row">
+
+                                <field name="reward_security_department" nolabel="1"/>
+                                <span>
+                                    %
+                                </span>
+                            </div>
+                            <label for="reward_reception_department"/>
+
+                            <div class="o_row">
+
+                                <field name="reward_reception_department" nolabel="1"/>
+                                <span>
+                                    %
+                                </span>
+                            </div>
+                            <label for="reward_financial_department"/>
+
+                            <div class="o_row">
+
+                                <field name="reward_financial_department" nolabel="1"/>
+                                <span>
+                                    %
+                                </span>
+                            </div>
+                            <field name="reward_government_relation"/>
+                            <field name="reward_calling"/>
+                            <field name="reward_passport_representative_external"/>
+                            <field name="reward_passport_representative_internal"/>
+                            <field name="reward_purchase_representative"/>
+                            <field name="reward_revenue_collector"/>
+                            <field name="food_reward"/>
+                            <field name="other_reward"/>
+
+                        </group>
+
+                    </group>
+
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="action_hr_job" model="ir.actions.act_window">
+            <field name="name">Job Positions</field>
+            <field name="res_model">hr.job</field>
+
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="hr.view_job_filter"/>
+            <field name="context">{"search_default_Current":1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to define a new job position.
+                </p>
+                <p>
+                    Job Positions are used to define jobs and their requirements.
+                    You can keep track of the number of employees you have per job
+                    position and follow the evolution according to what you planned
+                    for the future.
+                </p>
+                <p>
+                    You can attach a survey to a job position. It will be used in
+                    the recruitment process to evaluate the applicants for this job
+                    position.
+                </p>
+            </field>
+        </record>
+        <menuitem parent="hr.menu_hr_root"
+                  id="menu_employee_hr_job_position_config" action="action_hr_job" sequence="3" groups="ejad_erp_hr.group_job_edit_create"/>
+
+    </data>
+</openerp>

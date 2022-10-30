@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="city_0" model='saudi.city'>
+        <field name="name">الرياض</field>
+    </record>
+    <record id="city_1" model='saudi.city'>
+        <field name="name">مكة</field>
+    </record>
+    <record id="city_2" model='saudi.city'>
+        <field name="name">المدينة المنورة</field>
+    </record>
+    <record id="city_3" model='saudi.city'>
+        <field name="name">بريدة</field>
+    </record>
+    <record id="city_4" model='saudi.city'>
+        <field name="name">تبوك</field>
+    </record>
+    <record id="city_5" model='saudi.city'>
+        <field name="name">الدمام</field>
+    </record>
+    <record id="city_6" model='saudi.city'>
+        <field name="name">الأحساء</field>
+    </record>
+    <record id="city_6" model='saudi.city'>
+        <field name="name">القطيف</field>
+    </record>
+    <record id="city_8" model='saudi.city'>
+        <field name="name">بريدة</field>
+    </record>
+    <!--<record id="city_9" model='saudi.city'>-->
+        <!--<field name="name">بريدة</field>-->
+    <!--</record>-->
+    <record id="city_10" model='saudi.city'>
+        <field name="name">خميس مشيط</field>
+    </record>
+    <record id="city_11" model='saudi.city'>
+        <field name="name">الطائف</field>
+    </record>
+    <record id="city_12" model='saudi.city'>
+        <field name="name">نجران</field>
+    </record>
+    <record id="city_13" model='saudi.city'>
+        <field name="name">حفر الباطن</field>
+    </record>
+    <record id="city_14" model='saudi.city'>
+        <field name="name">الجبيل</field>
+    </record>
+    <record id="city_15" model='saudi.city'>
+        <field name="name">ضباء</field>
+    </record>
+    <record id="city_16" model='saudi.city'>
+        <field name="name">الخرج</field>
+    </record>
+    <record id="city_17" model='saudi.city'>
+        <field name="name">الثقبة</field>
+    </record>
+    <record id="city_18" model='saudi.city'>
+        <field name="name">ضباء</field>
+    </record>
+    <record id="city_19" model='saudi.city'>
+        <field name="name">ينبع البحر</field>
+    </record>
+    <record id="city_20" model='saudi.city'>
+        <field name="name">الخبر</field>
+    </record>
+    <record id="city_21" model='saudi.city'>
+        <field name="name">عرعر</field>
+    </record>
+    <record id="city_22" model='saudi.city'>
+        <field name="name">عنيزة</field>
+    </record>
+    <record id="city_23" model='saudi.city'>
+        <field name="name">سكاكا</field>
+    </record>
+    <record id="city_24" model='saudi.city'>
+        <field name="name">جيزان</field>
+    </record>
+    <record id="city_25" model='saudi.city'>
+        <field name="name">القريات</field>
+    </record>
+    <record id="city_26" model='saudi.city'>
+        <field name="name">الظهران</field>
+    </record>
+    <record id="city_27" model='saudi.city'>
+        <field name="name">الباحة</field>
+    </record>
+    <record id="city_28" model='saudi.city'>
+        <field name="name">الزلفي</field>
+    </record>
+    <record id="city_29" model='saudi.city'>
+        <field name="name">الرس</field>
+    </record>
+    <record id="city_30" model='saudi.city'>
+        <field name="name">وادي الدواسر</field>
+    </record>
+    <record id="city_31" model='saudi.city'>
+        <field name="name">بيشة</field>
+    </record>
+    <record id="city_32" model='saudi.city'>
+        <field name="name">سيهات</field>
+    </record>
+    <record id="city_33" model='saudi.city'>
+        <field name="name">شرورة</field>
+    </record>
+    <record id="city_34" model='saudi.city'>
+        <field name="name">بحرة</field>
+    </record>
+    <record id="city_35" model='saudi.city'>
+        <field name="name">تاروت</field>
+    </record>
+    <record id="city_36" model='saudi.city'>
+        <field name="name">الدوادمي</field>
+    </record>
+    <record id="city_37" model='saudi.city'>
+        <field name="name">صبياء</field>
+    </record>
+    <record id="city_38" model='saudi.city'>
+        <field name="name">بيش</field>
+    </record>
+    <record id="city_39" model='saudi.city'>
+        <field name="name">الفريش</field>
+    </record>
+    <record id="city_40" model='saudi.city'>
+        <field name="name">بارق</field>
+    </record>
+    <record id="city_41" model='saudi.city'>
+        <field name="name">الحوطة</field>
+    </record>
+    <record id="city_42" model='saudi.city'>
+        <field name="name">الأفلاج</field>
+    </record>
+
+</odoo>

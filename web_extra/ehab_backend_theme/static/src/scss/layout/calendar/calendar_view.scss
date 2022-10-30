@@ -1,0 +1,262 @@
+@mixin calendar-view() {
+    .fc-now-indicator {
+        border-color: var(--brand-secondary);
+
+        &.fc-now-indicator-arrow {
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+        }
+    }
+
+    .o_calendar_container {
+        .o_calendar_view {
+            background: $white;
+
+            .o_calendar_widget {
+                .fc-dayGridMonth-view {
+                    padding-left: 0;
+                }
+
+                .fc-view-container {
+                    .fc-view {
+                        table {
+                            .fc-head {
+                                background-color: rgba($button-box, .03);
+
+                                .fc-head-container {
+                                    padding-bottom: 0;
+                                    color: var(--Label-value);
+                                }
+
+                                .fc-widget-header {
+                                    border-bottom-color: var(--border);
+                                }
+                            }
+
+                            .fc-body {
+                                .fc-widget-content {
+                                    table {
+                                        tbody {
+                                            tr {
+                                                td {
+                                                    &:not(.fc-time) {
+                                                        border-top-color: var(--border);
+                                                    }
+
+                                                    &.fc-today {
+                                                        background-color: $tr-hover;
+                                                        border-left-color: rgba($brand-secondary, 0.2);
+                                                        border-right-color: rgba($brand-secondary, 0.2);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .fc-month-view {
+                    padding-left: 0;
+
+                    .fc-content-skeleton .fc-today .fc-day-number {
+                        margin: 0;
+                        box-shadow: 0px 0px 4px 0px #8ccdd4;
+                        background-color: var(--brand-secondary);
+                        border: 1px solid var(--brand-secondary);
+                        border-radius: 0px 0px 50% 50%;
+                    }
+                }
+
+                .fc-week {
+                    td {
+                        border-left-color: var(--border);
+                    }
+                }
+
+                .o_cw_popover {
+                    &.o_calendar_color_6 {
+                        .card-header {
+                            background-color: transparent;
+                            color: var(--Label-value);
+                        }
+
+                        .o_cw_body {
+                            .list-group {
+                                .list-group-item {
+                                    border: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .fc-dayGridYear-view {
+                    >.fc-month-container {
+                        >.fc-month .fc-day-top.fc-today {
+                            >.fc-day-number {
+                                width: 20px;
+                                height: 20px;
+                                text-align: center;
+                                padding: 0;
+                            }
+                        }
+                    }
+
+                    &:not(.fc-readonly-year-view) {
+                        .fc-day-top:hover {
+                            >.fc-day-number {
+                                width: 20px;
+                                height: 20px;
+                                text-align: center;
+                                padding: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &>.o_calendar_sidebar_container {
+            display: table-cell;
+            vertical-align: top;
+
+            .o_calendar_sidebar {
+                width: 100%;
+                margin-left: 0px;
+
+                .o_calendar_mini {
+                    .ui-datepicker-inline {
+                        padding: 2px;
+                        border: 0;
+                        font-size: $font-size-1;
+
+                        .ui-datepicker-header {
+                            background-color: $white;
+                            border: 0;
+                            border-bottom: 1px solid var(--border);
+                            color: var(--Label-value);
+
+                            .ui-datepicker-title {
+                                flex: 1 1 auto;
+                            }
+
+                            .ui-datepicker-prev,
+                            .ui-datepicker-next {
+                                top: 5px;
+
+                                span {
+                                    font-size: 0;
+
+                                    &:before {
+                                        color: var(--Label-value);
+                                    }
+                                }
+
+                                &.ui-datepicker-prev-hover {
+                                    left: 2px;
+                                }
+
+                                &.ui-datepicker-next-hover {
+                                    right: 2px;
+                                }
+                            }
+                        }
+
+                        .ui-datepicker-calendar {
+                            thead {
+                                border: 2px solid transparent;
+
+                                &>tr {
+                                    &>th {
+                                        color: var(--Label-value);
+                                        background-color: $white;
+                                    }
+                                }
+                            }
+
+                            tbody {
+                                &>tr {
+                                    &>td {
+                                        padding: 0px 5px;
+
+                                        &>a {
+                                            background-color: $white;
+                                            color: var(--Label-value);
+                                            animation: none;
+                                            width: 100%;
+                                            text-align: center;
+                                            padding: .2em;
+                                            border-radius: 0;
+                                        }
+
+                                        &.ui-datepicker-current-day {
+                                            &>a.ui-state-active {
+                                                background-color: $white;
+                                                @include border-animation();
+                                            }
+                                        }
+
+                                        &.ui-datepicker-week-end:first-child {
+                                            &>a.ui-state-default {
+                                                color: var(--Label-value);
+                                                background-color: $white;
+                                                @include border-animation();
+                                                background: repeating-linear-gradient(to right, $text-danger 0%, $text-danger 100%) left bottom transparent no-repeat;
+                                                background-size: 100% 1px;
+                                                background-position: center bottom;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            .o_selected_range.o_color:not(.ui-datepicker-unselectable) {
+                                background-color: transparent;
+                                animation: none;
+                            }
+                        }
+                    }
+                }
+
+                .o_calendar_filter {
+                    .o_calendar_filter_items_checkall {
+                        overflow: unset;
+
+                        .o_calendar_filter_all {
+                            width: 20px;
+                            height: 20px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                    }
+
+                    &>h5 {
+                        background-color: transparent;
+
+                        .o_cw_filter_collapse_icon {
+                            opacity: 1;
+                            font-size: 14px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .o_timeoff_container {
+        background-color: $tr-hover;
+        z-index: 1;
+
+        +.o_calendar_container {
+            height: calc(100% - 8rem) !important;
+        }
+    }
+
+    .o_calendar_sidebar_container {
+        min-width: 250px;
+    }
+}

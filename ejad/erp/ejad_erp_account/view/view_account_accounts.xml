@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_account_form">
+            <field name="name">account.account.form</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[1]" position="inside">
+                    <group>
+                        <field name="debit"/>
+                        <field name="credit"/>
+                        <field name="total"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_account_list">
+            <field name="name">account.account.tree</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_list"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_type_id']" position="after">
+                    <field name="debit" sum="t_debit"/>
+                    <field name="credit" sum="t_credit"/>
+                    <field name="total" sum="t_total"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

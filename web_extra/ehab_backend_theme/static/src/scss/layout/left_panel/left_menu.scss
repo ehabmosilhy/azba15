@@ -1,0 +1,277 @@
+@mixin icon-type($icon-type, $module, $icon-url: 'menu') {
+    @each $icon in $icon-type {
+        &[icon-type="#{$icon}"] {
+            @if($icon=='2d_icon') {
+                $icon-url: 'menu_2d';
+            }
+
+            @each $value in $module {
+                [src="/#{$value}/static/description/icon.png"] {
+                    content: url('/ehab_backend_theme/static/src/img/#{$icon-url}/#{$value}.png');
+                }
+            }
+        }
+    }
+}
+
+@mixin left-menu() {
+    --header-height: 46px;
+    --header-height-rev: -46px;
+    @include left-menu-horizontal();
+    @include left-menu-vertical();
+    @include theme-customize-option();
+
+    // Common
+    >header {
+        z-index: 9;
+
+        .o_menu_systray {
+            div.o_user_menu {
+                .o-dropdown--menu {
+                    padding: 0 15px 15px 15px;
+
+                    .dropdown-item {
+                        &:hover {
+                            background-color: $tr-hover;
+                        }
+                    }
+                }
+
+                .__user {
+                    .__user_circle {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        background-color: var(--brand-secondary);
+                        color: white;
+                        border: 3px solid var(--border);
+                        width: 120px;
+                        height: 120px;
+                        margin: 25px auto;
+                        font-size: 50px;
+                    }
+
+                    .__user_info {
+
+                        .__name,
+                        .__db_name {
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                        }
+                    }
+                }
+            }
+
+            .o_mail_systray_item {
+                $module: ['calendar', 'note'];
+                $icon-type: ['3d_icon', '2d_icon', 'flat_icon', 'colors_icon'];
+
+                .o_mail_systray_dropdown_items {
+                    @include icon-type($icon-type, $module);
+                }
+            }
+
+            .badge {
+                background-color: var(--brand-secondary);
+                color: white;
+            }
+
+            .o_MessagingMenu_dropdownMenu {
+                .o_MessagingMenu_dropdownMenuHeader {
+                    box-shadow: none;
+                    border-bottom: 1px solid var(--border);
+
+                    .o_MessagingMenu_tabButton {
+                        color: var(--label);
+
+                        &.o-active {
+                            color: var(--brand-primary);
+                            @include border-animation();
+                        }
+                    }
+                }
+
+                .o_NotificationGroup,
+                .o_ThreadPreview {
+                    background-color: transparent;
+
+                    .o_NotificationGroup_content,
+                    .o_ThreadPreview_content {
+
+                        .o_NotificationGroup_header,
+                        .o_ThreadPreview_header {
+
+                            .o_NotificationGroup_name,
+                            o_NotificationGroup_counter,
+                            .o_ThreadPreview_name {
+                                color: var(--brand-secondary);
+                            }
+
+                            .o_NotificationGroup_date,
+                            .o_ThreadPreview_date {
+                                color: var(--brand-primary);
+                            }
+                        }
+
+                        .o_NotificationGroup_core,
+                        .o_ThreadPreview_core {
+
+                            .o_NotificationGroup_coreItem,
+                            .o_ThreadPreview_coreItem {
+                                color: var(--Label-value);
+                            }
+                        }
+                    }
+                }
+
+                .o_ThreadPreview,
+                .o_NotificationRequest:hover {
+                    background-color: $tr-hover;
+                }
+
+                .o_NotificationRequest {
+                    .o_NotificationRequest_header {
+                        color: var(--brand-secondary);
+                    }
+
+                    .o_NotificationRequest_core {
+                        color: var(--Label-value);
+                    }
+                }
+
+                .o_MobileMessagingNavbar {
+                    box-shadow: none;
+
+                    .o_MobileMessagingNavbar_tab.o-active {
+                        color: $brand-secondary;
+                    }
+                }
+            }
+
+            .o_mail_systray_dropdown {
+                .o_mail_systray_dropdown_items {
+                    padding: 0px 10px;
+                    flex: 1 1 auto;
+
+                    .o_mail_preview {
+                        padding: 10px 5px;
+                        background-color: $white;
+
+                        .o_preview_info {
+                            .o_preview_title {
+                                color: var(--heading);
+                            }
+
+                            .o_last_message_date,
+                            .o_preview_name,
+                            .o_mail_activity_action {
+                                color: var(--brand-secondary);
+                            }
+
+                            .o_last_message_preview,
+                            .o_no_activity,
+                            .o_activity_filter_button {
+                                color: var(--Label);
+                            }
+                        }
+                    }
+                }
+            }
+
+            .o_switch_company_menu {
+                .toggle_company {
+                    border: 0 !important;
+
+                    .fa {
+                        font-size: 16px !important;
+                    }
+                }
+
+                .dropdown-item {
+
+                    .alert-primary,
+                    .btn-light,
+                    &.focus {
+                        background: transparent !important;
+                    }
+                }
+            }
+
+            .dropdown {
+                .dropdown-toggle {
+                    outline: none;
+                    box-shadow: none;
+                }
+            }
+        }
+
+        .__menu_toggle {
+            .__icon {
+                display: flex;
+                flex-direction: column;
+                width: 25px;
+                cursor: pointer;
+
+                &>span {
+                    background: white;
+                    border-radius: 10px;
+                    height: 3px;
+                    margin: 3px 0;
+                    transition: .4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+                    &:nth-of-type(1) {
+                        width: 50%;
+                    }
+
+                    &:nth-of-type(2) {
+                        width: 100%;
+                    }
+
+                    &:nth-of-type(3) {
+                        width: 75%;
+                    }
+                }
+            }
+
+            &.__has_action {
+                .__icon {
+                    &>span {
+                        &:nth-of-type(1) {
+                            transform-origin: bottom;
+                            transform: rotatez(45deg) translate(4px, 1px);
+                        }
+
+                        &:nth-of-type(2) {
+                            transform-origin: top;
+                            transform: rotatez(-45deg);
+                        }
+
+                        &:nth-of-type(3) {
+                            transform-origin: bottom;
+                            width: 50%;
+                            transform: translate(11px, -6px) rotatez(45deg);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.oe_home_menu {
+        >header {
+            .__menu_toggle {
+                &:not(.__has_action) {
+                    .__icon {
+                        opacity: 0.5;
+
+                        span {
+                            transform-origin: unset !important;
+                            transform: unset !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,53 @@
+@mixin xs-home-menu() {
+    .__home_menu {
+        @media screen and (max-width: $screen-xs-max) {
+            .__search_menu {
+                max-width: 90%;
+            }
+
+            .__menu_item {
+                max-width: 90%;
+
+                .o_app {
+                    width: 25%;
+                }
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .__search_menu {
+                max-width: 90%;
+            }
+
+            .__menu_item {
+                max-width: 90%;
+
+                .o_app {
+                    width: 33.33%;
+                }
+            }
+        }
+    }
+}
+
+body.o_web_client.oe_home_menu {
+    .o_action_manager {
+        @include xs-home-menu();
+    }
+
+    &.ad_mobile {
+        &.oe_base_menu {
+            .__home_menu {
+                .__editor {
+                    display: none;
+                }
+            }
+        }
+
+        &:not(.oe_base_menu) {
+            .__home_menu {
+                width: calc(100% - var(--panel-width));
+            }
+        }
+    }
+}

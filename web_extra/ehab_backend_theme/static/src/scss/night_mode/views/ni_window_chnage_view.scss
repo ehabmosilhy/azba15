@@ -1,0 +1,90 @@
+@mixin sync_window_chat_view() {
+    .o_ChatWindowManager {
+        .o_ChatWindow {
+            background-color: var(--btn-secondary) !important;
+
+            .o_ChatWindow_newMessageForm {
+                .o_ChatWindow_newMessageFormLabel {
+                    color: var(--font-color);
+                }
+            }
+        }
+
+        .o_ThreadView.o_ChatWindow_thread {
+            background-color: var(--btn-secondary) !important;
+
+            .o_MessageList {
+                background-color: var(--btn-secondary);
+
+                .o_MessageList_separator {
+                    .o_MessageList_separatorLabel {
+                        background-color: transparent;
+                    }
+                }
+
+                .o_MessageList_item {
+                    .o_Message_core {
+                        .o_Message_content {
+                            color: var(--font-color);
+                        }
+                    }
+
+                    .o_Message_actionListContainer {
+                        .o_MessageActionList {
+                            background-color: var(--night);
+                            color: var(--font-color);
+                            border: 0;
+                        }
+                    }
+
+                    .o_MessageSeenIndicator {
+                        color: var(--night-hover);
+                    }
+                }
+            }
+
+            .o_Composer {
+                background-color: var(--night);
+
+                .o_Composer_coreHeader {
+                    color: var(--font-color);
+                }
+
+                .o_Composer_coreMain {
+                    .o_ComposerTextInput {
+                        background-color: var(--night);
+
+                        textarea {
+                            background-color: var(--night);
+                            color: white;
+                        }
+                    }
+
+                    .o_Composer_buttons {
+                        .o_Composer_toolButtons {
+                            background-color: var(--night);
+                        }
+                    }
+                }
+
+                .o_AttachmentList {
+                    .o_AttachmentList_partialList {
+                        .o_AttachmentList_attachment {
+                            background-color: var(--btn-secondary);
+                            margin: 5px;
+                            border-radius: 0;
+                        }
+                    }
+                }
+            }
+
+            .o_Message_core {
+                .o_AttachmentList_partialList {
+                    .o_Attachment.o-has-card-details {
+                        background-color: var(--night);
+                    }
+                }
+            }
+        }
+    }
+}

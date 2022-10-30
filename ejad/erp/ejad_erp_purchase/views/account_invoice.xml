@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--<record model="ir.ui.view" id="account_invoice_state_inherit">-->
+        <!--<field name="name">account.invoice.inherited</field>-->
+        <!--<field name="model">account.invoice</field>-->
+        <!--<field name="inherit_id" ref="account.invoice_supplier_form"/>-->
+        <!--<field name="arch" type="xml">-->
+            <!--<xpath expr="//field[@name='state']" position="replace">-->
+                <!--<field name="state" widget="statusbar" statusbar_visible="draft,purchase_manager_approval,draft2,open,paid"/>-->
+            <!--</xpath>-->
+
+            <!--<xpath expr="//button[@name='action_invoice_open']" position="replace">-->
+                <!--<button name="action_invoice_purchase_manager_approval" type="object" states="draft" string="إعتماد المدقق" groups="ejad_erp_purchase.group_mdqq_accountant"/>-->
+                <!--<button name="action_invoice_purchase_open" type="object" states="purchase_manager_approval" string="إعتماد المدير المالي" groups="ejad_erp_purchase.group_mgr_accountant"/>-->
+                <!--<button name="action_invoice_open" type="object" states="draft2" string="إعتماد المراقب المالي" groups="ejad_erp_purchase.group_murageb_accountant"/>-->
+            <!--</xpath>-->
+        <!--</field>-->
+    <!--</record>-->
+
+</odoo>

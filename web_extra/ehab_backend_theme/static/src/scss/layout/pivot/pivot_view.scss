@@ -1,0 +1,65 @@
+@mixin pivot_view() {
+    &>.o_pivot {
+        padding: var(--main-padding);
+        background-color: $white;
+
+        .o_pivot_header_cell_closed,
+        .o_pivot_header_cell_opened,
+        .o_pivot_measure_row {
+            background-color: $tr-hover;
+            color: var(--Label);
+        }
+
+        .o_pivot_cell_value {
+            color: var(--Label-value);
+        }
+
+        table {
+            thead {
+                tr {
+                    th {
+                        background-color: transparent;
+
+                        &.o_pivot_header_cell_opened,
+                        &.o_pivot_header_cell_closed,
+                        &.o_pivot_measure_row {
+                            color: var(--Label-value);
+                            font-weight: bold;
+                            background-color: $tr-hover;
+                        }
+                    }
+                }
+
+                tr:first-child {
+                    th:first-child {
+                        background-color: transparent;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    td {
+
+                        &.o_pivot_header_cell_opened,
+                        &.o_pivot_header_cell_closed {
+                            color: var(--Label-value);
+                            font-weight: bold;
+                            background-color: $tr-hover;
+                        }
+                    }
+
+                    &:hover {
+                        background-color: $tr-hover;
+                    }
+                }
+            }
+
+            th,
+            tr,
+            td {
+                border-color: var(--border);
+            }
+        }
+    }
+}

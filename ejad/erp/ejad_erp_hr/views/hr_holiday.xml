@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hr_holidays_status_inherit" model="ir.ui.view">
+        <field name="name">hr.leave.type.inherit.form</field>
+        <field name="model">hr.leave.type</field>
+        <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='allocation_validation_type']" position="after">
+                <field name="is_annual_holiday"/>
+                <field name="is_sick_holiday"/>
+                <field name="is_permission"/>
+            </xpath>
+            <xpath expr="//group[last()]" position="after">
+                <group string="عدد الأيام المستحقة سنويا"
+                       attrs="{'invisible': [('is_annual_holiday', '!=', True)]}">
+                    <!--<field name="number_of_days_scientific"/>-->
+                    <field name="number_of_days_management"/>
+                    <field name="number_of_days_staff"/>
+                </group>
+
+            </xpath>
+
+            <xpath expr="//field[@name='color']" position="after">
+                <field name="number_of_days_per_year"/>
+                <field name="number_of_days_old_date_request"/>
+
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_hr_holidays_no_create_open_fields" model="ir.ui.view">
+        <field name="name">hr.leave.inherit.form</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="attributes">
+                <attribute name="options">{
+                    "no_create": True,
+                    "no_open": True,
+                    }
+                </attribute>
+
+            </xpath>
+            <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="options">{ "no_create": True, "no_open": True}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='department_id']" position="attributes">
+                <attribute name="options">{
+                    "no_create": True,
+                    "no_open": True,
+                    }
+                </attribute>
+                <attribute name="readonly">1</attribute>
+
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_holidays_inherit" model="ir.ui.view">
+        <field name="name">hr.leave.inherit.form</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[last()]" position="after">
+                <group>
+                    <field name="medical_manger_button" invisible="1"/>
+                    <field name="direct_manger_button" invisible="1"/>
+                    <field name="academic_manger_button" invisible="1"/>
+                    <field name="hr_checker_button" invisible="1"/>
+                    <field name="hr_manager_button" invisible="1"/>
+                    <field name="hr_dept_manger_button" invisible="1"/>
+                </group>
+            </xpath>
+
+            <!--                odoo 13-->
+            <!--                <field name="payslip_status" position="after">-->
+            <!--&lt;!&ndash;                    <xpath expr="//field[@name='payslip_status']" position="attributes">&ndash;&gt;-->
+            <!--                    <field name="is_annual_holiday" invisible="1"/>-->
+            <!--                    <field name="is_scientific" invisible="1"/>-->
+            <!--                    <field name="tickets_number"-->
+            <!--                           attrs="{'invisible': ['|', ('is_annual_holiday', '=', False), ('is_scientific', '=', False)]}"/>-->
+            <!--                    <field name="salary_advance" attrs="{'invisible': ['|',('number_of_days_temp', '&lt;', 19),('is_annual_holiday', '=', False)]}"/>-->
+            <!--                </field>-->
+            <!--                <field name="name" position="replace">-->
+            <!--                    <field name="is_annual_holiday" invisible="1"/>-->
+            <!--                    <field name="is_scientific" invisible="1"/>-->
+            <!--                    <field name="tickets_number"-->
+            <!--                           attrs="{'invisible': ['|', ('is_annual_holiday', '=', False), ('is_scientific', '=', False)]}"/>-->
+            <!--&lt;!&ndash;                     الحقل `number_of_days_temp` غير موجود in odoo 13&ndash;&gt;-->
+            <!--&lt;!&ndash;                    <field name="salary_advance" attrs="{'invisible': ['|',('number_of_days_temp', '&lt;', 19),('is_annual_holiday', '=', False)]}"/>&ndash;&gt;-->
+            <!--                    <field name="salary_advance" attrs="{'invisible': [('is_annual_holiday', '=', False)]}"/>-->
+
+            <!--                </field>-->
+            <field name="holiday_status_id" position="after">
+                     <field name="manager_menagment_id" options="{'no_create': True,'no_open':True}"
+                       attrs="{'invisible':[('manager_menagment_id','=',False)]}"/>
+            </field>
+           <xpath expr="//div[@name='title']" position="after">
+             <group>
+                 <group>
+                     <field name="replaced_employee_id" string="الموظف البديل" options="{'no_create': True,'no_open':True}"/>
+                 </group>
+                   <group>
+                      <field name="leave_return_id" string="طلب المباشرة"/>
+                 </group>
+             </group>
+           </xpath>
+
+            <!--                <field name="payslip_status" position="before">-->
+            <!--                    <field name="manager_menagment_id" options="{'no_create': True,'no_open':True}" attrs="{'invisible':[('manager_menagment_id','=',False)]}"/>-->
+            <!--                    <field name="name" attrs="{'readonly':[('state','!=','draft'),('state','!=','confirm')]}"/>-->
+            <!--                    <field name="replaced_employee_id" attrs="{'invisible':[('type','!=','remove')]}"  options="{'no_create': True,'no_open':True}"/>-->
+            <!--                </field>-->
+            <field name="holiday_status_id" position="after">
+                <field name="is_permission" invisible="1"/>
+                <field name="permission_type_id" options="{'no_create': True,'no_open':True}" attrs="{'invisible':[('is_permission','!=',True)],
+                                                                                                          'required':[('is_permission','=',True)]}"/>
+            </field>
+            <xpath expr="//header" position="replace">
+                <header>
+                    <button string="تقديم الطلب" name="action_direct_manager" states="draft" type="object"
+                            class="oe_highlight" />
+                    <button string="موافقة المدير المباشر" name="action_confirm" type="object"
+                            class="oe_highlight" groups="ejad_erp_hr.hr_holidays_direct_manager,ejad_erp_hr.hr_holiday_employee_itself_direct_manager"
+                            attrs="{'invisible': ['|',('direct_manger_button', '=', False),('state', '!=', 'direct_manager')]}"/>
+                    <button string="موافقة مسؤول الموارد البشرية" name="action_support_service" type="object" class="oe_highlight"
+                           groups="ejad_erp_hr.group_hr_holiday_specialist"
+                           attrs="{'invisible': ['|', ('state1', '!=', 'hr_approve'), ('is_permission', '!=', False)]}"/>
+
+
+                    <button string="موافقة مسؤول الموارد البشرية" name="action_validate" type="object" class="oe_highlight"
+                           groups="ejad_erp_hr.group_hr_holiday_specialist"
+                           attrs="{'invisible': ['|', ('state', '!=', 'hr_approve'),('is_permission', '!=', True)]}"/>
+
+                    <button string="موافقة مدير إدارة الخدمات المساندة" name="action_approve" type="object" class="oe_highlight"
+                           groups="ejad_erp_hr.group_support_services_manager"
+                           attrs="{'invisible': ['|', ('state', '!=', 'confirm'),('is_permission', '!=', False)]}"/>
+
+                    <button string="موافقة قائد المكتب" name="action_validate" type="object"
+                         class="oe_highlight" groups="ejad_erp_hr.group_hr_holiday_office_leader"
+                         attrs="{'invisible': ['|', ('state', '!=', 'validate1'),('is_permission', '!=', False)]}"/>
+
+
+<!--                    <button string="رفض" name="action_refuse" type="object"-->
+                    <button string="رفض" name="%(leave_refuse_wizard_action)d" type="action"
+                            groups="ejad_erp_hr.hr_holidays_direct_manager,ejad_erp_hr.group_hr_holiday_specialist,ejad_erp_hr.group_support_services_manager,ejad_erp_hr.group_hr_holiday_office_leader"
+                            attrs="{'invisible': [ '|',('state', 'not in', ('direct_manager','confirm','validate1','hr_approve')),('state1', 'not in', ('direct_manager','hr_approve'))]}"/>
+                    <button string="إرجاع الطلب الى الموظف" name="action_draft" type="object"
+                             groups="ejad_erp_hr.hr_holidays_direct_manager,ejad_erp_hr.group_hr_holiday_specialist,ejad_erp_hr.group_support_services_manager,ejad_erp_hr.group_hr_holiday_office_leader"
+                            attrs="{'invisible': [('state', 'not in', ('confirm','validate1'))]}"/>
+
+                    <field name="message" style="color:red;"/>
+                    <field name="is_permission" invisible="1"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,direct_manager,hr_approve,confirm,validate1,validate,refuse"
+                           attrs="{'invisible': [('is_permission', '!=', False)]}" nolabel="1"/>
+
+                   <field name="state1" widget="statusbar"
+                           statusbar_visible="draft,direct_manager,hr_approve,validate,refuse"
+                           attrs="{'invisible': [('is_permission', '!=', True)]}" nolabel="1"/>
+
+                    <!--<button name="workflow_next" string="Accept"-->
+                    <!--attrs="{'invisible':[('is_workflow_next_allowed', '=', False), ('dynamic_workflow_button', '=', False)]}"-->
+                    <!--type="object"-->
+                    <!--class="oe_highlight reload_page_js"/>-->
+
+                    <!--                        <button name="workflow_previous" string="Previous Stage"-->
+                    <!--                            attrs="{'invisible':[('is_workflow_previous_allowed', '=', False)]}"-->
+                    <!--                            type="object"-->
+                    <!--                            class="oe_highlight reload_page_js"/>-->
+
+                    <!--<button string="Reset to Draft" name="action_draft" type="object"-->
+                    <!--attrs="{'invisible': [('state', 'in', ['confirm', 'draft'])]}" groups="ejad_erp_hr.group_hr_reset_draft_holidays"/>-->
+
+
+                    <!--<button string="Refuse" name="action_refuse" attrs="{'invisible': [('state', 'in', ['validate','refuse'])]}"-->
+                    <!--type="object"-->
+                    <!--groups="hr_holidays.group_hr_holidays_user"/>-->
+
+                    <!--<button string="Refuse" name="action_refuse" attrs="{'invisible': [('state', 'not in', ['validate'])]}"-->
+                    <!--type="object"-->
+                    <!--groups="ejad_erp_hr.group_hr_manger"/>-->
+                    <!--[FIXME] this shoud be added in allocation's form odoo 13-->
+                    <!--                        <button string="Refuse" name="action_refuse" attrs="{'invisible': ['|',('type','!=','add'),('state', '=', 'refuse')]}"-->
+                    <!--                                type="object"-->
+                    <!--                                groups="ejad_erp_hr.group_hr_refuse_holidays_balance"/>-->
+
+
+                    <!--                    Take care related_stages edited to show these stages only [confirm,direct_manager_approve,hr_checker,validate]-->
+
+                    <!--<field name="stage_id" widget="statusbar"  domain="[('id', 'in', related_stages)]"/>-->
+
+
+                    <!--                <div attrs="{'invisible':['|',('stage_id','=',False),('have_secondary_stage','=',False)]}">-->
+                    <!--                    <field name="current_second_stage" widget="statusbar" domain="[('id', 'in', related_secondary_stages)]"/>-->
+                    <!--                </div>-->
+
+
+                    <!--<group invisible="1">-->
+                    <!--<field name="is_workflow_next_allowed" invisible="1"/>-->
+                    <!--<field name="related_stages" invisible="1"/>-->
+                    <!--<field name="have_secondary_stage" invisible="1"/>-->
+                    <!--<field name="related_secondary_stages" invisible="1"/>-->
+                    <!--<field name="is_workflow_previous_allowed" invisible="1"/>-->
+                    <!--<field name="is_refuse_action_allowed" invisible="1"/>-->
+                    <!--<field name="is_return_action_allowed" invisible="1"/>-->
+                    <!--<field name="dynamic_workflow_button" invisible="1"/>-->
+                    <!--<field name="state" invisible="1"/>-->
+                    <!--&lt;!&ndash;                            <field name="type" invisible="1"/>&ndash;&gt;-->
+                    <!--</group>-->
+
+                    <!--                        <button string="Confirm"-->
+                    <!--                                name="action_confirm"-->
+                    <!--                                states="draft" type="object" class="oe_highlight"/>-->
+                    <!--                        <button string="موافقة المدير الطبي"-->
+                    <!--                                name="action_approve_medical_manager"-->
+                    <!--                                type="object"-->
+                    <!--                                groups="ejad_erp_hr.group_medical_manager"-->
+                    <!--                                class="oe_highlight"-->
+                    <!--                                attrs="{'invisible': [('medical_manger_button', '=', False)]}"/>-->
+
+                    <!--                        <button string="موافقة المدير المباشر" name="action_approve"-->
+                    <!--                                type="object"-->
+                    <!--                                class="oe_highlight"-->
+                    <!--                                attrs="{'invisible': [('direct_manger_button', '=', False)]}"/>-->
+                    <!--                        <button string="موافقة مدير/معتمد الإدارة" name="action_dept_manager"-->
+                    <!--                                type="object"-->
+                    <!--                                class="oe_highlight"-->
+                    <!--                                attrs="{'invisible': [('hr_dept_manger_button', '=', False)]}"/>-->
+                    <!--                        <button string="موافقة مدير الشؤون الأكاديمية"-->
+                    <!--                                name="action_approve_academic_manager_approve"-->
+                    <!--                                type="object"-->
+                    <!--                                class="oe_highlight"-->
+                    <!--                                groups="ejad_erp_hr.group_academic_adviser"-->
+                    <!--                                attrs="{'invisible': [('academic_manger_button', '=', False)]}"/>-->
+                    <!--                        <button string="موافقة مدقق الموارد البشرية"-->
+                    <!--                                name="action_approve_hr_checker"-->
+                    <!--                                type="object"-->
+                    <!--                                class="oe_highlight"-->
+                    <!--                                groups="ejad_erp_hr.group_hr_checker"-->
+                    <!--                                attrs="{'invisible': [('hr_checker_button', '=', False)]}"/>-->
+                    <!--                        <button string="موافقة مدير الموارد البشرية"-->
+                    <!--                                name="action_approve_hr_manger"-->
+                    <!--                                type="object"-->
+                    <!--                                groups="ejad_erp_hr.group_hr_manger"-->
+                    <!--                                class="oe_highlight"-->
+                    <!--                                attrs="{'invisible': [('hr_manager_button', '=', False)]}"/>-->
+
+
+                    <!--                        <button string="موافقة مدقق الموارد البشرية"-->
+                    <!--                                name="action_approve_hr_checker"-->
+                    <!--                                type="object"-->
+                    <!--                                class="oe_highlight"-->
+                    <!--                                groups="ejad_erp_hr.group_hr_checker"-->
+                    <!--                                attrs="{'invisible': ['|',('type', '!=', 'add'),('state', 'not in', ['draft','confirm','direct_manager_approve','dept_manager_approve','academic_manager_approve'])]}"/>-->
+                    <!--                        <field name="state" widget="statusbar"-->
+                    <!--                               statusbar_visible="confirm,direct_manager_approve,hr_checker,validate"/>-->
+
+                </header>
+            </xpath>
+            <xpath expr="//header" position="after">
+                  <div class="alert alert-warning " style="font-size: 16px;text-align:center; border: 1px solid Black !important;" role="alert" attrs="{'invisible': ['|',('state1', '!=', 'draft'),('state', '!=', 'draft')]}">
+                     الرجاء الضغط على زر تقديم طلب الإجازة
+                  </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_holidays_filter_inherit" model="ir.ui.view">
+        <field name="name">hr.holidays.filter.inherit</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.view_hr_holidays_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='approve']" position="replace">
+               <filter domain="[('state','in',('direct_manager','hr_approve','confirm','validate1'))]" string="To Approve" name="approve"/>
+            </xpath>
+        </field>
+
+     </record>
+
+<!--    <record model="ir.ui.menu" id="hr_holidays.menu_hr_holidays_root">-->
+<!--        <field name="groups_id" eval="[(6,0,[ref('ejad_erp_hr.group_holiday_menu')])]"/>-->
+<!--    </record>-->
+
+
+</odoo>

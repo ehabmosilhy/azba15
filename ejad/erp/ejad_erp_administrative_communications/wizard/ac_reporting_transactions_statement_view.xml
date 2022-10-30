@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ac_reporting_transactions_statement_view" model="ir.ui.view">
+        <field name="name">تقارير كشف المعاملات</field>
+        <field name="model">wiz.ac.transactions.report</field>
+        <field name="arch" type="xml">
+            <form string="Choose your date">
+                <group>
+                    <group>
+                        <field name="report_type"/>
+                        <field name="external_partner_ids" widget="many2many_tags" attrs="{'invisible':[('report_type', '!=', 'global_inbox')]}"/>
+                    </group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="المعاملات">
+                        <field name="ac_operation_ids" context="{'tree_view_ref': 'ejad_erp_administrative_communications.ac_operation_tree'}"/>
+                    </page>
+                </notebook>
+                <!--<group><field name="advanced"/></group>-->
+                <!--<group attrs="{'invisible':[('advanced', '=', False)]}">-->
+                    <!--<field name="external_party_id"/>-->
+                    <!--<field name="department_id"/>-->
+                    <!--<field name="assigned_employee_id"/>-->
+                <!--</group>-->
+                <footer>
+                    <button name="export_xls" type="object" default_focus="1"
+                                string="تصدير" class="oe_highlight"
+                                context="{'xls_export':1}" icon="fa-download"/>
+                    <!--<button name="check_report" string="طباعة" type="object" class="btn-primary"/>-->
+                    <button string="إلغاء" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_ac_reporting_transactions_statement_view" model="ir.actions.act_window">
+        <field name="name">تقارير كشف المعاملات</field>
+        <field name="res_model">wiz.ac.transactions.report</field>
+
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_ac_reporting_transactions_statement_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <report
+            id="ac_reporting_transcaction_excel_sheet"
+            model="wiz.ac.transactions.report"
+            string="report"
+            report_type="xlsx"
+            name="ejad_erp_administrative_communications.tran_xlsx"
+            file="كشف المعاملات"
+            attachment_use="False"
+            menu="False"
+        />
+
+    <menuitem id="menu_ac_reporting_transactions_statement_view" name="تقارير كشف المعاملات" parent="ac_operation_reporting_menu"
+              action="action_ac_reporting_transactions_statement_view" sequence="0"/>
+</odoo>
+

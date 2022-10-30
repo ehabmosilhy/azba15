@@ -1,0 +1,169 @@
+// Note book form view[start]
+@mixin note-form-view() {
+    &.o_note_form_view {
+        .o_form_sheet_bg {
+            .o_form_sheet {
+                .oe_memo {
+                    margin: 0px;
+                }
+            }
+        }
+    }
+
+    .o_notebook {
+        margin-top: 0px;
+        min-height: 90px;
+
+        .panel-ul {
+            padding: 0;
+            margin-bottom: 0;
+
+            &>li {
+                display: table;
+                width: 100%;
+                position: relative;
+                background-color: $white;
+
+                &>a {
+                    padding: 4px 6px;
+                    background-color: $tr-header;
+                    display: block;
+                    border: 0;
+                    text-transform: uppercase;
+                    color: var(--notbook);
+                    font-size: 14px;
+                    font-weight: var(--font-weight-b);
+                    cursor: pointer;
+
+                    &:before {
+                        content: '\f068';
+                        font-family: FontAwesome;
+                        color: var(--Label-value);
+                        margin-right: 10px;
+                        font-weight: normal;
+                    }
+
+                    &:hover {
+                        color: var(--brand-secondary);
+                    }
+                }
+
+                &>a:first-child {
+                    font-size: 12px;
+                    margin-bottom: 10px;
+                }
+
+                &>.tab-pane {
+                    min-height: 50px;
+                    padding: 5px;
+                }
+
+                &:not(.ad_close):before {
+                    content: "";
+                    border-style: solid;
+                    border-bottom: 8px solid $white;
+                    border-left: 8px solid transparent;
+                    border-right: 8px solid transparent;
+                    border-top: 0;
+                    position: absolute;
+                    top: 24px;
+                    left: 20px;
+                    float: left;
+                }
+
+                &.ad_close {
+                    margin: 8px 0px;
+
+                    &>a {
+                        background-color: $tr-hover;
+
+                        &:before {
+                            content: '\f067';
+                            font-family: FontAwesome;
+                            color: var(--Label-value);
+                            margin-right: 10px;
+                            font-weight: normal;
+                            transform: rotate(90deg);
+                        }
+                    }
+
+                    &>.tab-pane {
+                        display: none;
+                    }
+
+                    &:before {
+                        border-bottom: 0;
+                    }
+                }
+            }
+        }
+
+        .nav-tabs {
+            border-bottom: 1px solid var(--border);
+
+            .nav-item {
+                margin-bottom: 0;
+
+                .nav-link {
+                    border: 0;
+                    color: var(--Label);
+                    font-size: $font-size-8;
+                    font-weight: 600;
+
+                    &.active {
+                        color: var(--brand-secondary);
+                        @include border-animation();
+                    }
+                }
+            }
+        }
+
+        .tab-content {
+            .tab-pane {
+                padding: 10px 0;
+
+                .oe_subtotal_footer {
+                    margin: 0px;
+                }
+            }
+        }
+
+        .o_group_skills {
+            .o_list_view {
+                .o_list_table {
+                    tbody {
+                        tr {
+                            &:hover {
+                                box-shadow: none;
+                                background-color: $tr-hover;
+                            }
+
+                            td {
+                                border: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// notbook -editer
+@mixin ad-notbook-editer() {
+    .oe_form_field {
+        .note-editable {
+            border: 0;
+            border-bottom: 1px solid var(--border);
+
+            &:focus {
+                @include border-animation();
+            }
+
+            +.o_wysiwyg_resizer {
+                background-color: $tr-hover;
+                border: 0;
+            }
+        }
+    }
+}

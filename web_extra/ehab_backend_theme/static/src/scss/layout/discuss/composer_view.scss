@@ -1,0 +1,98 @@
+@mixin Composer-view() {
+    .o_AttachmentList {
+        .o_AttachmentList_partialList {
+            .o_Attachment {
+                .o_Attachment_aside {
+                    .o_Attachment_asideItemUploaded {
+                        color: var(--brand-secondary);
+                    }
+
+                    .o_Attachment_asideItemUnlink {
+                        background-color: var(--brand-secondary);
+                    }
+                }
+            }
+        }
+
+        .o_AttachmentList_partialListImages {
+            .o_AttachmentList_attachment {
+                min-width: 90px;
+                max-width: 140px;
+            }
+        }
+
+        .o_AttachmentList_attachment {
+            border: 1px solid var(--border);
+            margin-right: 10px;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+
+            .o_AttachmentImage {
+                width: 100%;
+            }
+
+            &:hover {
+                .o_AttachmentImage_imageOverlay {
+                    opacity: 1;
+                }
+            }
+
+            .o_AttachmentImage_actions {
+                position: absolute;
+                top: -13px;
+                right: -13px;
+
+                .o_AttachmentImage_action {
+                    background: $text-danger;
+                }
+            }
+
+            .o_AttachmentCard {
+                background-color: $tr-hover;
+                border-radius: 0;
+
+                .o_AttachmentCard_aside {
+                    border-radius: 0;
+                }
+
+                .o_AttachmentCard_asideItem {
+                    &:hover {
+                        background-color: transparent;
+                    }
+                }
+            }
+        }
+    }
+
+    .o_Composer_coreMain {
+        .o_ComposerTextInput {
+            border: 0;
+            border-radius: 0;
+
+            .o_ComposerTextInput_textarea {
+                border-bottom: 1px solid var(--border);
+                border-radius: 0;
+                padding: 9px;
+
+                &:focus {
+                    @include border-animation();
+                }
+            }
+        }
+
+        .o_Composer_buttons {
+            .o_Composer_toolButtons {
+                border: 0;
+            }
+
+            .o_Composer_actionButtons {
+                .btn {
+                    border-radius: 0;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,442 @@
+@mixin ni-search-view() {
+    .o_search_options {
+        background-color: var(--night-light);
+
+        &>.o-dropdown {
+            &>.dropdown-toggle {
+                background-color: var(--night-light);
+            }
+
+            &>.dropdown-menu {
+                background-color: var(--night);
+            }
+
+            .o_add_custom_filter_menu,
+            .o_add_custom_group_menu {
+                .dropdown-menu {
+                    background-color: transparent !important;
+
+                    select {
+                        padding: 3px;
+                        margin-bottom: 5px;
+                    }
+                }
+
+                .fa {
+                    background-color: transparent;
+                }
+
+                .o_or_filter {
+                    color: var(--font-color);
+                }
+
+                .o_add_custom_filter {
+                    outline: none;
+                }
+            }
+
+            &.show {
+                &>.dropdown-toggle {
+                    background-color: var(--btn-primary) !important;
+                }
+            }
+
+            .o_menu_item,
+            .o_menu_item .list-unstyled {
+
+                &>.dropdown-item,
+                .o_item_option .dropdown-item {
+                    padding: 6px 30px;
+
+                    &:before {
+                        border: 2px solid var(--font-color);
+                        left: 5px;
+                        color: var(--font-color);
+                    }
+
+                    &:focus {
+                        background-color: var(--btn-primary);
+                    }
+                }
+            }
+        }
+    }
+}
+
+@mixin sync_control_panel_layout() {
+    background-color: var(--night-light);
+    border-bottom: 0;
+    @include common-layout();
+
+    ol.breadcrumb {
+        background-color: var(--night-light);
+
+        .breadcrumb-item {
+            &>a {
+                color: var(--font-color);
+            }
+
+            &.active {
+                color: var(--night-hover);
+            }
+
+            &+.breadcrumb-item {
+                &:before {
+                    color: var(--font-color);
+                }
+            }
+
+            .text-900,
+            .text-muted {
+                color: inherit !important;
+            }
+        }
+    }
+
+    .o_cp_searchview {
+        .o_searchview {
+            background-color: var(--btn-secondary);
+            border: 0;
+
+            .o_searchview_facet {
+                border: 0;
+            }
+
+            .o_searchview_input {
+                padding: 5px 0 5px 5px;
+                background-color: var(--btn-secondary);
+                color: var(--font-color);
+
+                &::placeholder {
+                    color: var(--font-color);
+                }
+            }
+
+            .o_toggle_searchview_full {
+                color: var(--font-color);
+            }
+
+            .o_enable_searchview {
+                background-color: transparent;
+            }
+
+            .o_searchview_more {
+                color: var(--font-color);
+            }
+
+            .o_search_recs,
+            .o_search_recs_mobile:before {
+                color: var(--font-color);
+                border: 0;
+            }
+
+            .o_search_recs {
+                background: var(--night);
+            }
+
+            .o-selection-focus {
+                background-color: var(--btn-primary);
+            }
+
+            .o_searchview_input_container,
+            .o_search_rec_ul,
+            .o_search_rec_ul_mobile {
+                .o_searchview_facet {
+                    border: 0;
+                    background-color: var(--night-light);
+
+                    .o_searchview_facet_label {
+                        color: var(--font-color);
+                        background-color: var(--btn-primary);
+                        border: 0;
+                    }
+
+                    .o_facet_values {
+                        color: var(--font-color);
+                        border: 0;
+                    }
+
+                    .o_facet_remove {
+                        color: var(--font-color);
+                    }
+                }
+
+                .o_searchview_autocomplete {
+                    .o_selection_focus {
+                        background-color: var(--btn-primary);
+
+                        a {
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .o_cp_switch_buttons {
+        .btn.btn-link.btn-sm {
+            background-color: transparent;
+            color: var(--font-color);
+            line-height: 0;
+        }
+
+        &>.active {
+            background-color: var(--btn-primary);
+        }
+
+        .dropdown-menu {
+            .oe_view_btn {
+                button {
+                    background: unset;
+                    outline: none !important;
+
+                    &.active,
+                    &:hover {
+                        box-shadow: 0px 2px 0px 0px #5bade9;
+                        outline: none !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .o_cp_bottom {
+        background-color: var(--night-light);
+        border-top: 0;
+        border-color: var(--border);
+
+        .o_cp_bottom_left,
+        .o_cp_bottom_right {
+            .o_cp_buttons {
+                background-color: var(--night-light);
+                border-color: var(--border);
+
+                .btn-primary {
+                    background-color: var(--btn-primary);
+                    color: var(--font-color);
+                    border: 0;
+
+                    &:hover,
+                    &:active,
+                    &:focus {
+                        background-color: var(--btn-secondary);
+                    }
+                }
+
+                .btn-link {
+                    color: var(--btn-primary);
+                }
+
+                .btn-default {
+                    background-color: var(--btn-secondary);
+                    color: var(--btn-primary);
+                    border: 0;
+
+                    &:hover,
+                    &:active,
+                    &:focus {
+                        background-color: var(--btn-primary);
+                        color: var(--font-color);
+                    }
+                }
+
+                .btn-secondary {
+                    background-color: var(--btn-secondary);
+                    color: var(--font-color);
+                    border: 0;
+
+                    &:hover,
+                    &:active,
+                    &:focus {
+                        background-color: var(--btn-primary);
+                    }
+                }
+
+                .dropdown-menu {
+                    a.dropdown-item {
+                        &:before {
+                            border-color: var(--font-color);
+                            color: var(--font-color);
+                        }
+                    }
+                }
+
+                .o_list_selection_box {
+                    background-color: var(--btn-secondary);
+                    color: var(--btn-primary);
+                    border: 0;
+                }
+            }
+
+            &.cp_open {
+                background-color: var(--night-light);
+            }
+
+            .o_cp_pager {
+                color: var(--font-color);
+
+                .o_pager {
+                    .btn-group {
+                        button {
+                            color: var(--font-color);
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    @include ni-search-view();
+
+    .o_cp_action_menus {
+        .btn-group {
+            background-color: var(--night-light);
+            border-color: var(--border);
+
+            &.show {
+                button.dropdown-toggle {
+                    background-color: var(--btn-primary) !important;
+                }
+            }
+
+            button {
+                color: var(--font-color);
+                background-color: var(--night-light) !important;
+
+                &:hover {
+                    background-color: var(--btn-primary);
+                    color: var(--font-color);
+                }
+            }
+        }
+
+        .dropdown-menu {
+            background-color: var(--night);
+        }
+    }
+
+    .o_sidebar_drw {
+        background-color: var(--btn-primary);
+        border-color: var(--btn-primary);
+    }
+
+    &>.o_action {
+        .o_control_panel {
+            background-color: var(--night-light);
+            border-color: var(--border);
+        }
+
+        .o_kanban_quick_create,
+        .oe_kanban_card {
+            background-color: var(--btn-secondary);
+            border-color: var(--border);
+        }
+    }
+
+    .o_cp_top {
+        .o_search_options {
+            background-color: var(--night-light);
+        }
+    }
+}
+
+@mixin sync_search_panel_layout() {
+    background-color: var(--btn-secondary);
+    border-right: 0;
+    color: var(--font-color);
+
+    .list-group-item {
+        background-color: var(--night);
+        padding: 2px;
+        margin-bottom: 3px;
+
+        .o_search_panel_label {
+            &:before {
+                left: -25px !important;
+            }
+
+            .o_search_panel_label_title {
+                color: var(--font-color);
+            }
+        }
+
+        .list-group-item-action {
+            color: var(--font-color);
+            margin: 0;
+            border-radius: 0;
+            border-left: 5px solid transparent;
+            background-color: transparent;
+
+            &.active,
+            &:hover {
+                border-left: 5px solid var(--btn-primary);
+            }
+        }
+    }
+}
+
+@mixin m-control-panel-search() {
+    .o_mobile_search {
+        background-color: var(--btn-secondary);
+
+        .o_mobile_search_content {
+            .o_cp_searchview {
+                .o_searchview {
+                    background-color: transparent;
+                }
+            }
+
+            @include ni-search-view();
+
+            .o_search_options {
+                background-color: transparent !important;
+            }
+        }
+
+        .o_mobile_search_filter {
+            .o_dropdown {
+                button {
+                    background-color: var(--night-light);
+                    color: var(--font-color);
+                }
+
+                .dropdown-menu {
+                    border-color: var(--border);
+
+                    .o_menu_item a {
+                        color: var(--font-color);
+
+                        &:before {
+                            color: var(--font-color);
+                            border-color: var(--font-color);
+                        }
+                    }
+                }
+            }
+        }
+
+        .o_search_panel_field {
+
+            .list-group-item-action,
+            .list-group-item {
+                background-color: var(--night-light);
+                margin-bottom: 5px;
+
+                .o_search_panel_label_title,
+                .o_search_panel_counter {
+                    color: var(--font-color);
+                }
+
+                &.active {
+                    background-color: var(--night-hover);
+                }
+            }
+
+            .o_search_panel_filter_value {
+                padding: 4px 8px;
+            }
+        }
+    }
+}

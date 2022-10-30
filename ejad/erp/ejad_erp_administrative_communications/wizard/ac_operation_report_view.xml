@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_ac_operation_report" model="ir.ui.view">
+        <field name="name">AC Report</field>
+        <field name="model">wiz.operation.report</field>
+        <field name="arch" type="xml">
+            <form string="Choose your operation">
+                <group>
+                    <field name="report_type"/>
+                    <field name="operation_id" attrs="{'invisible':[('report_type', '=', False)]}"
+                           options="{'no_create': True, 'no_open': True}" context="{'tree_view_ref': 'ejad_erp_administrative_communications.ac_operation_tree'}"/>
+                </group>
+
+                <footer>
+                    <button name="check_report" string="طباعة المعاملة" type="object"
+                            class="btn-primary" attrs="{'invisible':[('operation_id', '=', False)]}"/>
+                    <button name="check_report_move" string="طباعة سجل حركات المعاملة" type="object"
+                            class="btn-primary" attrs="{'invisible':[('operation_id', '=', False)]}"/>
+                    <button string="إلغاء" class="btn-default" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_operation_report" model="ir.actions.act_window">
+        <field name="name">إستعلام عن معاملة</field>
+        <field name="res_model">wiz.operation.report</field>
+
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_ac_operation_report"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="ac_operation_operation_report_menu" name="الاستعلام عن معاملة" parent="ac_operation_reporting_menu"
+              action="action_operation_report" sequence="1"/>
+</odoo>
+

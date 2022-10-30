@@ -1,0 +1,94 @@
+@mixin sync_activity_layout() {
+    .o_activity_view {
+        background-color: var(--btn-secondary);
+
+        table {
+            background-color: transparent;
+            border: 0;
+
+            thead,
+            tfoot {
+                background: var(--night);
+
+                &>tr {
+
+                    &>th,
+                    &>td {
+                        border: 0;
+                        color: var(--font-color);
+                    }
+                }
+            }
+
+            tbody {
+                &>tr {
+                    background-color: var(--btn-secondary);
+                    color: var(--font-color);
+
+                    &>td {
+                        border-color: var(--border);
+
+                        &.o_res_name_cell {
+                            color: var(--night-hover);
+                        }
+
+                        &.o_activity_summary_cell:not(.planned) {
+                            &:hover {
+                                background-color: var(--night-light);
+
+                                .fa {
+                                    color: var(--font-color);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .o_activity {
+            padding: 0 !important;
+            border-color: var(--border) !important;
+
+            .dropdown-item {
+                .o_activity_log {
+                    margin-bottom: 0 !important;
+
+                    .o_activity_label {
+                        background-color: var(--night);
+                        border: 0;
+                    }
+
+                    .o_log_activity {
+                        background-color: var(--btn-secondary);
+
+                        .o_activity_title {
+                            color: var(--font-color);
+
+                            .o_activity_title_entry {
+                                color: var(--font-color);
+
+                                .text-dark,
+                                .fa {
+                                    color: var(--font-color) !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .o_activity_filter_overdue,
+        .o_activity_filter_planned,
+        .o_activity_filter_today,
+        .o_activity_filter_today {
+            background-color: var(--night-light);
+        }
+    }
+}
+
+// apply diract to not effect to other apply class color on o_activity_summary_cell
+.oe_night_mode .o_activity_view td.o_activity_summary_cell {
+    background-color: var(--btn-secondary);
+}

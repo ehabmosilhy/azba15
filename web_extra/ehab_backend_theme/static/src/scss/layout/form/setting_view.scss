@@ -1,0 +1,128 @@
+@mixin base-setting-c-panel() {
+    .o_control_panel {
+        padding: 0;
+
+        .o_panel {
+            padding: var(--base-panel-padding);
+            min-height: var(--control-panel-h);
+            margin: 0;
+            align-items: center;
+
+            .o_setting_search {
+                min-height: 34px;
+
+                .searchInput {
+                    max-width: unset;
+                    min-height: inherit;
+                    border: 0;
+                    padding-left: 10px;
+
+                    &:focus {
+                        @include border-animation();
+                    }
+                }
+
+                .searchIcon {
+                    padding: 3px 6px;
+                }
+            }
+
+            .title {
+                margin-top: 0 !important;
+                font-size: 16px;
+                color: var(--brand-primary) !important;
+                font-weight: 400;
+            }
+        }
+
+        .o_form_statusbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            margin: 0;
+            padding: 0 8px 0 30px;
+            display: flex;
+            justify-content: flex-end;
+            min-height: var(--control-panel-h);
+            border-top: 1px solid var(--border);
+        }
+    }
+}
+
+@mixin base-setting() {
+    &.oe_base_settings {
+        margin-bottom: 0;
+
+        .oe_form_configuration.o_base_settings {
+            @include base-setting-c-panel();
+
+            .o_setting_container {
+                padding-bottom: var(--control-panel-m);
+
+                .settings_tab {
+                    background: $white;
+                    border-right: 1px solid var(--border);
+
+                    div.tab {
+                        align-items: center;
+                        justify-content: flex-start;
+
+                        .icon {
+                            height: 23px;
+                        }
+
+                        .app_name {
+                            color: $normal-color;
+                            white-space: nowrap;
+                        }
+
+                        &.selected,
+                        &:hover {
+                            background-color: $brand-optinal;
+                            box-shadow: inset 3px 0 0 var(--brand-primary);
+                        }
+                    }
+                }
+
+                .settings {
+                    &>.app_settings_block {
+                        h2 {
+                            background-color: transparent;
+                            border-bottom: none;
+                            margin: 32px 17px 0 17px !important;
+                            text-transform: uppercase;
+                            padding-left: 0px;
+
+                            &:before {
+                                content: '';
+                                display: inline-block;
+                                width: 0;
+                                height: 0;
+                                vertical-align: middle;
+                                border-bottom: 0;
+                                border-left: 8px solid var(--brand-secondary);
+                                border-right: 8px solid var(--brand-secondary);
+                                border-top: 8px solid var(--brand-secondary);
+                                border-bottom: 8px solid var(--brand-secondary);
+                                float: left;
+                                margin-right: 10px;
+                            }
+
+                            &:first-of-type {
+                                margin-top: 10px !important;
+                            }
+                        }
+                    }
+                }
+
+                .o_setting_box {
+                    .o_setting_right_pane {
+                        border: 0;
+                    }
+                }
+            }
+        }
+    }
+}

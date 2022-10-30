@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_endofservice_wizard" model="ir.ui.view">
+            <field name="name">endofservice.wizard.form</field>
+            <field name="model">hr.end.service.wizard</field>
+            <field name="arch" type="xml">
+                <form string="benefit Payment">
+
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="end_request_id" invisible="1"/>
+                                <field name="amount" invisible="1"/>
+
+                            </group>
+                            <group>
+                                <field name="payment_date"/>
+                                <field name="journal_id" invisible="1"/>
+
+                            </group>
+
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string='Validate' name="action_validate_endofservice_amount" type="object"
+                                class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+
+                </form>
+
+            </field>
+        </record>
+
+        <record id="action_endofservice_wizard" model="ir.actions.act_window">
+            <field name="name">benefits Payment</field>
+            <field name="res_model">hr.end.service.wizard</field>
+
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_endofservice_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

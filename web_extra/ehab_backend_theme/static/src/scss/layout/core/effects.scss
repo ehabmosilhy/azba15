@@ -1,0 +1,46 @@
+@mixin effects-manager() {
+    .o_effects_manager {
+        .o_reward {
+            .o_reward_rainbow {
+                path[style="stroke:#FF9E80;"] {
+                    stroke: $text-info !important;
+                }
+
+                path[style="stroke:#FFE57F;"] {
+                    stroke: $text-danger !important;
+                }
+
+                path[style="stroke:#80D8FF;"] {
+                    stroke: var(--brand-secondary) !important;
+                }
+
+                path[style="stroke:#c794ba;"] {
+                    stroke: var(--brand-primary) !important;
+                }
+            }
+
+            .o_reward_stars {
+                svg {
+                    path {
+                        fill: white;
+                    }
+                }
+            }
+
+            .o_reward_face_group {
+                .o_reward_msg {
+                    background-color: var(--primary);
+                    color: white;
+
+                    .o_reward_msg_content {
+                        color: white;
+                    }
+                }
+
+                .o_reward_shadow {
+                    background-color: $tr-hover;
+                }
+            }
+        }
+    }
+}

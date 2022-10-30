@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_employee_qualification_tree" model="ir.ui.view">
+            <field name="name">employee.qualification.tree</field>
+            <field name="model">employee.qualification</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Employees Qualifications">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_employee_qualification_form" model="ir.ui.view">
+            <field name="name">employee.qualification.form</field>
+            <field name="model">employee.qualification</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Employees Qualifications">
+                    <group>
+                        <group>
+                            <field name="name"/>
+
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="view_employee_major_tree" model="ir.ui.view">
+            <field name="name">employee.major.tree</field>
+            <field name="model">employee.major</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Employees majors">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_employee_major_form" model="ir.ui.view">
+            <field name="name">employee.major.form</field>
+            <field name="model">employee.major</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Employees majors">
+                    <group>
+                        <group>
+                            <field name="name"/>
+
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="action_employee_qualification" model="ir.actions.act_window">
+            <field name="name">Employees qualifications</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">employee.qualification</field>
+
+
+        </record>
+        <record id="action_employee_major" model="ir.actions.act_window">
+            <field name="name">Employees majors</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">employee.major</field>
+
+
+        </record>
+
+        <menuitem id="menu_hr_qualification"
+                  name="Employees Qualifications"
+                  action="action_employee_qualification"
+                  parent="hr.menu_human_resources_configuration"
+                  sequence="6"/>
+        <menuitem id="menu_hr_major"
+                  name="Employees Majors"
+                  action="action_employee_major"
+                  parent="hr.menu_human_resources_configuration"
+                  sequence="6"/>
+
+    </data>
+</openerp>

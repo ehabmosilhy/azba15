@@ -1,0 +1,141 @@
+@mixin cp_action_buttons() {
+
+    /*Action Button*/
+    .o_cp_action_menus {
+        @include o-position-absolute(var(--control-panel-h), -260px, var(--control-panel-m), auto);
+        display: flex;
+        z-index: 2;
+        width: 260px;
+        background-color: white;
+
+        &.o_drw_in {
+            right: 0;
+
+            .show {
+                button {
+                    pointer-events: none;
+                }
+            }
+
+            button {
+
+                .fa,
+                .o_dropdown_title {
+                    pointer-events: none;
+
+                    &:before {
+                        pointer-events: none;
+                    }
+                }
+            }
+        }
+
+        &>.btn-group {
+            position: initial;
+            flex: 1;
+            cursor: pointer;
+            display: inline-block;
+            user-select: none;
+            white-space: nowrap;
+
+            &>button {
+                border: 0;
+                width: 100%;
+                justify-content: center;
+
+                .o_dropdown_title {
+                    display: none;
+                }
+            }
+
+            .dropdown-menu {
+                width: 100%;
+                box-shadow: unset;
+                border: 0;
+                top: 33px;
+                bottom: 0;
+                margin: 0;
+                max-height: unset;
+
+                .o_menu_item {
+                    .dropdown-item {
+                        white-space: normal;
+                    }
+                }
+            }
+
+            button.dropdown-toggle:not(.dropdown-item) {
+                font-size: $font-size-n;
+                background: $white;
+                color: var(--button-box);
+                border-radius: 0;
+                padding: 10px;
+                width: 100%;
+                margin: 0;
+                border: 0;
+                outline: none;
+                box-shadow: none;
+
+                .o_dropdown_title {
+                    font-size: 0;
+                }
+
+                &>.fa {
+                    &:before {
+                        font-size: $font-size-1;
+                    }
+                }
+
+                &>.caret {
+                    display: none;
+                }
+
+                &:hover {
+                    color: var(--button-box);
+                }
+
+                &:focus {
+                    color: var(--button-box);
+                    background-color: $white;
+                }
+            }
+
+            &.show {
+                &>button.dropdown-toggle:not(.dropdown-item) {
+                    @include border-animation();
+                    background-color: $white;
+                }
+
+                .dropdown-menu {
+                    display: block !important;
+                }
+            }
+
+            &:not(.ad_active) {
+                .dropdown-menu {
+                    display: none;
+                }
+            }
+        }
+
+        &>.o_sidebar_drw {
+            position: fixed;
+            z-index: 1005;
+            top: calc(45% + 20px);
+            left: auto;
+            text-align: center;
+            right: -25px;
+            padding-right: 36px;
+            width: 50px;
+            height: 50px;
+            padding: 10px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            border-radius: 50%;
+            background-color: var(--brand-primary);
+            color: white;
+            border: 1px solid var(--brand-primary);
+        }
+    }
+}
