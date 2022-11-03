@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_receipt_review_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="custom_invoice_templates.azbah_external_layout">
+                        <style>
+                            @font-face {
+                            font-family: 'Almarai';
+                            font-style: normal;
+                            }
+                            table.bordredTable,
+                            table.bordredTable th,
+                            table.bordredTable td {
+                            border: 1px solid black;
+                            }
+                            table.bordredTable th, table.bordredTable td {
+                            padding: 3px;
+                            }
+                        </style>
+                        <div class="page"
+                             style="direction:rtl;text-align:right;font-family: 'Almarai' !important; padding: 5px 10px 1px 5px; ">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <div class="col-8" style="text-align:center; font-size: 30px;">
+                                    <strong>محضر إستلام وفحص </strong>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <strong>Receipt &amp; Review Report</strong>
+                                </div>
+                                <div class="col-4 border border-dark"
+                                     style="text-align:left; font-size: 30px;padding: 5px 10px 1px 5px;">
+                                    <strong style="float: left;">Date</strong>
+                                    <span t-field="o.date_done"/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <strong>N°</strong>
+                                    <span t-field="o.name"/>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class=" row">
+                                    <table class="table bordredTable" style="text-align:center;">
+                                        <thead>
+                                            <th width="17%">
+                                                رقم الصنف
+                                                <br/>
+                                                Item No
+                                            </th>
+                                            <th width="17%">
+                                                إسم الصنف
+                                                <br/>
+                                                Item Name
+                                            </th>
+                                             <th width="16%">
+                                                مواصفاته
+                                                <br/>
+                                                specification
+                                            </th>
+
+                                            <th width="17%">
+                                                الوحدة
+                                                <br/>
+                                                Unit
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o.move_line_ids_without_package" t-as="line">
+                                                <tr>
+                                                    <td>
+                                                        <span t-field="line.reference"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.product_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.product_id.description_sale"/>
+                                                    </td>
+                                                    <td>
+                                                        <!--<span t-field="line.qty_done"/>-->
+                                                    </td>
+                                                </tr>
+                                             </t>
+                                        </tbody>
+                                    </table>
+
+                            </div>
+                            <div class="row">
+                                    <div class="col-4" >
+                                        <br/>
+                                        <strong>لجنة الفحص والاستلام</strong>
+                                        <br/>
+                                        <strong>receipt &amp; review committee</strong>
+                                        <br/>
+                                        <span></span>
+                                    </div>
+                                  <div class="col-4" >
+                                        <br/>
+                                        <strong>أمين المخزن</strong>
+                                        <br/>
+                                        <strong>Storekeeper</strong>
+                                        <br/>
+                                        <span></span>
+                                    </div>
+                                    <div class="col-4" style="text-align:left;direction: ltr;">
+                                        <br/>
+                                        <strong>المشتريات</strong>
+                                        <br/>
+                                        <strong>Purchase Department</strong>
+                                        <br/>
+                                        <span></span>
+                                    </div>
+                                </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

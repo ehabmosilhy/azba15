@@ -1,0 +1,39 @@
+@font-face{
+	  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 700;
+	src:url('/custom_invoice_templates/static/src/font/Cairo/Cairo-Regular.ttf') format('truetype');
+	}
+	@font-face{
+	  font-family: 'Almarai';
+  font-style: normal;
+  font-weight: 700;
+	src:url('/custom_invoice_templates/static/src/font/Almarai/Almarai-Regular.ttf') format('truetype');
+	}
+
+$o-company-font: 'Cairo' !important;
+
+
+body {
+   
+   font-family:'Cairo' !important;
+}
+.page {
+   
+    font-family:'Cairo' !important;
+    
+}
+.article {
+   
+    font-family:'Cairo' !important;
+    
+}
+.address{
+font-family:'Cairo' !important;
+}
+.footer{
+font-family:'Cairo' !important;
+}
+.article.o_report_layout_standard.o_company_1_layout {
+    font-family: "Cairo" !important;
+}

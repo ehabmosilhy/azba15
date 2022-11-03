@@ -99,9 +99,10 @@ export class ExpirationPanel extends Component {
      * @param {number} date
      */
     _computeDiffDays(date) {
-        const today = new DateTime.local();
-        const duration = date.diff(today, "days");
-        return Math.round(duration.values.days);
+        // const today = new DateTime.local();
+        // const duration = date.diff(today, "days");
+        // return Math.round(duration.values.days);
+        return 999;
     }
     /**
      * @private

@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_azbah_loading_unloading_sheet">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="custom_invoice_templates.azbah_external_layout_70">
+                        <style>
+                            @font-face {
+                            font-family: 'Almarai';
+                            font-style: normal;
+                            }
+                            table.table-bordered,
+                            table.table-bordered th,
+                            table.table-bordered td {
+                            border: 1px solid black;
+                            }
+                            table.table-bordered th, table.table-bordered td {
+                            padding: 3px;
+                            }
+                        </style>
+                        <div class="page"
+                             style="direction:rtl;text-align:right;font-family: 'Almarai' !important; padding: 5px 10px 1px 5px;">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <div class="col-4">
+                                    <table class="table table-bordered" style="text-align:center;">
+
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="3">SOLD QUANTITY
+                                                    <br/>
+                                                    الكمية المباعة
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%"></td>
+                                                <td width="20%">WATER</td>
+                                                <td rowspan="2">6<br/>GALLON
+                                                    <br/>
+                                                    جالون
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" ></td>
+                                                <td width="20%">PLASTIC</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td width="20%"></td>
+                                                <td width="20%">WATER</td>
+                                                <td rowspan="2">5<br/>GALLON<br/>جالون
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="20%" ></td>
+                                                <td width="20%">PLASTIC</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                                <td>WHITE 4
+                                                    <br/>
+                                                    GALLON<br/>جالون
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                                <td>PET
+                                                    <br/>
+                                                    600 MLX 30
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                                <td>PET
+                                                    <br/>
+                                                    600 MLX 24
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                                <td>PET
+                                                    <br/>
+                                                    330 MLX 40
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                                <td>CUPS
+                                                    <br/>
+                                                    250 MLX 45
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                                <td>CUPS
+                                                    <br/>
+                                                    180 MLX 45
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"  height="30px"></td>
+                                                <td  height="30px"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"   height="30px"></td>
+                                                <td  height="30px"></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-8">
+                                    <table class="table table-bordered" style="text-align:center;">
+                                        <tr>
+                                            <td rowspan="2">TOTAL المجموع</td>
+                                            <td>4th</td>
+                                            <td>3rd</td>
+                                            <td>2nd</td>
+                                            <td>1st</td>
+                                            <td>Trip الرد</td>
+                                            <td rowspan="2">ITEM المنتج</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Time الوقت</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Load تحميل</td>
+                                            <td rowspan="4">GALLON
+                                                <br/>
+                                                جالون 6
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Return Full
+                                                <br/>
+                                                الراجع مملوء
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Return Empty
+                                                <br/>
+                                                الراجع فارغ
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Full Bottle Sold<br/>مبيع قارورة كاملة
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Load تحميل</td>
+                                            <td rowspan="4">GALLON
+                                                <br/>
+                                                جالون 5
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Return Full
+                                                <br/>
+                                                الراجع مملوء
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Return Empty
+                                                <br/>
+                                                الراجع فارغ
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Full Bottle Sold<br/>مبيع قارورة كاملة
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Load تحميل</td>
+                                            <td rowspan="2">WHITE 4 GALLON
+                                                <br/>
+                                                جالون أبيض
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Return Full
+                                                <br/>
+                                                الراجع مملوء
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Load تحميل</td>
+                                            <td rowspan="2">PET
+                                                <br/>
+                                                600 MLX 30
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Return Full
+                                                <br/>
+                                                الراجع مملوء
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Load تحميل</td>
+                                            <td rowspan="2">PET
+                                                <br/>
+                                                600 MLX 24
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Return Full
+                                                <br/>
+                                                الراجع مملوء
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Load تحميل</td>
+                                            <td rowspan="2">PET
+                                                <br/>
+                                                330 MLX 40
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Return Full
+                                                <br/>
+                                                الراجع مملوء
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Load تحميل</td>
+                                            <td rowspan="2">CUPS
+                                                <br/>
+                                                250 MLX 45
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Return Full
+                                                <br/>
+                                                الراجع مملوء
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Load تحميل</td>
+                                            <td rowspan="2">CUPS
+                                                <br/>
+                                                180 MLX 45
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Return Full
+                                                <br/>
+                                                الراجع مملوء
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Load تحميل</td>
+                                            <td rowspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Return Full
+                                                <br/>
+                                                الراجع مملوء
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Load تحميل</td>
+                                            <td rowspan="2"></td>
+                                        </tr>
+                                        <tr >
+                                            <td height="30px"></td>
+                                            <td height="30px"></td>
+                                            <td height="30px"></td>
+                                            <td height="30px"></td>
+                                            <td height="30px"></td>
+                                            <td>Return Full
+                                                <br/>
+                                                الراجع مملوء
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                     <table class="table table-bordered" style="text-align:center;">
+                                        <tr>
+                                            <td width="20%"></td>
+                                            <td width="20%">STORE KEEPER SIGNATURE <br/>توقيع أمين المستودع </td>
+                                            <td width="20%"></td>
+                                            <td width="20%">SALESMAN SIGNATURE <br/>توقيع المندوب </td>
+                                        </tr>
+                                </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                     <table class="table table-bordered" style="text-align:center;">
+                                        <tr>
+                                            <td  width="20%"></td>
+                                            <td  width="20%">CASHIER SIGNATURE <br/>توقيع أمين الصندوق </td>
+                                            <td  width="20%"></td>
+                                            <td  width="20%">CHECKER SIGNATURE <br/>توقيع التشييك </td>
+                                        </tr>
+                                </table>
+                                </div>
+                            </div>
+                            <br/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="azbah_external_layout_70">
+            <div class="header">
+                <div style="padding: 5px 10px 1px 5px;">
+                    <style>
+                        @font-face {
+                        font-family: 'Almarai';
+                        font-style: normal;
+                        }
+                       table.table-bordered,
+                            table.table-bordered th,
+                            table.table-bordered td {
+                            border: 1px solid black;
+                            }
+                            table.table-bordered th, table.table-bordered td {
+                            padding: 3px;
+                            }
+                    </style>
+                    <table class="table table-bordered" style="text-align:center;">
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="row">
+                                        <div class="col-6" style="font-size: 15px; text-align:right;">
+                                            <t t-if="o.company_id.partner_id.country_id.name">
+                                                <span t-field="o.company_id.name"/>
+                                            </t>
+                                        </div>
+                                        <div class="col-6" style="font-size: 15px; text-align:left;">Azbah Bottled Water
+                                            Factory
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" rowspan="2">Serial #</td>
+                                <td colspan="2">LOADING AND UNLOADING SHEET</td>
+                            </tr>
+
+                            <tr>
+                                <td>Route #المسار</td>
+                                <td>Supervisor المشرف</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Date:
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                                </td>
+                                <td>Helper #العامل</td>
+                                <td>Salesman المندوب</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                </div>
+            </div>
+            <div class="footer">
+                    <div class="text-center">
+                        <div t-if="report_type == 'pdf'" class="text-muted">
+                            <span class="page" />
+                            /
+                            <span class="topage" />
+                        </div>
+                    </div>
+            </div>
+            <div class="article" t-att-data-oe-model="o and o._name"
+                 t-att-data-oe-id="o and o.id"
+                 t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-raw="0"/>
+            </div>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                string="Purchase Order"
+                id="purchase.action_report_purchase_order"
+                model="purchase.order"
+                report_type="qweb-pdf"
+                name="custom_invoice_templates.report_azbah_purchase_order_10"
+                file="custom_invoice_templates.report_azbah_purchase_order_10"
+                print_report_name="'أمر شراء- %s' % (object.name).replace('/', '')"
+
+        />
+            <record id="paperformat_azbah" model="report.paperformat">
+    <field name="name">Gasoline Paper format</field>
+    <field name="default" eval="True"/>
+    <field name="format">custom</field>
+    <field name="page_height">297</field>
+    <field name="page_width">210</field>
+    <field name="orientation">Portrait</field>
+    <field name="margin_top">40</field>
+    <field name="margin_bottom">32</field>
+    <field name="margin_left">7</field>
+    <field name="margin_right">7</field>
+    <field name="header_line" eval="False"/>
+    <field name="header_spacing">35</field>
+    <field name="dpi">90</field>
+</record>
+        <report
+                string="print Voucher"
+                id="action_report_voucher_receipt_10"
+                model="account.payment"
+                report_type="qweb-pdf"
+                name="custom_invoice_templates.report_print_voucher"
+                file="custom_invoice_templates.report_print_voucher"
+                print_report_name="   (object.partner_id.name)"
+                paperformat="custom_invoice_templates.paperformat_azbah"
+        />
+
+<!--        <report-->
+<!--                string="Payment Voucher"-->
+<!--                id="action_report_voucher_payment"-->
+<!--                model="account.payment"-->
+<!--                report_type="qweb-pdf"-->
+<!--                name="custom_invoice_templates.report_voucher_payment"-->
+<!--                file="custom_invoice_templates.report_voucher_payment"-->
+<!--                print_report_name="'سند صرف- %s' % (object.partner_id.name).replace('/', '')"-->
+
+<!--        />-->
+        <report
+                string="Receipt and review report"
+                id="action_report_receipt_review_report"
+                model="stock.picking"
+                report_type="qweb-pdf"
+                name="custom_invoice_templates.report_receipt_review_report"
+                file="custom_invoice_templates.report_receipt_review_report"
+        />
+        <report
+                string="Delivery Note"
+                id="action_report_azbah_delivery_note"
+                model="stock.picking"
+                report_type="qweb-pdf"
+                name="custom_invoice_templates.report_azbah_delivery_note"
+                file="custom_invoice_templates.report_azbah_delivery_note"
+        />
+        <report
+                string="Loading unloading sheet"
+                id="action_report_azbah_loading_unloading_sheet"
+                model="purchase.order"
+                report_type="qweb-pdf"
+                name="custom_invoice_templates.report_azbah_loading_unloading_sheet"
+                file="custom_invoice_templates.report_azbah_loading_unloading_sheet"
+        />
+    </data>
+</odoo>

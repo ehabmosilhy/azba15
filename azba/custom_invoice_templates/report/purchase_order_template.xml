@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_azbah_purchase_order_10">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="custom_invoice_templates.azbah_external_layout">
+                        <style>
+                            @font-face {
+                            font-family: 'Almarai';
+                            font-style: normal;
+                            }
+                            table.bordredTable,
+                            table.bordredTable th,
+                            table.bordredTable td {
+                            border: 1px solid black;
+                            }
+                            table.bordredTable th, table.bordredTable td {
+                            padding: 3px;
+                            }
+                        </style>
+                        <div class="page"
+                             style="direction:rtl;text-align:right;font-family: 'Almarai' !important; padding: 5px 10px 1px 5px; ">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <div class="col-4 border border-dark"
+                                     style="text-align:center;font-size: 30px; padding: 5px 10px 1px 5px;">
+                                    <strong>القسم</strong>
+                                    <br/>
+                                    <br/>
+                                    <span></span>
+                                    <br/>
+                                    <br/>
+                                    <strong>Department</strong>
+                                </div>
+                                <div class="col-4" style="text-align:center; font-size: 30px;">
+                                    <strong>أمر شراء</strong>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <strong>Purchase Order</strong>
+                                </div>
+                                <div class="col-4 border border-dark"
+                                     style="text-align:left; font-size: 30px;padding: 5px 10px 1px 5px;">
+                                    <strong style="float: left;">Date</strong>
+                                    <span t-field="o.date_approve"/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <strong>No</strong>
+                                    <span t-field="o.name"/>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class=" row">
+                                    <table class="table bordredTable" style="text-align:center;">
+                                        <thead>
+                                            <th width="17%">
+                                                رقم الصنف
+                                                <br/>
+                                                Item No
+                                            </th>
+                                            <th width="17%">
+                                                إسم الصنف
+                                                <br/>
+                                                Item Name
+                                            </th>
+                                            <th width="17%">
+                                                سعر الوحدة
+                                                <br/>
+                                                Unit Price
+                                            </th>
+                                            <th width="16%">
+                                                الكمية
+                                                <br/>
+                                                Quantity
+                                            </th>
+                                            <th width="16%">
+                                                موجود
+                                                <br/>
+                                                In Stock
+                                            </th>
+                                            <th width="17%">
+                                                التوقيع
+                                                <br/>
+                                                Signature
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="o.order_line" t-as="line">
+                                                <tr>
+                                                    <td>
+                                                        <span t-field="line.product_id.default_code"/>
+                                                        <!--<span t-field="line.product_id.barcode"/>-->
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.product_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.price_unit"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.product_qty"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.product_id.qty_available"/>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                </tr>
+                                             </t>
+                                        </tbody>
+                                    </table>
+
+                            </div>
+                            <div class="row">
+                                    <div class="col-4" >
+                                        <br/>
+                                        <strong>أمين المخزن</strong>
+                                        <br/>
+                                        <strong>Storekeeper</strong>
+                                        <br/>
+                                        <span></span>
+                                    </div>
+                                    <div class="col-4">
+                                    </div>
+                                    <div class="col-4" style="text-align:left;direction: ltr;">
+                                        <br/>
+                                        <strong>المشتريات</strong>
+                                        <br/>
+                                        <strong>Purchase Department</strong>
+                                        <br/>
+                                        <span></span>
+                                    </div>
+                                </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="azbah_external_layout">
+            <div class="header">
+                <div class="border border-dark" style="padding: 5px 10px 1px 5px;">
+                    <div class="row">
+                        <div class="col-4" style="font-size: 30px;">
+                            <t t-if="o.company_id.partner_id.country_id.name">
+                                <span t-field="o.company_id.name"/>
+                            </t>
+                        </div>
+                        <div class="col-4">
+                            <center>
+                                <img t-if="o.company_id.logo"
+                                     t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
+                                     style="max-height:133px;"/>
+                                 <br/>
+                            <t t-if="o.company_id.iso_number">
+                                <span t-field="o.company_id.iso_number"/>
+                            </t>
+                            </center>
+                        </div>
+                        <div class="col-4" style="text-align:right;direction: ltr;font-size: 30px;">
+                            <t t-if="o.company_id.partner_id.country_id.name">
+                                <span t-field="o.company_id.name"/>
+                            </t>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+            <div class="article" t-att-data-oe-model="o and o._name"
+                 t-att-data-oe-id="o and o.id"
+                 t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-raw="0"/>
+            </div>
+
+        </template>
+
+    </data>
+</odoo>

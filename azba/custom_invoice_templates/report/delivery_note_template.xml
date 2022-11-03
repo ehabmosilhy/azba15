@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_azbah_delivery_note">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="custom_invoice_templates.azbah_external_layout">
+                        <style>
+                            @font-face {
+                            font-family: 'Almarai';
+                            font-style: normal;
+                            }
+                            table.bordredTable,
+                            table.bordredTable th,
+                            table.bordredTable td {
+                            border: 1px solid black;
+                            }
+                            table.bordredTable th, table.bordredTable td {
+                            padding: 3px;
+                            }
+                        </style>
+                        <div class="page"
+                             style="direction:rtl;text-align:right;font-family: 'Almarai' !important; padding: 5px 10px 1px 5px; ">
+                            <br/>
+                            <div class="row">
+                                <div class="col-4"></div>
+                                <div class="col-4 border-dark"
+                                     style="border-style: dotted; text-align:center;font-size: 20px; padding: 5px 10px 1px 5px;border-radius: 10px;">
+                                    <strong>إذن تسليم</strong>
+                                    <br/>
+                                    <strong>Delivery Note</strong>
+                                </div>
+                                <div class="col-4"></div>
+                            </div>
+                            <br/>
+                            <div class="row" style="margin: 10px;">
+                                <div class="col-6 border border-dark" style="border-radius: 10px;">
+                                    <div class="row">
+                                        <div class="col-4" style="white-space: nowrap ;">
+                                            <p>الرقم:</p>
+                                        </div>
+                                        <div class="col-6" style="text-align:center;">
+                                            <p>
+                                                <span t-field="o.name"/>
+                                            </p>
+                                        </div>
+                                        <div class="col-2" style="text-align:left;direction: ltr;">
+                                            <p>No:</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4" style="white-space: nowrap ;">
+                                            <p>التاريخ:</p>
+                                        </div>
+                                        <div class="col-6" style="text-align:center;">
+                                            <p>
+                                                <span t-field="o.date_done"/>
+                                            </p>
+                                        </div>
+                                        <div class="col-2" style="text-align:left;direction: ltr;">
+                                            <p>Date:</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4" style="white-space: nowrap ;">
+                                            <p>رقم طلب الشراء:</p>
+                                        </div>
+                                        <div class="col-6" style="text-align:center;">
+                                            <p>...........</p>
+                                        </div>
+                                        <div class="col-2" style="text-align:left;direction: ltr;white-space: nowrap ;">
+                                            <p>P.O.No:</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4" style="white-space: nowrap ;">
+                                            <p>تاريخ طلب الشراء:</p>
+                                        </div>
+                                        <div class="col-6" style="text-align:center;">
+                                            <p>...........</p>
+                                        </div>
+                                        <div class="col-2" style="text-align:left;direction: ltr;white-space: nowrap ;">
+                                            <p>P.O.Date:</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-6 border border-dark" style="border-radius: 10px;">
+                                    <div class="row">
+                                        <div class="col-4" style="white-space: nowrap ;">
+                                            <p>السادة:</p>
+                                        </div>
+                                        <div class="col-6" style="text-align:center;">
+                                            <p>
+                                                <span t-field="o.partner_id.name"/>
+                                            </p>
+                                        </div>
+                                        <div class="col-2" style="text-align:left;direction: ltr; white-space: nowrap ;">
+                                            <p>Messrs:</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4" style="white-space: nowrap ;">
+                                            <p>العنوان:</p>
+                                        </div>
+                                        <div class="col-6" style="text-align:center;">
+                                            <p><t t-if="o.partner_id.street">
+                                                    <span t-field="o.partner_id.street"/>
+                                                </t>
+                                                <t t-if="o.partner_id.city">
+                                                    <span t-field="o.partner_id.city"/>
+                                                </t>
+                                                <t t-if="o.partner_id.zip">
+                                                    <span t-field="o.partner_id.zip"/>
+                                                </t>
+                                            </p>
+                                        </div>
+                                        <div class="col-2" style="text-align:left;direction: ltr;white-space: nowrap ;">
+                                            <p>Address:</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4" style="white-space: nowrap ;">
+                                            <p>هاتف:</p>
+                                        </div>
+                                        <div class="col-6" style="text-align:center;">
+                                            <p>
+                                                <t t-if="o.partner_id.mobile">
+                                                    <span t-field="o.partner_id.mobile"/>
+                                                </t>
+                                            </p>
+                                        </div>
+                                        <div class="col-2" style="text-align:left;direction: ltr;white-space: nowrap ;">
+                                            <p>Tel:</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4" style="white-space: nowrap ;">
+                                            <p>فاكس:</p>
+                                        </div>
+                                        <div class="col-6" style="text-align:center;">
+                                            <p>
+                                                <t t-if="o.partner_id.phone">
+                                                    <span t-field="o.partner_id.phone"/>
+                                                </t>
+                                            </p>
+                                        </div>
+                                        <div class="col-2" style="text-align:left;direction: ltr;white-space: nowrap ;">
+                                            <p>Fax:</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="border border-dark" style="border-radius: 10px;margin: 15px;">
+                            <div class="row border border-dark" style="border-radius: 10px;margin: 10px;">
+                                <table class="table" style="text-align:center;">
+                                    <thead>
+                                        <th width="17%">
+                                            ملاحظات
+                                            <br/>
+                                            Notes
+                                        </th>
+                                        <th width="17%">
+                                            الكمية
+                                            <br/>
+                                            Qty
+                                        </th>
+                                        <th width="17%">
+                                            الوحدة
+                                            <br/>
+                                            Unit
+                                        </th>
+                                        <th width="17%">
+                                            الصنف
+                                            <br/>
+                                            Item description
+                                        </th>
+                                        <th width="17%">
+                                            رقم الصنف
+                                            <br/>
+                                            Item code
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.move_line_ids_without_package" t-as="line">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="line.product_id.description_sale"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="line.qty_done"/>
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                    <span t-field="line.product_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="line.product_id.default_code"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="row" style="margin: 10px;">
+                                <div class="col-6 border border-dark" style="border-radius: 10px;">
+                                    <br/>
+                                    <center>أقر أنا الموقع أدناه انني استلمت المواد الموضحة أعلاه بحالة جيدة و سليمة.
+                                    </center>
+                                    <br/>
+                                    <center>I hereby confirm receipt of the above mentioned products in good condition
+                                    </center>
+                                    <br/>
+                                    <div class="row" style="direction:ltr;">
+                                        <div class="col-4" style="text-align: left;">
+                                            <strong>Received by</strong>
+                                        </div>
+                                        <div class="col-4">
+                                            <strong>
+                                                <span t-esc="user.name"></span>
+                                            </strong>
+                                        </div>
+                                        <div class="col-4" style="float: right;">
+                                            <strong>إسم المستلم</strong>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="direction:ltr;">
+                                        <div class="col-4" style="text-align: left;">
+                                            <strong>Signature</strong>
+                                        </div>
+                                        <div class="col-4">
+                                            <strong></strong>
+                                        </div>
+                                        <div class="col-4" style="float: right;">
+                                            <strong>توقيع المستلم</strong>
+                                        </div>
+                                    </div>
+                                    <br/>
+
+                                </div>
+                                <div class="col-6 border border-dark" style="border-radius: 10px;">
+                                    <br/>
+                                    <div class="row" style="direction:ltr;">
+                                        <div class="col-4" style="text-align: left;">
+                                            <strong>Delivered on</strong>
+                                        </div>
+                                        <div class="col-4">
+                                            <strong>
+                                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                                            </strong>
+                                        </div>
+                                        <div class="col-4" style="float: right;">
+                                            <strong>تاريخ التسليم</strong>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="direction:ltr;">
+                                        <div class="col-4" style="text-align: left;">
+                                            <strong>Checked by</strong>
+                                        </div>
+                                        <div class="col-4">
+                                            <strong></strong>
+                                        </div>
+                                        <div class="col-4" style="float: right;">
+                                            <strong>راجعها</strong>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="direction:ltr;">
+                                        <div class="col-4" style="text-align: left;">
+                                            <strong>Storekeeper</strong>
+                                        </div>
+                                        <div class="col-4">
+                                            <strong></strong>
+                                        </div>
+                                        <div class="col-4" style="float: right;">
+                                            <strong>أمين المخازن</strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="row border" style="direction:ltr;">
+                                        <div class="col-3"></div>
+                                        <div class="col-3" style="float: left;">
+                                            <strong>Delivery Taken By</strong>
+                                        </div>
+                                        <div class="col-3">
+                                            <strong>استلمت من قبل</strong>
+                                        </div>
+                                        <div class="col-3"></div>
+                                    </div>
+                                    <div class="row" style="direction:ltr;">
+                                        <div class="col-4" style="text-align: left;">
+                                            <strong>Name</strong>
+                                        </div>
+                                        <div class="col-4">
+                                            <strong></strong>
+                                        </div>
+                                        <div class="col-4" style="float: right;">
+                                            <strong>الاسم</strong>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="direction:ltr;">
+                                        <div class="col-4" style="text-align: left;">
+                                            <strong>Signature</strong>
+                                        </div>
+                                        <div class="col-4">
+                                            <strong></strong>
+                                        </div>
+                                        <div class="col-4" style="float: right;">
+                                            <strong>التوقيع</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="azbah_external_layout">
+            <div class="header">
+                <div class="border border-dark" style="padding: 5px 10px 1px 5px;">
+                    <div class="row">
+                        <div class="col-4" style="font-size: 30px;">
+                            <t t-if="o.company_id.partner_id.country_id.name">
+                                <span t-field="o.company_id.name"/>
+                            </t>
+                        </div>
+                        <div class="col-4">
+                            <center>
+                                <img t-if="o.company_id.logo"
+                                     t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
+                                     style="max-height:133px;"/>
+                                  <br/>
+                            <t t-if="o.company_id.iso_number">
+                                <span t-field="o.company_id.iso_number"/>
+                            </t>
+                            </center>
+                        </div>
+                        <div class="col-4" style="text-align:right;direction: ltr;font-size: 30px;">
+                            <t t-if="o.company_id.partner_id.country_id.name">
+                                <span t-field="o.company_id.name"/>
+                            </t>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+            <div class="article" t-att-data-oe-model="o and o._name"
+                 t-att-data-oe-id="o and o.id"
+                 t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-raw="0"/>
+            </div>
+
+        </template>
+
+    </data>
+</odoo>

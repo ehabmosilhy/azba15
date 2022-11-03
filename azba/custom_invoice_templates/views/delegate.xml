@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <odoo>
+
+    <record id="delegate_move_view" model="ir.ui.view">
+            <field name="name">delegate</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"></field>
+            <field name="arch" type="xml">
+                <field name="ref" position="after">
+                    <field name="delegate_id"   string="delegate"/>
+                </field>
+
+
+            </field>
+        </record>
+</odoo>

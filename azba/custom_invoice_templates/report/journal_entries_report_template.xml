@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="azbah_journal_entries_header">
+        <div class="header" style="direction:rtl !important;">
+            <br/>
+            <div class="row" style="direction:rtl !important;">
+                <div class="col-4" style="font-size: 30px;direction:rtl !important;">
+                    <center style="direction:ltr !important;">
+                        <br/>
+                        <strong style="direction:rtl !important;">التاريخ</strong>
+                        <span t-field="o.date" style="direction:rtl !important;"/>
+                        <strong style="direction:v !important;">Date</strong>
+                    </center>
+                </div>
+                <div class="col-4" style="font-size: 30px;direction:ltr !important;">
+                    <center style="direction:rtl !important;">
+                        <br/>
+                        <strong style="direction:rtl !important;">قيود اليومية</strong>
+                        <br/>
+                        <strong style="direction:rtl !important;">Journal entries</strong>
+                    </center>
+                </div>
+                <div class="col-4" style="direction:rtl !important;">
+                    <br/>
+                    <center style="direction:rtl !important;margin-top:3px;">
+                        <img t-if="o.company_id.logo"
+                             t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
+                             style="max-height:133px;direction:rtl !important;"/>
+                    </center>
+                </div>
+            </div>
+            <div class="row" style="direction:ltr !important;">
+                <div class="col-4">
+                    <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
+                    <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
+                    <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
+                </div>
+                <div class="col-4"/>
+                <div class="col-4">
+                    <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
+                    <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
+                    <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
+                </div>
+            </div>
+            <br/>
+        </div>
+        <div class="article" t-att-data-oe-model="o and o._name"
+             t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-raw="0"/>
+        </div>
+
+    </template>
+    <template id="azbah_template_journal_entries_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="custom_invoice_templates.azbah_journal_entries_header">
+                    <style>
+                        @font-face {
+                        font-family: 'Almarai';
+                        font-style: normal;}
+                        td, th {
+                        border: 1px solid black;
+                        text-align:center;
+                        }
+                    </style>
+                    <br/>
+                    <div class="page" style="padding-top:55px">
+                        <div>
+                            <div style="text-align:center;margin-top:170px;margin-left:60px;font-size: 25px;">
+                                <div>
+                                    <strong>
+                                        <span t-esc="o.name"/>
+                                    </strong>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div style="float:left;text-align:right; margin-top: 40px !important;">
+                            <div class="col-md-12"
+                                 style=" font-size: 18px; direction:rtl !important;direction:ltr !important;">
+
+                                <div class="col-md-6" style=" width:100%;">
+
+                                    <table class="table table-borderless"
+                                           style="text-align:left;margin-top:10px;float:right;">
+                                        <tr style="text-align:right;" t-if="o.delegate_id.name">
+                                            <td style="text-align:right;padding:5px;">
+                                                <strong>Delegate name :</strong>
+                                                <span t-esc="o.delegate_id.name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:right;padding:5px;">
+                                                <strong>
+                                                    Reference:
+                                                </strong>
+
+                                                <span t-esc="o.ref"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div style="text-align:right; ;margin-left:550px;  margin-top: 37px !important;direction:ltr !important;">
+                            <div class="col-md-12"
+                                 style=" font-size: 18px; direction:rtl !important;">
+                                <div class="col-md-6" style=" width:100%;">
+
+                                    <table class="table table-borderless"
+                                           style="text-align:left;margin-top:10px;float:left;">
+                                        <tr style="text-align:left;">
+                                            <td style="text-align:right;">
+                                                <strong>
+                                                   Journal :
+                                                </strong>
+                                                <span t-esc="o.journal_id.name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:right;">
+                                                <strong>
+                                                    Accounting Date:
+                                                </strong>
+                                                <span t-field="o.date"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div style="font-size: 10px; direction:rtl !important;margin-top:25px;direction:rtl !important;">
+
+                            <table class="table table-bordered">
+                                <thead style="background-color:#326fa8;">
+                                    <tr>
+                                        <th style="vertical-align: middle;font-size: 15px;text-align:center;width:20px;">
+                                            Account
+                                        </th>
+                                        <th scope="col"
+                                            style="vertical-align: middle;font-size: 15px;text-align:center;width:20px;">
+                                            Partner
+                                        </th>
+                                        <th scope="col"
+                                            style="vertical-align: middle;font-size: 15px;text-align:center;;width:20px;">
+                                            Taxes
+
+                                        </th>
+                                        <th scope="col"
+                                            style="vertical-align: middle;font-size: 15px;text-align:center;">
+                                            Label
+                                        </th>
+
+                                        <th scope="col"
+                                            style="vertical-align: middle;font-size: 15px;text-align:center;;width:20px;">
+                                            Debit
+                                        </th>
+                                        <th scope="col"
+                                            style="vertical-align: middle;font-size: 15px;text-align:center;;width:20px;">
+                                            Crédit
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.line_ids" t-as="lines">
+                                        <td style="text-align:left;font-size: 20px;width:20px;">
+                                            <div>
+                                                <span style="text-align:left;font-size: 16px;"
+                                                      t-esc="lines.account_id.name"/>
+
+                                            </div>
+
+                                        </td>
+                                        <td style="vertical-align: middle;font-size: 13px;;width:20px;">
+
+
+                                            <div>
+                                                <span style="text-align:left;font-size: 16px;"
+                                                      t-esc="lines.partner_id.name"/>
+
+                                            </div>
+
+
+                                        </td>
+                                        <td style="vertical-align: middle;text-align:center;font-size: 13px;width:40px;">
+                                            <div>
+                                                <span style="text-align:left;font-size: 16px;"
+                                                      t-esc="lines.tax_ids.name"/>
+                                            </div>
+                                        </td>
+                                        <td style="width:25px;vertical-align: middle;text-align:center;font-size: 13px;">
+                                            <div>
+                                                <span style="text-align:left;font-size: 16px;"
+                                                      t-esc="lines.name"/>
+
+                                            </div>
+                                        </td>
+                                        <td style="vertical-align: middle;text-align:center;font-size: 13px;;width:20px;">
+                                            <div>
+                                                <span style="text-align:left;font-size: 16px;"
+                                                      t-esc="lines.debit"/>
+
+                                            </div>
+                                        </td>
+                                        <td style="vertical-align: middle;text-align:center;font-size: 13px;;width:20px;">
+                                            <div>
+                                                <span style="text-align:left;font-size: 16px;"
+                                                      t-esc="lines.credit"/>
+
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+
+
+                </t>
+            </t>
+
+        </t>
+
+    </template>
+
+
+    <record id="paperformat_azbah_id" model="report.paperformat">
+        <field name="name">AZBAH Paper format</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">1</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">1</field>
+        <field name="margin_right">1</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">10</field>
+        <field name="dpi">90</field>
+    </record>
+    <report id="report_azbah_journal_entriess" string="Azbah journal entires"
+            model="account.move" report_type="qweb-pdf"
+            name="custom_invoice_templates.azbah_template_journal_entries_report"
+            file="custom_invoice_templates.azbah_template_journal_entries_report"
+            paperformat="custom_invoice_templates.paperformat_azbah_id"/>
+
+</odoo>
