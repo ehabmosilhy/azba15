@@ -13,60 +13,81 @@
                 <div class="article mt0 o_report_layout_standard"
                      style="direction:ltr !important;">
 
-                    <div style="caption-side:top; color: Black;   text-align: center; direction:ltr !important;">-->
+                    <div style="caption-side:top; color: black;background-color:lightyellow;padding:10px;   text-align: center; direction:ltr !important;">
                         <span t-field="o.name"></span>
                     </div>
 
-                    <table class="row custom-line align-self-start"
-                           style="float:left;  width: 100%;
-                            direction:ltr !important;padding-top: 0px;
-                           border: 1px solid black;table-layout : fixed;
-                           margin-top: 7cm;">
 
-                        <tr style="direction:ltr !important;text-align: left;">
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                    <t t-if="o.l10n_sa_qr_code_str">
+                        <div style="border:1px solid black;padding:2px 2px 2px 2px;  box-shadow: 10px 10px 10px grey;
+                        float:left;direction:ltr !important; margin-top: 6cm;">
+                            <img style="text-align: center" t-if="o.l10n_sa_qr_code_str"
+                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.l10n_sa_qr_code_str, 150, 150)"/>
+                        </div>
+                    </t>
+
+                    <table class="rounded" style="float:right;  width: 80%;
+                            direction:ltr !important;padding-top: 0px;
+                           table-layout : fixed;
+                           margin-top: 6cm; margin-bottom: 2cm;
+                           border:1px solid black;padding:2px 2px 2px 2px;  box-shadow: 10px 10px 10px grey;">
+
+
+                        <tr style="direction:ltr !important;text-align: center; background-color:#0a7bae">
+                            <td colspan="5">
+                                <div style="float:left;  width: 100%;
+                            direction:rtl !important;padding-top: 0px;">السادة شركة
+                                    <t t-esc="o.partner_id.name"/>
+                                </div>
+                            </td>
+
+                        </tr>
+                        <tr style="direction:ltr !important;text-align: left; background-color:#c1def4">
+                            <td style="width: 27%;vertical-align:top; padding:1px;">
                                 Invoice # | رقم الفاتورة
                             </td>
 
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                            <td style="width: 22%;vertical-align:top; padding:1px;">
                                 <span t-field="o.name"/>
                             </td>
 
-                            <td style="width: 10% ;">
+                            <td style="width: 2% ;">
                                 <![CDATA[&nbsp;]]>
                             </td>
 
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                            <td style="width: 27%;vertical-align:top; padding:1px;">
                                 Date | التاريخ
                             </td>
 
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                            <td style="width: 22%;vertical-align:top; padding:1px;">
                                 <span t-field="o.invoice_date"
                                       style="direction:ltr !important;"/>
                             </td>
 
                         </tr>
 
-                        <tr style="direction:ltr !important;text-align: left;">
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
-                                Payment terms | شروط الدفع
+                        <tr style="direction:ltr !important;text-align: left; background-color:#ffffff">
+                            <td style="width: 27%;vertical-align:top; padding:1px;">
+                                Payment terms
+                                <br/>
+                                شروط الدفع
                             </td>
 
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                            <td style="width: 22%;vertical-align:top; padding:1px;">
                                 <span t-field="o.partner_id.property_payment_term_id"
                                       style="direction:ltr !important;"/>
                             </td>
 
-                            <td style="width: 10% ;">
+                            <td style="width: 2% ;">
                                 <![CDATA[&nbsp;]]>
 
                             </td>
 
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
-                               Payment Method|طريقة الدفع
+                            <td style="width: 27%;vertical-align:top; padding:1px;">
+                                Payment Method<br/>طريقة الدفع
                             </td>
 
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                            <td style="width: 22%;vertical-align:top; padding:1px;">
                                 <t t-foreach="o._get_reconciled_payments()" t-as="pay">
                                     <t t-esc="pay.journal_id.name"/>
                                     &amp;nbsp;
@@ -76,79 +97,81 @@
                         </tr>
 
 
-                        <tr style="direction:ltr !important;text-align: left;">
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
-                                Due Date | تاريخ الإستحقاق
+                        <tr style="direction:ltr !important;text-align: left; background-color:#c1def4">
+                            <td style="width: 27%;vertical-align:top; padding:1px;">
+                                Due Date<br/>تاريخ الإستحقاق
 
                             </td>
 
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                            <td style="width: 22%;vertical-align:top; padding:1px;">
                                 <span t-field="o.invoice_date_due"
                                       style="direction:ltr !important;"/>
                             </td>
 
 
-                            <td style="width: 10% ;">
+                            <td style="width: 2% ;">
                                 <![CDATA[&nbsp;]]>
 
                             </td>
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
-                                Sales order | أمر البيع
+                            <td style="width: 27%;vertical-align:top; padding:1px;">
+                                Sales order<br/>أمر البيع
 
                             </td>
 
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                            <td style="width: 22%;vertical-align:top; padding:1px;">
                                 <span t-field="o.invoice_origin"/>
                             </td>
                         </tr>
 
 
-                        <tr style="direction:ltr !important;text-align: left;">
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                        <tr style="direction:ltr !important;text-align: left; background-color:#ffffff">
+                            <td style="width: 27%;vertical-align:top; padding:1px;">
                                 Reference | المرجع
 
                             </td>
 
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                            <td style="width: 22%;vertical-align:top; padding:1px;">
                                 <span t-field="o.ref"/>
                             </td>
 
 
-                            <td style="width: 10% ;">
+                            <td style="width: 2% ;">
                                 <![CDATA[&nbsp;]]>
 
                             </td>
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                            <td style="width: 27%;vertical-align:top; padding:1px;">
                                 Sales order | أمر البيع
 
                             </td>
 
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                            <td style="width: 22%;vertical-align:top; padding:1px;">
                                 <span t-field="o.invoice_origin"/>
                             </td>
                         </tr>
 
 
-                        <tr style="direction:ltr !important;text-align: left;">
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                        <tr style="direction:ltr !important;text-align: left; background-color:#c1def4">
+                            <td style="width: 22.5%;vertical-align:top; padding:1px;">
                                 VAT | الرقم الضريبي
 
                             </td>
 
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                            <td style="width: 22.5%;vertical-align:top; padding:1px;">
                                 <div t-field="o.partner_id.vat"></div>
                             </td>
 
 
-                            <td style="width: 10% ;">
+                            <td style="width: 2% ;">
                                 <![CDATA[&nbsp;]]>
 
                             </td>
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
-                                Delivery address | عنوان التوصيل
+                            <td style="width: 22.5%;vertical-align:top; padding:1px;">
+                                Delivery address
+                                <br/>
+                                عنوان التوصيل
                             </td>
 
-                            <td style="width: 22.5%;vertical-align:top; border: 1px solid black;">
+                            <td style="width: 22.5%;vertical-align:top; padding:1px;">
                                 <div t-field="o.partner_shipping_id"
                                      t-options='{"widget": "contact", "fields": ["address","street","street2","city","state_id","zip", "country_id"], "no_marker": True}'>
 
@@ -159,138 +182,137 @@
 
                     </table>
 
-                    <table class="table"
-                           style="direction:ltr !important;  margin-top: 420px;  width: 100%;  margin-bottom: 0px !important;  ">
-                        <thead style="direction:ltr !important;">
+
+                    <table style="float:left;  width: 100%;
+                            direction:ltr !important;padding-top: 0px;
+                           table-layout : fixed;
+                           margin-top: 0.1cm; margin-bottom: 2cm;
+                           border:1px solid black;padding:1px 1px 1px 1px;  box-shadow: 10px 10px 10px grey;">
+
+                        <tr style="direction:ltr !important;text-align: left; background-color:#0a7bae">
+                            <td style="width: 20%;vertical-align:top; padding:1px;">
+                                Description
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                Qty
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                Unit
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                Sales Price
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                Amount
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                Tax Amt.
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                Tax %
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                Amt After Tax
+                            </td>
+
+                        </tr>
+
+                        <tr style="direction:ltr !important;text-align: left; background-color:#0a7bae">
+                            <td style="width: 20%;vertical-align:top; padding:1px;">
+                                الوصف
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                الكمية
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                الوحدة
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                سعر البيع
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                المبلغ
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                قيمة الضريبة
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                نسبة الضريبة
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                الإجمالى بعد الضريبة
+                            </td>
+                        </tr>
+
+                        <tr t-foreach="o.invoice_line_ids" t-as="line"
+                            style="border-bottom: 3px solid black !important; direction:ltr !important;">
 
 
-                            <tr class="table-info "
-                                style="border-bottom: 3px solid black !important; direction:ltr !important;">
-
-                                <th colspan="10"
-                                    style="direction:ltr !important; text-align: left; width: 70%;  ">
-                                    Description
-                                    <br/>
-                                    الوصف
-                                </th>
-
-                                <th style="direction:ltr !important; text-align: left;">
-                                    Qty
-                                    الكمية
-                                </th>
-                                <th style="direction:ltr !important; text-align: left;"
-                                >
-                                    Unit
-                                    الوحدة
-                                </th>
-                                <th
-                                        style="direction:ltr !important; text-align: left; ">
-                                    Sales price
-                                    <br/>
-                                    سعر البيع
-                                </th>
-                                <th style="direction:ltr !important; text-align: left;"
-                                >
-                                    Amount
-                                    <br/>
-                                    المبلغ
-                                </th>
-                                <th
-                                        style="direction:ltr !important; text-align: left;">
-                                    Tax Amount
-                                    <br/>
-                                    القيمة الضريبة
-                                </th>
-                                <th
-                                        style=" direction:ltr !important; text-align: left;">
-                                    Tax %
-                                    <br/>
-                                    نسبة
-                                </th>
-                                <th
-                                        style=" direction:ltr !important; text-align: left;  ">
-                                    Amount after Tax
-                                    <br/>
-                                    الاجمالي بعد الضريبة
-                                </th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody style="direction:ltr !important;">
-
-                            <tr t-foreach="o.invoice_line_ids" t-as="line"
-                                style="border-bottom: 3px solid black !important; direction:ltr !important;">
+                            <td style="width: 20%;vertical-align:top; padding:1px;">
+                                <span t-field="line.with_context(lang='ar_001').product_id"
+                                      style="direction:ltr !important;"/>
+                            </td>
 
 
-                                <td colspan="10"
-                                    style="direction:ltr !important; text-align: left; width: 70%;">
-                                    <span t-field="line.with_context(lang='ar_001').product_id"
-                                          style="direction:ltr !important;"/>
-                                </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+                                <span t-field="line.quantity"
+                                      style="direction:ltr !important;"/>
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+
+                                <span t-field="line.product_uom_id"/>
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+
+                                <span t-field="line.price_unit"
+                                      style="direction:ltr !important;"/>
+                            </td>
 
 
-                                <td style="direction:ltr !important; text-align: left;"
-                                >
-                                    <span t-field="line.quantity"
-                                          style="direction:ltr !important;"/>
-                                </td>
-                                <td style="direction:ltr !important; text-align: left;"
-                                >
-                                    <span t-field="line.product_uom_id"/>
-                                </td>
-                                <td style="direction:ltr !important; text-align: left;"
-                                >
-                                    <span t-field="line.price_unit"
-                                          style="direction:ltr !important;"/>
-                                </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
 
 
-                                <td style="direction:ltr !important; text-align: left;"
-                                >
+                                <span class="text-nowrap"
+                                      style="direction:ltr !important;"
+                                      t-field="line.price_subtotal"
+                                      groups="account.group_show_line_subtotals_tax_excluded"/>
+                                <span class="text-nowrap"
+                                      style="direction:ltr !important;" t-field="line.price_total"
+                                      groups="account.group_show_line_subtotals_tax_included"/>
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
 
-                                    <span class="text-nowrap"
-                                          style="direction:ltr !important;"
-                                          t-field="line.price_subtotal"
-                                          groups="account.group_show_line_subtotals_tax_excluded"/>
-                                    <span class="text-nowrap"
-                                          style="direction:ltr !important;" t-field="line.price_total"
-                                          groups="account.group_show_line_subtotals_tax_included"/>
-                                </td>
-                                <td style="direction:ltr !important; text-align: left;"
-                                >
-                                    <span t-field="line.amount_tax"/>
-                                </td>
+                                <span t-field="line.amount_tax"/>
+                            </td>
 
-                                <td style="direction:ltr !important; text-align: left;"
-                                >
-                                    <span
-                                            t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_ids))"
-                                            id="line_tax_ids"/>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
 
-                                </td>
-                                <td style="direction:ltr !important; text-align: left;"
-                                >
-                                    <t t-set="current_total_with_tax"
-                                       t-value="line.amount_tax+line.price_subtotal"/>
-                                    <span t-esc="current_total_with_tax"
-                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                                </td>
-                            </tr>
+                                <span
+                                        t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_ids))"
+                                        id="line_tax_ids"/>
 
-                        </tbody>
+                            </td>
+                            <td style="width: 13%;vertical-align:top; padding:1px;">
+
+                                <t t-set="current_total_with_tax"
+                                   t-value="line.amount_tax+line.price_subtotal"/>
+                                <span t-esc="current_total_with_tax"/>
+                            </td>
+                        </tr>
+
                     </table>
 
+
                     <table class="table"
-                           style="direction:ltr !important;margin-bottom:0px !important;width: 122.5%;table-layout: auto;  ">
+                           style="direction:ltr !important;margin-bottom:0px !important;width: 99%;table-layout: auto;">
                         <thead style="direction:ltr !important;">
                             <tr class="table-info "
                                 style="border-bottom: 3px solid black !important; direction:ltr !important;">
                                 <th scope="col"
                                     style=" direction:ltr !important; text-align: left;">
-                                    Total invoice before VAT
+                                    Total before VAT
                                     <br/>
-                                    اجمالي الفاتورة قبل الضريبة
+                                    الاجمالي قبل الضريبة
                                 </th>
                                 <th scope="col"
                                     style=" direction:ltr !important; text-align: left;">
@@ -314,6 +336,11 @@
                                     Currency
                                     <br/>
                                     العملة
+                                </th>
+
+                                <th>Required
+                                    <br/>
+                                    المبلغ المطلوب
                                 </th>
 
                             </tr>
@@ -352,25 +379,23 @@
                                     <span style="direction:ltr !important;"
                                           t-field="o.currency_id"/>
                                 </td>
-
+                                <td>
+                                    <h6 style="text-align: left;">
+                                        <span style="padding-left: 1px;"
+                                              t-esc="o.currency_id.with_context(lang='en_US').amount_to_text(o.amount_total)"/>
+                                    </h6>
+                                </td>
                             </tr>
 
                         </tbody>
                     </table>
-                    <h5 style="text-align: left;">
-                        <span style="padding-left: 10px;"
-                              t-esc="o.currency_id.with_context(lang='en_US').amount_to_text(o.amount_total)"/>
-                    </h5>
-                    <br/>
-                    <style>
 
-                    </style>
                     <table
                             style="float: right;  width: 550px;  border-collapse:collapse; direction:ltr !important; ">
                         <thead style="direction:ltr !important; text-align: left;">
                             <tr style="direction:ltr !important; text-align: left;">
                                 <th colspan="2"
-                                    style="border:1px solid black;direction:ltr !important; text-align: left;padding-left: 10px;">
+                                    style="border:1px solid black;background-color:lightyellow;padding:10px;direction:ltr !important; text-align: left;padding-left: 10px;">
                                     Bank Details / تفاصيل البنك
                                 </th>
 
@@ -380,11 +405,11 @@
                             <tr style="direction:ltr !important; text-align: left;">
 
                                 <td
-                                        style="border:1px solid black; direction:ltr !important; text-align: left; padding-left: 10px;">
+                                        style="border:1px solid black;background-color:lightyellow;padding:10px; direction:ltr !important; text-align: left; padding-left: 10px;">
                                     Bank Name /إسم البنك
                                 </td>
                                 <td
-                                        style="border:1px solid black; direction:ltr !important; text-align: left;">
+                                        style="border:1px solid black;background-color:lightyellow;padding:10px; direction:ltr !important; text-align: left;">
                                     <span
                                             t-if="o.company_id.partner_id.bank_ids and o.company_id.partner_id.bank_ids[0].bank_id"
                                             style="direction:ltr !important; text-align: left;"
@@ -395,11 +420,11 @@
                             <tr style="direction:ltr !important; text-align: left;">
 
                                 <td
-                                        style="border:1px solid black;direction:ltr !important; text-align: left; padding-left: 10px;">
+                                        style="border:1px solid black;background-color:lightyellow;padding:10px;direction:ltr !important; text-align: left; padding-left: 10px;">
                                     Account Name /إسم الحساب
                                 </td>
                                 <td
-                                        style="border:1px solid black; direction:ltr !important; text-align: left;">
+                                        style="border:1px solid black;background-color:lightyellow;padding:10px; direction:ltr !important; text-align: left;">
                                     <span t-field="o.company_id.partner_id"
                                           style="direction:ltr !important; text-align: left;"></span>
                                 </td>
@@ -408,11 +433,11 @@
                             <tr style="direction:ltr !important; text-align: left;">
 
                                 <td
-                                        style="border:1px solid black; direction:ltr !important; text-align: left;padding-left: 10px;">
+                                        style="border:1px solid black;background-color:lightyellow;padding:10px; direction:ltr !important; text-align: left;padding-left: 10px;">
                                     Account number/ رقم الحساب
                                 </td>
                                 <td
-                                        style="border:1px solid black; direction:ltr !important; text-align: left;">
+                                        style="border:1px solid black;background-color:lightyellow;padding:10px; direction:ltr !important; text-align: left;">
                                     <span
                                             t-if="o.company_id.partner_id.bank_ids and o.company_id.partner_id.bank_ids[0].acc_number"
                                             style="direction:ltr !important; text-align: left;"
@@ -422,16 +447,6 @@
 
                         </tbody>
                     </table>
-
-
-                    <t t-if="o.l10n_sa_qr_code_str">
-                        <div
-                                style="width:150px;height:150px;float:left;direction:ltr !important;   margin-left: 100px;">
-
-                            <img style="text-align: center" t-if="o.l10n_sa_qr_code_str"
-                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.l10n_sa_qr_code_str, 150, 150)"/>
-                        </div>
-                    </t>
 
 
                 </div>
