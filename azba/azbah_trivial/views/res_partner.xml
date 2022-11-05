@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="azbah_res_partner_form" model="ir.ui.view">
+        <field name="name">azbah.res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="company_type" position="before">
+                <group>
+                    <field name="english_name"/>
+                    <field name="code" placeholder="Code الكود"/>
+                </group>
+            </field>
+
+            <field name="street" position="before">
+                <field name="district" placeholder="District  الحي"/>
+            </field>
+
+            <field name="street2" position="attributes">
+                <attribute name="invisible">0</attribute>
+
+            </field>
+
+        </field>
+    </record>
+
+    <record id="azbah_res_partner_tree" model="ir.ui.view">
+        <field name="name">azbah.res.partner.tree</field>
+        <field name="model">res.partner</field>
+        <field name="type">tree</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="/tree/field[@name='display_name']" position="after">
+                <field name="english_name"/>
+                <field name="code"/>
+                <field name="district"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="azbah_view_partner_kanban" model="ir.ui.view">
+        <field name="name">azbah.view_employee_kanban</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='o_kanban_tags_section oe_kanban_partner_categories']" position="inside">
+                <li t-if="record.code.raw_value" class="o_text_overflow">
+                    <field name="english_name"/>
+                </li>
+                <li t-if="record.code.raw_value" class="o_text_overflow">
+                    [<field name="code"/>]
+                </li>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="azbah_view_res_partner_search" model="ir.ui.view">
+        <field name="name">azbah.view.res.partner.filter</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="code" filter_domain="[('code','ilike',self)]"/>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>

@@ -3,3 +3,4 @@
 from . import district
 from . import res_partner
 from . import product_template
+from . import hr_employee
