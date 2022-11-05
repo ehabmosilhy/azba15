@@ -14,7 +14,7 @@ class ResPartner(models.Model):
     english_name = fields.Char()
     code = fields.Char(string="الكود Code")
     district = fields.Many2one("geography.district", string="الحي District")
-    is_delegate = fields.Boolean('Is delegate', default=False)
+    # is_delegate = fields.Boolean('Is delegate', default=False)
     display_name = fields.Char(compute='_compute_display_name')
 
 
