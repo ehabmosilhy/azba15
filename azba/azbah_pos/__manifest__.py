@@ -3,8 +3,18 @@
     "version": "15.1",
     "license": "LGPL-3",
     "category": "POS Changes for Azba",
-    "depends": ["base",  "point_of_sale"],
+    "depends": ["base", "point_of_sale"],
     "data": [
 
-             ],
+    ],
+
+'assets': {
+        'point_of_sale.assets': [
+            'azbah_pos/static/src/js/**/*.js',
+        ],
+        'web.assets_qweb': [
+            'azbah_pos/static/src/xml/**/*.xml',
+        ],
+    }
+
 }
