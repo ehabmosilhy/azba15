@@ -14,9 +14,9 @@ class HREmployee(models.Model):
 
     code = fields.Char()
 
-    _sql_constraints = [
-        ('code_uniq', 'unique (code)', """Code must be unique هذا الكود موجود من قبل!"""),
-    ]
+    # _sql_constraints = [
+    #     ('code_uniq', 'unique (code)', """Code must be unique هذا الكود موجود من قبل!"""),
+    # ]
     english_name = fields.Char("English Name")
     partner_id = fields.Many2one('res.partner', string="Contact")
 

@@ -19,6 +19,6 @@ class ResPartner(models.Model):
     pos_config_ids = fields.Many2many("pos.config", string="Allowed POS")
 
 
-    _sql_constraints = [
-        ('code_uniq', 'unique (code)', """Code must be unique هذا الكود موجود من قبل!"""),
-    ]
+    # _sql_constraints = [
+    #     ('code_uniq', 'unique (code)', """Code must be unique هذا الكود موجود من قبل!"""),
+    # ]
