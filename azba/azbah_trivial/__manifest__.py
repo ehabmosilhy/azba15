@@ -7,8 +7,6 @@
     "data": ["views/res_partner.xml",
              "views/product_template.xml",
              "views/hr_employee.xml",
-             "security/district_security_group.xml",
-             'security/ir.model.access.csv',
 
              ],
 }

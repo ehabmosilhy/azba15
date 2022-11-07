@@ -20,7 +20,7 @@ class HREmployee(models.Model):
     english_name = fields.Char("English Name")
     partner_id = fields.Many2one('res.partner', string="Contact")
 
-    display_name = fields.Char(compute='_compute_display_name', store=True)
+    display_name = fields.Char(compute='_compute_display_name', store=True, readonly=False)
 
     @api.model
     def create(self, vals):

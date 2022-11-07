@@ -12,9 +12,9 @@ class ResPartner(models.Model):
 
     english_name = fields.Char()
     code = fields.Char(string="الكود Code")
-    district = fields.Many2one("geography.district", string="الحي District")
+    district = fields.Char(string="الحي District")
     # is_delegate = fields.Boolean('Is delegate', default=False)
-    display_name = fields.Char(compute='_compute_display_name', store=True)
+    display_name = fields.Char(compute='_compute_display_name', store=True, readonly=False)
 
     pos_config_ids = fields.Many2many("pos.config", string="Allowed POS")
 
