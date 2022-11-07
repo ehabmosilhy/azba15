@@ -5,10 +5,22 @@ from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationE
 
 class HREmployee(models.Model):
     _inherit = "hr.employee"
+    _order = "display_name"
+
+    @api.depends('name', 'code')
+    def _compute_display_name(self):
+        for emp in self:
+            emp.display_name = f'[{emp.code}] {emp.name}' if emp.code else emp.name or ''
 
     code = fields.Char()
+
+    _sql_constraints = [
+        ('code_uniq', 'unique (code)', """Code must be unique هذا الكود موجود من قبل!"""),
+    ]
     english_name = fields.Char("English Name")
     partner_id = fields.Many2one('res.partner', string="Contact")
+
+    display_name = fields.Char(compute='_compute_display_name', store=True)
 
     @api.model
     def create(self, vals):
