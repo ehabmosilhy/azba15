@@ -55,7 +55,7 @@
         <field name="inherit_id" ref="base.res_partner_kanban_view"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@class='o_kanban_tags_section oe_kanban_partner_categories']" position="inside">
-                <li t-if="record.code.raw_value" class="o_text_overflow">
+                <li t-if="record.english_name.raw_value" class="o_text_overflow">
                     <field name="english_name"/>
                 </li>
                 <li t-if="record.code.raw_value" class="o_text_overflow">
