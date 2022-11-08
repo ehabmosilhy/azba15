@@ -3,7 +3,7 @@ from datetime import date, timedelta, datetime
 from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
 
 
-class HREmployee(models.Model):
+class HREmployee(models.AbstractModel):
     _inherit = "hr.employee.base"
     _order = "display_name"
 
