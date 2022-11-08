@@ -3,7 +3,6 @@ from odoo import fields, models, api
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
-    date_relation_start = fields.Date()
     @api.depends('is_company', 'name', 'parent_id.display_name', 'type', 'company_name', 'code')
     def _compute_display_name(self):
         for partner in self:
