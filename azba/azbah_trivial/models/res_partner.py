@@ -17,7 +17,7 @@ class ResPartner(models.Model):
 
     pos_config_ids = fields.Many2many("pos.config", string="Allowed POS")
 
-    date_of_relation_start = fields.Date("تاريخ بداية التعامل")
+    # date_of_relation_start = fields.Date(string="تاريخ بداية التعامل")
 
 
     _sql_constraints = [
