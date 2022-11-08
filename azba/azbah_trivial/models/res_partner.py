@@ -10,11 +10,13 @@ class ResPartner(models.Model):
         for partner in self:
             partner.display_name = f'[{partner.code}] {partner.name}' if partner.code else partner.name or ''
 
+    # date_relation_start = fields.Date()
+    arabic_name=fields.Char()
     english_name = fields.Char()
     code = fields.Char(string="الكود Code")
     district = fields.Char(string="الحي District")
     display_name = fields.Char(compute='_compute_display_name', store=True, readonly=False)
-    date_relation_start = fields.Date()
+
     pos_config_ids = fields.Many2many("pos.config", string="Allowed POS")
 
 
