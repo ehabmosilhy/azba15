@@ -2,5 +2,4 @@
 
 from . import hr_employee
 from . import res_partner
-from . import res_partner_02
 from . import product_template
