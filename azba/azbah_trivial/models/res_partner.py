@@ -14,10 +14,8 @@ class ResPartner(models.Model):
     code = fields.Char(string="الكود Code")
     district = fields.Char(string="الحي District")
     display_name = fields.Char(compute='_compute_display_name', store=True, readonly=False)
-
+    date_relation_start = fields.Date()
     pos_config_ids = fields.Many2many("pos.config", string="Allowed POS")
-
-    # date_of_relation_start = fields.Date(string="تاريخ بداية التعامل")
 
 
     _sql_constraints = [
