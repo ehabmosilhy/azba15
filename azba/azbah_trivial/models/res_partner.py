@@ -3,6 +3,7 @@ from odoo import fields, models, api
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
+    date_relation_start = fields.Char(string="تاريخ بداية التعامل")
     @api.depends('is_company', 'name', 'parent_id.display_name', 'type', 'company_name', 'code')
     def _compute_display_name(self):
         for partner in self:
@@ -17,4 +18,3 @@ class ResPartner(models.Model):
 
     _sql_constraints = [('code_uniq', 'unique (code)', """Code must be unique هذا الكود موجود من قبل!""")]
 
-    date_relation_start = fields.Char(string="تاريخ بداية التعامل")
