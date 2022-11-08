@@ -5,6 +5,8 @@
     "category": "POS Changes for Azba",
     "depends": ["base", "point_of_sale"],
     "data": [
+        "views/pos_config.xml",
+        "security/pos_config_rules.xml"
 
     ],
 
