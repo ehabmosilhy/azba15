@@ -16,6 +16,6 @@ class ProductTemplate(models.Model):
 
 
 
-    # _sql_constraints = [
-    #     ('code_uniq', 'unique (code)', """Code must be unique هذا الكود موجود من قبل!"""),
-    # ]
+    _sql_constraints = [
+        ('code_uniq', 'unique (code)', """Code must be unique هذا الكود موجود من قبل!"""),
+    ]

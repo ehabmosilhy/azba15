@@ -21,6 +21,12 @@
                 <attribute name="invisible">1</attribute>
             </field>
 
+
+            <field name="category_id" position="after">
+                <field name="date_of_relation_start"/>
+            </field>
+
+
             <xpath expr="//notebook" position="inside">
                 <page string="POS" name="allowed_pos">
                     <group>

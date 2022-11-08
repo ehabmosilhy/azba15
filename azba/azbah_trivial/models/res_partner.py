@@ -13,12 +13,13 @@ class ResPartner(models.Model):
     english_name = fields.Char()
     code = fields.Char(string="الكود Code")
     district = fields.Char(string="الحي District")
-    # is_delegate = fields.Boolean('Is delegate', default=False)
     display_name = fields.Char(compute='_compute_display_name', store=True, readonly=False)
 
     pos_config_ids = fields.Many2many("pos.config", string="Allowed POS")
 
+    date_of_relation_start = fields.Date("تاريخ بداية التعامل")
 
-    # _sql_constraints = [
-    #     ('code_uniq', 'unique (code)', """Code must be unique هذا الكود موجود من قبل!"""),
-    # ]
+
+    _sql_constraints = [
+        ('code_uniq', 'unique (code)', """Code must be unique هذا الكود موجود من قبل!"""),
+    ]
