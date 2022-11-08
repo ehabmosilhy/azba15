@@ -11,7 +11,6 @@ class ResPartner(models.Model):
             partner.display_name = f'[{partner.code}] {partner.name}' if partner.code else partner.name or ''
 
     # date_relation_start = fields.Date()
-    arabic_name=fields.Char()
     english_name = fields.Char()
     code = fields.Char(string="الكود Code")
     district = fields.Char(string="الحي District")

@@ -1,6 +1,5 @@
-
-
 from odoo import fields, models, api
+
 
 class ProductTemplate(models.Model):
     _inherit = "product.template"
@@ -13,8 +12,7 @@ class ProductTemplate(models.Model):
     english_name = fields.Char(string="English Name")
     code = fields.Char(string="الكود Code")
     display_name = fields.Char(compute='_compute_display_name', store=True, readonly=False)
-
-
+    arabic_name = fields.Char()
 
     _sql_constraints = [
         ('code_uniq', 'unique (code)', """Code must be unique هذا الكود موجود من قبل!"""),
