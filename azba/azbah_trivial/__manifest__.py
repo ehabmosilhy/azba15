@@ -1,6 +1,6 @@
 {
     "name": "Trivial Changes for Azba",
-    "version": "15.1",
+    "version": "15.1.1",
     "license": "LGPL-3",
     "category": "Trivail Changes",
     "depends": ["base", "account", "product", "contacts", "hr", "point_of_sale"],
