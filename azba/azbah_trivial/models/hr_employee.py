@@ -4,7 +4,7 @@ from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationE
 
 
 class HREmployee(models.Model):
-    _inherit = "hr.employee"
+    _inherit = "hr.employee.base"
     _order = "display_name"
 
     @api.depends('name', 'code')
@@ -34,7 +34,7 @@ class HREmployee(models.Model):
 
         res = super(HREmployee, self).create(vals)
         return res
-
-class HREmployeePublic(models.Model):
-    _inherit = "hr.employee.public"
-    code = fields.Char()
+#
+# class HREmployeePublic(models.Model):
+#     _inherit = "hr.employee.public"
+#     code = fields.Char()
