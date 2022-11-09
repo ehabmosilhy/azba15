@@ -15,8 +15,6 @@
             </field>
 
             <field name="street" position="before">
-                <field name="date_relation_start"/>
-
                 <field name="district" placeholder="District  الحي"/>
             </field>
             <field name="street2" position="attributes">
