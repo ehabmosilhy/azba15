@@ -51,6 +51,15 @@
                 <field name="code"/>
                 <field name="district"/>
             </xpath>
+
+            <xpath expr="/tree/field[@name='country_id']" position="replace">
+                <field name="date_relation_start"/>
+            </xpath>
+
+            <xpath expr="/tree/field[@name='activity_ids']" position="replace">
+            </xpath>
+            <xpath expr="/tree/field[@name='email']" position="replace">
+            </xpath>
         </field>
     </record>
 
@@ -63,9 +72,6 @@
             <xpath expr="//div[@class='o_kanban_tags_section oe_kanban_partner_categories']" position="inside">
                 <li t-if="record.english_name.raw_value" class="o_text_overflow">
                     <field name="english_name"/>
-                </li>
-                <li t-if="record.code.raw_value" class="o_text_overflow">
-                    [<field name="code"/>]
                 </li>
             </xpath>
         </field>
