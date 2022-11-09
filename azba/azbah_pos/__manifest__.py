@@ -7,10 +7,9 @@
     "data": [
         "views/pos_config.xml",
         "security/pos_config_rules.xml"
-
     ],
 
-'assets': {
+    'assets': {
         'point_of_sale.assets': [
             'azbah_pos/static/src/js/**/*.js',
         ],

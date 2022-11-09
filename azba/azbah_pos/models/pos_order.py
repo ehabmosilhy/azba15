@@ -22,6 +22,8 @@ _logger = logging.getLogger(__name__)
 class PosOrder(models.Model):
     _inherit = "pos.order"
 
+    invoice_id = fields.Char()
+
     @api.model
     def _process_order(self, order, draft, existing_order):
         """Create or update an pos.order from a given dictionary.
@@ -68,4 +70,3 @@ class PosOrder(models.Model):
             pos_order._generate_pos_order_invoice()
 
         return pos_order.id
-
