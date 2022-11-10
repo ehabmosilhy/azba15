@@ -25,5 +25,8 @@ class PosOrder(models.Model):
     @api.model
     def _order_fields(self, ui_order):
         order_fields = super(PosOrder, self)._order_fields(ui_order)
-        order_fields['to_invoice'] = True
+        if self.lines:
+            order_fields['to_invoice'] = True
+        else:
+            order_fields['to_invoice'] = False
         return order_fields
