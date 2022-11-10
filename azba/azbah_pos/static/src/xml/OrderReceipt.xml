@@ -19,12 +19,5 @@
             </div>
         </xpath>
 
-        <xpath expr="//div[hasclass('pos-receipt-order-data')]" position="before">
- <t t-if="receipt.invoice_id">
-            فاتورة رقم:
-
-            <t t-esc="receipt.invoice_id"/>
- </t>
-        </xpath>
     </t>
 </templates>
