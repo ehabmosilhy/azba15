@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
+         <xpath expr="//div[@class='pos-receipt']" position="attributes">
+             <attribute name="style">"border: thick double #32a1ce"</attribute>
+    </xpath>
 
         <xpath expr="//div[hasclass('pos-receipt-contact')]" position="replace">
                    <div class="pos-receipt-contact">
                 <t t-if="receipt.header_html">
-                    <t t-raw="receipt.header_html" />
+                    <t t-raw="receipt.header_html"/>
                 </t>
-                <t t-if="!receipt.header_html and receipt.header">
+                       <t t-if="!receipt.header_html and receipt.header">
                     <div style="white-space:pre-line"><t t-esc="receipt.header" /></div>
                 </t>
-                <t t-if="receipt.cashier">
+                       <t t-if="receipt.cashier">
                     <div class="cashier">
                         <div>--------------------------------</div>
-                        <div>Served by <t t-esc="receipt.cashier" /></div>
+                        <div>Served by <t t-esc="receipt.cashier"/></div>
                     </div>
+
+                           <div>--------------------------------</div>
+                           <div>
+                           <div>Customer اسم العميل
+                               <br/>
+                               <t t-esc="receipt.client.name"/> </div>
+                               <br/>
+
+                               <div>Customer VAT: الرقم الضريبى للعميل
+                                                              <br/>
+                                   <t t-if="receipt.client.vat"> <t t-esc="receipt.client.vat"/> </t></div>
+                           </div>
                 </t>
             </div>
         </xpath>

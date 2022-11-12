@@ -1,10 +1,3 @@
-# from googletrans import Translator
-# translator = Translator()
-# t=translator.translate('مركز عمار  للتسويق')
-# print (t)
-from googletrans import Translator
-
-translator = Translator()
 
 import xmlrpc.client
 import csv
@@ -20,8 +13,9 @@ uid = common.authenticate(db, username, password, {})
 models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
 start_time = time.perf_counter()
 
+
 names = models.execute_kw(db, uid, password, 'res.partner',
-                             'search_read', [],{'fields': ['name']})
+                             'search_read', [[['english_name', '=', False]]],{'fields': ['name']})
 for name in names:
     english_name=translator.translate(name['name']).text
 

@@ -25,7 +25,7 @@ class PosOrder(models.Model):
     @api.model
     def _order_fields(self, ui_order):
         order_fields = super(PosOrder, self)._order_fields(ui_order)
-        if self.lines:
+        if order_fields['lines']: #[[0, 0, {'qty': 5, 'price_unit': 1, 'price_subtotal': 5, 'price_subtotal_incl': 5.75, 'discount': 0, 'product_id': 6, 'tax_ids': [[6, False, [1]]], 'id': 17, 'pack_lot_ids': [], 'full_product_name': 'قوارير ابيض مع المياة', 'name': 'Shop/0014'}]]
             order_fields['to_invoice'] = True
         else:
             order_fields['to_invoice'] = False
