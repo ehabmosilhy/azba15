@@ -13,7 +13,6 @@
                         <field name="allowed_users" widget="many2many_tags"/>
                     </div>
                 </div>
-
             </xpath>
         </field>
     </record>

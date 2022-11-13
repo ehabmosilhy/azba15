@@ -28,7 +28,7 @@
 
 
             <xpath expr="//notebook" position="inside">
-                <page string="POS" name="allowed_pos">
+                <page string="Routes المسارات" name="allowed_pos">
                     <group>
                         <field name="pos_config_ids" widget="many2many_tags"/>
 
