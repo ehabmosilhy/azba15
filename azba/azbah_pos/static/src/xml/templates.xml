@@ -1,25 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-     <t t-name="ClientLine" t-inherit="point_of_sale.ClientLine" t-inherit-mode="extension" owl="1">
+
+      <t t-name="ClientLine" t-inherit="point_of_sale.ClientLine" t-inherit-mode="extension" owl="1">
         <xpath expr="//td[hasclass('client-line-last-column-placeholder')]" position="before">
-            <td class="pos-right-align cursor-pointer">
-                <t t-esc="props.partner.english_name or ''"/>
+            <td class="customer-due pos-right-align cursor-pointer" t-on-click="settleCustomerDue">
+                <t t-esc="env.pos.format_currency(props.partner.total_due) or ''" />
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
             </td>
-            <td class="pos-right-align cursor-pointer">
-                <t t-esc="props.partner.code or ''"/>
+            <td class="client-line-open-link" t-att-class="highlight">
+                <a t-att-href="getPartnerLink()" target="_blank" t-on-click.stop=""><i class="fa fa-external-link" aria-hidden="true"></i></a>
             </td>
         </xpath>
     </t>
 
     <t t-name="ClientListScreen" t-inherit="point_of_sale.ClientListScreen" t-inherit-mode="extension" owl="1">
         <xpath expr="//th[hasclass('client-line-last-column-placeholder')]" position="before">
-            <th class="pos-right-align">English Name</th>
-            <th class="pos-right-align">Code</th>
+            <th class="customer-due pos-right-align">Amount Due <i class="fa fa-refresh cursor-pointer" t-on-click="refreshTotalDue"></i></th>
+            <th class="client-line-open-link"></th>
         </xpath>
     </t>
 
-<!--    Hide the Invoice Button-->
+   <t t-name="ClientListScreen" t-inherit="point_of_sale.ClientListScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//th" position="after">
+            <th class="pos-right-align">Code</th>
+        </xpath>
+
+       <xpath expr="//th[hasclass('client-line-last-column-placeholder')]" position="before">
+            <th class="pos-right-align">English Name</th>
+        </xpath>
+    </t>
+
+
+
+    <t t-name="ClientLine" t-inherit="point_of_sale.ClientLine" t-inherit-mode="extension" owl="1">
+        <xpath expr="//td" position="after">
+            <td class="pos-right-align cursor-pointer">
+                <t t-esc="props.partner.code or ''"/>
+            </td>
+        </xpath>
+
+
+
+        <xpath expr="//td[hasclass('client-line-last-column-placeholder')]" position="before">
+            <td class="pos-right-align cursor-pointer">
+                <t t-esc="props.partner.english_name or ''"/>
+            </td>
+        </xpath>
+    </t>
+
+
+
+
+
+    <!--    Hide the Invoice Button-->
     <t t-name="PaymentScreen" t-inherit="point_of_sale.PaymentScreen" t-inherit-mode="extension" owl="1">
          <xpath expr="//div[hasclass('js_invoice')]" position="replace">
 
