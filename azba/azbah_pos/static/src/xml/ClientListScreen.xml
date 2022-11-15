@@ -37,12 +37,13 @@
                         <input placeholder="Search Customers" size="1" t-on-keyup="updateClientList"/>
                         <span class="search-clear-client"></span>
                     </div>
-                    <div class="button back" t-on-click="searchClient()" t-if="!state.detailIsShown" style="display:none">
+                    <div class="button back" t-on-click="searchClient()" t-if="!state.detailIsShown"
+                         style="display:none">
                         <span class="database-icon">
                             <i class="fa fa-database"/>
                         </span>
                         <t t-if="!env.isMobile">
-                            <span class="load-customer-search" >
+                            <span class="load-customer-search">
                                 Load Customers
                             </span>
                         </t>
@@ -65,8 +66,10 @@
                                         <thead>
                                             <tr>
 
-                                                <th style="width: 100px;">Name</th>
-<!--                                                <th t-if="env.isMobile">Code</th>-->
+                                                <th  t-if="!env.isMobile" style="width: 100px;">Name-100m</th>
+                                                <th style="width: 100px;">Name-100</th>
+
+                                                <!--                                                <th t-if="env.isMobile">Code</th>-->
                                                 <th class="client-line-last-column-placeholder oe_invisible"></th>
                                             </tr>
                                         </thead>
