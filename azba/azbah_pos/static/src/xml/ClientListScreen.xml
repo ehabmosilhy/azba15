@@ -64,7 +64,8 @@
                                     <table class="client-list">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
+
+                                                <th style="width: 100px;">Name</th>
 <!--                                                <th t-if="env.isMobile">Code</th>-->
                                                 <th class="client-line-last-column-placeholder oe_invisible"></th>
                                             </tr>
