@@ -6,7 +6,8 @@
     <t t-name="ClientLine" owl="1">
         <tr t-attf-class="client-line {{highlight}}" t-att-data-id="props.partner.id"
             t-on-click="trigger('click-client', {client: props.partner})">
-            <td>
+            <td style="width: 40px; inline-size: 40px;
+    overflow-wrap: break-word;">
                 <t t-esc="props.partner.name or ''"/>
                 <span t-if="highlight">
                     <br/>

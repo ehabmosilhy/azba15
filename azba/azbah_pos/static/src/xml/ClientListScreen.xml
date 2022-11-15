@@ -66,8 +66,8 @@
                                         <thead>
                                             <tr>
 
-                                                <th  t-if="!env.isMobile" style="width: 100px;">Name-100m</th>
-                                                <th style="width: 100px;">Name-100</th>
+                                                <th style="width: 40px; inline-size: 40px;
+    overflow-wrap: break-word;">Name-80</th>
 
                                                 <!--                                                <th t-if="env.isMobile">Code</th>-->
                                                 <th class="client-line-last-column-placeholder oe_invisible"></th>
