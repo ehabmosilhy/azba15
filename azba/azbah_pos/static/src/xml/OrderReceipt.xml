@@ -52,7 +52,7 @@
                     </t>
                 </div>
                 <t t-if="receipt.header_html">
-                    <div style="text-align:center">
+                    <div id="header" name="header" style="text-align:center">
                         <t t-raw="receipt.header_html"/>
                     </div>
                     </t>
@@ -64,13 +64,20 @@
                     </div>
                                         </div>
                 </t>
+                <!--Invoice Number -->
+                <t t-if="receipt.invoice_number">
+                    <div style="font-size: 14px;padding-top: 10px;text-align: center;font-weight: 700;">
+                        Invoice: <t t-esc="receipt.invoice_number"/>
+                    </div>
+                </t>
+
                 <div style="text-align:center">
 
                 <t t-if="receipt.cashier">
                     <div class="cashier">
                         <div>--------------------------------</div>
                         <div>
-                            Served by
+                            Rep المندوب
                             <t t-esc="receipt.cashier"/>
                             <div>--------------------------------</div>
 
@@ -264,24 +271,24 @@
 
                         <div class="pos-receipt-left-padding">
 <!--                           <table>-->
-<!--                            <tr>-->
-<!--                           <td>-->
+                            <!--                            <tr>-->
+                            <!--                           <td>-->
                             <t t-esc="Math.round(line.quantity * Math.pow(10, env.pos.dp['Product Unit of Measure'])) / Math.pow(10, env.pos.dp['Product Unit of Measure'])"/>
-                               <t t-if="!line.is_in_unit" t-esc="line.unit_name"/>
-<!--                            </td>-->
+                            <t t-if="!line.is_in_unit" t-esc="line.unit_name"/>
+                            <!--                            </td>-->
 
-<!--                            <td>-->
+                            <!--                            <td>-->
                             x <!-- x sign -->
-<!--                            </td>-->
+                            <!--                            </td>-->
 
-<!--                            <td>-->
+                            <!--                            <td>-->
                             <t t-esc="env.pos.format_currency_no_symbol(line.price_display_one)"/>
-                                <span class="price_display pos-receipt-right-align">
+                            <span class="price_display pos-receipt-right-align">
                                 <t t-esc="env.pos.format_currency_no_symbol(line.price_display)"/>
                             </span>
-<!--                            </td>-->
-<!--                            </tr>-->
-<!--                            </table>-->
+                            <!--                            </td>-->
+                            <!--                            </tr>-->
+                            <!--                            </table>-->
                 </div>
 
 

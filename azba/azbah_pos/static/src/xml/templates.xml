@@ -53,7 +53,7 @@
     </t>
 
 
-    <!--    Hide the Invoice Button-->
+<!--        Hide the Invoice Button-->
     <t t-name="PaymentScreen" t-inherit="point_of_sale.PaymentScreen" t-inherit-mode="extension" owl="1">
          <xpath expr="//div[hasclass('js_invoice')]" position="replace">
 
@@ -61,7 +61,7 @@
                    t-att-class="{ highlight: currentOrder.is_to_invoice() }"
                    t-on-click="toggleIsToInvoice">
             <i class="fa fa-file-text-o"/>
-                  Invoice                                    </div>
+                  Invoice</div>
          </xpath>
     </t>
 
