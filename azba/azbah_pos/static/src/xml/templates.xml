@@ -27,7 +27,7 @@
     <t t-name="ClientListScreen" t-inherit="point_of_sale.ClientListScreen" t-inherit-mode="extension" owl="1">
         <xpath expr="//th" position="after">
             <th class="pos-right-align" style="width: 40px; inline-size: 40px;
-    overflow-wrap: break-word;">Code-60</th>
+    overflow-wrap: break-word;">Code</th>
         </xpath>
 
         <xpath expr="//th[hasclass('client-line-last-column-placeholder')]" position="before">

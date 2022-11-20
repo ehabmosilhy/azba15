@@ -12,6 +12,7 @@
     'assets': {
         'point_of_sale.assets': [
             'azbah_pos/static/src/js/**/*.js',
+            'azbah_pos/static/src/css/**/*.css',
         ],
         'web.assets_qweb': [
             'azbah_pos/static/src/xml/**/*.xml',
