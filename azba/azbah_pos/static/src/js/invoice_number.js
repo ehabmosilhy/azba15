@@ -20,8 +20,14 @@ odoo.define('azbah_pos.invoice_number',function(require){
                         args:[order_server_id, ['account_move']]
                             }).then(function(result_dict){
                                 if(result_dict.length){
+                                    // let invoice = result_dict[0].account_move;
+                                    // self.get_order().invoice_number = invoice[1]
+
                                     let invoice = result_dict[0].account_move;
+                                    let order_id = result_dict[0].id;
+
                                     self.get_order().invoice_number = invoice[1]
+                                    self.get_order().id = order_id
                                 }
                         })
                         .catch(function(error){
@@ -38,6 +44,7 @@ odoo.define('azbah_pos.invoice_number',function(require){
             let receipt = SuperOrder.export_for_printing.call(this)
             if(self.invoice_number){
                 receipt.invoice_number = self.invoice_number.split(" ")[0];
+                receipt.id = self.id;
             }
             return receipt
         }
