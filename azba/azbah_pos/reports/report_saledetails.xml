@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="azbah_report_saledetails" inherit_id="point_of_sale.report_saledetails">
+            <xpath expr="//div[hasclass('text-center')]" position="before">
+                <t t-foreach='configs' t-as='conf'>
+                    [<t t-esc="conf[1]"/> - <t t-esc="conf[2]"/>]
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>
