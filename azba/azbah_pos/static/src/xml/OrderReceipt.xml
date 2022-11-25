@@ -106,9 +106,12 @@
                                 العميل
                         </td>
                         <td class="client_cell">
+                            [<t t-esc="receipt.client.code"/>]
                             <t t-esc="receipt.client.name"/>
                         </td>
                     </tr>
+
+
                     <tr>
                         <td class="client_cell">
                          الرقم الضريبى
@@ -135,12 +138,15 @@
                         <div>
                             Subtotal
                             <span t-esc="env.pos.format_currency(receipt.subtotal)" class="pos-receipt-right-align"/>
+                            <br/>
                         </div>
                         <t t-foreach="receipt.tax_details" t-as="tax" t-key="tax.name">
-                            <div class="responsive-price">
+                            <div class="responsive-price" style="margin-top:10px;">
                                 <t t-esc="tax.name"/>
                                 <span t-esc='env.pos.format_currency_no_symbol(tax.amount)'
                                       class="pos-receipt-right-align"/>
+                                <br/>
+
                             </div>
                         </t>
                     </t>
@@ -234,7 +240,8 @@
                     <div>
                         <t t-esc="receipt.name"/>
                         <br/>
-                        - ID:  <t t-esc="receipt.id"/>
+                        - ID:
+                        <t t-esc="receipt.id"/>
                     </div>
                     <t t-if="receipt.date.localestring">
                         <div>
@@ -408,8 +415,6 @@
                             <td class="client_cell">
                                 <!-- Product Name -->
                                 <span t-esc="line.product_name_wrapped[0]"/>
-                                <br/>
-                                <span t-esc="receipt.id"/>
                             </td>
                             <td class="client_cell">
                                 <t t-esc="Math.round(line.quantity * Math.pow(10, env.pos.dp['Product Unit of Measure'])) / Math.pow(10, env.pos.dp['Product Unit of Measure'])"/>
