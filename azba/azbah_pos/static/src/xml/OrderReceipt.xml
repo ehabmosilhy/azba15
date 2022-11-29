@@ -60,22 +60,52 @@
                         </div>
                     </div>
                 </t>
+                <!--            <t t-if="channel.orderedOnlineMembers.length > 0">-->
+
+
+                <t t-if="receipt.orderlines.length &gt; 0">
+                    <t t-if="receipt.invoice_number">
+                        <div style="direction:rtl;text-align:center;padding:15px;
+                            font-weight: bolder;">
+                        فاتورة ضريبية مبسطة
+                        </div>
+                    </t>
+
+                </t>
+
+                <t t-else="">
+                   <div style="direction:rtl;text-align:center;padding:15px;
+                            font-weight: bolder;">
+                        سند قبض
+                        </div>
+                </t>
+
 
                 <!--                Client Table -->
                 <div style="direction:rtl;padding-top: 5px;">
 
                 <table style="width:100%;border: 1px solid black; direction: rtl; text-align: right;">
-                    <tr>
-                        <td class="client_cell"></td>
+                   <tr>
                         <td class="client_cell">
-                            <!--Invoice Number -->
-                            <t t-if="receipt.invoice_number">
-                                <div style="font-size: 14px;padding-top: 10px;text-align: center;font-weight: 700;">
-                                    <t t-esc="receipt.invoice_number"/>
-                                </div>
-                            </t>
+                                التاريخ
+                        </td>
+                       <td class="client_cell">
+                            <t t-esc="receipt.date.localestring"/>
                         </td>
                     </tr>
+                    <t t-if="receipt.invoice_number">
+                        <tr>
+                            <td class="client_cell"> رقم الفاتورة</td>
+                            <td class="client_cell">
+                                <!--Invoice Number -->
+                                <t t-if="receipt.invoice_number">
+                                    <div style="font-size: 14px;padding-top: 10px;text-align: center;font-weight: 700;">
+                                        <t t-esc="receipt.invoice_number"/>
+                                    </div>
+                                </t>
+                            </td>
+                        </tr>
+                    </t>
                     <t t-if="receipt.cashier">
                         <t t-set="cashier" t-value="receipt.cashier"/>
                         <tr style="display:none">
@@ -118,7 +148,9 @@
 
             </td>
                         <td class="client_cell">
-                            <t t-esc="receipt.client.vat"/>
+                            <t t-if="receipt.client.vat">
+                                <t t-esc="receipt.client.vat"/>
+                            </t>
                         </td>
                     </tr>
                 </table>
@@ -389,6 +421,9 @@
 
 
             <div style="padding-top: 15px;">
+
+                <t t-if="receipt.orderlines.length &gt; 0">
+
                 <table style="border: 1px solid black; direction: rtl; text-align: right;">
                     <tr>
                         <td class="client_cell">
@@ -432,6 +467,8 @@
                         </tr>
                     </t>
                 </table>
+                </t>
+
             </div>
         </xpath>
     </t>

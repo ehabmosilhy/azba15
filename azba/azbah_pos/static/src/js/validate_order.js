@@ -14,12 +14,12 @@ odoo.define('azbah_pos.validate', function (require) {
                 // Ehab
                 // Check Connection
 
-                if (!window.navigator.onLine || isConnectionError()) {
-                    throw new Error("Mafish Internet Connection!' +\n" +
-                        "\\n لا يوجد اتصال بالإنترنت';");
-
-                }
-                else {
+                // if (!window.navigator.onLine || isConnectionError()) {
+                //     throw new Error("Mafish Internet Connection!' +\n" +
+                //         "\\n لا يوجد اتصال بالإنترنت';");
+                //
+                // }
+                // else {
                     if (this.currentOrder.get_orderlines().length > 0) {
                         this.currentOrder.set_to_invoice(true);
                         this.render();
@@ -28,7 +28,7 @@ odoo.define('azbah_pos.validate', function (require) {
 
 
 
-                }
+                // }
 
 
             }
