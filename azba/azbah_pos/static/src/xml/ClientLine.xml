@@ -10,6 +10,9 @@
                 <t t-esc="props.partner.name or ''"/>
                 <span t-if="highlight">
                     <br/>
+
+<!--                    ///////////////-->
+<!--                    Remove Edit Button -->
 <!--                    <button class="edit-client-button" t-on-click.stop="trigger('click-edit')">EDIT</button>-->
                 </span>
             </td>

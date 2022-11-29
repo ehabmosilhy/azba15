@@ -15,6 +15,7 @@ class PosConfig(models.Model):
 
     allowed_users = fields.Many2many("res.users")
 
+    # Show only some partners
     def get_limited_partners_loading(self):
         partners = self.env['res.partner'].search([('pos_config_ids', 'in', self.id)]).mapped("id")
         result = [(_,) for _ in partners]
