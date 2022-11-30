@@ -14,3 +14,10 @@ class ProductTemplate(models.Model):
     display_name = fields.Char(compute='_compute_display_name', store=True, readonly=False)
 
     _sql_constraints = [('code_uniq', 'unique (code)', """Code must be unique هذا الكود موجود من قبل!""")]
+
+
+    def name_get(self):
+        result = []
+        for rec in self:
+            result.append((rec.id, '%s - %s' % (rec.code, rec.name)))
+        return result

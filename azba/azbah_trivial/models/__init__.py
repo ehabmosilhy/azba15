@@ -3,4 +3,5 @@
 from . import hr_employee
 from . import res_partner
 from . import product_template
+from . import product_product
 from . import account_move
