@@ -77,6 +77,8 @@
                    <div style="direction:rtl;text-align:center;padding:15px;
                             font-weight: bolder;">
                         سند قبض
+                       <br/>
+                         <t t-esc="receipt.name" />
                         </div>
                 </t>
 
