@@ -8,4 +8,10 @@
     'data': [
         'report/customer_invoice.xml',
     ],
+
+    'assets': {
+        'web.assets_common': [
+            'custom_invoice_templates/static/src/css/*.css',
+        ],
+    }
 }

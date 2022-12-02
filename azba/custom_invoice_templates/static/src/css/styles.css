@@ -1,0 +1,13 @@
+.items_table {
+    float: left;
+    width: 100%;
+    text-align: center;
+    direction: ltr !important;
+    padding-top: 0px;
+    table-layout: fixed;
+    margin-top: 0.1cm;
+    margin-bottom: 2cm;
+    border: 1px solid black;
+    padding: 1px 1px 1px 1px;
+    box-shadow: 10px 10px 10px grey;
+}
