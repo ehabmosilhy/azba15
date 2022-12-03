@@ -4,6 +4,7 @@ from odoo import fields, models, api
 class ResPartner(models.Model):
     _inherit = "res.partner"
     date_relation_start = fields.Date(string="تاريخ بداية التعامل")
+
     @api.depends('is_company', 'name', 'parent_id.display_name', 'type', 'company_name', 'code')
     def _compute_display_name(self):
         for partner in self:
@@ -13,6 +14,7 @@ class ResPartner(models.Model):
     code = fields.Char(string="الكود Code")
     district = fields.Char(string="الحي District")
     display_name = fields.Char(compute='_compute_display_name', store=True, readonly=False)
+    # is_delegate = fields.Boolean('Is delegate مندوب؟', default=False)
 
     pos_config_ids = fields.Many2many("pos.config", string="Routes المسارات")
 

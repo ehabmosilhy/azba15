@@ -11,6 +11,7 @@
                 <group>
                     <field name="english_name"/>
                     <field name="code" placeholder="Code الكود"/>
+<!--                    <field name="is_delegate"/>-->
                 </group>
             </field>
 
