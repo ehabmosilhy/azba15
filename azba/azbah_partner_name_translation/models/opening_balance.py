@@ -19,4 +19,4 @@ for c in codes:
     id = models.execute_kw(db, uid, password, 'res.partner',
                                  'search_read', [[
                                                   ['code', '=',c]]],{'fields': ['code','name','id']})
-    print ("id[0]['code'],id[0]['id'],id[0]['name'])
+    # print ("id[0]['code'],id[0]['id'],id[0]['name'])
