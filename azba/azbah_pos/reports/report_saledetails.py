@@ -116,7 +116,7 @@ class ReportSaleDetails(models.AbstractModel):
                     inner join res_partner partner on o.partner_id = partner.id
                     where m.id=1 and p.payment_date between '{date_start}' and '{date_stop}' and c.id in {tuple(config_ids)}
                     order by m.name;
-                """
+                """.replace(',)',')')  # <== to remove the last comma in tuple i fit hs only one
 
         self.env.cr.execute(payments_cash)
         payments_cash = self.env.cr.dictfetchall()
@@ -131,7 +131,7 @@ class ReportSaleDetails(models.AbstractModel):
                            inner join res_partner partner on o.partner_id = partner.id
                            where m.id=1 and p.payment_date between '{date_start}' and '{date_stop}' and c.id in {tuple(config_ids)}
                            ;
-                       """
+                """.replace(',)',')')  # <== to remove the last comma in tuple i fit hs only one
         self.env.cr.execute(payments_cash_sum)
         payments_cash_sum = self.env.cr.fetchone()
 
