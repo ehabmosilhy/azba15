@@ -92,7 +92,7 @@
                                 التاريخ
                         </td>
                        <td class="client_cell">
-                            <t t-esc="receipt.date.validation_date"/>
+                            <t t-esc="receipt.date.localestring"/>
                         </td>
                     </tr>
                     <t t-if="receipt.invoice_number">
