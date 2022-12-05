@@ -98,7 +98,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr t-foreach='payments_cash' t-as='cash'>
+                        <tr t-foreach='cashes' t-as='cash'>
                             <td>
                                 <t t-esc="cash['pos_reference']" />
                             </td>
@@ -112,7 +112,74 @@
                         <tr>
                             <td colspan="2">الإجمالى</td>
                             <td>   <h5>
-                                <t t-esc="payments_cash_sum" />
+
+                                </h5></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                  <h5>2- Credits</h5>
+
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>الإيصال</th>
+                            <th>العميل</th>
+                            <th>المبلغ</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach='credits' t-as='credit'>
+                            <td>
+                                <t t-esc="credit['pos_reference']" />
+                            </td>
+                            <td>
+                                <t t-esc="credit['partner_name']" />
+                            </td>
+                            <td>
+                                <t t-esc="credit['amount']" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">الإجمالى</td>
+                            <td>   <h5>
+
+                                </h5></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+                  <h5>3- Debits</h5>
+
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>الإيصال</th>
+                            <th>العميل</th>
+                            <th>المبلغ</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach='debits' t-as='debit'>
+                            <td>
+                                <t t-esc="debit['pos_reference']" />
+                            </td>
+                            <td>
+                                <t t-esc="debit['partner_name']" />
+                            </td>
+                            <td>
+                                <t t-esc="debit['amount']" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">الإجمالى</td>
+                            <td>   <h5>
+
                                 </h5></td>
                         </tr>
                     </tbody>

@@ -107,38 +107,42 @@ class ReportSaleDetails(models.AbstractModel):
             payments = []
 
         payments_cash = f"""
-                    select p.amount,concat('[' , partner.code , ']',' ',partner.name)  as partner_name, m.name,p.session_id , o.name,o.pos_reference from
-                    pos_payment p
-                    inner join pos_payment_method m on p.payment_method_id = m.id
-                    inner join pos_order o on o.id=p.pos_order_id
-                    inner join pos_session s on p.session_id= s.id
-                    inner join pos_config c on c.id=s.config_id
-                    inner join res_partner partner on o.partner_id = partner.id
-                    where m.id=1 and p.payment_date between '{date_start}' and '{date_stop}' and c.id in {tuple(config_ids)}
-                    order by m.name;
-                """.replace(',)',')')  # <== to remove the last comma in tuple i fit hs only one
+                select o.pos_reference, p.amount,m.id  as payment_method_id,m.name,concat('[' , partner.code , ']',' ',partner.name)  as partner_name, p.session_id , o.name from
+                pos_payment p
+                inner join pos_payment_method m on p.payment_method_id = m.id
+                inner join pos_order o on o.id=p.pos_order_id
+                inner join pos_session s on p.session_id= s.id
+                inner join pos_config c on c.id=s.config_id
+                inner join res_partner partner on o.partner_id = partner.id
+                where p.payment_date between '{date_start}' and '{date_stop}' and c.id in {tuple(config_ids)}
+                order by partner.name, m.name;
+                """.replace(',)',')')  # <== to remove the last comma in tuple if it has only one
 
         self.env.cr.execute(payments_cash)
+
+        cashes=[]
+        credits=[]
+        debits=[]
         payments_cash = self.env.cr.dictfetchall()
-
-        payments_cash_sum = f"""
-                           select sum(p.amount) as payments_cash_sum from
-                           pos_payment p
-                           inner join pos_payment_method m on p.payment_method_id = m.id
-                           inner join pos_order o on o.id=p.pos_order_id
-                           inner join pos_session s on p.session_id= s.id
-                           inner join pos_config c on c.id=s.config_id
-                           inner join res_partner partner on o.partner_id = partner.id
-                           where m.id=1 and p.payment_date between '{date_start}' and '{date_stop}' and c.id in {tuple(config_ids)}
-                           ;
-                """.replace(',)',')')  # <== to remove the last comma in tuple i fit hs only one
-        self.env.cr.execute(payments_cash_sum)
-        payments_cash_sum = self.env.cr.fetchone()
-
+        for i in range(len(payments_cash)):
+            for j in range(i+1,len(payments_cash)):
+                if payments_cash[j]['pos_reference']== payments_cash[i]['pos_reference']:
+                    credits.append(payments_cash[i])
+                elif payments_cash[i]['payment_method_id']==1:
+                    cashes.append(payments_cash[i])
+                    break
+                elif payments_cash[i]['payment_method_id']==3 and payments_cash[i]['amount']<0:
+                    credits.append(payments_cash[i])
+                    break
+                elif payments_cash[i]['payment_method_id'] == 3 and payments_cash[i]['amount'] > 0:
+                    debits.append(payments_cash[i])
+                    break
 
         return {
-            'payments_cash':payments_cash,
-            'payments_cash_sum':payments_cash_sum,
+            'cashes':cashes,
+            'credits':credits,
+            'debits':debits,
+            # 'payments_cash_sum':payments_cash_sum,
             'currency_precision': user_currency.decimal_places,
             'total_paid': user_currency.round(total),
             'payments': payments,
