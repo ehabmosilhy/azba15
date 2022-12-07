@@ -107,7 +107,9 @@
                                 </t>
                             </td>
                         </tr>
+
                     </t>
+
                     <t t-if="receipt.cashier">
                         <t t-set="cashier" t-value="receipt.cashier"/>
                         <tr style="display:none">
