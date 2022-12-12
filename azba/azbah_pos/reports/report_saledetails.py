@@ -106,8 +106,8 @@ class ReportSaleDetails(models.AbstractModel):
         else:
             payments = []
 
-        payments_cash = f"""
-                select o.pos_reference, p.amount,m.id  as payment_method_id,m.name,concat('[' , partner.code , ']',' ',partner.name)  as partner_name, p.session_id , o.name from
+        payments_cash_sql = f"""
+                select p.payment_date,o.pos_reference, p.amount,m.id  as payment_method_id,m.name,concat('[' , partner.code , ']',' ',partner.name)  as partner_name, p.session_id , o.name from
                 pos_payment p
                 inner join pos_payment_method m on p.payment_method_id = m.id
                 inner join pos_order o on o.id=p.pos_order_id
@@ -115,33 +115,51 @@ class ReportSaleDetails(models.AbstractModel):
                 inner join pos_config c on c.id=s.config_id
                 inner join res_partner partner on o.partner_id = partner.id
                 where p.payment_date between '{date_start}' and '{date_stop}' and c.id in {tuple(config_ids)}
-                order by partner.name, m.name;
-                """.replace(',)',')')  # <== to remove the last comma in tuple if it has only one
+                order by p.payment_date, m.name;
+                """.replace(',)', ')')  # <== to remove the last comma in tuple if it has only one
 
-        self.env.cr.execute(payments_cash)
+        self.env.cr.execute(payments_cash_sql)
 
-        cashes=[]
-        credits=[]
-        debits=[]
+        cashes = []
+        credits = []
+        debits = []
+        total_cash = total_credit = total_debit = 0
+
         payments_cash = self.env.cr.dictfetchall()
         for i in range(len(payments_cash)):
-            for j in range(i+1,len(payments_cash)):
-                if payments_cash[j]['pos_reference']== payments_cash[i]['pos_reference']:
-                    credits.append(payments_cash[i])
-                elif payments_cash[i]['payment_method_id']==1:
-                    cashes.append(payments_cash[i])
-                    break
-                elif payments_cash[i]['payment_method_id']==3 and payments_cash[i]['amount']<0:
-                    credits.append(payments_cash[i])
-                    break
-                elif payments_cash[i]['payment_method_id'] == 3 and payments_cash[i]['amount'] > 0:
-                    debits.append(payments_cash[i])
-                    break
+            # for j in range(i,len(payments_cash)):
+            #
+            #     if payments_cash[j]['pos_reference']== payments_cash[i]['pos_reference']:
+            #         pass
+            #         # credits.append(payments_cash[i])
+
+            if payments_cash[i]['payment_method_id'] == 3 and payments_cash[i]['amount'] > 0:
+                credits.append(payments_cash[i])
+                total_credit += float(payments_cash[i]['amount'])
+
+            if payments_cash[i]['payment_method_id'] == 3 and payments_cash[i]['amount'] < 0:
+                debits.append(payments_cash[i])
+                total_debit += float(payments_cash[i]['amount'])
+
+            if payments_cash[i]['payment_method_id'] == 1:
+                cashes.append(payments_cash[i])
+                total_cash += float(payments_cash[i]['amount'])
+
+        indices = []
+        for d in debits:
+            for indi, c in enumerate(cashes):
+                if d['pos_reference'] == c['pos_reference'] and d['amount'] == c['amount'] * -1:
+                    cashes.remove(c)
+                    total_cash -= float(c['amount'])
 
         return {
-            'cashes':cashes,
-            'credits':credits,
-            'debits':debits,
+            'cashes': cashes,
+            'credits': credits,
+            'debits': debits,
+            'total_cash': total_cash,
+            'total_credit': total_credit,
+            'total_debit': total_debit,
+            'total_debit_and_cash':total_cash+total_debit,
             # 'payments_cash_sum':payments_cash_sum,
             'currency_precision': user_currency.decimal_places,
             'total_paid': user_currency.round(total),
