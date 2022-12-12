@@ -31,6 +31,8 @@
                                 <t t-esc="receipt.company.vat_label"/>
                                 :
                                 <t t-esc="receipt.company.vat"/>
+
+
                             </div>
                         </t>
                         <t t-if="receipt.company.email">
@@ -107,7 +109,6 @@
                                 </t>
                             </td>
                         </tr>
-
                     </t>
 
                     <t t-if="receipt.cashier">

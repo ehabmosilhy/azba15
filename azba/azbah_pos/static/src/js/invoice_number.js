@@ -49,12 +49,15 @@ odoo.define('azbah_pos.invoice_number', function (require) {
                 receipt.id = self.id;
             }
             return receipt
-        },
-        get_invoice_name: function () {
-            alert(this.invoice_name);
-            return "Ehab!";
         }
-
-
     })
+    models.Order = models.Order.extend({
+
+        // Ehab
+        get_invoice_name: function () {
+            return this.invoice_name;
+             },
+    });
 })
+
+
