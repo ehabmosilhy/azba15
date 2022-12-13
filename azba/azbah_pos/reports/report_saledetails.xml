@@ -214,7 +214,7 @@
                     <hr/>
 
                     <t t-if="len(debits) > 0 ">
-                        <t t-if="len(cash) > 0 ">
+                        <t t-if="len(cashes) > 0 ">
 
                             <table class="table table-sm">
                                 <tr>

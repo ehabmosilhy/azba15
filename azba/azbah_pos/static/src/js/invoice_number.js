@@ -5,6 +5,7 @@ odoo.define('azbah_pos.invoice_number', function (require) {
     let SuperPosModel = model.PosModel.prototype;
     let SuperOrder = model.Order.prototype;
     let rpc = require('web.rpc');
+    let _super_order = model.Order.prototype;
 
 
 
@@ -51,12 +52,26 @@ odoo.define('azbah_pos.invoice_number', function (require) {
             return receipt
         }
     })
-    models.Order = models.Order.extend({
+    model.Order = model.Order.extend({
 
         // Ehab
         get_invoice_name: function () {
             return this.invoice_name;
              },
+
+        //Ebrahiem
+        export_for_printing: function () {
+            var order = this.pos.get_order();
+            var json = _super_order.export_for_printing.apply(this, arguments);
+            if (this.invoice_name) {
+                json.invoice_name = this.invoice_name;
+            } else {
+                json.invoice_name = ""
+            }
+
+            console.log("_super_order", this)
+            return json;
+        },
     });
 })
 
