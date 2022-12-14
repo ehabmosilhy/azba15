@@ -5,7 +5,6 @@
     "category": "accounting",
     "depends": ["base", "account_accountant"],
     "data": [
-        # 'reports/report_financial.xml'
-
+        'payments/account_payment_view.xml'
              ],
 }
