@@ -7,6 +7,9 @@
     'depends': ['base', 'account_accountant', 'web',  'account','sale'],
     'data': [
         'report/customer_invoice.xml',
+        'report/payment_receipt.xml',
+        'report/receipt_voucher_template.xml',
+        'report/report.xml',
     ],
 
     'assets': {

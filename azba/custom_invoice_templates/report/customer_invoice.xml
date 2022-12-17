@@ -30,7 +30,7 @@
                                 <div style="float:left;  width: 100%; font-family: 'Cairo';
   font-style: normal;
   font-weight: bold;
-  font-size:30px;
+  font-size:25px;
                             direction:rtl !important">
                                     السادة
                                     /
@@ -67,12 +67,12 @@
 
                         <tr style="direction:ltr !important;text-align: left; background-color:#ffffff">
                             <td style="width: 25%;vertical-align:top; padding:1px;">
-                                Payment terms |
-                                شروط الدفع
+                                Manual Ref |
+                                إذن التسليم
                             </td>
 
                             <td style="width: 25%;vertical-align:top; padding:1px;">
-                                <span t-field="o.partner_id.property_payment_term_id"
+                                <span t-field="o.manual_ref"
                                       style="direction:ltr !important;"/>
                             </td>
 
@@ -343,9 +343,11 @@
                         </h4>
                     </div>
 
-                    <div style="position:fixed;top:24.5cm;width:95%">
+                    <div style="position:fixed;top:23.5cm;width:95%">
+
                         <span style="border:1px solid black;padding:2px 2px 2px 2px;  box-shadow: 10px 10px 10px grey;
                         float:left;direction:ltr !important;">
+                            <div style="text-align:center;font-weight:bolder">Scan QR Code</div>
                             <t t-if="o.l10n_sa_qr_code_str">
                                 <img style="text-align: center" t-if="o.l10n_sa_qr_code_str"
                                      t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.l10n_sa_qr_code_str, 150, 150)"/>

@@ -99,125 +99,37 @@
                                     </th>
                                 </thead>
                                 <tbody style="direction:ltr !important;">
-                                    <t t-foreach="o.payment_line_ids" t-as="op">
                                         <tr style="direction:ltr !important;">
                                             <td tyle="border: 2px solid black;direction:ltr !important;">
                                                 <strong style="direction:ltr !important;">
                                                     [
                                                     <span style="direction:ltr !important;">
-                                                        <span t-field="op.partner_id.code"/>
+                                                        <span t-field="o.partner_id.code"/>
                                                     </span>
                                                     ]
-                                                    <span t-field="op.partner_id.name"
+                                                    <span t-field="o.partner_id.name"
                                                           style="direction:ltr !important;"/>
                                                 </strong>
                                             </td>
                                             <td tyle="border: 2px solid black;direction:ltr !important;">
                                                 <strong style="direction:ltr !important;">
-                                                    <span t-field="op.amount" style="direction:ltr !important;"/>
+                                                    <span t-field="o.amount" style="direction:ltr !important;"/>
                                                     <span t-field="o.currency_id"/>
                                                 </strong>
                                             </td>
 
                                             <td tyle="border: 2px solid black;direction:ltr !important;">
                                                 <strong style="direction:ltr !important;">
-                                                    <span t-field="op.amount" style="direction:ltr !important;"/>
-                                                    <span t-field="o.currency_id"/>
+                                                    <span t-field="o.ref" style="direction:ltr !important;"/>
                                                 </strong>
                                             </td>
                                         </tr>
 
-                                    </t>
                                 </tbody>
                             </table>
 
 
-                            <!--
-                                        المجموع-->
-                            <table t-if="o.total_amount" style=" width: 100%;
-  border-collapse: collapse;border: 1px solid black;direction:ltr !important;">
-                                <tr style="direction:ltr !important;border: 1px solid black;">
 
-                                    <td style="direction:ltr !important;border: 2px solid black;text-align:center;width=84.9%">
-                                        <div style="direction:ltr !important; ">
-                                            <strong style="direction:ltr !important;">
-                                                <span
-                                                        style="padding-left: 10px;direction:ltr !important;"
-                                                        t-esc="o.currency_id.with_context(lang='ar_001').amount_to_text(o.total_amount)"/>
-                                            </strong>
-
-                                        </div>
-                                    </td>
-                                    <td style="direction:ltr !important;border: 2px solid black;text-align:center;width:15.1% !important;">
-
-
-                                        <span t-field="o.total_amount"
-                                              style="direction:ltr !important;"></span>
-                                        <span t-field="o.currency_id"/>
-
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <br/>
-                            <div style="float:right;direction:ltr !important;">
-                                <strong>أرقام الفواتير</strong>
-                            </div>
-                            <div style="float:left;direction:ltr !important;">
-                                <strong>Invoice numbers</strong>
-                            </div>
-
-                            <br/>
-                            <br/>
-                            <table class="table " style=" width: 100%;
-  border-collapse: collapse;border: 2px solid black;direction:ltr !important;">
-                                <thead style="direction:ltr !important;">
-                                    <th width="17%" style="border: 2px solid black;direction:ltr !important;">
-                                        Invoice Number
-
-                                        <br/>
-                                        رقم الفاتورة
-                                    </th>
-                                    <th width="17%" style="border: 2px solid black;direction:ltr !important;">
-                                        Vendor
-
-                                        <br/>
-                                        المورد
-                                    </th>
-                                    <th width="17%" style="border: 2px solid black;direction:ltr !important;">
-                                        Total Amount
-
-                                        <br/>
-                                        الاجمالي
-                                    </th>
-                                </thead>
-                                <tbody style="direction:ltr !important;">
-                                    <t t-foreach="o.invoice_ids" t-as="invoice">
-                                        <tr style="border: 2px solid black;direction:ltr !important;">
-                                            <td tyle="border: 2px solid black;direction:ltr !important;">
-                                                <strong style="direction:ltr !important;">
-                                                    <span t-field="invoice.name" style="direction:ltr !important;"/>
-                                                </strong>
-                                            </td>
-                                            <td tyle="border: 2px solid black;direction:ltr !important;">
-                                                <strong style="direction:ltr !important;">
-                                                    <span t-field="invoice.partner_id.name"
-                                                          style="direction:ltr !important;"/>
-                                                </strong>
-                                            </td>
-                                            <td tyle="border: 2px solid black;direction:ltr !important;">
-                                                <strong style="direction:ltr !important;">
-                                                    <span t-field="invoice.amount_total_signed"
-                                                          style="direction:ltr !important;"/>
-                                                </strong>
-                                            </td>
-                                        </tr>
-                                    </t>
-                                </tbody>
-                            </table>
-
-
-                            <br/>
 
                             <table class="table  table-borderless" style="direction:ltr !important;">
 
@@ -297,7 +209,7 @@
                         <center style="direction:ltr !important;">
                             <br/>
                             <strong style="direction:rtl !important;">التاريخ</strong>
-                            <span t-field="o.payment_date" style="direction:rtl !important;"/>
+                            <span t-field="o.date" style="direction:rtl !important;"/>
                             <strong style="direction:v !important;">Date</strong>
                         </center>
                     </div>
@@ -435,127 +347,40 @@
                                     </th>
                                 </thead>
                                 <tbody style="direction:ltr !important;">
-                                    <t t-foreach="o.payment_line_ids" t-as="op">
                                         <tr style="border: 2px solid black;direction:ltr !important;">
                                             <td style="border: 1px solid black;direction:ltr !important;">
                                                 <strong style="direction:ltr !important;">
 
                                                     [
                                                     <span>
-                                                        <span t-field="op.partner_id.code"
+                                                        <span t-field="o.partner_id.code"
                                                               style="direction:ltr !important;"/>
                                                     </span>
                                                     ]
-                                                    <span t-field="op.partner_id.name"
+                                                    <span t-field="o.partner_id.name"
                                                           style="direction:ltr !important;"/>
 
                                                 </strong>
                                             </td>
                                             <td style="border: 2px solid black;direction:ltr !important;">
                                                 <strong>
-                                                    <span t-field="op.amount" style="direction:ltr !important;"/>
+                                                    <span t-field="o.amount" style="direction:ltr !important;"/>
                                                     <span t-field="o.currency_id"/>
                                                 </strong>
                                             </td>
 
                                             <td style="border: 2px solid black; direction:ltr !important;">
                                                 <strong style="direction:ltr !important;">
-                                                    <span t-field="op.amount" style="direction:ltr !important;"/>
-                                                    <span t-field="o.currency_id"/>
+                                                    <span t-field="o.ref" style="direction:ltr !important;"/>
                                                 </strong>
                                             </td>
                                         </tr>
-                                        <tr></tr>
-                                    </t>
                                 </tbody>
                             </table>
 
 
-                            <table t-if="o.total_amount" style=" width: 100%;
-  border-collapse: collapse;border: 1px solid black;direction:ltr !important;">
-                                <tr style="direction:ltr !important;border: 1px solid black;">
-
-                                    <td style="direction:ltr !important;border: 2px solid black;text-align:center;width=84.9%">
-                                        <div style="direction:ltr !important; ">
-                                            <strong style="direction:ltr !important;">
-                                                <span
-                                                        style="padding-left: 10px;direction:ltr !important;"
-                                                        t-esc="o.currency_id.with_context(lang='ar_001').amount_to_text(o.total_amount)"/>
-                                            </strong>
-
-                                        </div>
-                                    </td>
-                                    <td style="direction:ltr !important;border: 2px solid black;text-align:center;width:15.1% !important;">
 
 
-                                        <span t-field="o.total_amount"
-                                              style="direction:ltr !important;"></span>
-                                        <span t-field="o.currency_id"/>
-
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <br/>
-
-                            <div style="float:right; direction:ltr !important;">
-                                <strong>أرقام الفواتير</strong>
-                            </div>
-                            <div style="float:left;direction:ltr !important;">
-                                <strong>Invoice numbers</strong>
-                            </div>
-                            <br/>
-                            <br/>
-                            <table class="table " style=" width: 100%;
-  border-collapse: collapse;border: 2px solid black;direction:ltr !important;">
-                                <thead style="direction:ltr !important;">
-                                    <th width="17%" style="border: 2px solid black;direction:ltr !important;">
-                                        Invoice Number
-
-                                        <br/>
-                                        رقم الفاتورة
-                                    </th>
-                                    <th width="17% " style="border: 2px solid black;direction:ltr !important;">
-                                        Customer
-
-                                        <br/>
-                                        العميل
-                                    </th>
-                                    <th width="17%" style="border: 2px solid black;direction:ltr !important;">
-                                        Total Amount
-
-                                        <br/>
-                                        الاجمالي
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    <t t-foreach="o.invoice_ids" t-as="invoice">
-                                        <tr style="border: 2px solid black;direction:ltr !important;">
-                                            <td style="border: 2px solid black;direction:ltr !important;">
-                                                <strong style="direction:ltr !important;">
-                                                    <span t-field="invoice.name" style="direction:ltr !important;"/>
-                                                </strong>
-                                            </td>
-                                            <td style="border: 2px solid black;direction:ltr !important;">
-                                                <strong style="direction:ltr !important;">
-                                                    <span t-field="invoice.partner_id.name"
-                                                          style="direction:ltr !important;"/>
-                                                </strong>
-                                            </td>
-                                            <td style="border: 2px solid black;direction:ltr !important;">
-                                                <strong style="direction:ltr !important;">
-                                                    <span t-field="invoice.amount_total_signed"
-                                                          style="direction:ltr !important;"/>
-                                                </strong>
-                                            </td>
-                                        </tr>
-                                    </t>
-                                </tbody>
-                            </table>
-
-
-                            <br/>
-                            <br/>
                             <div class="row" style="direction:ltr !important;">
                                 <div class="col-4" style="white-space: nowrap ;direction:ltr !important;">
                                     <div class="row" style="direction:ltr !important;">
@@ -622,7 +447,7 @@
                         <center style="direction:rtl !important;">
                             <br/>
                             <strong style="direction:rtl !important;">التاريخ</strong>
-                            <span t-field="o.payment_date" style="direction:ltr !important;"/>
+                            <span t-field="o.date" style="direction:ltr !important;"/>
                             <strong style="direction:rtl !important;">Date</strong>
                         </center>
                     </div>

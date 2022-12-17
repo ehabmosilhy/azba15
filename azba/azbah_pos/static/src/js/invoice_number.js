@@ -41,38 +41,27 @@ odoo.define('azbah_pos.invoice_number', function (require) {
             return result
         },
     })
+
+    // Ehab
     model.Order = model.Order.extend({
-        export_for_printing: function () {
-            let self = this
-            let receipt = SuperOrder.export_for_printing.call(this)
-            if (self.invoice_number) {
-                receipt.invoice_number = self.invoice_number.split(" ")[0];
-                receipt.id = self.id;
-            }
-            return receipt
-        }
+          initialize: function() {
+        _super_order.initialize.apply(this,arguments);
+        this.invoice_name = this.invoice_name || false;
+        this.save_to_db();
+    },
+    export_for_printing: function() {
+      var result = _super_order.export_for_printing.apply(this,arguments);
+      result.invoice_name = this.get_invoice_name();
+      return result;
+    },
+    get_invoice_name: function() {
+      return this.invoice_name;
+    },
+
     })
-    model.Order = model.Order.extend({
 
-        // Ehab
-        get_invoice_name: function () {
-            return this.invoice_name;
-             },
 
-        //Ebrahiem
-        export_for_printing: function () {
-            var order = this.pos.get_order();
-            var json = _super_order.export_for_printing.apply(this, arguments);
-            if (this.invoice_name) {
-                json.invoice_name = this.invoice_name;
-            } else {
-                json.invoice_name = ""
-            }
 
-            console.log("_super_order", this)
-            return json;
-        },
-    });
 })
 
 

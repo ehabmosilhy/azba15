@@ -111,19 +111,6 @@
                         </tr>
                     </t>
 
-
-                    <tr>
-                            <td class="client_cell"> رقم الفاتورة</td>
-                        <td class="client_cell">
-                                <!--Invoice Number -->
-                            <t t-if="receipt.invoice_name">
-                                    <div style="font-size: 14px;padding-top: 10px;text-align: center;font-weight: 700;">
-                                        <t t-esc="receipt.invoice_name"/>
-                                    </div>
-                                </t>
-                            </td>
-                        </tr>
-
                     <t t-if="receipt.cashier">
                         <t t-set="cashier" t-value="receipt.cashier"/>
                         <tr style="display:none">
