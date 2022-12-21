@@ -31,17 +31,21 @@ class ResPartner(models.Model):
 
     @api.onchange('pos_config_ids')
     def onchange_pos_config_ids(self):
+
         configs = self.env['pos.config'].search([])
+
+        # Add all configs to categories table
         for conf in configs:
             cat_id = self.env['res.partner.category'].search([('name', '=', conf.name)])
             if not cat_id:
                 cat_id = self.env['res.partner.category'].create({'name': conf.name})
 
         for rec in self:
-            cat_ids = []
+            cat_ids = [cat_id.id for cat_id in rec.category_id if cat_id.name not in configs.mapped("name")]
             for conf in rec.pos_config_ids:
                 cat_id = self.env['res.partner.category'].search([('name', '=', conf.name)])
                 if not cat_id:
                     cat_id = self.env['res.partner.category'].create({'name': conf.name})
                 cat_ids.append(cat_id.id)
+            cat_ids = list(set(cat_ids))
             rec.category_id = [(6, 0, cat_ids)]
