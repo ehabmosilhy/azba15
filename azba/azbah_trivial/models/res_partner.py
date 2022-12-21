@@ -39,8 +39,8 @@ class ResPartner(models.Model):
             cat_id = self.env['res.partner.category'].search([('name', '=', conf.name)])
             if not cat_id:
                 cat_id = self.env['res.partner.category'].create({'name': conf.name})
-        partners = self.env['res.partner'].search([])
-        for rec in partners:
+        # partners = self.env['res.partner'].search([])
+        for rec in self:
             cat_ids = [cat_id.id for cat_id in rec.category_id if cat_id.name not in configs.mapped("name")]
             for conf in rec.pos_config_ids:
                 cat_id = self.env['res.partner.category'].search([('name', '=', conf.name)])
