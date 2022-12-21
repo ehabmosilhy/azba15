@@ -28,3 +28,20 @@ class ResPartner(models.Model):
             else:
                 result.append((rec.id, '%s' % (rec.name)))
         return result
+
+    @api.onchange('pos_config_ids')
+    def onchange_pos_config_ids(self):
+        configs = self.env['pos.config'].search([])
+        for conf in configs:
+            cat_id = self.env['res.partner.category'].search([('name', '=', conf.name)])
+            if not cat_id:
+                cat_id = self.env['res.partner.category'].create({'name': conf.name})
+
+        for rec in self:
+            cat_ids = []
+            for conf in rec.pos_config_ids:
+                cat_id = self.env['res.partner.category'].search([('name', '=', conf.name)])
+                if not cat_id:
+                    cat_id = self.env['res.partner.category'].create({'name': conf.name})
+                cat_ids.append(cat_id.id)
+            rec.category_id = [(6, 0, cat_ids)]
