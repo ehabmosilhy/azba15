@@ -28,7 +28,7 @@ class ResPartner(models.Model):
             else:
                 result.append((rec.id, '%s' % (rec.name)))
         return result
-'''
+
     @api.onchange('pos_config_ids')
     def onchange_pos_config_ids(self):
 
@@ -49,4 +49,3 @@ class ResPartner(models.Model):
                 cat_ids.append(cat_id.id)
             cat_ids = list(set(cat_ids))
             rec.category_id = [(6, 0, cat_ids)]
-'''
