@@ -24,7 +24,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
                 {move_line_fields},
                 account_move_line.amount_currency as amount_currency,
                 account_move_line.partner_id AS partner_id,
-                concat(partner.name, '[',partner.code,']')  AS partner_name,
+                concat('[',partner.code,']',' ',partner.name)  AS partner_name,
                 COALESCE(trust_property.value_text, 'normal') AS partner_trust,
                 COALESCE(account_move_line.currency_id, journal.currency_id) AS report_currency_id,
                 account_move_line.payment_id AS payment_id,
