@@ -24,7 +24,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
                 {move_line_fields},
                 account_move_line.amount_currency as amount_currency,
                 account_move_line.partner_id AS partner_id,
-                concat('[',partner.code,']',' ',partner.name)  AS partner_name,
+                concat( '[', partner.code,']', partner.name)  AS partner_name,
                 COALESCE(trust_property.value_text, 'normal') AS partner_trust,
                 COALESCE(account_move_line.currency_id, journal.currency_id) AS report_currency_id,
                 account_move_line.payment_id AS payment_id,
@@ -84,4 +84,5 @@ class ReportAccountAgedPartner(models.AbstractModel):
             'sign': 1 if options['filter_account_type'] == 'receivable' else -1,
             'date': options['date']['date_to'],
         }
-        return self.env.cr.mogrify(query, params).decode(self.env.cr.connection.encoding)
+        result = self.env.cr.mogrify(query, params).decode(self.env.cr.connection.encoding)
+        return result
