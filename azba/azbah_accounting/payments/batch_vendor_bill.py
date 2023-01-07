@@ -49,15 +49,16 @@ class BatchVendorbill(models.Model):
             }
             # Then, we need to add two other lines to balance the Journal Entry
             # One line for Payables - and the other for Tax
-            new_bill['line_ids'] = new_bill['invoice_line_ids'][:]
+            new_bill['line_ids'] = []
 
             new_bill['line_ids'].append(
                 (0, 0, {
                     'account_id': 42
                     , 'amount_currency': line['price_subtotal'] * 0.15
-                    , 'debit': line['price_subtotal'] * 0.15
+                    , 'debit': 30 #line['price_subtotal'] * 0.15
                     , 'name': "Purchase Tax 15%"
                     , 'partner_id': bill[0]
+                    , 'price_unit':30 # line['price_subtotal'] * 0.15
                     , 'credit': 0
                     , 'quantity': 1
                 }))
@@ -67,12 +68,15 @@ class BatchVendorbill(models.Model):
                     'account_id': 54
                     , 'date_maturity': self.date
                     , 'amount_currency': line['price_subtotal'] * -1.15
-                    , 'credit': line['price_subtotal'] * 1.15
+                    , 'credit': 230 # line['price_subtotal'] * 1.15
+                    , 'price_unit': -230
                     # , 'name': "Purchase Tax 15%"
                     , 'partner_id': bill[0]
                     , 'debit': 0
                     , 'quantity': 1
                 }))
+            new_bill['line_ids'].append(new_bill['invoice_line_ids'][:])
+
             invoice = self.env['account.move'].sudo().create(new_bill)
             invoice.action_post()
 
