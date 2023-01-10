@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+
+        <!--  Form View  -->
+        <record id="azbah_view_employee_form2" model="ir.ui.view">
+            <field name="name">azbah.view_employee_form2</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='visa_expire']" position="after">
+                    <field name="visa_issue_date"/>
+                    <field name="work_start_date"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

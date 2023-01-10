@@ -30,8 +30,8 @@
                         </group>
                         <notebook>
                             <page string="Bills">
-<!--                                <button name="duplicate_last_line" string="Duplicate Last Line" type="object"-->
-<!--                                        icon="fa-copy"/>-->
+                                <!--                                <button name="duplicate_last_line" string="Duplicate Last Line" type="object"-->
+                                <!--                                        icon="fa-copy"/>-->
                                 <group>
                                     <field name="line_ids" nolabel="1">
                                         <tree editable="bottom">
@@ -39,9 +39,16 @@
                                             <field name="product_id"/>
                                             <field name="quantity"/>
                                             <field name="price"/>
-                                            <field name="price_subtotal"/>
-                                            <field name="account_id"/>
+                                            <field name="account_id"  groups="account.group_account_readonly"
+                                               options="{'no_create': True}"/>
+                                            <field name="tax_ids" widget="many2many_tags"
+                                               options="{'no_create': True}"
+                                               optional="show"/>
+
                                             <field name="note"/>
+
+                                            <field name="price_subtotal"/>
+
                                         </tree>
                                     </field>
                                 </group>

@@ -8,7 +8,18 @@ class ProductTemplate(models.Model):
         result = []
         for rec in self:
             if rec.product_tmpl_id.code or rec.code:
-                result.append((rec.id, '[%s] - %s' % (rec.product_tmpl_id.code or rec.code, rec.name)))
+                result.append((rec.id, '[%s] - %s' % (rec.product_tmpl_id.code.strip() or rec.code.strip(), rec.name)))
             else:
                 result.append((rec.id, '%s' % (rec.name)))
         return result
+
+    @api.model
+    def name_search(self, name='', args=None, operator='ilike', limit=100):
+        args = args or []
+        domain = []
+        if name:
+            domain = ['|', ('name', operator, name), ('code', operator, name)]
+        ids = self.env['product.template'].search(domain + args, limit=limit).ids
+        records = self.search([('product_tmpl_id', 'in', ids)])
+        return records.name_get()
+
