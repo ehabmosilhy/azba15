@@ -7,9 +7,16 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='visa_expire']" position="after">
-                    <field name="visa_issue_date"/>
-                    <field name="work_start_date"/>
+                 <xpath expr="//field[@name='visa_expire']" position="replace">
+                 </xpath>
+
+
+                <xpath expr="//field[@name='permit_no']" position="replace">
+                    <field name="visa_issue_date" string="تاريخ إصدار التأشيرة"/>
+                    <field name="visa_expire"/>
+                    <field name="permit_no"/>
+                    <field name="work_start_date" string="تاريخ إصدار تصريح العمل"/>
+
                 </xpath>
             </field>
         </record>
