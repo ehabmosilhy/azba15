@@ -133,15 +133,15 @@ class ReportSaleDetails(models.AbstractModel):
             #         pass
             #         # credits.append(payments_cash[i])
 
-            if payments_cash[i]['payment_method_id'] == 3 and payments_cash[i]['amount'] > 0:
+            if payments_cash[i]['payment_method_id'] in [3, 8] and payments_cash[i]['amount'] > 0:
                 credits.append(payments_cash[i])
                 total_credit += float(payments_cash[i]['amount'])
 
-            if payments_cash[i]['payment_method_id'] == 3 and payments_cash[i]['amount'] < 0:
+            if payments_cash[i]['payment_method_id'] in [3, 8] and payments_cash[i]['amount'] < 0:
                 debits.append(payments_cash[i])
                 total_debit += float(payments_cash[i]['amount'])
 
-            if payments_cash[i]['payment_method_id'] == 1:
+            if payments_cash[i]['payment_method_id'] in [1, 7]:
                 cashes.append(payments_cash[i])
                 total_cash += float(payments_cash[i]['amount'])
 
@@ -182,4 +182,4 @@ class ReportSaleDetails(models.AbstractModel):
         data = dict(data or {})
         configs = self.env['pos.config'].browse(data['config_ids'])
         data.update(self.get_sale_details(data['date_start'], data['date_stop'], configs.ids))
-        return data
+        return data;
