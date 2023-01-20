@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+        <record id="tools_monitor_access_rule" model="ir.model.access">
+            <field name="name">tools.monitor</field>
+            <field name="model_id" ref="model_tools_monitor"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+    </data>
+</odoo>

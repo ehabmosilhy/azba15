@@ -4,4 +4,5 @@
     "license": "LGPL-3",
     "category": "Exporrt log info for use in Prometheus and Grafana",
     "depends": ["base", ],
+    "data":["security/tools_monitor_security.xml"]
 }
