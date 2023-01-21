@@ -17,6 +17,12 @@
                     <field name="permit_no"/>
                     <field name="work_start_date" string="تاريخ إصدار تصريح العمل"/>
 
+                    <field name="medical_certificate_number" string="رقم الشهادة الصحية"/>
+                    <field name="medical_certificate_number_issue_date" string="تاريخ إصدار الشهادة الصحية"/>
+                    <field name="medical_certificate_number_expiration_date" string="تاريخ انتهاء الشهادة الصحية"/>
+
+
+
                 </xpath>
             </field>
         </record>
