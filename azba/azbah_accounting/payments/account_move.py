@@ -9,3 +9,6 @@ class AccountBill(models.Model):
     _inherit = "account.move"
 
     batch_id = fields.Many2one('account.batch.vendor.bill')
+
+
+
