@@ -6,6 +6,10 @@ from odoo.exceptions import UserError, ValidationError
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
+    '''
+    Trying to make full reconcile for invoices even if the amount paid is less
+    or more the amount due
+    '''
 
     def reconcile(self):
         ''' Reconcile the current move lines all together.
@@ -32,9 +36,8 @@ class AccountMoveLine(models.Model):
             if line.reconciled:
                 raise UserError(_("You are trying to reconcile some entries that are already reconciled."))
             if not line.account_id.reconcile and line.account_id.internal_type != 'liquidity':
-                raise UserError(
-                    _("Account %s does not allow reconciliation. First change the configuration of this account to allow it.")
-                    % line.account_id.display_name)
+                raise UserError(_("Account %s does not allow reconciliation. First change the configuration of this account to allow it.")
+                                % line.account_id.display_name)
             if line.move_id.state != 'posted':
                 raise UserError(_('You can only reconcile posted entries.'))
             if company is None:
@@ -79,28 +82,44 @@ class AccountMoveLine(models.Model):
 
         # ==== Check if a full reconcile is needed ====
 
-        if involved_lines[0].currency_id and all(
-                line.currency_id == involved_lines[0].currency_id for line in involved_lines):
+        if involved_lines[0].currency_id and all(line.currency_id == involved_lines[0].currency_id for line in involved_lines):
             is_full_needed = all(line.currency_id.is_zero(line.amount_residual_currency) for line in involved_lines)
         else:
             is_full_needed = all(line.company_currency_id.is_zero(line.amount_residual) for line in involved_lines)
 
         if is_full_needed:
-            # Check for small difference
-            total_amount = sum(line.amount_residual for line in involved_lines)
-            if abs(total_amount) > 0.01:
-                # Create new move line with difference amount
-                partner_outstanding_account = self.partner_id.property_account_receivable_id
-                difference_amount = -total_amount
-                new_move_line = self.env['account.move.line'].create({
-                    'name': 'Difference',
-                    'account_id': partner_outstanding_account.id,
-                    'debit': difference_amount if difference_amount > 0 else 0,
-                    'credit': -difference_amount if difference_amount < 0 else 0,
-                    'partner_id': self.partner_id.id,
-                    'move_id': self[0].move_id.id,
-                })
-                # Add new move line to list of lines being reconciled
-                involved_lines += new_move_line
+
+            # ==== Create the exchange difference move ====
+
+            if self._context.get('no_exchange_difference'):
+                exchange_move = None
+            else:
+                exchange_move = involved_lines._create_exchange_difference_move()
+                if exchange_move:
+                    exchange_move_lines = exchange_move.line_ids.filtered(lambda line: line.account_id == account)
+
+                    # Track newly created lines.
+                    involved_lines += exchange_move_lines
+
+                    # Track newly created partials.
+                    exchange_diff_partials = exchange_move_lines.matched_debit_ids \
+                                             + exchange_move_lines.matched_credit_ids
+                    involved_partials += exchange_diff_partials
+                    results['partials'] += exchange_diff_partials
+
+                    exchange_move._post(soft=False)
+
+            # ==== Create the full reconcile ====
+
+            results['full_reconcile'] = self.env['account.full.reconcile'].create({
+                'exchange_move_id': exchange_move and exchange_move.id,
+                'partial_reconcile_ids': [(6, 0, involved_partials.ids)],
+                'reconciled_line_ids': [(6, 0, involved_lines.ids)],
+            })
+
+        # Trigger action for paid invoices
+        not_paid_invoices\
+            .filtered(lambda move: move.payment_state in ('paid', 'in_payment'))\
+            .action_invoice_paid()
 
         return results
