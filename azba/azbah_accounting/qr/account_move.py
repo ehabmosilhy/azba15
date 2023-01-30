@@ -10,26 +10,10 @@ from odoo.tools import float_repr
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    def write(self, vals):
-        if 'invoice_date' in vals:
-            vals['l10n_sa_confirmation_datetime']=vals['invoice_date']
-            # super(AccountMove, self)._compute_qr_code_str()
-        res = super(AccountMove, self).write(vals)
-        return res
+    l10n_sa_qr_code_str = fields.Char(string='Zatka QR Code', compute='_compute_qr_code_str')
+    l10n_sa_confirmation_datetime = fields.Datetime(string='Confirmation Date', readonly=True, copy=False)
 
-    def _post(self, soft=True):
-        res = super()._post(soft)
-        for record in self:
-            if record.country_code == 'SA' and record.move_type in ('out_invoice', 'out_refund'):
-                if not record.l10n_sa_show_delivery_date:
-                    raise UserError(_('Delivery Date cannot be empty'))
-                self.write({
-                    'l10n_sa_confirmation_datetime': self.invoice_date
-                })
-        return res
-
-    @api.depends('amount_total_signed', 'amount_tax_signed', 'l10n_sa_confirmation_datetime', 'company_id',
-                 'company_id.vat')
+    @api.depends('amount_total_signed', 'amount_tax_signed', 'l10n_sa_confirmation_datetime', 'company_id','company_id.vat')
     def _compute_qr_code_str(self):
         """ Generate the qr code for Saudi e-invoicing. Specs are available at the following link at page 23
         https://zatca.gov.sa/ar/E-Invoicing/SystemsDevelopers/Documents/20210528_ZATCA_Electronic_Invoice_Security_Features_Implementation_Standards_vShared.pdf
@@ -55,3 +39,22 @@ class AccountMove(models.Model):
                 str_to_encode = seller_name_enc + company_vat_enc + timestamp_enc + invoice_total_enc + total_vat_enc
                 qr_code_str = base64.b64encode(str_to_encode).decode()
             record.l10n_sa_qr_code_str = qr_code_str
+
+    def write(self, vals):
+        if 'date' in vals or 'l10n_sa_confirmation_datetime' in vals:
+            vals['l10n_sa_confirmation_datetime'] = vals['date']
+            self._compute_qr_code_str()
+        res = super(AccountMove, self).write(vals)
+        return res
+
+    def _post(self, soft=True):
+        res = super()._post(soft)
+        for record in self:
+            if record.country_code == 'SA' and record.move_type in ('out_invoice', 'out_refund'):
+                if not record.l10n_sa_show_delivery_date:
+                    raise UserError(_('Delivery Date cannot be empty'))
+                self.write({
+                    'l10n_sa_confirmation_datetime': self.invoice_date
+                })
+        return res
+
