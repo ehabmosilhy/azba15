@@ -4,6 +4,7 @@ from lxml import etree
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 
+
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
     '''
@@ -36,8 +37,9 @@ class AccountMoveLine(models.Model):
             if line.reconciled:
                 raise UserError(_("You are trying to reconcile some entries that are already reconciled."))
             if not line.account_id.reconcile and line.account_id.internal_type != 'liquidity':
-                raise UserError(_("Account %s does not allow reconciliation. First change the configuration of this account to allow it.")
-                                % line.account_id.display_name)
+                raise UserError(
+                    _("Account %s does not allow reconciliation. First change the configuration of this account to allow it.")
+                    % line.account_id.display_name)
             if line.move_id.state != 'posted':
                 raise UserError(_('You can only reconcile posted entries.'))
             if company is None:
@@ -82,44 +84,30 @@ class AccountMoveLine(models.Model):
 
         # ==== Check if a full reconcile is needed ====
 
-        if involved_lines[0].currency_id and all(line.currency_id == involved_lines[0].currency_id for line in involved_lines):
+        if involved_lines[0].currency_id and all(
+                line.currency_id == involved_lines[0].currency_id for line in involved_lines):
             is_full_needed = all(line.currency_id.is_zero(line.amount_residual_currency) for line in involved_lines)
         else:
             is_full_needed = all(line.company_currency_id.is_zero(line.amount_residual) for line in involved_lines)
 
+        _residue = abs(self[0].balance) - abs(self[1].balance)
+        if abs(_residue) <= 0.5:
+            is_full_needed = True
+
         if is_full_needed:
-
-            # ==== Create the exchange difference move ====
-
-            if self._context.get('no_exchange_difference'):
-                exchange_move = None
-            else:
-                exchange_move = involved_lines._create_exchange_difference_move()
-                if exchange_move:
-                    exchange_move_lines = exchange_move.line_ids.filtered(lambda line: line.account_id == account)
-
-                    # Track newly created lines.
-                    involved_lines += exchange_move_lines
-
-                    # Track newly created partials.
-                    exchange_diff_partials = exchange_move_lines.matched_debit_ids \
-                                             + exchange_move_lines.matched_credit_ids
-                    involved_partials += exchange_diff_partials
-                    results['partials'] += exchange_diff_partials
-
-                    exchange_move._post(soft=False)
-
-            # ==== Create the full reconcile ====
-
+            exchange_move = None
             results['full_reconcile'] = self.env['account.full.reconcile'].create({
                 'exchange_move_id': exchange_move and exchange_move.id,
                 'partial_reconcile_ids': [(6, 0, involved_partials.ids)],
                 'reconciled_line_ids': [(6, 0, involved_lines.ids)],
             })
 
+            self.move_id.payment_state = 'paid'
+            self.move_id.amount_residual = 0
+
         # Trigger action for paid invoices
-        not_paid_invoices\
-            .filtered(lambda move: move.payment_state in ('paid', 'in_payment'))\
+        not_paid_invoices \
+            .filtered(lambda move: move.payment_state in ('paid', 'in_payment')) \
             .action_invoice_paid()
 
         return results
