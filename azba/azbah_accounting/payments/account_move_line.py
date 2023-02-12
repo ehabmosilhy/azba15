@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
-from lxml import etree
 
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError, ValidationError
+from odoo import api, fields, models, Command, _
+from odoo.exceptions import RedirectWarning, UserError
 
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
-    '''
-    Trying to make full reconcile for invoices even if the amount paid is less
-    or more the amount due
-    '''
 
-    def reconcile(self):
+    def custom_reconcile(self):
         ''' Reconcile the current move lines all together.
         :return: A dictionary representing a summary of what has been done during the reconciliation:
                 * partials:             A recorset of all account.partial.reconcile created during the reconciliation.
@@ -68,8 +63,28 @@ class AccountMoveLine(models.Model):
             involved_lines += current_lines
 
         # ==== Create partials ====
+        lines = self
+        debit_lines = lines.filtered(lambda line: line.balance > 0.0 or line.amount_currency > 0.0)
+        credit_lines = lines.filtered(lambda line: line.balance < 0.0 or line.amount_currency < 0.0)
 
-        partials = self.env['account.partial.reconcile'].create(sorted_lines._prepare_reconciliation_partials())
+        partials_vals_list = []
+        for credit_line in credit_lines:
+            remaining_credit = credit_line.amount_residual
+            for debit_line in debit_lines:
+                if remaining_credit <= 0.0:
+                    break
+                amount = min(debit_line.amount_residual, remaining_credit)
+                remaining_credit -= amount
+                partials_vals_list.append({
+                    'amount': amount,
+                    'debit_amount_currency': amount,
+                    'credit_amount_currency': amount,
+                    'debit_move_id': debit_line.id,
+                    'credit_move_id': credit_line.id,
+                })
+                debit_line.amount_residual -= amount
+
+        partials = self.env['account.partial.reconcile'].create(partials_vals_list)
 
         # Track newly created partials.
         results['partials'] = partials
@@ -90,20 +105,35 @@ class AccountMoveLine(models.Model):
         else:
             is_full_needed = all(line.company_currency_id.is_zero(line.amount_residual) for line in involved_lines)
 
-        _residue = abs(self[0].balance) - abs(self[1].balance)
-        if abs(_residue) <= 0.5:
-            is_full_needed = True
-
         if is_full_needed:
-            exchange_move = None
+
+            # ==== Create the exchange difference move ====
+
+            if self._context.get('no_exchange_difference'):
+                exchange_move = None
+            else:
+                exchange_move = involved_lines._create_exchange_difference_move()
+                if exchange_move:
+                    exchange_move_lines = exchange_move.line_ids.filtered(lambda line: line.account_id == account)
+
+                    # Track newly created lines.
+                    involved_lines += exchange_move_lines
+
+                    # Track newly created partials.
+                    exchange_diff_partials = exchange_move_lines.matched_debit_ids \
+                                             + exchange_move_lines.matched_credit_ids
+                    involved_partials += exchange_diff_partials
+                    results['partials'] += exchange_diff_partials
+
+                    exchange_move._post(soft=False)
+
+            # ==== Create the full reconcile ====
+
             results['full_reconcile'] = self.env['account.full.reconcile'].create({
                 'exchange_move_id': exchange_move and exchange_move.id,
                 'partial_reconcile_ids': [(6, 0, involved_partials.ids)],
                 'reconciled_line_ids': [(6, 0, involved_lines.ids)],
             })
-
-            self.move_id.payment_state = 'paid'
-            self.move_id.amount_residual = 0
 
         # Trigger action for paid invoices
         not_paid_invoices \
@@ -111,3 +141,28 @@ class AccountMoveLine(models.Model):
             .action_invoice_paid()
 
         return results
+
+    def auto_reconcile(self, partner_id):
+        partner = self.env['res.partner'].search([('id', '=', partner_id.id)])
+
+        # Get the Due balance of the partner and exclude the most recent invoice from reconciliation
+        due = int(partner.total_due)  # ignore the change
+        un_reconciled_lines = partner.unreconciled_aml_ids.filtered(lambda l: l.company_id == self.env.company).sorted(
+            key='id', reverse=True)
+        indi = 0
+
+        # Loop until the recent invoices' sum is bigger than the amount due, the due gets smaller in every iteration
+        # The amount could be negative
+        excluded = []
+        while due > 0 and indi < len(un_reconciled_lines):
+            line = un_reconciled_lines[indi]
+            amount = line.amount_residual_currency if line.currency_id else line.amount_residual
+            if amount > 0:
+                due -= amount
+                excluded.append(line.id)
+            indi += 1
+        # the pointer indi is now at the last recent invoice, we will reconcile the older invoices
+        lines_to_reconcile = un_reconciled_lines.filtered(lambda l: l.id not in excluded)
+
+        # lines_to_reconcile.custom_reconcile()
+        lines_to_reconcile.reconcile()
