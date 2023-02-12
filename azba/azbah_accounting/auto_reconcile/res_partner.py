@@ -22,11 +22,11 @@ class AccountMoveLine(models.Model):
             amount = line.amount_residual_currency if line.currency_id else line.amount_residual
             if amount > 0:
                 due -= amount
-                excluded.append(line.id)
+                if due >= amount:
+                    excluded.append(line.id)
             indi += 1
         # the pointer indi is now at the last recent invoice, we will reconcile the older invoices
         lines_to_reconcile = un_reconciled_lines.filtered(lambda l: l.id not in excluded)
-
-        data = [{'id': None, 'type': None, 'mv_line_ids': lines_to_reconcile.ids, 'new_mv_line_dicts': []}]
-
-        self.env['account.reconciliation.widget'].sudo().process_move_lines(data)
+        if len(lines_to_reconcile.ids) >= 2:
+            data = [{'id': None, 'type': None, 'mv_line_ids': lines_to_reconcile.ids, 'new_mv_line_dicts': []}]
+            self.env['account.reconciliation.widget'].sudo().process_move_lines(data)
