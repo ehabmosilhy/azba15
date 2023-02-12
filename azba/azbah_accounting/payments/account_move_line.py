@@ -164,5 +164,8 @@ class AccountMoveLine(models.Model):
         # the pointer indi is now at the last recent invoice, we will reconcile the older invoices
         lines_to_reconcile = un_reconciled_lines.filtered(lambda l: l.id not in excluded)
 
+        data = [{'id': None, 'type': None, 'mv_line_ids': lines_to_reconcile.ids, 'new_mv_line_dicts': []}]
+
         # lines_to_reconcile.custom_reconcile()
-        lines_to_reconcile.reconcile()
+        # lines_to_reconcile.reconcile()
+        self.env['account.reconciliation.widget'].sudo().process_move_lines(data)
