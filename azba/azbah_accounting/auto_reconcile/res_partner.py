@@ -6,8 +6,6 @@ from odoo import models, fields
 class AccountMoveLine(models.Model):
     _inherit = "res.partner"
 
-    reconciled = fields.Boolean('Reconciled')
-
     def auto_reconcile(self):
         partner = self
         # Get the Due balance of the partner and exclude the most recent invoice from reconciliation
@@ -32,10 +30,9 @@ class AccountMoveLine(models.Model):
         if len(lines_to_reconcile.ids) >= 2:
             data = [{'id': None, 'type': None, 'mv_line_ids': lines_to_reconcile.ids, 'new_mv_line_dicts': []}]
             self.env['account.reconciliation.widget'].sudo().process_move_lines(data)
-        partner.reconciled = True
 
     def auto_reconcile_all(self):
-        customers = self.env['res.partner'].search([('customer_rank', '>', 0), ('reconciled', '=', False),
+        customers = self.env['res.partner'].search([('customer_rank', '>', 0),
                                                     ('id', 'in',
                                                      self.env['account.move'].search([]).mapped('partner_id').ids)])
         for customer in customers:
