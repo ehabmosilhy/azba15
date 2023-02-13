@@ -6,9 +6,9 @@
     "depends": ["base", "account_accountant"],
     "data": [
         'payments/account_payment_view.xml',
-        'payments/batch_vendor_bill.xml',
+        'batch_purchase/account_batch_purchase.xml',
         'auto_reconcile/res_partner.xml',
-        'security/account_batch_bill.xml'
+        'security/account_batch_purchase.xml'
 
     ],
     'assets': {

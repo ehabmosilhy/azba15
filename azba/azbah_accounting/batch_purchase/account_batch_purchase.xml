@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- VIEWS -->
+        <record id="azbah_view_batch_purchase_order_tree" model="ir.ui.view">
+            <field name="name">azbah.batch.purchase.tree</field>
+            <field name="model">account.batch.purchase</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="delegate_id"/>
+                    <field name="date"/>
+                    <field name="total"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="azbah_view_batch_purchase_order_form" model="ir.ui.view">
+            <field name="name">azbah.bach.vendor.bill.form</field>
+            <field name="model">account.batch.purchase</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="delegate_id"/>
+                            <field name="date"/>
+                            <field name="total"/>
+                        </group>
+                        <notebook>
+                            <page string="Orders">
+                                <group>
+                                    <field name="line_ids" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="vendor_id" widget="res_partner_many2one"/>
+                                            <field name="product_id"/>
+                                            <field name="quantity"/>
+                                            <field name="price"/>
+                                            <field name="note"/>
+                                            <field name="price_subtotal"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- ACTIONS -->
+
+        <record id="action_azbah_view_batch_purchase_order" model="ir.actions.act_window">
+            <field name="name">Batch Purchase Orders</field>
+            <field name="res_model">account.batch.purchase</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem parent="purchase.menu_procurement_management"
+                  id="menu_azbah_action_azbah_view_batch_purchase_order"
+                  action="action_azbah_view_batch_purchase_order"
+                  groups="account.group_account_user"
+                  name="مشتريات مندوب̸̼͍̞̘̱͎͉̄͒̌͌̈́̓̕̚"
+                  sequence="100"/>
+    </data>
+</odoo>
