@@ -36,8 +36,10 @@
                                             <field name="product_id"/>
                                             <field name="quantity"/>
                                             <field name="price"/>
-                                            <field name="note"/>
                                             <field name="price_subtotal"/>
+                                            <field name="price_subtotal_with_tax"/>
+                                            <field name="note"/>
+
                                         </tree>
                                     </field>
                                 </group>

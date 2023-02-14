@@ -13,7 +13,7 @@ class BatchPurchase(models.Model):
     def onchange_price_or_qty(self):
         total = 0
         for line in self.line_ids:
-            total += line.price_subtotal
+            total += line.price_subtotal_with_tax
         self.total = total
 
     @api.model
@@ -23,6 +23,8 @@ class BatchPurchase(models.Model):
         if batch_lines:
             for batch_line in batch_lines:
                 line = batch_line[2]
+                if '<br' in line['note']:
+                    line['note'] = ""
                 vendor_id = line.get('vendor_id')
                 if vendor_id in orders.keys():
                     orders[vendor_id].append(line)
@@ -43,11 +45,11 @@ class BatchPurchase(models.Model):
                 , 'order_line': [
                     (0, 0,
                      {
-                         "sequence": 10,
-                         'product_id': _line['product_id'],
-                         "date_planned": vals_list['date'],
-                         "product_uom": 1
+                         "sequence": 10
+                         , 'product_id': _line['product_id']
                          , 'name': _line['note']
+                         , "date_planned": vals_list['date']
+                         , "product_uom": 1
                          , 'price_unit': _line['price']
                          , 'product_qty': _line['quantity']
                      }) for _line in bill_lines]
@@ -56,7 +58,10 @@ class BatchPurchase(models.Model):
             _order = self.env['purchase.order'].create(new_order)
             _order.button_confirm()
             for picking in _order.picking_ids:
+                for line in picking.move_ids_without_package:
+                    line.quantity_done = line.product_uom_qty
                 picking.button_validate()
+            _order.action_create_invoice()
         batch = super(BatchPurchase, self).create(vals_list)
         return batch
 
@@ -69,7 +74,8 @@ class BatchVendorBillLine(models.Model):
     product_id = fields.Many2one('product.product', string='Product', ondelete='restrict')
     quantity = fields.Float()
     price = fields.Float()
-    price_subtotal = fields.Float()
+    price_subtotal = fields.Float(string="Sub Total")
+    price_subtotal_with_tax = fields.Float(string="With Tax")
     note = fields.Html()
     tax_ids = fields.Many2many(
         comodel_name='account.tax',
@@ -81,3 +87,5 @@ class BatchVendorBillLine(models.Model):
     @api.onchange('price', 'quantity')
     def onchange_price_or_qty(self):
         self.price_subtotal = float(self.price) * float(self.quantity)
+        self.price_subtotal_with_tax = float(self.price_subtotal) * 1.15
+
