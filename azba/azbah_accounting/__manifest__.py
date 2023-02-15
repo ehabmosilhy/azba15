@@ -8,7 +8,9 @@
         'payments/account_payment_view.xml',
         'batch_purchase/account_batch_purchase.xml',
         'auto_reconcile/res_partner.xml',
-        'security/account_batch_purchase.xml'
+        'security/account_batch_purchase.xml',
+        'batch_purchase/report/account_batch_purchase.xml',
+        'batch_purchase/report/account_batch_purchase_template.xml'
 
     ],
     'assets': {

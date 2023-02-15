@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="report_batch_purchase_order" model="ir.actions.report">
+            <field name="name">Batch Purchase Order Report</field>
+            <field name="model">account.batch.purchase</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">azbah_accounting.report_batch_purchase_order</field>
+            <field name="report_file">azbah_accounting.report_batch_purchase_order</field>
+            <field name="print_report_name">'Batch Purchase Order'</field>
+            <field name="binding_model_id" ref="azbah_accounting.model_account_batch_purchase"/>
+
+        </record>
+</odoo>
