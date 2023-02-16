@@ -7,14 +7,6 @@ class BatchPurchase(models.Model):
     delegate_id = fields.Many2one('hr.employee', required=True)
     date = fields.Date(required=True)
     total = fields.Float()
-    vendor_count = fields.Selection([
-        ('single', 'Single'),
-        ('multi', 'Multi'),
-    ], string='Vendors', default='single'
-    )
-    vendor_id = fields.Many2one('res.partner', tracking=True,
-                                string='Vendor', change_default=True, domain=[('code', 'ilike', 'v%')])
-
     line_ids = fields.One2many('account.batch.purchase.line', 'batch_id')
     line_count = fields.Integer(compute='_compute_line_count', string='Line count')
 
@@ -62,11 +54,7 @@ class BatchPurchase(models.Model):
                         orders[vendor_id] = [line]
 
         for order in orders.items():
-            if vals_list.get('vendor_count') == 'single':
-                vendor_id = vals_list.get('vendor_id')
-            else:
-                vendor_id = order[0]
-
+            vendor_id = order[0]
             bill_lines = order[1]
 
             new_order = {

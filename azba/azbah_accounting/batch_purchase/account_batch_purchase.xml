@@ -26,7 +26,6 @@
                             <field name="delegate_id"/>
                             <field name="date"/>
                             <!--                            <field name="vendor_count" widget="radio" options="{'horizontal': true}"/>-->
-                            <field name="vendor_id"/>
                             <field name="total"/>
                             <field name="line_count" invisible="1"/>
 
