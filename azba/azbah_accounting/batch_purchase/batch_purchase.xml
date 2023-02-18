@@ -16,19 +16,18 @@
             </field>
         </record>
 
-
         <record id="azbah_view_batch_purchase_order_form" model="ir.ui.view">
             <field name="name">azbah.bach.vendor.bill.form</field>
             <field name="model">batch.purchase</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>
-                            <div class="oe_button_box" name="batch_purchase_orders_box">
-                                <button type="action" name="%(action_view_batch_purchase_orders)d"
-                                        class="oe_stat_button" icon="fa-bars">
-                                    <field name="purchase_order_count" string="Purchase Orders"/>
-                                </button>
-                            </div>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object" name="launch_purchase_orders"
+                                    icon="fa-list-ol">
+                                <field string="Purchase Orders" name="purchase_order_count" widget="statinfo"/>
+                            </button>
+                        </div>
                         <group>
                             <field name="name"/>
                             <field name="delegate_id"/>
@@ -62,21 +61,26 @@
                                             <field name="note"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <control attrs="{'invisible': [('line_count', '=', 0)]}">
-                                                <create name="add_product_control" string="Add a product"
-                                                        attrs="{'invisible': [('line_count', '=', 0)]}"/>
                                                 <create name="add_section_control" string="Add a Vendor"
                                                         context="{'default_display_type': 'line_section'}"/>
+                                                <create name="add_product_control" string="Add a product"
+                                                        attrs="{'invisible': [('line_count', '=', 0)]}"/>
                                             </control>
                                         </tree>
-                                        <form>
-                                            <field name="display_type" invisible="1"/>
-                                            <field name="product_id"/>
-                                        </form>
 
                                     </field>
                                 </group>
                             </page>
-
+                            <!--                            <page string="Purchase Orders">-->
+                            <!--                                <field name="purchase_order_ids">-->
+                            <!--                                    <tree>-->
+                            <!--                                        <field name="name"/>-->
+                            <!--                                        <field name="date_order"/>-->
+                            <!--                                        <field name="partner_id"/>-->
+                            <!--                                        <field name="amount_total"/>-->
+                            <!--                                    </tree>-->
+                            <!--                                </field>-->
+                            <!--                            </page>-->
                         </notebook>
                     </sheet>
                 </form>
@@ -98,7 +102,6 @@
                   groups="account.group_account_user"
                   name="مشتريات مندوب"
                   sequence="100"/>
-
 
 
     </data>

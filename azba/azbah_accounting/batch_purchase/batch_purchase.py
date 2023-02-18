@@ -18,6 +18,23 @@ class BatchPurchase(models.Model):
     line_ids = fields.One2many('batch.purchase.line', 'batch_id')
     line_count = fields.Integer(compute='_compute_line_count', string='Line count')
     purchase_order_ids = fields.One2many('purchase.order', 'batch_purchase_id', string="Purchase Orders")
+    purchase_order_count = fields.Integer(string='Purchase Order Count', compute='_compute_purchase_order_count')
+
+    def _compute_purchase_order_count(self):
+        for record in self:
+            record.purchase_order_count=len(record.purchase_order_ids)
+
+    def launch_purchase_orders(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Purchase Orders',
+            'view_mode': 'tree',
+            'view_id': self.env.ref('azbah_accounting.azbah_purchase_order_tree').id,
+            'res_model': 'purchase.order',
+            'domain': [('batch_purchase_id', '=', self.id)],
+            'context': "{'create': False}"
+        }
 
     @api.depends('line_ids')
     def _compute_line_count(self):
@@ -41,6 +58,7 @@ class BatchPurchase(models.Model):
             if line.vendor_id:
                 line.price_subtotal_with_tax = total
         self.total = total
+
 
     @api.model
     def create(self, vals_list):
