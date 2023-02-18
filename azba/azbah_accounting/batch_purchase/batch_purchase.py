@@ -3,12 +3,21 @@ from odoo import models, fields, api
 
 
 class BatchPurchase(models.Model):
-    _name = "account.batch.purchase"
+    _name = "batch.purchase"
+    name = fields.Char(string="Name", copy=False, readonly=True,
+                       default="New",
+                       index=True, help="Unique name for the batch purchase with prefix DPO_")
+
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)', "Batch purchase name must be unique!")
+    ]
+
     delegate_id = fields.Many2one('hr.employee', required=True)
-    date = fields.Date(required=True)
+    date = fields.Date(required=True, default=fields.Date.context_today)
     total = fields.Float()
-    line_ids = fields.One2many('account.batch.purchase.line', 'batch_id')
+    line_ids = fields.One2many('batch.purchase.line', 'batch_id')
     line_count = fields.Integer(compute='_compute_line_count', string='Line count')
+    purchase_order_ids = fields.One2many('purchase.order', 'batch_purchase_id', string="Purchase Orders")
 
     @api.depends('line_ids')
     def _compute_line_count(self):
@@ -26,17 +35,20 @@ class BatchPurchase(models.Model):
             return {'warning': warning}
 
         total = 0
+
         for line in self.line_ids:
             total += line.price_subtotal_with_tax
+            if line.vendor_id:
+                line.price_subtotal_with_tax = total
         self.total = total
 
     @api.model
     def create(self, vals_list):
-        orders = {}
+        purchase_orders = {}
         batch_lines = vals_list.get('line_ids')
 
         # We need to group the lines by vendor to make all the lines of one vendor together in
-        # one purchase order
+        # one purchase purchase_order
         if batch_lines:
             for i in range(len(batch_lines)):
                 line = batch_lines[i][2]
@@ -48,18 +60,26 @@ class BatchPurchase(models.Model):
                     if not vendor_id:
                         vendor_id = batch_lines[i - 1][2].get('vendor_id')
                         batch_lines[i][2]['vendor_id'] = vendor_id
-                    if vendor_id in orders.keys():
-                        orders[vendor_id].append(line)
+                    if vendor_id in purchase_orders.keys():
+                        purchase_orders[vendor_id].append(line)
                     else:
-                        orders[vendor_id] = [line]
+                        purchase_orders[vendor_id] = [line]
 
-        for order in orders.items():
-            vendor_id = order[0]
-            bill_lines = order[1]
+        if vals_list.get('name', "New") == 'New':
+            vals_list['name'] = self.env['ir.sequence'].next_by_code(
+                'batch.purchase') or 'New'
+        batch = super(BatchPurchase, self).create(vals_list)
 
-            new_order = {
+        for purchase_order in purchase_orders.items():
+
+            vendor_id = purchase_order[0]
+            bill_lines = purchase_order[1]
+
+            new_purchase_order = {
                 "priority": "0",
+                "batch_purchase_id": batch.id,
                 'partner_id': vendor_id,
+                "delegate_id": vals_list['delegate_id'],
                 "currency_id": 148,
                 "picking_type_id": 551
                 , 'date_order': vals_list['date']
@@ -76,33 +96,44 @@ class BatchPurchase(models.Model):
                          , 'product_qty': _line['quantity']
                      }) for _line in bill_lines]
             }
-            # Create the purchase order
-            _order = self.env['purchase.order'].create(new_order)
+            # Create the purchase purchase_order
+            _new_purchase_order = self.env['purchase.order'].create(new_purchase_order)
 
-            # Confirm the order
-            _order.button_confirm()
+            # Confirm the purchase_order
+            _new_purchase_order.button_confirm()
 
             # Validate the picking
-            for picking in _order.picking_ids:
+            for picking in _new_purchase_order.picking_ids:
+                picking.batch_purchase_id = batch.id
                 for line in picking.move_ids_without_package:
                     # receive all the quantity
                     line.quantity_done = line.product_uom_qty
+                    line.batch_purchase_id = batch.id
                 picking.button_validate()
 
             # Create the Vendor Bill
-            _order.action_create_invoice()
+            _new_purchase_order.action_create_invoice()
 
-        batch = super(BatchPurchase, self).create(vals_list)
+            # Confirm the Vendor Bill
+            for bill in _new_purchase_order.invoice_ids:
+                bill.purchase_order_id = _new_purchase_order.id
+                bill.purchase_delegate_id = _new_purchase_order.delegate_id.id
+                # The invoice date is mandatory
+                bill.invoice_date = vals_list['date']
+                bill.action_post()
+
         return batch
 
 
 class BatchVendorBillLine(models.Model):
-    _name = "account.batch.purchase.line"
-    batch_id = fields.Many2one('account.batch.purchase')
+    _name = "batch.purchase.line"
+    batch_id = fields.Many2one('batch.purchase')
     line_count = fields.Integer(related='batch_id.line_count')
 
-    vendor_id = fields.Many2one('res.partner', tracking=True,
-                                string='Vendor', change_default=True, domain=[('code', 'ilike', 'v%')])
+    vendor_id = fields.Many2one('res.partner',
+                                string='Vendor', domain=[('code', 'ilike', 'v%')]
+                                , context={'source': 'vendor'}
+                                )
     product_id = fields.Many2one('product.product', string='Product', ondelete='restrict')
     product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id')
     product_uom = fields.Many2one('uom.uom', string='Unit of Measure',
@@ -124,12 +155,3 @@ class BatchVendorBillLine(models.Model):
     def onchange_price_or_qty(self):
         self.price_subtotal = float(self.price) * float(self.quantity)
         self.price_subtotal_with_tax = float(self.price_subtotal) * 1.15
-
-    # @api.onchange('product_id')
-    # def onchange_product(self):
-    #     if self.product_id and not self.vendor_id:
-    #         self.batch_id.line_ids[-1].unlink()
-    #         warning = {
-    #             'message': "You must select vendor first"
-    #         }
-    #         return {'warning': warning}

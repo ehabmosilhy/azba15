@@ -2,8 +2,8 @@
     <data>
         <!-- Define the access rights for the model -->
         <record model="ir.model.access" id="model_batch_purchase_access">
-            <field name="name">account.batch.purchase</field>
-            <field name="model_id" ref="model_account_batch_purchase"/>
+            <field name="name">batch.purchase</field>
+            <field name="model_id" ref="model_batch_purchase"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
@@ -15,8 +15,8 @@
 
          <!-- Define the access rights for the model -->
         <record model="ir.model.access" id="model_batch_purchase_line_access">
-            <field name="name">account.batch.purchase.line</field>
-            <field name="model_id" ref="model_account_batch_purchase_line"/>
+            <field name="name">batch.purchase.line</field>
+            <field name="model_id" ref="model_batch_purchase_line"/>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>

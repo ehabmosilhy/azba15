@@ -5,9 +5,10 @@
         <!-- VIEWS -->
         <record id="azbah_view_batch_purchase_order_tree" model="ir.ui.view">
             <field name="name">azbah.batch.purchase.tree</field>
-            <field name="model">account.batch.purchase</field>
+            <field name="model">batch.purchase</field>
             <field name="arch" type="xml">
                 <tree>
+                    <field name="name"/>
                     <field name="delegate_id"/>
                     <field name="date"/>
                     <field name="total"/>
@@ -18,25 +19,28 @@
 
         <record id="azbah_view_batch_purchase_order_form" model="ir.ui.view">
             <field name="name">azbah.bach.vendor.bill.form</field>
-            <field name="model">account.batch.purchase</field>
+            <field name="model">batch.purchase</field>
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                            <div class="oe_button_box" name="batch_purchase_orders_box">
+                                <button type="action" name="%(action_view_batch_purchase_orders)d"
+                                        class="oe_stat_button" icon="fa-bars">
+                                    <field name="purchase_order_count" string="Purchase Orders"/>
+                                </button>
+                            </div>
                         <group>
+                            <field name="name"/>
                             <field name="delegate_id"/>
                             <field name="date"/>
-                            <!--                            <field name="vendor_count" widget="radio" options="{'horizontal': true}"/>-->
                             <field name="total"/>
                             <field name="line_count" invisible="1"/>
-
                         </group>
                         <notebook>
                             <page string="Orders">
                                 <group>
                                     <field name="line_ids" nolabel="1">
                                         <tree editable="bottom">
-
-
                                             <field name="batch_id" invisible="1"/>
                                             <field name="line_count" invisible="1"/>
                                             <field name="display_type" invisible="1"/>
@@ -54,10 +58,10 @@
                                             <field name="price_subtotal"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="price_subtotal_with_tax"
-                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            />
                                             <field name="note"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
-                                            <control  attrs="{'invisible': [('line_count', '=', 0)]}">
+                                            <control attrs="{'invisible': [('line_count', '=', 0)]}">
                                                 <create name="add_product_control" string="Add a product"
                                                         attrs="{'invisible': [('line_count', '=', 0)]}"/>
                                                 <create name="add_section_control" string="Add a Vendor"
@@ -84,16 +88,18 @@
 
         <record id="action_azbah_view_batch_purchase_order" model="ir.actions.act_window">
             <field name="name">Batch Purchase Orders</field>
-            <field name="res_model">account.batch.purchase</field>
+            <field name="res_model">batch.purchase</field>
             <field name="view_mode">tree,form</field>
         </record>
-
 
         <menuitem parent="purchase.menu_procurement_management"
                   id="menu_azbah_action_azbah_view_batch_purchase_order"
                   action="action_azbah_view_batch_purchase_order"
                   groups="account.group_account_user"
-                  name="مشتريات مندوب̸̼͍̞̘̱͎͉̄͒̌͌̈́̓̕̚"
+                  name="مشتريات مندوب"
                   sequence="100"/>
+
+
+
     </data>
 </odoo>
