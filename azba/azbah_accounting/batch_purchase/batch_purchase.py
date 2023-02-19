@@ -22,15 +22,15 @@ class BatchPurchase(models.Model):
 
     def _compute_purchase_order_count(self):
         for record in self:
-            record.purchase_order_count=len(record.purchase_order_ids)
+            record.purchase_order_count = len(record.purchase_order_ids)
 
     def launch_purchase_orders(self):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
             'name': 'Purchase Orders',
-            'view_mode': 'tree',
-            'view_id': self.env.ref('azbah_accounting.azbah_purchase_order_tree').id,
+            'view_mode': 'tree,kanban,form,pivot,graph,calendar,activity',
+            # 'view_id': self.env.ref('purchase.purchase_order_view_tree').id,
             'res_model': 'purchase.order',
             'domain': [('batch_purchase_id', '=', self.id)],
             'context': "{'create': False}"
@@ -52,13 +52,21 @@ class BatchPurchase(models.Model):
             return {'warning': warning}
 
         total = 0
-
         for line in self.line_ids:
-            total += line.price_subtotal_with_tax
-            if line.vendor_id:
-                line.price_subtotal_with_tax = total
+            if not line.display_type:
+                total += line.price_subtotal_with_tax
+
         self.total = total
 
+        for indi, line in enumerate(self.line_ids):
+            if line.vendor_id:
+                sub_total = 0
+                for child_id in range(indi + 1, len(self.line_ids)):
+                    if not self.line_ids[child_id].display_type:
+                        sub_total += self.line_ids[child_id].price_subtotal_with_tax
+                    else:
+                        break
+                line.price_subtotal_with_tax = sub_total
 
     @api.model
     def create(self, vals_list):
@@ -173,3 +181,10 @@ class BatchVendorBillLine(models.Model):
     def onchange_price_or_qty(self):
         self.price_subtotal = float(self.price) * float(self.quantity)
         self.price_subtotal_with_tax = float(self.price_subtotal) * 1.15
+
+    @api.onchange('vendor_id')
+    def onchange_vendor_id(self):
+        # Don't repeat vendors
+        vendor_ids = self.batch_id.line_ids.mapped('vendor_id')
+        domain = [('code', 'ilike', 'v%'), ('id', 'not in', vendor_ids.ids)]
+        return {'domain': {'vendor_id': domain}}

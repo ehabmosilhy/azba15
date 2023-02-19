@@ -6,12 +6,15 @@
     "depends": ["base", "account_accountant"],
     "data": [
         'payments/account_payment_view.xml',
-        'batch_purchase/account_batch_purchase.xml',
+        'batch_purchase/batch_purchase.xml',
         'auto_reconcile/res_partner.xml',
-        'security/account_batch_purchase.xml',
-        'batch_purchase/report/account_batch_purchase.xml',
-        'batch_purchase/report/account_batch_purchase_template.xml'
-
+        'batch_purchase/purchase_order.xml',
+        'batch_purchase/account_move.xml',
+        'batch_purchase/stock.xml',
+        'batch_purchase/data/batch_purchase_sequence.xml',
+        'security/batch_purchase.xml',
+        # 'batch_purchase/report/batch_purchase_template.xml',
+        # 'batch_purchase/report/batch_purchase.xml',
     ],
     'assets': {
         'web.assets_backend': [

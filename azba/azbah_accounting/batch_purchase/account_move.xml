@@ -7,7 +7,7 @@
             <field name="name">azbah.account.move.tree</field>
             <field name="model">account.move</field>
             <field name="mode">extension</field>
-            <field name="inherit_id" ref="account.view_move_tree"/>
+            <field name="inherit_id" ref="account.view_in_invoice_bill_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='ref']" position="before">
                     <field name="purchase_order_id"/>

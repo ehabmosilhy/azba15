@@ -43,12 +43,12 @@
                                             <field name="batch_id" invisible="1"/>
                                             <field name="line_count" invisible="1"/>
                                             <field name="display_type" invisible="1"/>
-                                            <field name="vendor_id"
+                                            <field name="vendor_id" widget="section_and_note_one2many"
                                                    attrs="{'invisible': [('display_type', '!=', 'line_section')]}"/>
                                             <field name="product_id"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="product_uom_category_id" invisible="1"/>
-                                            <field name="product_uom"
+                                            <field name="product_uom" widget='selection'
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="quantity"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
@@ -71,16 +71,15 @@
                                     </field>
                                 </group>
                             </page>
-                            <!--                            <page string="Purchase Orders">-->
-                            <!--                                <field name="purchase_order_ids">-->
-                            <!--                                    <tree>-->
-                            <!--                                        <field name="name"/>-->
-                            <!--                                        <field name="date_order"/>-->
-                            <!--                                        <field name="partner_id"/>-->
-                            <!--                                        <field name="amount_total"/>-->
-                            <!--                                    </tree>-->
-                            <!--                                </field>-->
-                            <!--                            </page>-->
+<!--                            <page string="Purchase Orders" attrs="{'invisible': [('name', '=', 'New')]}">-->
+<!--                                <field name="purchase_order_ids" >-->
+<!--                                    <tree>-->
+<!--                                        <field name="name"/>-->
+<!--                                        <field name="partner_id"/>-->
+<!--                                        <field name="amount_total"/>-->
+<!--                                    </tree>-->
+<!--                                </field>-->
+<!--                            </page>-->
                         </notebook>
                     </sheet>
                 </form>
