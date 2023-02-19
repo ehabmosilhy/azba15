@@ -58,15 +58,18 @@ class BatchPurchase(models.Model):
 
         self.total = total
 
-        for indi, line in enumerate(self.line_ids):
-            if line.vendor_id:
-                sub_total = 0
-                for child_id in range(indi + 1, len(self.line_ids)):
-                    if not self.line_ids[child_id].display_type:
-                        sub_total += self.line_ids[child_id].price_subtotal_with_tax
-                    else:
-                        break
-                line.price_subtotal_with_tax = sub_total
+        # Calculate sub_toal
+        if self.line_count > 1:
+            for indi, line in enumerate(self.line_ids):
+                if line.vendor_id:
+                    sub_total = 0
+                    for child_id in range(indi + 1, len(self.line_ids)):
+                        if not self.line_ids[child_id].display_type:
+                            sub_total += self.line_ids[child_id].price_subtotal_with_tax
+                        else:
+                            break
+                    line.price_subtotal_with_tax = sub_total
+
 
     @api.model
     def create(self, vals_list):
