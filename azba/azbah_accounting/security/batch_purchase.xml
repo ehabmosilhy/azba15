@@ -5,7 +5,7 @@
             <field name="name">batch.purchase</field>
             <field name="model_id" ref="model_batch_purchase"/>
             <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="False"/>
+            <field name="perm_write" eval="True"/>
             <field name="perm_create" eval="True"/>
             <field name="perm_unlink" eval="True"/>
             <field name="group_id" ref="account.group_account_invoice" />
@@ -18,7 +18,7 @@
             <field name="name">batch.purchase.line</field>
             <field name="model_id" ref="model_batch_purchase_line"/>
             <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
+            <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="True"/>
             <field name="perm_unlink" eval="True"/>
             <field name="group_id" ref="account.group_account_invoice" />
