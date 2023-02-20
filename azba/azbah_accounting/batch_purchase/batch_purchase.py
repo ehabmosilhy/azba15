@@ -19,10 +19,15 @@ class BatchPurchase(models.Model):
     line_count = fields.Integer(compute='_compute_line_count', string='Line count')
     purchase_order_ids = fields.One2many('purchase.order', 'batch_purchase_id', string="Purchase Orders")
     purchase_order_count = fields.Integer(string='Purchase Order Count', compute='_compute_purchase_order_count')
+    vendor_bill_count = fields.Integer(string='Purchase Order Count', compute='_compute_vendor_bill_count')
 
     def _compute_purchase_order_count(self):
         for record in self:
             record.purchase_order_count = len(record.purchase_order_ids)
+
+    def _compute_vendor_bill_count(self):
+        for record in self:
+            record.vendor_bill_count = len([invoice.id for invoice in record.purchase_order_ids])
 
     def launch_purchase_orders(self):
         self.ensure_one()
@@ -30,8 +35,17 @@ class BatchPurchase(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Purchase Orders',
             'view_mode': 'tree,kanban,form,pivot,graph,calendar,activity',
-            # 'view_id': self.env.ref('purchase.purchase_order_view_tree').id,
             'res_model': 'purchase.order',
+            'domain': [('batch_purchase_id', '=', self.id)],
+            'context': "{'create': False}"
+        }
+    def launch_vendor_bills(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Vendor Bills',
+            'view_mode': 'tree,kanban,form,pivot,graph,activity',
+            'res_model': 'account.move',
             'domain': [('batch_purchase_id', '=', self.id)],
             'context': "{'create': False}"
         }
@@ -58,7 +72,7 @@ class BatchPurchase(models.Model):
 
         self.total = total
 
-        # Calculate sub_toal
+        # Calculate sub_total
         if self.line_count > 1:
             for indi, line in enumerate(self.line_ids):
                 if line.vendor_id:
@@ -70,9 +84,17 @@ class BatchPurchase(models.Model):
                             break
                     line.price_subtotal_with_tax = sub_total
 
+    def check_data(self, vals_list):
+        if not vals_list.get('total') > 0:
+            warning = {
+                'message': "Please, check the data"
+            }
+            raise Exception(f'warning  {warning}')
 
     @api.model
     def create(self, vals_list):
+        self.check_data(vals_list)
+
         purchase_orders = {}
         batch_lines = vals_list.get('line_ids')
 
@@ -152,6 +174,7 @@ class BatchPurchase(models.Model):
                 bill.action_post()
 
         return batch
+
 
 
 class BatchVendorBillLine(models.Model):
