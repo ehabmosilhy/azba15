@@ -20,7 +20,7 @@
             <field name="name">azbah.bach.vendor.bill.form</field>
             <field name="model">batch.purchase</field>
             <field name="arch" type="xml">
-                <form edit="0">
+                <form>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button class="oe_stat_button" type="object" name="launch_purchase_orders" icon="fa-list-ol"
@@ -72,21 +72,10 @@
                                             <field name="price_subtotal_with_tax"/>
                                             <field name="note"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
-
                                         </tree>
-
                                     </field>
                                 </group>
                             </page>
-                            <!--                            <page string="Purchase Orders" attrs="{'invisible': [('name', '=', 'New')]}">-->
-                            <!--                                <field name="purchase_order_ids" >-->
-                            <!--                                    <tree>-->
-                            <!--                                        <field name="name"/>-->
-                            <!--                                        <field name="partner_id"/>-->
-                            <!--                                        <field name="amount_total"/>-->
-                            <!--                                    </tree>-->
-                            <!--                                </field>-->
-                            <!--                            </page>-->
                         </notebook>
                     </sheet>
                 </form>
