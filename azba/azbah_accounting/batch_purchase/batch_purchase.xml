@@ -51,7 +51,6 @@
                                                 <create name="add_section_control" string="Add a Vendor"
                                                         context="{'default_display_type': 'line_section'}"/>
                                                 <create name="add_product_control" string="Add a product"/>
-                                                <create name="add_product_control" string="Add a Note"/>
                                             </control>
                                             <field name="batch_id" invisible="1"/>
                                             <field name="line_count" invisible="1"/>
