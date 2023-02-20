@@ -20,7 +20,7 @@
             <field name="name">azbah.bach.vendor.bill.form</field>
             <field name="model">batch.purchase</field>
             <field name="arch" type="xml">
-                <form>
+                <form edit="0">
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button class="oe_stat_button" type="object" name="launch_purchase_orders" icon="fa-list-ol"
