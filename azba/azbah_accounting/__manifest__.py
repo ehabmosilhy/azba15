@@ -1,6 +1,6 @@
 {
     "name": "Azbah - Accounting",
-    "version": "15.1",
+    "version": "15.9",
     "license": "LGPL-3",
     "category": "accounting",
     "depends": ["base", "account_accountant"],

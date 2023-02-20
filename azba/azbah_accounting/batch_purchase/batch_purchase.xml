@@ -65,7 +65,7 @@
                                             />
                                             <field name="note"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
-                                            <control attrs="{'invisible': [('line_count', '=', 0)]}">
+                                            <control>
                                                 <create name="add_section_control" string="Add a Vendor"
                                                         context="{'default_display_type': 'line_section'}"/>
                                                 <create name="add_product_control" string="Add a product"
