@@ -32,8 +32,6 @@
                                     icon="fa-pencil-square-o" attrs="{'invisible':[('name', '=', 'New')]}">
                                 <field name="vendor_bill_count" widget="statinfo" string="Vendor Bills"/>
                             </button>
-
-
                         </div>
                         <group>
                             <field name="name"/>
@@ -82,7 +80,6 @@
             </field>
         </record>
 
-
         <!-- ACTIONS -->
 
         <record id="action_azbah_view_batch_purchase_order" model="ir.actions.act_window">
@@ -97,7 +94,6 @@
                   groups="account.group_account_user"
                   name="مشتريات مندوب"
                   sequence="100"/>
-
 
     </data>
 </odoo>

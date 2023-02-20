@@ -33,17 +33,52 @@
                                attrs="{'readonly':[('state', '!=', 'draft')]}"/>
                         <label for="amount"/>
                         <div name="amount_div" class="o_row">
-                            <field name="amount"
-                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="currency_id"
-                                   options="{'no_create': True, 'no_open': True}"
-                                   required="1"
-                                   attrs="{'readonly': [('state', '!=', 'draft')]}"
+                            <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="currency_id" options="{'no_create': True, 'no_open': True}"
+                                   required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"
                                    groups="base.group_multi_currency"/>
                         </div>
                         <field name="date"
                                attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         <field name="ref" string="Memo"/>
+                    </group>
+                </xpath>
+
+                <xpath expr="//group[@name='group2']" position="replace">
+
+                    <group name="group2">
+                        <field name="journal_id"
+                               domain="[]"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="payment_method_line_id" required="1" options="{'no_create': True, 'no_open': True}"
+                               attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('hide_payment_method_line', '=', True)]}"/>
+
+                        <field name="partner_bank_id" context="{'default_partner_id': partner_id}"
+                               string="Customer Bank Account"
+                               attrs="{
+                                            'invisible': ['|', '|', '|', ('show_partner_bank_account', '=', False), ('partner_type','!=','customer'), ('is_internal_transfer', '=', True), ('payment_type', '=', 'inbound')],
+                                            'required': [('require_partner_bank_account', '=', True), ('is_internal_transfer', '=', False)],
+                                            'readonly': [('state', '!=', 'draft')],
+                                        }"/>
+
+                        <field name="partner_bank_id" context="{'default_partner_id': partner_id}"
+                               string="Vendor Bank Account"
+                               attrs="{
+                                            'invisible': ['|', '|', '|', ('show_partner_bank_account', '=', False), ('partner_type','!=','supplier'), ('is_internal_transfer', '=', True), ('payment_type', '=', 'inbound')],
+                                            'required': [('require_partner_bank_account', '=', True), ('is_internal_transfer', '=', False)],
+                                            'readonly': [('state', '!=', 'draft')],
+                                        }"/>
+
+                        <field name="partner_bank_id" context="{'default_partner_id': partner_id}"
+                               string="Company Bank Account" readonly="1"
+                               attrs="{
+                                            'invisible': ['|', '|', ('show_partner_bank_account', '=', False), ('is_internal_transfer', '=', True), ('payment_type', '=', 'outbound')],
+                                            'required': [('require_partner_bank_account', '=', True), ('is_internal_transfer', '=', False)],
+                                        }"/>
+
+                        <field name="destination_journal_id" context="{'default_partner_id': partner_id}"
+                               attrs="{'invisible': [('is_internal_transfer', '=', False)],
+                                       'readonly': [('state', '!=', 'draft')], 'required': [('is_internal_transfer', '=', True),('state', '=', 'draft')]}"/>
                     </group>
                 </xpath>
 
@@ -60,12 +95,9 @@
         <record id="action_azbah_account_payments_payable" model="ir.actions.act_window">
             <field name="name">Payments</field>
             <field name="res_model">account.payment</field>
-            <field name="context">{
-                'default_payment_type': 'outbound',
-                'search_default_outbound_filter': 1,
-                'default_move_journal_types': ('bank', 'cash'),
-                'sanad':'1'
-                }
+            <field name="context">{'default_payment_type': 'outbound',
+                'default_move_journal_types': ('sale','purchase','bank', 'cash','general'),
+                'search_default_outbound_filter': 1, 'sanad':'1'}
             </field>
             <field name="view_id" ref="azbah_view_account_payment_tree"/>
         </record>
@@ -93,12 +125,9 @@
         <record id="action_azbah_account_payments_receive" model="ir.actions.act_window">
             <field name="name">Payments</field>
             <field name="res_model">account.payment</field>
-            <field name="context">{
-                'default_payment_type': 'inbound',
-                'search_default_inbound_filter': 1,
-                'default_move_journal_types': ('bank', 'cash'),
-                'sanad':'1'
-                }
+            <field name="context">{ 'default_payment_type': 'inbound',
+                'default_move_journal_types': ('sale','purchase','bank', 'cash','general'),
+                'search_default_inbound_filter': 1, 'sanad':'1' }
             </field>
             <field name="view_id" ref="azbah_view_account_payment_tree"/>
         </record>

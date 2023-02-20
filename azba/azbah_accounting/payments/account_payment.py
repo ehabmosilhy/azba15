@@ -13,7 +13,7 @@ class AccountPayment(models.Model):
         Hook method for inherit
         When you want to set a new name for payment, you can extend this method
         '''
-        if not self._context.get('sanad'):
+        if not self.context.get('sanad'):
             return {
                 'outbound-customer': _("Customer Reimbursement"),
                 'inbound-customer': _("Customer Payment"),
