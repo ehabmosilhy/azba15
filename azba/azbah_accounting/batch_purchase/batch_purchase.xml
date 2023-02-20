@@ -43,7 +43,7 @@
                             <field name="line_count" invisible="1"/>
                         </group>
                         <notebook>
-                            <page string="Orders">
+                            <page string="Purchase Orders">
                                 <group>
                                     <field name="line_ids" nolabel="1">
                                         <tree editable="bottom">
