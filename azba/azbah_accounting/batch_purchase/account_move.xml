@@ -28,6 +28,10 @@
                     <field name="batch_purchase_id"/>
                     <field name="purchase_delegate_id"/>
                 </xpath>
+
+                <xpath expr="//field[@name='price_subtotal']" position="before">
+                    <field name="note"/>
+                </xpath>
             </field>
         </record>
     </data>

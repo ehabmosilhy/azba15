@@ -105,9 +105,6 @@ class BatchPurchase(models.Model):
             for i in range(len(batch_lines)):
                 line = batch_lines[i][2]
                 if not line.get('display_type'):
-                    # if the user doesn't enter a note, make it empty without the HTML characters
-                    if '<br' in line['note']:
-                        line['note'] = ""
                     vendor_id = line.get('vendor_id')
                     if not vendor_id:
                         vendor_id = batch_lines[i - 1][2].get('vendor_id')
@@ -141,7 +138,7 @@ class BatchPurchase(models.Model):
                      {
                          "sequence": 10
                          , 'product_id': _line['product_id']
-                         , 'name': _line['note']
+                         , 'note': _line['note']
                          , "date_planned": vals_list['date']
                          , "product_uom": _line['product_uom']
                          , 'price_unit': _line['price']
@@ -172,6 +169,11 @@ class BatchPurchase(models.Model):
                 bill.purchase_delegate_id = _new_purchase_order.delegate_id.id
                 # The invoice date is mandatory
                 bill.invoice_date = vals_list['date']
+
+                for i in range(len(bill.invoice_line_ids)):
+                    if _new_purchase_order.order_line[i].note:
+                        bill.line_ids[i].note = _new_purchase_order.order_line[i].note
+
                 bill.action_post()
 
         return batch

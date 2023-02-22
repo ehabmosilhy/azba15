@@ -8,3 +8,8 @@ class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
     batch_purchase_id = fields.Many2one('batch.purchase', string="Batch Purchase")
     delegate_id = fields.Many2one(related='batch_purchase_id.delegate_id')
+
+
+class PurchaseOrderLine(models.Model):
+    _inherit = "purchase.order.line"
+    note = fields.Text()
