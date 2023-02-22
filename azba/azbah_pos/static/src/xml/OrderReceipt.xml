@@ -69,7 +69,16 @@
                     <t t-if="receipt.invoice_number">
                         <div style="direction:rtl;text-align:center;padding:15px;
                             font-weight: bolder;">
-                        فاتورة ضريبية مبسطة
+
+                        <t t-if="
+                        'عذبة'
+                                    in receipt.company.name">
+                                    فاتورة ضريبية مبسطة
+                        </t>
+                        <t t-else="">
+                         فاتورة
+                        </t>
+
                         </div>
                     </t>
 

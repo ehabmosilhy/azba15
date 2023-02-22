@@ -67,6 +67,8 @@
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="price_subtotal"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            <field name="tax_ids" widget="many2many_tags" options="{'no_create':True}"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="price_subtotal_with_tax"/>
                                             <field name="note"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>

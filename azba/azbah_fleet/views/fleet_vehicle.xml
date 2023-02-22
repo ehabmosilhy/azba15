@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+
+        <!--  Form View  -->
+        <record id="azbah_view_fleet_vehicle_form" model="ir.ui.view">
+            <field name="name">azbah.view_fleet_vehicle_form</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[1]" position="replace">
+                    <page string="License Details" name="license_page">
+                        <group>
+                            <group string="License">
+                                <field name="license_number" string="الترخيص"/>
+                                <field name="license_start_date" string="بداية الترخيص"/>
+                                <field name="license_end_date" string="نهاية الترخيص"/>
+                                <field name="inspection_date" string="تاريخ الفحص"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

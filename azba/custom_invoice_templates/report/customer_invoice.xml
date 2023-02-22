@@ -22,6 +22,7 @@
                          style="text-align: center;margin-right:1cm; direction:ltr !important;font-weight:bolder;font-size:20px;">
                         فاتورة
                     </div>
+                        فاتورة ضريبية    <div t-field="o.name"/>
 
                     <div style="text-align: center;margin-right:1cm; direction:ltr !important;font-weight:bolder;font-size:20px;">
                         <span t-field="o.name"/>

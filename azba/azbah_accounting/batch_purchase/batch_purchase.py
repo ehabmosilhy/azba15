@@ -39,6 +39,7 @@ class BatchPurchase(models.Model):
             'domain': [('batch_purchase_id', '=', self.id)],
             'context': "{'create': False}"
         }
+
     def launch_vendor_bills(self):
         self.ensure_one()
         return {
@@ -176,7 +177,6 @@ class BatchPurchase(models.Model):
         return batch
 
 
-
 class BatchVendorBillLine(models.Model):
     _name = "batch.purchase.line"
     batch_id = fields.Many2one('batch.purchase')
@@ -194,7 +194,7 @@ class BatchVendorBillLine(models.Model):
     price = fields.Float()
     price_subtotal = fields.Float(string="Sub Total")
     price_subtotal_with_tax = fields.Float(string="With Tax")
-    note = fields.Html()
+    note = fields.Text()
     display_type = fields.Char()
     tax_ids = fields.Many2many(
         comodel_name='account.tax',
@@ -203,10 +203,16 @@ class BatchVendorBillLine(models.Model):
         , default=[5]  # Purchase Tax 15%
     )
 
-    @api.onchange('price', 'quantity')
+    @api.onchange('price', 'quantity', 'tax_ids')
     def onchange_price_or_qty(self):
         self.price_subtotal = float(self.price) * float(self.quantity)
-        self.price_subtotal_with_tax = float(self.price_subtotal) * 1.15
+        if self.tax_ids:
+            total_tax = 0
+            for tax in self.tax_ids:
+                total_tax += self.price_subtotal * tax.amount / 100
+            self.price_subtotal_with_tax = float(self.price_subtotal) + total_tax
+        else:
+            self.price_subtotal_with_tax = float(self.price_subtotal)
 
     @api.onchange('vendor_id')
     def onchange_vendor_id(self):
