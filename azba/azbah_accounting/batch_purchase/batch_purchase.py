@@ -8,10 +8,6 @@ class BatchPurchase(models.Model):
                        default="New",
                        index=True, help="Unique name for the batch purchase with prefix DPO_")
 
-    _sql_constraints = [
-        ('name_uniq', 'unique(name)', "Batch purchase name must be unique!")
-    ]
-
     delegate_id = fields.Many2one('hr.employee', required=True)
     date = fields.Date(required=True, default=fields.Date.context_today)
     total = fields.Float()
@@ -115,8 +111,12 @@ class BatchPurchase(models.Model):
                         purchase_orders[vendor_id] = [line]
 
         if vals_list.get('name', "New") == 'New':
-            vals_list['name'] = self.env['ir.sequence'].next_by_code(
-                'batch.purchase') or 'New'
+            last_dpo = self.env['batch.purchase'].search([], order='id desc', limit=1)
+            if last_dpo:
+                new_name = 'DPO_' + str(int(last_dpo.name[4:]) + 1).zfill(5)
+            else:
+                new_name = "DPO_00001"
+            vals_list['name'] = new_name
         batch = super(BatchPurchase, self).create(vals_list)
 
         for purchase_order in purchase_orders.items():

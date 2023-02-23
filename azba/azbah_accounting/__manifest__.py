@@ -11,7 +11,6 @@
         'batch_purchase/purchase_order.xml',
         'batch_purchase/account_move.xml',
         'batch_purchase/stock.xml',
-        'batch_purchase/data/batch_purchase_sequence.xml',
         'security/batch_purchase.xml',
         # 'batch_purchase/report/batch_purchase_template.xml',
         # 'batch_purchase/report/batch_purchase.xml',
