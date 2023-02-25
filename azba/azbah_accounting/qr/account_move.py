@@ -41,7 +41,7 @@ class AccountMove(models.Model):
             record.l10n_sa_qr_code_str = qr_code_str
 
     def write(self, vals):
-        if 'date' in vals or 'l10n_sa_confirmation_datetime' in vals:
+        if 'date' in vals:
             vals['l10n_sa_confirmation_datetime'] = vals['date']
             self._compute_qr_code_str()
         res = super(AccountMove, self).write(vals)

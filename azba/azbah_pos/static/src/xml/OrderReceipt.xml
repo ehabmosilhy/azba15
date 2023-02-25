@@ -67,9 +67,8 @@
 
                 <t t-if="receipt.orderlines.length &gt; 0">
                     <t t-if="receipt.invoice_number">
-                        <div style="direction:rtl;text-align:center;padding:15px;
-                            font-weight: bolder;">
-                        فاتورة ضريبية مبسطة
+                        <div style="direction:rtl;text-align:center;padding:15px;font-weight: bolder;">
+                        ::فاتورة ضريبية مبسطة::
                         </div>
                     </t>
 
