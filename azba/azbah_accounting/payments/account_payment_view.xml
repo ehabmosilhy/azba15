@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+    <data noupdate="1">
 
         <!-- VIEWS -->
 
@@ -67,10 +67,10 @@
                            attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                 </field>
 
-<!--                <field name='payment_type' position="replace">-->
-<!--                    <field name="payment_type" invisible="1" widget="radio" options="{'horizontal': True}"-->
-<!--                           attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
-<!--                </field>-->
+                <!--                <field name='payment_type' position="replace">-->
+                <!--                    <field name="payment_type" invisible="1" widget="radio" options="{'horizontal': True}"-->
+                <!--                           attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
+                <!--                </field>-->
 
             </field>
         </record>
