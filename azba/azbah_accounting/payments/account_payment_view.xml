@@ -4,7 +4,15 @@
 
         <!-- VIEWS -->
 
-        <record id="azbah_view_account_payment_tree" model="ir.ui.view">
+
+        <!-- ACTIONS -->
+
+        <!--        سند صرف         -->
+        <!--        Receive         -->
+        <!--                        -->
+
+
+        <record id="azbah_view_tree_account_payment" model="ir.ui.view">
             <field name="name">azbah.account.payment.tree</field>
             <field name="model">account.payment</field>
             <field name="inherit_id" ref="account.view_account_payment_tree"/>
@@ -16,105 +24,21 @@
             </field>
         </record>
 
-
-        <record id="azbah_view_account_payment_form" model="ir.ui.view">
-            <field name="name">azbah.account.payment.form</field>
-            <field name="model">account.payment</field>
-            <field name="inherit_id" ref="account.view_account_payment_form"/>
-            <field name="mode">primary</field>
-            <field name="arch" type="xml">
-                <xpath expr="//group[@name='group1']" position="replace">
-                    <group name="group1">
-                        <field name="is_internal_transfer" invisible="1"
-                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                        <field name="payment_type" invisible="1" widget="radio" options="{'horizontal': True}"
-                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                        <field name="partner_id" context="{'default_is_company': True}" string="المستلم"
-                               attrs="{'readonly':[('state', '!=', 'draft')]}"/>
-                        <label for="amount"/>
-                        <div name="amount_div" class="o_row">
-                            <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="currency_id" options="{'no_create': True, 'no_open': True}"
-                                   required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"
-                                   groups="base.group_multi_currency"/>
-                        </div>
-                        <field name="date"
-                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                        <field name="ref" string="Memo"/>
-                    </group>
-                </xpath>
-
-                <xpath expr="//group[@name='group2']" position="replace">
-
-                    <group name="group2">
-                        <field name="journal_id"
-                               domain="[]"
-                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-
-                        <field name="payment_method_line_id" required="1" options="{'no_create': True, 'no_open': True}"
-                               attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('hide_payment_method_line', '=', True)]}"/>
-
-
-                        <field name="partner_bank_id" context="{'default_partner_id': partner_id}"
-                               string="Customer Bank Account"
-                               attrs="{
-                                            'invisible': ['|', '|', '|', ('show_partner_bank_account', '=', False), ('partner_type','!=','customer'), ('is_internal_transfer', '=', True), ('payment_type', '=', 'inbound')],
-                                            'required': [('require_partner_bank_account', '=', True), ('is_internal_transfer', '=', False)],
-                                            'readonly': [('state', '!=', 'draft')]}"/>
-
-                        <field name="partner_bank_id" context="{'default_partner_id': partner_id}"
-                               string="Vendor Bank Account"
-                               attrs="{
-                                            'invisible': ['|', '|', '|', ('show_partner_bank_account', '=', False), ('partner_type','!=','supplier'), ('is_internal_transfer', '=', True), ('payment_type', '=', 'inbound')],
-                                            'required': [('require_partner_bank_account', '=', True), ('is_internal_transfer', '=', False)],
-                                            'readonly': [('state', '!=', 'draft')]}"/>
-
-                        <field name="partner_bank_id" context="{'default_partner_id': partner_id}"
-                               string="Company Bank Account" readonly="1"
-                               attrs="{
-                                            'invisible': ['|', '|', ('show_partner_bank_account', '=', False), ('is_internal_transfer', '=', True), ('payment_type', '=', 'outbound')],
-                                            'required': [('require_partner_bank_account', '=', True), ('is_internal_transfer', '=', False)],
-                                        }"/>
-
-                        <field name="destination_journal_id" context="{'default_partner_id': partner_id}"
-                               attrs="{'invisible': [('is_internal_transfer', '=', False)],
-                                       'readonly': [('state', '!=', 'draft')], 'required': [('is_internal_transfer', '=', True),('state', '=', 'draft')]}"/>
-                    </group>
-                </xpath>
-
-            </field>
-        </record>
-
-
-        <!-- ACTIONS -->
-
-        <!--        سند صرف         -->
-        <!--        Receive         -->
-        <!--                        -->
-
         <record id="action_azbah_account_payments_payable" model="ir.actions.act_window">
             <field name="name">Payments</field>
             <field name="res_model">account.payment</field>
             <field name="context">{'default_payment_type': 'outbound',
-                'default_move_journal_types': ('sale','purchase','bank', 'cash','general'),
+                'default_partner_type': 'supplier',
                 'search_default_outbound_filter': 1, 'sanad':'1'}
             </field>
-            <field name="view_id" ref="azbah_view_account_payment_tree"/>
         </record>
 
 
-        <record model="ir.actions.act_window.view" id="action_azbah_account_payment_tree">
+        <record id="act_view_tree_azbah_account_payment_receive" model="ir.actions.act_window.view">
             <field name="sequence" eval="1"/>
             <field name="view_mode">tree</field>
-            <field name="view_id" ref="azbah_view_account_payment_tree"/>
-            <field name="act_window_id" ref="action_azbah_account_payments_payable"/>
-        </record>
-
-        <record model="ir.actions.act_window.view" id="action_azbah_account_payment_form">
-            <field name="sequence" eval="3"/>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="azbah_view_account_payment_form"/>
-            <field name="act_window_id" ref="action_azbah_account_payments_payable"/>
+            <field name="view_id" ref="azbah_view_tree_account_payment"/>
+            <field name="act_window_id" ref="action_azbah_account_payments_receive"/>
         </record>
 
 
@@ -122,28 +46,48 @@
         <!--        Receive         -->
         <!--                        -->
 
-        <record id="action_azbah_account_payments_receive" model="ir.actions.act_window">
-            <field name="name">Payments</field>
-            <field name="res_model">account.payment</field>
-            <field name="context">{ 'default_payment_type': 'inbound',
-                'default_move_journal_types': ('sale','purchase','bank', 'cash','general'),
-                'search_default_inbound_filter': 1, 'sanad':'1' }
+        <record id="azbah_view_form_account_payment1" model="ir.ui.view">
+            <field name="name">azbah.account.payment.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <field name='is_internal_transfer' position="replace">
+                    <field name="is_internal_transfer" invisible="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </field>
+
+                <field name="journal_id" position="replace">
+                    <field name="journal_id"
+                           domain="[('type', 'in', ('sale','purchase','bank', 'cash','general'))]"
+                           attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </field>
+                <field name="payment_method_line_id" position="replace">
+                    <field name="payment_method_line_id"
+                           domain="[]"
+                           attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </field>
+
+<!--                <field name='payment_type' position="replace">-->
+<!--                    <field name="payment_type" invisible="1" widget="radio" options="{'horizontal': True}"-->
+<!--                           attrs="{'readonly': [('state', '!=', 'draft')]}"/>-->
+<!--                </field>-->
+
             </field>
-            <field name="view_id" ref="azbah_view_account_payment_tree"/>
         </record>
 
+        <record model="ir.actions.act_window" id="action_azbah_account_payments_receive">
+            <field name="name">Receive</field>
+            <field name="res_model">account.payment</field>
+            <field name="context">{'default_payment_type': 'inbound',
+                'default_partner_type': 'customer',
+                'search_default_inbound_filter': 1, 'sanad':'1'}
+            </field>
+        </record>
 
-        <record model="ir.actions.act_window.view" id="action_azbah_account_payment_tree_receive">
+        <record model="ir.actions.act_window.view" id="act_view_form_azbah_account_payment_receive">
             <field name="sequence" eval="1"/>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="azbah_view_account_payment_tree"/>
-            <field name="act_window_id" ref="action_azbah_account_payments_receive"/>
-        </record>
-
-        <record model="ir.actions.act_window.view" id="action_azbah_account_payment_form_receive">
-            <field name="sequence" eval="3"/>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="azbah_view_account_payment_form"/>
+            <field name="view_id" ref="azbah_view_form_account_payment1"/>
             <field name="act_window_id" ref="action_azbah_account_payments_receive"/>
         </record>
 
