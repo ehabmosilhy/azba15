@@ -34,7 +34,3 @@ class HREmployee(models.AbstractModel):
 
         res = super(HREmployee, self).create(vals)
         return res
-#
-# class HREmployeePublic(models.Model):
-#     _inherit = "hr.employee.public"
-#     code = fields.Char()

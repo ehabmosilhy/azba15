@@ -38,8 +38,14 @@ class AccountPayment(models.Model):
     def create(self, vals_list):
         if self.env.context.get('sanad'):
             # get cash account id
-            vals_list[0]['payment_method_line_id']=4
+            vals_list[0]['payment_method_line_id'] = 4
+            vals_list[0]['destination_journal_id'] = 9
         payments = super().create(vals_list)
+        # for some reason, the newly created payment type is set to 'outbound'
+        for payment in payments:
+            payment.payment_type = vals_list[0].get('payment_type')
+        return payments
+
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -50,10 +56,17 @@ class AccountMove(models.Model):
             cash_account_id = self.env['account.account'].search([('code', '=', '1201001')])
             if vals.get('line_ids'):
                 for line in vals.get('line_ids'):
-                    if line[2]['debit'] > 0:
-                        line[2]['account_id'] = cash_account_id.id
+                    if self.env.context.get('default_payment_type') == 'outbound':
+                        if line[2]['credit'] > 0:
+                            line[2]['account_id'] = cash_account_id.id
+                        else:
+                            line[2]['account_id'] = self.journal_id.default_account_id.id
                     else:
-                        line[2]['account_id'] = self.journal_id.default_account_id.id
+                        if line[2]['debit'] > 0:
+                            line[2]['account_id'] = cash_account_id.id
+                        else:
+                            line[2]['account_id'] = self.journal_id.default_account_id.id
+
         res = super(AccountMove, self).write(vals)
         return res
 
