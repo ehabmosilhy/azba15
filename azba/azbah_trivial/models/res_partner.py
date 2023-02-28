@@ -14,7 +14,7 @@ class ResPartner(models.Model):
     code = fields.Char(string="الكود Code")
     district = fields.Char(string="الحي District")
     display_name = fields.Char(compute='_compute_display_name', store=True, readonly=False)
-    # is_delegate = fields.Boolean('Is delegate مندوب؟', default=False)
+    is_delegate = fields.Boolean('Is delegate مندوب؟', default=False)
 
     pos_config_ids = fields.Many2many("pos.config", string="Routes المسارات")
 
