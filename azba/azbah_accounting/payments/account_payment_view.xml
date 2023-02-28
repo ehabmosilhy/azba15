@@ -37,19 +37,6 @@
             </field>
         </record>
 
-        <record id="act_view_form_azbah_account_payment_send" model="ir.actions.act_window.view">
-            <field name="sequence" eval="1"/>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="azbah_view_tree_account_payment"/>
-            <field name="act_window_id" ref="action_azbah_account_payments_send"/>
-        </record>
-        <record id="act_view_tree_azbah_account_payment_send" model="ir.actions.act_window.view">
-            <field name="sequence" eval="1"/>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="azbah_view_form_account_payment1"/>
-            <field name="act_window_id" ref="action_azbah_account_payments_send"/>
-        </record>
-
 
         <!--        سند قبض         -->
         <!--        Receive         -->
@@ -120,6 +107,18 @@
             <field name="act_window_id" ref="action_azbah_account_payments_receive"/>
         </record>
 
+        <record id="act_view_form_azbah_account_payment_send" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="azbah_view_tree_account_payment"/>
+            <field name="act_window_id" ref="action_azbah_account_payments_send"/>
+        </record>
+        <record id="act_view_tree_azbah_account_payment_send" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="azbah_view_form_account_payment1"/>
+            <field name="act_window_id" ref="action_azbah_account_payments_send"/>
+        </record>
 
         <menuitem parent="account_accountant.menu_accounting"
                   id="menu_azbah_account"
