@@ -12,8 +12,8 @@
         'batch_purchase/stock.xml',
         'security/batch_purchase.xml',
         'payments/account_payment_view.xml',
-        # 'batch_purchase/report/batch_purchase_template.xml',
-        # 'batch_purchase/report/batch_purchase.xml',
+        'batch_purchase/report/batch_purchase_template.xml',
+        'batch_purchase/report/batch_purchase.xml',
     ],
     'assets': {
         'web.assets_backend': [
