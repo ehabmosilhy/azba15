@@ -70,15 +70,7 @@
                         <div style="direction:rtl;text-align:center;padding:15px;
                             font-weight: bolder;">
 
-                        <t t-if="
-                        'عذبة'
-                                    in receipt.company.name">
-                                    فاتورة ضريبية مبسطة
-                        </t>
-                        <t t-else="">
-                         فاتورة
-                        </t>
-
+ فاتورة ضريبية مبسطة
                         </div>
                     </t>
 
