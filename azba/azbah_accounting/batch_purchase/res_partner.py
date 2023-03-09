@@ -9,7 +9,7 @@ class ResPartner(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         source = self.env.context.get('source')
-        if source == 'vendor' or vals_list[0].get('is_company'):
+        if source == 'vendor':
             last_vendor = self.env['res.partner'].search([('code', 'ilike', 'v%')], order='id desc', limit=1)
             if last_vendor:
                 new_code = 'V'+str(int(last_vendor.code[1:]) + 1).zfill(4)
