@@ -16,4 +16,4 @@ class ResPartner(models.Model):
                 vals_list[0]['code'] = new_code
                 vals_list[0]['company_type'] = 'company'
                 vals_list[0]['is_company'] = True
-                return super().create(vals_list)
+        return super().create(vals_list)
