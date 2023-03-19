@@ -170,8 +170,6 @@ class AccountMove(models.Model):
         if self.env.context.get('sanad'):
             # get cash account id
             cash_account_id = self.env['account.account'].search([('code', '=', '1201001')])
-            receivable_id = self.env['account.account'].search([('code', '=', '102011')])
-            payables_id = self.env['account.account'].search([('code', '=', '201002')])
 
             # 102011 Accounts Receivable
             # 201002 Payables

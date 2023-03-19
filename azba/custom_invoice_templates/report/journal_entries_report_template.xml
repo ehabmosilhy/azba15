@@ -247,10 +247,16 @@
         <field name="header_spacing">10</field>
         <field name="dpi">90</field>
     </record>
-    <report id="report_azbah_journal_entriess" string="Azbah journal entires"
-            model="account.move" report_type="qweb-pdf"
-            name="custom_invoice_templates.azbah_template_journal_entries_report"
-            file="custom_invoice_templates.azbah_template_journal_entries_report"
-            paperformat="custom_invoice_templates.paperformat_azbah_id"/>
+
+    <record id="report_azbah_journal_entriess" model="ir.actions.report">
+        <field name="name">custom_invoice_templates.azbah_template_journal_entries_report</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">odoo_process_costing_manufacturing.report_mrporder_cost</field>
+        <field name="report_file">custom_invoice_templates.azbah_template_journal_entries_report</field>
+        <field name="paper_format">custom_invoice_templates.paperformat_azbah_id</field>
+    </record>
+
+
 
 </odoo>

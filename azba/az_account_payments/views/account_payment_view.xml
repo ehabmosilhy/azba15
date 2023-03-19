@@ -6,6 +6,36 @@
         <!-- ACTIONS -->
 
         <!--        سند صرف         -->
+
+        <record id="action_azbah_account_payments_send" model="ir.actions.act_window">
+            <field name="name">Payments</field>
+            <field name="res_model">account.payment</field>
+            <field name="context">
+                {'default_payment_type': 'outbound',
+                'default_payment_method_line_id':4,
+                'search_default_outbound_filter': 1,
+                'default_destination_journal_id':9,
+                'sanad':'1'
+                }
+            </field>
+        </record>
+
+        <!--        سند قبض         -->
+
+        <!--Receive Action-->
+        <record id="action_azbah_account_payments_receive" model="ir.actions.act_window">
+            <field name="name">Receive</field>
+            <field name="res_model">account.payment</field>
+            <field name="context">
+                {'default_payment_type': 'inbound',
+                'default_payment_method_line_id':4,
+                'search_default_inbound_filter': 1,
+                'default_destination_journal_id':9,
+                'sanad':'1'}
+            </field>
+        </record>
+
+
         <record id="azbah_view_tree_account_payment" model="ir.ui.view">
             <field name="name">azbah.account.payment.tree</field>
             <field name="model">account.payment</field>
@@ -17,21 +47,6 @@
                 </field>
             </field>
         </record>
-
-        <record id="action_azbah_account_payments_send" model="ir.actions.act_window">
-            <field name="name">Payments</field>
-            <field name="res_model">account.payment</field>
-            <field name="context">
-                {'default_payment_type': 'outbound',
-                'default_payment_method_line_id':4,
-                'search_default_inbound_filter': 1,
-                'sanad':'1'
-                }
-            </field>
-        </record>
-
-
-        <!--        سند قبض         -->
 
         <record id="azbah_view_form_account_payment" model="ir.ui.view">
             <field name="name">azbah.account.payment.form</field>
@@ -76,40 +91,36 @@
             </field>
         </record>
 
-        <!--Receive Action-->
-        <record model="ir.actions.act_window" id="action_azbah_account_payments_receive">
-            <field name="name">Receive</field>
-            <field name="res_model">account.payment</field>
-            <field name="context">{'default_payment_type': 'inbound',
-                'default_is_internal_transfer':1,
-                'default_payment_method_line_id':4,
-                'default_destination_journal_id':9,
-                'search_default_inbound_filter': 1,
-                'sanad':'1'}
-            </field>
-        </record>
 
         <!--Bind Receive Action to views-->
 
-        <record model="ir.actions.act_window.view" id="act_view_form_azbah_account_payment_receive">
-            <field name="sequence" eval="1"/>
+        <record id="act_view_form_azbah_account_payment_receive" model="ir.actions.act_window.view">
+            <field name="sequence" eval="10"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="azbah_view_form_account_payment"/>
             <field name="act_window_id" ref="action_azbah_account_payments_receive"/>
         </record>
-
-        <record id="act_view_form_azbah_account_payment_send" model="ir.actions.act_window.view">
-            <field name="sequence" eval="1"/>
+        <record id="act_view_tree_azbah_account_payment_receive" model="ir.actions.act_window.view">
+            <field name="sequence" eval="5"/>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="azbah_view_tree_account_payment"/>
-            <field name="act_window_id" ref="action_azbah_account_payments_send"/>
+            <field name="act_window_id" ref="action_azbah_account_payments_receive"/>
         </record>
+
+
         <record id="act_view_tree_azbah_account_payment_send" model="ir.actions.act_window.view">
-            <field name="sequence" eval="1"/>
+            <field name="sequence" eval="10"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="azbah_view_form_account_payment"/>
             <field name="act_window_id" ref="action_azbah_account_payments_send"/>
         </record>
+        <record id="act_view_form_azbah_account_payment_send" model="ir.actions.act_window.view">
+            <field name="sequence" eval="5"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="azbah_view_tree_account_payment"/>
+            <field name="act_window_id" ref="action_azbah_account_payments_send"/>
+        </record>
+
 
         <menuitem parent="account_accountant.menu_accounting"
                   id="menu_azbah_account"

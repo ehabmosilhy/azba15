@@ -26,16 +26,16 @@
             <field name="header_spacing">35</field>
             <field name="dpi">90</field>
         </record>
-        <report
-                string="print Voucher"
-                id="action_report_voucher_receipt_10"
-                model="account.payment"
-                report_type="qweb-pdf"
-                name="custom_invoice_templates.report_print_voucher"
-                file="custom_invoice_templates.report_print_voucher"
-                print_report_name="   (object.partner_id.name)"
-                paperformat="custom_invoice_templates.paperformat_azbah"
-        />
+<!--        <report-->
+<!--                string="print Voucher"-->
+<!--                id="action_report_voucher_receipt_10"-->
+<!--                model="account.payment"-->
+<!--                report_type="qweb-pdf"-->
+<!--                name="custom_invoice_templates.report_print_voucher"-->
+<!--                file="custom_invoice_templates.report_print_voucher"-->
+<!--                print_report_name="   (object.partner_id.name)"-->
+<!--                paperformat="custom_invoice_templates.paperformat_azbah"-->
+<!--        />-->
 
         <!--        <report-->
         <!--                string="Payment Voucher"-->
