@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <record id="azbah_view_form_account_payment" model="ir.ui.view">
+            <field name="name">azbah.account.journal.form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="mode">extension</field>
+            <field name="arch" type="xml">
+                <page name="advanced_settings" position="inside">
+                    <group>
+                        <group>
+                            <field name="sanad_account_id" string="الحساب المرتبط"/>
+                        </group>
+                    </group>
+                </page>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

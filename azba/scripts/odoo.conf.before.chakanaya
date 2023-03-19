@@ -1,0 +1,31 @@
+[options]
+
+workers = 20
+limit_memory_hard = 123211874304
+limit_memory_soft = 102676561920
+limit_request = 81920
+
+; Timeout for worker processes
+timeout = 3600
+
+limit_time_cpu = 600
+limit_time_real = 1200
+max_cron_threads = 2
+
+db_maxconn=200
+dbfilter = (?!.*_perf$)
+
+admin_passwd=sam6
+addons_path = /mnt/addons_ent,
+		/mnt/addons_ejad,
+		/mnt/misc,
+		/mnt/addons_reporting,
+		/mnt/addons_web_extra,
+		/mnt/addons_azba
+data_dir = /var/lib/odoo
+
+
+proxy_mode = True
+log_handler = odoo.http:DEBUG,werkzeug:DEBUG
+
+

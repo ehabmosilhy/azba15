@@ -1,0 +1,59 @@
+version: '3.1'
+
+networks:
+  monitoring:
+    driver: bridge
+
+services:
+  odoo15:
+    image: odoo:15.0
+    container_name: odoo15
+    restart: always
+    user: root
+    depends_on:
+      - db15
+    ports:
+      - "0.0.0.0:8015:8069"
+      - "8075:8072"
+    volumes:
+      - odoo15:/var/lib/odoo
+      - .:/etc/odoo
+      - ../monitor/logs/odoo:/var/log/odoo
+      - ../addons_azba/addons_ent:/mnt/addons_ent
+      - ../addons_azba/ejad:/mnt/addons_ejad
+      - ../addons_azba/misc:/mnt/misc
+      - ../addons_azba/reporting:/mnt/addons_reporting
+      - ../addons_azba/web_extra:/mnt/addons_web_extra
+      - ../addons_azba/azba:/mnt/addons_azba
+    environment:
+      - HOST=db15
+      - USER=odoo
+      - PASSWORD=myodoo
+      - POSTGRES_SUPERUSER=true
+      - ODOO_HTTP_SOCKET_TIMEOUT=600
+    networks:
+      - monitoring
+
+  db15:
+    image: postgres:15.0
+    container_name: db15
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=myodoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - db15:/var/lib/postgresql/data/pgdata
+      - ./postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
+    ports:
+      - "5432:5432"
+    networks:
+      - monitoring
+
+  
+
+volumes:
+  odoo15:
+  db15:
+ 

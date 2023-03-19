@@ -7,6 +7,8 @@ class HREmployee(models.AbstractModel):
     _inherit = "hr.employee.base"
     _order = "display_name"
 
+    is_delegate = fields.Boolean('Is delegate مندوب؟', default=False)
+
     @api.depends('name', 'code')
     def _compute_display_name(self):
         for emp in self:
