@@ -9,7 +9,8 @@ class FleetVehicle(models.Model):
     license_number = fields.Char()
     insurance_status = fields.Selection([('valid', 'ساري'),
                                          ('expired', 'منتهي')])
-    registration_type = fields.Char()
+    registration_type = fields.Selection([('private', 'خاص'),
+                                         ('trans', 'نقل خاص')])
     license_start_date = fields.Date()
     license_end_date = fields.Date()
     inspection_date = fields.Date()
