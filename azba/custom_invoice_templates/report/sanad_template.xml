@@ -1,690 +1,242 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <template id="report_voucher_internal_transfer">
-            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="o">
-                    <t t-call="custom_invoice_templates.azbah_external_layout_50">
-                        <style>
-                            @font-face {
-                            font-family: 'Almarai';
-                            font-style: normal;}
-                            td, th {
-                            border: 2px solid black;
-                            text-align:center;
-                            }
-                        </style>
-
-                        <br/>
-                        <br/>
-
-                        <div class="page"
-                             style="direction:rtl !important;text-align:right;font-family: 'Almarai' !important; padding: 5px 10px 1px 5px; ">
-
-                            <div class="row" style="direction:ltr !important;margin-top:20px;">
-                                <div class="col-4" style="direction:ltr !important;"/>
-                                <div class="col-4" style="text-align:center; font-size: 20px;direction:ltr!important;">
-                                    <strong>N°</strong>
-                                    <strong>
-                                        <span t-field="o.name"/>
-                                    </strong>
-                                </div>
-                            </div>
-
-                            <br/>
-
-                            <div>
-                                <div style="direction:rtl !important;width:100% ;float: right;">
-
-
-                                    <strong style="font-size: 17px !important;direction:rtl !important;margin-left:50px;white-space: nowrap ;">
-                                        نقدا / شيك رقم / تحويل بنكي
-                                    </strong>
-                                    <span style="font-size: 17px !important;direction:rtl !important;margin-left:100px; white-space: nowrap ;"
-                                          t-field="o.journal_id.name"/>
-
-                                    <br/>
-                                </div>
-                                <div style="direction:ltr !important;width:100%; float: right;margin-bottom:10px;">
-                                    <strong style="float:right;font-size: 17px !important;direction:ltr !important;margin-bottom:10px; white-space: nowrap ;">
-                                        المندوب
-                                    </strong>
-                                    <span style="font-size: 20px !important;direction:ltr !important; margin-right:110px ; white-space: nowrap ; "
-                                          t-field="o.delegate_id"/>
-                                </div>
-                            </div>
-
-                            <br/>
-                            <br/>
-
-                            <div style="float:right;margin-top=10px;margin-bottom:10px;   direction:ltr !important;">
-                                <strong style="margin-left:400px;margin-bottom:10px;margin-top:10px;">إدفعوا الى
-                                </strong>
-                            </div>
-                            <div style="float:left; direction:ltr !important;margin-top:10px;margin-bottom:10px;">
-                                <strong style="margin-bottom:10px;">
-                                    Paid To
-                                </strong>
-                            </div>
-                            <br/>
-                            <br/>
-                            <table style=" width: 100%;border-collapse: collapse;border: 1px solid black;direction:ltr !important;">
-                                <thead style="direction:ltr !important;">
-                                    <th width="70%" height="17%"
-                                        style="border: 2px solid black;direction:ltr !important;">
-                                        Mr / Messrs
-
-                                        <br/>
-                                        السيد / السادة
-                                    </th>
-                                    <th width="15%" height="17%"
-                                        style="border: 2px solid black;direction:ltr !important;">
-                                        The sum of
-
-                                        <br/>
-                                        مبلغاً وقدره
-                                    </th>
-
-                                    <th width="15%" height="17%"
-                                        style="border: 2px solid black;direction:ltr !important;">
-                                        For
-
-                                        <br/>
-                                        وذلك قيمة
-                                    </th>
-                                </thead>
-                                <tbody style="direction:ltr !important;">
-                                    <tr style="direction:ltr !important;">
-                                        <td tyle="border: 2px solid black;direction:ltr !important;">
-                                            <strong style="direction:ltr !important;">
-                                                [
-                                                <span style="direction:ltr !important;">
-                                                    <span t-field="o.partner_id.code"/>
-                                                </span>
-                                                ]
-                                                <span t-field="o.partner_id.name"
-                                                      style="direction:ltr !important;"/>
-                                            </strong>
-                                        </td>
-                                        <td tyle="border: 2px solid black;direction:ltr !important;">
-                                            <strong style="direction:ltr !important;">
-                                                <span t-field="o.amount" style="direction:ltr !important;"/>
-                                                <span t-field="o.currency_id"/>
-                                            </strong>
-                                        </td>
-                                        <td tyle="border: 2px solid black;direction:ltr !important;">
-                                            <strong style="direction:ltr !important;">
-                                                <span t-field="o.ref" style="direction:ltr !important;"/>
-                                            </strong>
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-
-
-                            <table class="table  table-borderless" style="direction:ltr !important;">
-
-                                <td style="direction:ltr !important;">
-                                    <strong style="direction:ltr !important;">Cashier</strong>
-                                    <span t-field="o.delegate_id.name" style="direction:ltr !important;"/>
-                                </td>
-                                <td style="direction:ltr !important;">
-
-                                    <strong style="direction:ltr !important;">المستلم</strong>
-                                    <span t-esc="user.name" style="direction:ltr !important;"></span>
-                                </td>
-                                <td style="direction:ltr !important;">
-
-                                    <strong style="direction:ltr !important;">Recipient</strong>
-                                </td>
-
-                            </table>
-
-                            <div class="footer" style="direction:ltr !important;">
-                                <div class="col-12">
-                                    <div style="border-bottom: 1px solid black;"/>
-                                </div>
-                                <div class="row" style="direction:ltr;">
-                                    <div class="col-12" style="text-align:center;">
-                                        <span t-if="o.company_id.street">
-                                            <span t-field="o.company_id.street"/>
-                                        </span>
-                                        <span t-if="o.company_id.street2">
-                                            <span t-field="o.company_id.street2"/>
-                                        </span>
-                                        <span t-if="o.company_id.city">
-                                            <span t-field="o.company_id.city"/>
-                                        </span>
-                                        <span t-if="o.company_id.zip">
-                                            <span t-field="o.company_id.zip"/>
-                                        </span>
-                                        <span t-if="o.company_id.country_id.name">
-                                            <span t-field="o.company_id.country_id.name"/>
-                                        </span>
-                                        <span t-if="o.company_id.phone" class="list-inline-item" direction="rtl">
-                                            <i class="fa fa-phone" role="img" aria-label="Phone"
-                                               title="Phone"/>
-                                            <span t-field="o.company_id.phone"/>
-                                        </span>
-                                        <br/>
-                                        <span t-if="o.company_id.email" class="list-inline-item">
-                                            <i class="fa fa-at" role="img" aria-label="Email"
-                                               title="Email"/>
-                                            <span t-field="o.company_id.email"/>
-                                        </span>
-                                        <span t-if="o.company_id.website" class="list-inline-item">
-                                            <i class="fa fa-globe" role="img" aria-label="Website"
-                                               title="Website"/>
-                                            <span t-field="o.company_id.website"/>
-                                        </span>
-                                    </div>
-                                    <div t-if="report_type == 'pdf'" class="text-muted">
-
-                                        <span class="page"/>
-
-                                        <span class="topage"/>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </t>
-                </t>
-            </t>
-
-        </template>
-        <template id="report_voucher_customer_payment">
-            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="o">
-                    <t t-call="custom_invoice_templates.azbah_external_layout_50">
-                        <style>
-                            @font-face {
-                            font-family: 'Almarai';
-                            font-style: normal;}
-                            td, th {
-                            border: 2px solid black;
-                            text-align:center;
-                            }
-                        </style>
-
-                        <br/>
-                        <br/>
-
-                        <div class="page"
-                             style="direction:rtl !important;text-align:right;font-family: 'Almarai' !important; padding: 5px 10px 1px 5px; ">
-
-                            <div class="row" style="direction:ltr !important;margin-top:20px;">
-                                <div class="col-4" style="direction:ltr !important;"/>
-                                <div class="col-4" style="text-align:center; font-size: 20px;direction:ltr!important;">
-                                    <strong>N°</strong>
-                                    <strong>
-                                        <span t-field="o.name"/>
-                                    </strong>
-                                </div>
-                            </div>
-
-                            <br/>
-
-                            <div>
-                                <div style="direction:rtl !important;width:100% ;float: right;">
-
-
-                                    <strong style="font-size: 17px !important;direction:rtl !important;margin-left:50px;white-space: nowrap ;">
-                                        نقدا / شيك رقم / تحويل بنكي
-                                    </strong>
-                                    <span style="font-size: 17px !important;direction:rtl !important;margin-left:100px; white-space: nowrap ;"
-                                          t-field="o.journal_id.name"/>
-
-                                    <br/>
-                                </div>
-                                <div style="direction:ltr !important;width:100%; float: right;margin-bottom:10px;">
-                                    <strong style="float:right;font-size: 17px !important;direction:ltr !important;margin-bottom:10px; white-space: nowrap ;">
-                                        المندوب
-                                    </strong>
-                                    <span style="font-size: 20px !important;direction:ltr !important; margin-right:110px ; white-space: nowrap ; "
-                                          t-field="o.delegate_id"/>
-                                </div>
-                            </div>
-
-                            <br/>
-                            <br/>
-
-                            <div style="float:right;margin-top=10px;margin-bottom:10px;   direction:ltr !important;">
-                                <strong style="margin-left:400px;margin-bottom:10px;margin-top:10px;">إدفعوا الى
-                                </strong>
-                            </div>
-                            <div style="float:left; direction:ltr !important;margin-top:10px;margin-bottom:10px;">
-                                <strong style="margin-bottom:10px;">
-                                    Paid To
-                                </strong>
-                            </div>
-                            <br/>
-                            <br/>
-                            <table style=" width: 100%;border-collapse: collapse;border: 1px solid black;direction:ltr !important;">
-                                <thead style="direction:ltr !important;">
-                                    <th width="70%" height="17%"
-                                        style="border: 2px solid black;direction:ltr !important;">
-                                        Mr / Messrs
-
-                                        <br/>
-                                        السيد / السادة
-                                    </th>
-                                    <th width="15%" height="17%"
-                                        style="border: 2px solid black;direction:ltr !important;">
-                                        The sum of
-
-                                        <br/>
-                                        مبلغاً وقدره
-                                    </th>
-
-                                    <th width="15%" height="17%"
-                                        style="border: 2px solid black;direction:ltr !important;">
-                                        For
-
-                                        <br/>
-                                        وذلك قيمة
-                                    </th>
-                                </thead>
-                                <tbody style="direction:ltr !important;">
-                                    <tr style="direction:ltr !important;">
-                                        <td tyle="border: 2px solid black;direction:ltr !important;">
-                                            <strong style="direction:ltr !important;">
-                                                [
-                                                <span style="direction:ltr !important;">
-                                                    <span t-field="o.partner_id.code"/>
-                                                </span>
-                                                ]
-                                                <span t-field="o.partner_id.name"
-                                                      style="direction:ltr !important;"/>
-                                            </strong>
-                                        </td>
-                                        <td tyle="border: 2px solid black;direction:ltr !important;">
-                                            <strong style="direction:ltr !important;">
-                                                <span t-field="o.amount" style="direction:ltr !important;"/>
-                                                <span t-field="o.currency_id"/>
-                                            </strong>
-                                        </td>
-                                        <td tyle="border: 2px solid black;direction:ltr !important;">
-                                            <strong style="direction:ltr !important;">
-                                                <span t-field="o.ref" style="direction:ltr !important;"/>
-                                            </strong>
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-
-
-                            <table class="table  table-borderless" style="direction:ltr !important;">
-
-                                <td style="direction:ltr !important;">
-                                    <strong style="direction:ltr !important;">Cashier</strong>
-                                    <span t-field="o.delegate_id.name" style="direction:ltr !important;"/>
-                                </td>
-                                <td style="direction:ltr !important;">
-
-                                    <strong style="direction:ltr !important;">المستلم</strong>
-                                    <span t-esc="user.name" style="direction:ltr !important;"></span>
-                                </td>
-                                <td style="direction:ltr !important;">
-
-                                    <strong style="direction:ltr !important;">Recipient</strong>
-                                </td>
-
-                            </table>
-
-                            <div class="footer" style="direction:ltr !important;">
-                                <div class="col-12">
-                                    <div style="border-bottom: 1px solid black;"/>
-                                </div>
-                                <div class="row" style="direction:ltr;">
-                                    <div class="col-12" style="text-align:center;">
-                                        <span t-if="o.company_id.street">
-                                            <span t-field="o.company_id.street"/>
-                                        </span>
-                                        <span t-if="o.company_id.street2">
-                                            <span t-field="o.company_id.street2"/>
-                                        </span>
-                                        <span t-if="o.company_id.city">
-                                            <span t-field="o.company_id.city"/>
-                                        </span>
-                                        <span t-if="o.company_id.zip">
-                                            <span t-field="o.company_id.zip"/>
-                                        </span>
-                                        <span t-if="o.company_id.country_id.name">
-                                            <span t-field="o.company_id.country_id.name"/>
-                                        </span>
-                                        <span t-if="o.company_id.phone" class="list-inline-item" direction="rtl">
-                                            <i class="fa fa-phone" role="img" aria-label="Phone"
-                                               title="Phone"/>
-                                            <span t-field="o.company_id.phone"/>
-                                        </span>
-                                        <br/>
-                                        <span t-if="o.company_id.email" class="list-inline-item">
-                                            <i class="fa fa-at" role="img" aria-label="Email"
-                                               title="Email"/>
-                                            <span t-field="o.company_id.email"/>
-                                        </span>
-                                        <span t-if="o.company_id.website" class="list-inline-item">
-                                            <i class="fa fa-globe" role="img" aria-label="Website"
-                                               title="Website"/>
-                                            <span t-field="o.company_id.website"/>
-                                        </span>
-                                    </div>
-                                    <div t-if="report_type == 'pdf'" class="text-muted">
-
-                                        <span class="page"/>
-
-                                        <span class="topage"/>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </t>
-                </t>
-            </t>
-
-        </template>
-        <template id="report_voucher_vendor_payment">
-
-            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="o">
-
-                    <t t-call="custom_invoice_templates.azbah_external_layout_30">
-                        <style>
-                            @font-face {
-                            font-family: 'Almarai';
-                            font-style: normal;}
-                            td, th {
-                            border: 1px solid black;
-                            text-align:center;
-                            }
-                        </style>
-                        <br/>
-
-                        <div class="page"
-                             style="text-align:right;font-family: 'Almarai' !important; padding: 5px 10px 1px 5px; ">
-
-
-                            <div class="row" style="direction:ltr !important;margin-top:40px !important;">
-                                <div class="col-4" style="direction:ltr !important;"/>
-                                <div class="col-4" style="text-align:center; font-size: 20px;direction:ltr !important;">
-                                    <strong>N°</strong>
-                                    <strong>
-                                        <span t-field="o.name"/>
-                                    </strong>
-                                </div>
-                            </div>
-                            <br/>
-                            <br/>
-                            <div>
-                                <div style="direction:rtl !important;width:100% ;float: right;">
-
-
-                                    <strong style="font-size: 17px; !important;direction:rtl !important;margin-left:50px;white-space: nowrap ;">
-                                        نقدا / شيك رقم / تحويل بنكي
-                                    </strong>
-                                    <span style="font-size: 17px; !important;direction:rtl !important; margin-left:100px; white-space: nowrap ;"
-                                          t-field="o.journal_id.name"/>
-
-
-                                </div>
-                                <div style="direction:ltr !important;width:100%; float: right;margin-bottom:10px;">
-                                    <strong style="float:right;font-size: 17px; !important;direction:ltr !important;margin-bottom:10px;">
-                                        المندوب
-                                    </strong>
-                                    <span style="font-size: 20px; !important;direction:ltr !important; margin-right:110px "
-                                          t-field="o.delegate_id"/>
-
-
-                                </div>
-                            </div>
-
-                            <br/>
-                            <br/>
-
-                            <div style="float:right;direction:ltr !important;margin-top:10px;margin-bottom:10px;">
-                                <strong style="direction:ltr !important;margin-left:400px;margin-top=10px;margin-bottom:10px;">
-                                    استلمت من
-                                </strong>
-                            </div>
-                            <div style="float:left;direction:ltr !important;margin-top:10px;margin-bottom:10px;">
-                                <strong style="direction:ltr !important;margin-top:10px;margin-bottom:10px;">Received
-                                    From
-                                </strong>
-                            </div>
-
-                            <br/>
-                            <br/>
-                            <table style=" width: 100%; border-collapse: collapse;border: 1px solid black;direction:ltr !important;">
-                                <thead style="direction:ltr !important;">
-                                    <th width="70%" style="border: 2px solid black;direction:ltr !important;">
-                                        Mr / Messrs
-
-                                        <br/>
-                                        السيد / السادة
-                                    </th>
-                                    <th width="15%" style="border: 2px solid black;direction:ltr !important;">
-                                        The sum of
-
-                                        <br/>
-                                        مبلغاً وقدره
-                                    </th>
-
-                                    <th width="15%" style="border: 2px solid black;direction:ltr !important;">
-                                        For
-
-                                        <br/>
-                                        وذلك قيمة
-                                    </th>
-                                </thead>
-                                <tbody style="direction:ltr !important;">
-                                    <tr style="border: 2px solid black;direction:ltr !important;">
-                                        <td style="border: 1px solid black;direction:ltr !important;">
-                                            <strong style="direction:ltr !important;">
-
-                                                [
-                                                <span>
-                                                    <span t-field="o.partner_id.code"
-                                                          style="direction:ltr !important;"/>
-                                                </span>
-                                                ]
-                                                <span t-field="o.partner_id.name"
-                                                      style="direction:ltr !important;"/>
-
-                                            </strong>
-                                        </td>
-                                        <td style="border: 2px solid black;direction:ltr !important;">
-                                            <strong>
-                                                <span t-field="o.amount" style="direction:ltr !important;"/>
-                                                <span t-field="o.currency_id"/>
-                                            </strong>
-                                        </td>
-
-                                        <td style="border: 2px solid black; direction:ltr !important;">
-                                            <strong style="direction:ltr !important;">
-                                                <span t-field="o.ref" style="direction:ltr !important;"/>
-                                            </strong>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-
-                            <div class="row" style="direction:ltr !important;">
-                                <div class="col-4" style="white-space: nowrap ;direction:ltr !important;">
-                                    <div class="row" style="direction:ltr !important;">
-                                        <div class="col-4" style="text-align: left;direction:ltr !important;">
-                                            <p>Recipient</p>
-                                        </div>
-                                        <div class="col-4" style="direction:ltr !important;">
-                                            <p style="direction:ltr !important;">
-                                                <span t-esc="user.name" style="direction:ltr !important;"></span>
-                                            </p>
-                                        </div>
-                                        <div class="col-4" style="float: right;direction:ltr !important;">
-                                            <p style="direction:ltr !important;">المستلم</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-4" style="white-space: nowrap ;direction:ltr !important;">
-                                    <div class="row" style="direction:ltr !important;">
-                                        <div class="col-4" style="text-align: left;direction:ltr !important;">
-                                            <p style="direction:ltr !important;">Accountant</p>
-                                        </div>
-                                        <div class="col-4" style="direction:ltr !important;">
-                                            <p></p>
-                                        </div>
-                                        <div class="col-4" style="float: right;direction:ltr !important;">
-                                            <p style="direction:ltr !important;">المحاسب</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-4" style="white-space: nowrap ;direction:ltr !important;">
-                                    <div class="row" style="direction:ltr !important;">
-                                        <div class="col-4" style="text-align: left;direction:ltr !important;">
-                                            <p style="direction:ltr !important;">Signature</p>
-                                        </div>
-                                        <div class="col-4" style="direction:ltr !important;">
-                                            <p></p>
-                                        </div>
-                                        <div class="col-4" style="float: right;direction:ltr !important;">
-                                            <p style="direction:ltr !important;">التوقيع</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </t>
-                </t>
-            </t>
-        </template>
-        <template id="azbah_external_layout_50">
-            <div class="header" style="direction:rtl !important;">
-                <div class="row" style="direction:rtl !important;">
-                    <div class="col-4" style="font-size: 30px;direction:rtl !important;">
-                        <center style="direction:ltr !important;">
-                            <br/>
-                            <strong style="direction:rtl !important;">التاريخ</strong>
-                            <span t-field="o.date" style="direction:rtl !important;"/>
-                            <strong style="direction:v !important;">Date</strong>
-                        </center>
-                    </div>
-                    <div class="col-4" style="font-size: 30px;direction:ltr !important;">
-                        <center style="direction:rtl !important;">
-                            <br/>
-                            <strong style="direction:rtl !important;">سند صرف</strong>
-                            <br/>
-                            <strong style="direction:rtl !important;">PAYMENT VOUCHER</strong>
-                        </center>
-                    </div>
-                    <div class="col-4" style="direction:rtl !important;">
-                        <br/>
-                        <center style="direction:rtl !important;">
-                            <img t-if="o.company_id.logo"
-                                 t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
-                                 style="max-height:133px;direction:rtl !important;"/>
-                        </center>
-                    </div>
-                </div>
-                <div class="row" style="direction:ltr !important;">
-                    <div class="col-4">
-                        <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
-                        <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
-                        <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
-                    </div>
-                    <div class="col-4"/>
-                    <div class="col-4">
-                        <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
-                        <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
-                        <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
-                    </div>
-                </div>
-                <br/>
-            </div>
-            <div class="article" t-att-data-oe-model="o and o._name"
-                 t-att-data-oe-id="o and o.id"
-                 t-att-data-oe-lang="o and o.env.context.get('lang')">
-                <t t-raw="0"/>
-            </div>
-
-        </template>
-        <template id="azbah_external_layout_30">
-            <div class="header" style="direction:rtl !important;">
-                <div class="row" style="direction:rtl !important;">
-                    <div class="col-4" style="font-size: 30px;direction:rtl !important;">
-                        <center style="direction:rtl !important;">
-                            <br/>
-                            <strong style="direction:rtl !important;">التاريخ</strong>
-                            <span t-field="o.date" style="direction:ltr !important;"/>
-                            <strong style="direction:rtl !important;">Date</strong>
-                        </center>
-                    </div>
-                    <div class="col-4" style="font-size: 30px;direction:ltr !important;">
-                        <center style="direction:ltr !important;">
-                            <br/>
-                            <t t-log="o"/>
-
-
-                            <strong style="direction:ltr !important;">سند قبض</strong>
-                            <br/>
-                            <strong style="direction:ltr !important;">RECEIPT VOUCHER</strong>
-                        </center>
-                    </div>
-                    <div class="col-4" style="direction:ltr !important;">
-                        <br/>
-                        <center style="direction:rtl !important;">
-                            <img t-if="o.company_id.logo"
-                                 t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
-                                 style="max-height:133px;direction:rtl !important;"/>
-                        </center>
-                    </div>
-                </div>
-                <div class="row" style="direction:ltr !important;">
-                    <div class="col-4">
-                        <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
-                        <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
-                        <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
-                    </div>
-                    <div class="col-4"/>
-                    <div class="col-4">
-                        <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
-                        <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
-                        <div style="border-bottom: 2px solid black;margin-bottom: 5px;"/>
-                    </div>
-                </div>
-                <br/>
-            </div>
-            <div class="article" t-att-data-oe-model="o and o._name"
-                 t-att-data-oe-id="o and o.id"
-                 t-att-data-oe-lang="o and o.env.context.get('lang')">
-                <t t-raw="0"/>
-            </div>
-
-        </template>
         <template id="report_print_voucher">
-            <t t-foreach="docs" t-as="o">
-                <t t-set="foo" t-value="o.is_internal_transfer"/>
-                <t t-set="x" t-value="o"/>
+            <t t-call="web.html_container">
+                <div class="article" t-att-data-oe-model="o and o._name"
+                     t-att-data-oe-id="o and o.id"
+                     t-att-data-oe-lang="o and o.env.context.get('lang')">
+                    <t t-foreach="docs" t-as="o">
+                        <t t-if="o.is_internal_transfer">
+                            <t t-set="verb_ar" t-value="'تحويل داخلى'"/>
+                            <t t-set="verb_en" t-value="'Internal Transfer'"/>
+                        </t>
+                        <t t-elif="o.payment_type == 'outbound'">
+                            <t t-set="payment_type_ar" t-value="'سند صرف'"/>
+                            <t t-set="payment_type_en" t-value="'Payment Voucher'"/>
+                            <t t-set="verb_ar" t-value="'إدفعوا إلى'"/>
+                            <t t-set="verb_en" t-value="'Pay to'"/>
+                        </t>
+                        <t t-else="o.payment_type == 'inbound'">
+                            <t t-set="payment_type_ar" t-value="'سند قبض'"/>
+                            <t t-set="payment_type_en" t-value="'Money Receipt'"/>
+                            <t t-set="verb_ar" t-value="'استلمنا من'"/>
+                            <t t-set="verb_en" t-value="'Received From'"/>
+                        </t>
 
-                <!--                                <t t-set="o" t-value="'o'"/>-->
+                        <div class="page">
+                            <link href="/custom_invoice_templates/static/src/css/sanad_styles.css" rel="stylesheet"
+                                  type="text/css"/>
+                            <t t-esc="verb_en"/>
+                            <p t-esc="my_var"/>
 
-                <t t-if="o.is_internal_transfer">
-                    <t t-call="custom_invoice_templates.report_voucher_transfer"/>
-                </t>
+                            <!--Header-->
+                            <!--/Header-->
 
-                <t t-elif="o.payment_type == 'outbound'">
-                    <t t-call="custom_invoice_templates.report_voucher_customer_payment"/>
-                </t>
-                <t t-else="o.payment_type == 'inbound'">
-                    <t t-call="custom_invoice_templates.report_voucher_vendor_payment"/>
-                </t>
+                            <!--BODY-->
+
+                            <div class="mybox">
+                                <table style="width: 100%;">
+                                    <tr class="bottom_border">
+                                        <!--                                        نوع العملية - قبض - صرف - تحويل -->
+                                        <td colspan="2">
+                                            <div style="font-family:cairo_bold;font-size:20pt;"
+                                                 t-esc="payment_type_ar"/>
+                                            <div style="font-family:impact;font-size:20pt;" t-esc="payment_type_en"/>
+
+                                        </td>
+                                        <td>
+                                            <span class="title_text_ar">التاريخ</span>
+                                            <span class="normal_text_en">Date</span>
+                                            <div style="font-family:arial;font-size:16pt;direction:ltr"
+                                                 t-esc="o.date"/>
+                                        </td>
+                                        <td>
+                                            <div style="font-family:arial;font-size:18pt;font-weight:bold;direction:ltr"
+                                                 t-field="o.name"/>
+                                        </td>
+                                    </tr>
 
 
-            </t>
+                                    <tr class="bottom_border">
+                                        <td colspan="4">
+                                            <table width="100%">
+                                                <tr>
+                                                    <td>
+                                                        <!--                                        الفعل: استلمنا - إدفعوا ... -->
+                                                        <div class="title_text_ar"
+                                                             t-esc="verb_ar"/>
+                                                        <div class="normal_text_en" t-esc="verb_en"/>
+                                                    </td>
+                                                    <td>
+                                                        <div style="font-family:cairo_bold;font-size:12pt;"
+                                                             t-esc="o.partner_id.display_name"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr class="bottom_border">
+                                        <td>
+                                            <span class="title_text_ar">المبلغ</span>
+                                        </td>
+
+                                        <td>
+                                            <span class="normal_text_ar" t-field="o.amount"/>
+                                        </td>
+                                        <td colspan="2">
+                                            <table width="100%">
+                                                <tr>
+                                                    <td>
+                                                        <span class="title_text_ar">فقط</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="normal_text_ar"
+                                                             t-esc="o.currency_id.with_context(lang='ar_001').amount_to_text(o.amount).replace('Riyal','ريال').replace('Halala','هللة')"/>
+                                                        <div t-esc="o.currency_id.with_context(lang='en_US').amount_to_text(o.amount)"
+                                                             class="normal_text_ar"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="20%">
+                                            <t t-if="o.is_internal_transfer or o.payment_type == 'outbound'">
+                                                <span class="title_text_ar">الحساب المصدر</span>
+                                            </t>
+                                        </td>
+                                        <td width="30%">
+                                            <t t-if="o.is_internal_transfer or o.payment_type == 'outbound'">
+                                                <span class="normal_text_ar" t-field="o.journal_id.name"/>
+                                            </t>
+                                        </td>
+                                        <td width="20%">
+                                            <t t-if="o.is_internal_transfer or o.payment_type == 'inbound'">
+                                                <span class="title_text_ar">الحساب المستفيد</span>
+                                            </t>
+                                        </td>
+                                        <td width="30%">
+                                            <t t-if="o.is_internal_transfer">
+                                                <span class="normal_text_ar" t-field="o.destination_journal_id.name"/>
+                                            </t>
+                                            <t t-elif="o.payment_type == 'inbound'">
+                                                <span class="normal_text_ar" t-field="o.journal_id.name"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="4">
+                                            <table style="width:100%;background: #d0d0d3;border:black;border-width: 1px;    border-style: solid;">
+                                                <tr>
+                                                    <td>
+                                                        <strong style="direction:rtl !important;">Cashier</strong>
+                                                        <span t-field="o.delegate_id.name"
+                                                              style="direction:rtl !important;"/>
+                                                    </td>
+                                                    <td style="direction:rtl !important;">
+                                                        <strong style="direction:rtl !important;">المستلم</strong>
+                                                        <span t-esc="user.name"
+                                                              style="direction:rtl !important;"></span>
+                                                    </td>
+                                                    <td style="direction:rtl !important;">
+
+                                                        <strong style="direction:rtl !important;">Recipient</strong>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+
+
+                            <!--                        END OF BODY-->
+
+                            <!-- Footer -->
+
+
+                            <div class="footer" style="direction:rtl !important;">
+                                <div class="col-12">
+                                    <div style="border-bottom: 1px solid black;"/>
+                                </div>
+                                <div class="row" style="direction:rtl;">
+                                    <div class="col-12" style="text-align:center;">
+                                        <span t-if="o.company_id.street">
+                                            <span t-field="o.company_id.street"/>
+                                        </span>
+                                        <span t-if="o.company_id.street2">
+                                            <span t-field="o.company_id.street2"/>
+                                        </span>
+                                        <span t-if="o.company_id.city">
+                                            <span t-field="o.company_id.city"/>
+                                        </span>
+                                        <span t-if="o.company_id.zip">
+                                            <span t-field="o.company_id.zip"/>
+                                        </span>
+                                        <span t-if="o.company_id.country_id.name">
+                                            <span t-field="o.company_id.country_id.name"/>
+                                        </span>
+                                        <span t-if="o.company_id.phone" class="list-inline-item" direction="rtl">
+                                            <i class="fa fa-phone" role="img" aria-label="Phone"
+                                               title="Phone"/>
+                                            <span t-field="o.company_id.phone"/>
+                                        </span>
+                                        <br/>
+                                        <span t-if="o.company_id.email" class="list-inline-item">
+                                            <i class="fa fa-at" role="img" aria-label="Email"
+                                               title="Email"/>
+                                            <span t-field="o.company_id.email"/>
+                                        </span>
+                                        <span t-if="o.company_id.website" class="list-inline-item">
+                                            <i class="fa fa-globe" role="img" aria-label="Website"
+                                               title="Website"/>
+                                            <span t-field="o.company_id.website"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--                    End of Footer -->
+                        </div>
+                    </t> <!-- for each docs -->
+                </div> <!-- END OF ARTICLE -->
+            </t> <!--web.html_container-->
         </template>
+
+        <record id="paperformat_azbah" model="report.paperformat">
+            <field name="name">Gasoline Paper format</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">32</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <record id="report_az_payment_sanad" model="ir.actions.report">
+            <field name="name">Print Sanad</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">custom_invoice_templates.report_print_voucher</field>
+            <field name="report_file">custom_invoice_templates.report_print_voucher</field>
+            <field name="binding_model_id" ref="account.model_account_payment"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
     </data>
 </odoo>

@@ -9,12 +9,12 @@
         'report/customer_invoice.xml',
         'report/payment_receipt.xml',
         'report/sanad_template.xml',
-        'report/report.xml',
     ],
 
     'assets': {
         'web.assets_common': [
             'custom_invoice_templates/static/src/css/*.css',
+            'custom_invoice_templates/static/src/fonts/*.ttf',
         ],
     }
 }
