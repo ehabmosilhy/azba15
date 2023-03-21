@@ -8,7 +8,7 @@
     'data': [
         'report/customer_invoice.xml',
         'report/payment_receipt.xml',
-        'report/receipt_voucher_template.xml',
+        'report/sanad_template.xml',
         'report/report.xml',
     ],
 

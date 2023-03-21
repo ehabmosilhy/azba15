@@ -26,16 +26,18 @@
             <field name="header_spacing">35</field>
             <field name="dpi">90</field>
         </record>
-<!--        <report-->
-<!--                string="print Voucher"-->
-<!--                id="action_report_voucher_receipt_10"-->
-<!--                model="account.payment"-->
-<!--                report_type="qweb-pdf"-->
-<!--                name="custom_invoice_templates.report_print_voucher"-->
-<!--                file="custom_invoice_templates.report_print_voucher"-->
-<!--                print_report_name="   (object.partner_id.name)"-->
-<!--                paperformat="custom_invoice_templates.paperformat_azbah"-->
-<!--        />-->
+
+
+
+        <record id="report_az_payment_sanad" model="ir.actions.report">
+            <field name="name">Print Sanad</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">custom_invoice_templates.report_print_voucher</field>
+            <field name="report_file">custom_invoice_templates.report_print_voucher</field>
+            <field name="binding_model_id" ref="account.model_account_payment"/>
+            <field name="binding_type">report</field>
+        </record>
 
         <!--        <report-->
         <!--                string="Payment Voucher"-->
