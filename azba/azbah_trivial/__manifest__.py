@@ -9,7 +9,5 @@
         "views/account_move.xml",
         "views/product_template.xml",
         "views/hr_employee.xml",
-        "views/account_payment.xml",
-
     ],
 }

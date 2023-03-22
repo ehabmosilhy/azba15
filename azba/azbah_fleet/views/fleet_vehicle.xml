@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+
+        <!--  Form View  -->
+        <record id="azbah_view_fleet_vehicle_form" model="ir.ui.view">
+            <field name="name">azbah.view_fleet_vehicle_form</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+            <field name="arch" type="xml">
+                <field name="image_128" position="after">
+                    <field name="vehicle_image" widget="image" class="float-right"
+                           options="{'size': [250, 250]}"/>
+                </field>
+                <xpath expr="//notebook/page[1]" position="replace">
+                    <page string="بيانات الترخيص" name="license_page">
+                        <group>
+                            <field name="license_number" string="رقم الترخيص"/>
+                            <field name="registration_type" string="نوع التسجيل"/>
+                            <field name="insurance_status" string="حالة التأمين"/>
+
+                        </group>
+                        <group>
+                            <group string="التواريخ هجري">
+                                <field name="license_start_date_hijri" string="بداية الترخيص هجرى"/>
+                                <field name="license_end_date_hijri" string="نهاية الترخيص هجرى"/>
+                                <field name="inspection_date_hijri" string="تاريخ الفحص هجرى"/>
+                                <field name="ownership_date_hijri" string="تاريخ الملكية هجرى"/>
+                            </group>
+                            <group string="التواريخ ميلادي">
+                                <field name="license_start_date" string="بداية الترخيص"/>
+                                <field name="license_end_date" string="نهاية الترخيص"/>
+                                <field name="inspection_date" string="تاريخ الفحص"/>
+                                <field name="ownership_date" string="تاريخ الملكية"/>
+                            </group>
+
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

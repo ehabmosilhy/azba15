@@ -11,31 +11,8 @@
         <!--                print_report_name="'أمر شراء- %s' % (object.name).replace('/', '')"-->
 
         <!--        />-->
-        <record id="paperformat_azbah" model="report.paperformat">
-            <field name="name">Gasoline Paper format</field>
-            <field name="default" eval="True"/>
-            <field name="format">custom</field>
-            <field name="page_height">297</field>
-            <field name="page_width">210</field>
-            <field name="orientation">Portrait</field>
-            <field name="margin_top">40</field>
-            <field name="margin_bottom">32</field>
-            <field name="margin_left">7</field>
-            <field name="margin_right">7</field>
-            <field name="header_line" eval="False"/>
-            <field name="header_spacing">35</field>
-            <field name="dpi">90</field>
-        </record>
-        <report
-                string="print Voucher"
-                id="action_report_voucher_receipt_10"
-                model="account.payment"
-                report_type="qweb-pdf"
-                name="custom_invoice_templates.report_print_voucher"
-                file="custom_invoice_templates.report_print_voucher"
-                print_report_name="   (object.partner_id.name)"
-                paperformat="custom_invoice_templates.paperformat_azbah"
-        />
+
+
 
         <!--        <report-->
         <!--                string="Payment Voucher"-->

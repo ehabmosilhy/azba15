@@ -13,6 +13,18 @@
                 <div class="article mt0 o_report_layout_standard"
                      style="direction:ltr !important;">
 
+                    <div t-if="o.company_id.id == 1"
+                         style="text-align: center;margin-right:1cm; direction:ltr !important;font-weight:bolder;font-size:20px;">
+                        فاتورة ضريبية
+                    </div>
+
+                    <div t-else=""
+                         style="text-align: center;margin-right:1cm; direction:ltr !important;font-weight:bolder;font-size:20px;">
+                        فاتورة
+                    </div>
+                    فاتورة ضريبية
+                    <div t-field="o.name"/>
+
                     <div style="text-align: center;margin-right:1cm; direction:ltr !important;font-weight:bolder;font-size:20px;">
                         <span t-field="o.name"/>
                     </div>
@@ -449,10 +461,17 @@
         <field name="header_spacing">1</field>
         <field name="dpi">90</field>
     </record>
-    <report id="report_azbah_invoce_rep" string="Azbah Invoice"
-            model="account.move" report_type="qweb-pdf"
-            name="custom_invoice_templates.azbah_customer_invoice"
-            file="custom_invoice_templates.azbah_customer_invoice"
-            paperformat="custom_invoice_templates.paperformat_azbah_id"/>
+
+
+    <record id="report_azbah_invoce_rep" model="ir.actions.report">
+        <field name="name">custom_invoice_templates.azbah_customer_invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_file">custom_invoice_templates.azbah_customer_invoice</field>
+        <field name="report_name">custom_invoice_templates.azbah_customer_invoice</field>
+        <field name="paperformat_id" ref="custom_invoice_templates.paperformat_azbah_id"/>
+
+    </record>
+
 
 </odoo>

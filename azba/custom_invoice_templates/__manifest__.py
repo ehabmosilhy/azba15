@@ -8,13 +8,13 @@
     'data': [
         'report/customer_invoice.xml',
         'report/payment_receipt.xml',
-        'report/receipt_voucher_template.xml',
-        'report/report.xml',
+        'report/sanad_template.xml',
     ],
 
     'assets': {
         'web.assets_common': [
             'custom_invoice_templates/static/src/css/*.css',
+            'custom_invoice_templates/static/src/fonts/*.ttf',
         ],
     }
 }
