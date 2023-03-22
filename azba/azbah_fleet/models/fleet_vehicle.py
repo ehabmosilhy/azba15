@@ -51,6 +51,18 @@ class FleetVehicle(models.Model):
         else:
             return False
 
+    def handle_empty(self,field_name):
+        if 'hijri' in field_name:
+            self[field_name.replace('_hijri', '')] = ''
+            self[field_name] = ''
+            self._origin[field_name] = ''
+            self._origin[field_name.replace('_hijri', '')] = ''
+        else:
+            self[field_name] = ''
+            self._origin[field_name] = ''
+            self[field_name + '_hijri'] = ''
+            self._origin[field_name + '_hijri'] = ''
+
     @api.onchange('license_start_date', 'license_end_date', 'inspection_date', 'ownership_date',
                   'license_start_date_hijri', 'license_end_date_hijri', 'inspection_date_hijri', 'ownership_date_hijri')
     def onchange_license_start_date(self):
@@ -61,6 +73,10 @@ class FleetVehicle(models.Model):
             if self[_field] != self._origin[_field]:
                 field_name = _field
                 field_val = self[_field]
+                if not field_val:
+                    self.handle_empty(field_name)
+                    return
+
                 if self.convert(field_name, field_val):
                     self._origin[_field] = self[_field]
                     break
@@ -68,3 +84,6 @@ class FleetVehicle(models.Model):
                     self[_field] = self._origin[_field]
                     message = f"{field_val} خطأ بالتاريخ "
                     return {'warning': {'title': "Warning", 'message': message, 'type': 'dialog'}}
+
+
+
