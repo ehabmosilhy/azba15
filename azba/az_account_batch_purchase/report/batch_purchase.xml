@@ -6,6 +6,6 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">azbah_accounting.report_azbah_batch_purchase_order</field>
             <field name="print_report_name">'Batch Purchase Order'</field>
-            <field name="binding_model_id" ref="azbah_accounting.model_batch_purchase"/>
+            <field name="binding_model_id" ref="az_account_batch_purchase.model_batch_purchase"/>
         </record>
 </odoo>

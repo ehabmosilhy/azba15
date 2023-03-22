@@ -55,10 +55,9 @@
             <field name="mode">primary</field>
             <field name="arch" type="xml">
 
-                <field name="partner_id" position="after">
+                <field name="partner_id" position="replace">
                     <field name="partner_id" string="المستلم"
-                           attrs="{'readonly':[('state', '!=', 'draft')],
-                            'invisible':[('is_internal_transfer', '!=', True)]}"/>
+                           attrs="{'readonly':[('state', '!=', 'draft')]}                            "/>
 
                 </field>
 
