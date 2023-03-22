@@ -62,13 +62,18 @@
                 </field>
 
                 <field name='is_internal_transfer' position="replace">
-                    <field name="is_internal_transfer" invisible="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="is_internal_transfer" invisible="1"/>
                 </field>
 
 
                 <field name='payment_type' position="replace">
                     <field name="payment_type" invisible="1" widget="radio" options="{'horizontal': True}"
                            attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </field>
+
+
+                <field name='delegate_id' position="replace">
+                    <field name="delegate_id" invisible="1"/>
                 </field>
 
 
@@ -81,8 +86,7 @@
                                domain="[]" invisible="1"
                                attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
-                        <field name="destination_journal_id" invisible="1"
-                               attrs="{'readonly': [('state', '!=', 'draft')], 'required': [('is_internal_transfer', '=', True),('state', '=', 'draft')]}"/>
+                        <field name="destination_journal_id" invisible="1"/>
 
                         <field name="partner_bank_id" string="Customer Bank Account" invisible="1"/>
                     </group>
