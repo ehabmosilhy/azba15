@@ -3,10 +3,11 @@
     <data>
         <template id="report_print_voucher">
             <t t-call="web.html_container">
-                <div class="article" t-att-data-oe-model="o and o._name"
-                     t-att-data-oe-id="o and o.id"
-                     t-att-data-oe-lang="o and o.env.context.get('lang')">
-                    <t t-foreach="docs" t-as="o">
+                <t t-foreach="docs" t-as="o">
+                    <div class="article" t-att-data-oe-model="o and o._name"
+                         t-att-data-oe-id="o and o.id"
+                         t-att-data-oe-lang="o and o.env.context.get('lang')">
+
                         <t t-if="o.is_internal_transfer">
                             <t t-set="verb_ar" t-value="'تحويل داخلى'"/>
                             <t t-set="verb_en" t-value="'Internal Transfer'"/>
@@ -27,10 +28,14 @@
                         <div class="page">
                             <link href="/custom_invoice_templates/static/src/css/sanad_styles.css" rel="stylesheet"
                                   type="text/css"/>
-                            <t t-esc="verb_en"/>
-                            <p t-esc="my_var"/>
 
                             <!--Header-->
+                            <div class="header" style="width:100%;border:#00000;border-style:single;border-weight:1">
+                                <span class="title_text_ar" t-field="o.company_id.name"/>
+                                <img t-if="o.company_id.logo"
+                                     t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
+                                     style="max-height:75px;"/>
+                            </div>
                             <!--/Header-->
 
                             <!--BODY-->
@@ -79,6 +84,8 @@
                                     </tr>
 
 
+
+
                                     <tr class="bottom_border">
                                         <td>
                                             <span class="title_text_ar">المبلغ</span>
@@ -102,6 +109,26 @@
                                                 </tr>
                                             </table>
                                         </td>
+                                    </tr>
+
+
+                                    <tr class="bottom_border">
+                                        <td colspan="4">
+                                            <table width="100%">
+                                                <tr>
+                                                    <td>
+                                                        <div class="title_text_ar"
+                                                        />
+                                                        <span class="title_text_ar">وذلك عن</span>
+                                                    </td>
+                                                    <td>
+                                                        <div style="font-family:cairo_bold;font-size:12pt;"
+                                                             t-esc="o.ref"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+
                                     </tr>
 
                                     <tr>
@@ -205,9 +232,44 @@
                             </div>
                             <!--                    End of Footer -->
                         </div>
-                    </t> <!-- for each docs -->
-                </div> <!-- END OF ARTICLE -->
+                    </div> <!-- END OF ARTICLE -->
+                </t>
             </t> <!--web.html_container-->
+        </template>
+
+
+        <template id="azbah_external_layout">
+            <div class="header">
+                <div class="border border-dark" style="padding: 5px 10px 1px 5px;">
+                    <div class="row">
+                        <div class="col-4" style="font-size: 30px;">
+                            <t t-if="o.company_id.partner_id.country_id.name">
+                                <span t-field="o.company_id.name"/>
+                                <img t-if="o.company_id.logo"
+                                     t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
+                                     style="max-height:133px;"/>
+                            </t>
+                        </div>
+                        <div class="col-4">
+                            <center>
+                                <img t-if="o.company_id.logo"
+                                     t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
+                                     style="max-height:133px;"/>
+                                <br/>
+                                <t t-if="o.company_id.iso_number">
+                                    <span t-field="o.company_id.iso_number"/>
+                                </t>
+                            </center>
+                        </div>
+                        <div class="col-4" style="text-align:right;direction: ltr;font-size: 30px;">
+                            <t t-if="o.company_id.partner_id.country_id.name">
+                                <span t-field="o.company_id.name"/>
+                            </t>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+            </div>
         </template>
 
         <record id="paperformat_azbah" model="report.paperformat">
