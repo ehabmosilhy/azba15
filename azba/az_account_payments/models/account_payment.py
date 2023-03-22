@@ -8,6 +8,7 @@ from odoo.exceptions import UserError, ValidationError
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
+
     def _prepare_payment_display_name(self):
         '''
         Hook method for inherit
