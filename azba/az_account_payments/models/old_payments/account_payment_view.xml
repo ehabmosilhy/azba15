@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- VIEWS -->
+
+        <!-- ACTIONS -->
+
+        <!--        سند صرف         -->
+        <!--        Receive         -->
+        <!--                        -->
+
+
+        <record id="azbah_view_tree_account_payment" model="ir.ui.view">
+            <field name="name">azbah.account.payment.tree</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="attributes">
+                    <attribute name="string">المستلم</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="action_azbah_account_payments_send" model="ir.actions.act_window">
+            <field name="name">Payments</field>
+            <field name="res_model">account.payment</field>
+            <field name="context">
+                {'default_payment_type': 'outbound',
+                'default_payment_method_line_id':4,
+                'search_default_inbound_filter': 1,
+                'sanad':'1'
+                }
+            </field>
+        </record>
+
+
+        <!--        سند قبض         -->
+        <!--        Receive         -->
+        <!--                        -->
+
+        <record id="azbah_view_form_account_payment1" model="ir.ui.view">
+            <field name="name">azbah.account.payment.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+
+                <field name="partner_id" position="after">
+                    <field name="partner_id" string="المستلم"
+                           attrs="{'readonly':[('state', '!=', 'draft')],
+                            'invisible':[('is_internal_transfer', '!=', True)]}"/>
+
+                </field>
+
+                <field name='is_internal_transfer' position="replace">
+                    <field name="is_internal_transfer" invisible="0" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </field>
+
+
+                <field name='payment_type' position="replace">
+                    <field name="payment_type" invisible="0" widget="radio" options="{'horizontal': True}"
+                           attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </field>
+
+
+                <group name="group2" position="replace">
+                    <group name="group2">
+                        <field name="journal_id"
+                               domain="[('type', 'in', ('sale','purchase','bank', 'cash','general'))]"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="payment_method_line_id"
+                               domain="[]" invisible="1"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                        <field name="destination_journal_id" invisible="1"
+                               attrs="{'readonly': [('state', '!=', 'draft')], 'required': [('is_internal_transfer', '=', True),('state', '=', 'draft')]}"/>
+
+                        <field name="partner_bank_id" string="Customer Bank Account" invisible="1"/>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+        <!--Receive Action-->
+        <record model="ir.actions.act_window" id="action_azbah_account_payments_receive">
+            <field name="name">Receive</field>
+            <field name="res_model">account.payment</field>
+            <field name="context">{'default_payment_type': 'inbound',
+                'default_is_internal_transfer':1,
+                'default_payment_method_line_id':4,
+                'default_destination_journal_id':9,
+                'search_default_inbound_filter': 1,
+                'sanad':'1'}
+            </field>
+        </record>
+
+        <!--Bind Receive Action to views-->
+
+        <record model="ir.actions.act_window.view" id="act_view_form_azbah_account_payment_receive">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="azbah_view_form_account_payment1"/>
+            <field name="act_window_id" ref="action_azbah_account_payments_receive"/>
+        </record>
+
+        <record id="act_view_form_azbah_account_payment_send" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="azbah_view_tree_account_payment"/>
+            <field name="act_window_id" ref="action_azbah_account_payments_send"/>
+        </record>
+        <record id="act_view_tree_azbah_account_payment_send" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="azbah_view_form_account_payment1"/>
+            <field name="act_window_id" ref="action_azbah_account_payments_send"/>
+        </record>
+
+        <menuitem parent="account_accountant.menu_accounting"
+                  id="menu_azbah_account"
+                  groups="account.group_account_user"
+                  name="حركات مالية"
+                  sequence="100"/>
+
+        <menuitem parent="menu_azbah_account"
+                  id="menu_azbah_action_account_payments_send"
+                  action="action_azbah_account_payments_send"
+                  groups="account.group_account_user"
+                  name="سند صرف"
+                  sequence="0"/>
+
+        <menuitem parent="menu_azbah_account"
+                  id="menu_azbah_action_account_payments_receive"
+                  action="action_azbah_account_payments_receive"
+                  groups="account.group_account_user"
+                  name="سند قبض"
+                  sequence="0"/>
+
+    </data>
+</odoo>

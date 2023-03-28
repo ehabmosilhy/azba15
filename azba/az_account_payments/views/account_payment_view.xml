@@ -6,7 +6,6 @@
         <!-- ACTIONS -->
 
         <!--        سند صرف         -->
-
         <record id="action_azbah_account_payments_send" model="ir.actions.act_window">
             <field name="name">Payments</field>
             <field name="res_model">account.payment</field>
@@ -35,6 +34,18 @@
             </field>
         </record>
 
+        <!--Transfer Action-->
+
+        <record id="action_azbah_account_transfer" model="ir.actions.act_window">
+            <field name="name">Trnsfer</field>
+            <field name="res_model">account.payment</field>
+            <field name="context">
+                {
+                'default_is_internal_transfer':1,
+                'sanad':'1'}
+            </field>
+        </record>
+
 
         <record id="azbah_view_tree_account_payment" model="ir.ui.view">
             <field name="name">azbah.account.payment.tree</field>
@@ -57,7 +68,7 @@
 
                 <field name="partner_id" position="replace">
                     <field name="partner_id" string="المستلم"
-                           attrs="{'readonly':[('state', '!=', 'draft')]}                            "/>
+                           attrs="{'readonly':[('state', '!=', 'draft')]}"/>
 
                 </field>
 
@@ -94,8 +105,52 @@
             </field>
         </record>
 
+        <record id="azbah_view_form_account_transfer" model="ir.ui.view">
+            <field name="name">azbah.account.transfer.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
 
-        <!--Bind Receive Action to views-->
+                <field name="partner_id" position="replace">
+                    <field name="partner_id" string="المستلم" invisible="1"/>
+
+                </field>
+
+                <field name='is_internal_transfer' position="replace">
+                    <field name="is_internal_transfer"  invisible="0" default="1"/>
+                </field>
+
+
+                <field name='payment_type' position="replace">
+                    <field name="payment_type" invisible="1" widget="radio" options="{'horizontal': True}"
+                           attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                </field>
+
+
+                <field name='delegate_id' position="replace">
+                    <field name="delegate_id" invisible="1"/>
+                </field>
+
+
+                <group name="group2" position="replace">
+                    <group name="group2">
+                        <field name="journal_id"
+                               domain="[]"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="payment_method_line_id"
+                               domain="[]" invisible="0"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                        <field name="destination_journal_id" invisible="0"/>
+                        <field name="partner_bank_id" string="Customer Bank Account" invisible="1"/>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+
+        <!--Bind  Action to views-->
 
         <record id="act_view_form_azbah_account_payment_receive" model="ir.actions.act_window.view">
             <field name="sequence" eval="10"/>
@@ -125,6 +180,14 @@
         </record>
 
 
+        <record id="act_view_form_azbah_account_transfer" model="ir.actions.act_window.view">
+            <field name="sequence" eval="5"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="azbah_view_form_account_transfer"/>
+            <field name="act_window_id" ref="action_azbah_account_transfer"/>
+        </record>
+
+
         <menuitem parent="account_accountant.menu_accounting"
                   id="menu_azbah_account"
                   groups="account.group_account_user"
@@ -136,14 +199,20 @@
                   action="action_azbah_account_payments_send"
                   groups="account.group_account_user"
                   name="سند صرف"
-                  sequence="0"/>
+                  sequence="5"/>
 
         <menuitem parent="menu_azbah_account"
                   id="menu_azbah_action_account_payments_receive"
                   action="action_azbah_account_payments_receive"
                   groups="account.group_account_user"
                   name="سند قبض"
-                  sequence="0"/>
+                  sequence="10"/>
+        <menuitem parent="menu_azbah_account"
+                  id="menu_azbah_action_account_payments_transfer"
+                  action="action_azbah_account_transfer"
+                  groups="account.group_account_user"
+                  name="تحويل داخلى"
+                  sequence="15"/>
 
     </data>
 </odoo>
