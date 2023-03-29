@@ -47,6 +47,8 @@
         </record>
 
 
+        <!--Views-->
+
         <record id="azbah_view_tree_account_payment" model="ir.ui.view">
             <field name="name">azbah.account.payment.tree</field>
             <field name="model">account.payment</field>
@@ -118,7 +120,7 @@
                 </field>
 
                 <field name='is_internal_transfer' position="replace">
-                    <field name="is_internal_transfer"  invisible="0" default="1"/>
+                    <field name="is_internal_transfer"  invisible="1" default="1"/>
                 </field>
 
 
