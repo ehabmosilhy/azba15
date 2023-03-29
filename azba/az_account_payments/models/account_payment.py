@@ -13,8 +13,8 @@ class AccountPayment(models.Model):
         super(AccountPayment, self)._onchange_journal()
         self.is_internal_transfer = True
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        if self.env.context.get('sanad') and self.env.context.get('default_is_internal_transfer'):
-            payments = super().create(vals_list)
-        return payments
+    # @api.model_create_multi
+    # def create(self, vals_list):
+    #     if self.env.context.get('sanad') and self.env.context.get('default_is_internal_transfer'):
+    #         payments = super().create(vals_list)
+    #     return payments
