@@ -44,22 +44,25 @@
                                 <table style="width: 100%;">
                                     <tr class="bottom_border">
                                         <!--                                        نوع العملية - قبض - صرف - تحويل -->
-                                        <td colspan="2">
+                                        <td>
                                             <div style="font-family:cairo_bold;font-size:20pt;"
                                                  t-esc="payment_type_ar"/>
                                             <div style="font-family:impact;font-size:20pt;" t-esc="payment_type_en"/>
 
                                         </td>
-                                        <td>
+
+                                        <td style="text-align:center" colspan="2">
+                                            <div style="font-family:arial;font-size:18pt;font-weight:bold;direction:ltr"
+                                                 t-field="o.name"/>
+                                        </td>
+
+                                         <td>
                                             <span class="title_text_ar">التاريخ</span>
                                             <span class="normal_text_en">Date</span>
                                             <div style="font-family:arial;font-size:16pt;direction:ltr"
                                                  t-esc="o.date"/>
                                         </td>
-                                        <td>
-                                            <div style="font-family:arial;font-size:18pt;font-weight:bold;direction:ltr"
-                                                 t-field="o.name"/>
-                                        </td>
+
                                     </tr>
 
 
@@ -162,12 +165,12 @@
                                             <table style="width:100%;background: #d0d0d3;border:black;border-width: 1px;    border-style: solid;">
                                                 <tr>
                                                     <td>
-                                                        <strong style="direction:rtl !important;">Cashier</strong>
+                                                        <strong style="direction:rtl !important;">مندوب التحصيل</strong>
                                                         <span t-field="o.delegate_id.name"
                                                               style="direction:rtl !important;"/>
                                                     </td>
                                                     <td style="direction:rtl !important;">
-                                                        <strong style="direction:rtl !important;">المستلم</strong>
+                                                        <strong style="direction:rtl !important;">الحسابات</strong>
                                                         <span t-esc="user.name"
                                                               style="direction:rtl !important;"></span>
                                                     </td>
