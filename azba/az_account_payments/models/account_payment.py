@@ -8,7 +8,6 @@ from odoo.exceptions import UserError, ValidationError
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
-    partner_id = fields.Many2one(required=True)
     amount = fields.Monetary(required=True)
 
     @api.constrains('amount', 'partner_id')
@@ -181,6 +180,33 @@ class AccountPayment(models.Model):
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    def update_vals(self,vals,sanad_type):
+        if sanad_type == 'send_receive':
+            cash_account_id = self.env['account.account'].search([('code', '=', '1201001')])
+            sanad_account_id = self.journal_id.sanad_account_id or self.journal_id.default_account_id
+
+            for line in vals.get('line_ids'):
+                if self.env.context.get('default_payment_type') == 'outbound':
+                    if line[2]['credit'] > 0:
+                        line[2]['account_id'] = cash_account_id.id
+                    else:
+                        line[2]['account_id'] = sanad_account_id.id
+                else:
+                    if line[2]['debit'] > 0:
+                        line[2]['account_id'] = cash_account_id.id
+                    else:
+                        line[2]['account_id'] = sanad_account_id.id
+
+        elif sanad_type == 'internal_transfer':
+            source_account_id = self.journal_id.sanad_account_id or self.journal_id.default_account_id
+            destination_account_id = self.destination_journal_id.sanad_account_id or self.destination_journal_id.default_account_id
+            for line in vals.get('line_ids'):
+                if line[2]['credit'] > 0:
+                    line[2]['account_id'] = source_account_id.id
+                else:
+                    line[2]['account_id'] = destination_account_id.id
+        return vals
+
     def write(self, vals):
         if not vals.get('is_internal_transfer') and self.env.context.get('sanad'):
             #  /\_/\
@@ -191,21 +217,10 @@ class AccountMove(models.Model):
             #  1- Internal Type: "receivable" or "payable"
             #  2- Not a liquidity account
             #  3- Bound to the journal (sanad_account_id)
-
-            cash_account_id = self.env['account.account'].search([('code', '=', '1201001')])
-            sanad_account_id = self.journal_id.sanad_account_id or self.journal_id.default_account_id
             if vals.get('line_ids'):
-                for line in vals.get('line_ids'):
-                    if self.env.context.get('default_payment_type') == 'outbound':
-                        if line[2]['credit'] > 0:
-                            line[2]['account_id'] = cash_account_id.id
-                        else:
-                            line[2]['account_id'] = sanad_account_id.id
-                    else:
-                        if line[2]['debit'] > 0:
-                            line[2]['account_id'] = cash_account_id.id
-                        else:
-                            line[2]['account_id'] = sanad_account_id.id
+                vals=self.update_vals(vals,'send_receive')
+        elif vals.get('is_internal_transfer') and self.env.context.get('sanad'):
+            vals=self.update_vals(vals,'internal_transfer')
 
         res = super(AccountMove, self).write(vals)
         return res

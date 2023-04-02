@@ -61,7 +61,7 @@
             <field name="arch" type="xml">
                 <field name="partner_id" position="attributes">
                     <attribute name="string">
-                       المستلم/المورد
+                        المستلم/المورد
                     </attribute>
                 </field>
             </field>
@@ -164,7 +164,7 @@
                                domain="[]" invisible="0"
                                attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
-                        <field name="destination_journal_id" invisible="0"/>
+                        <field name="destination_journal_id" domain="[]" invisible="0"/>
                         <field name="partner_bank_id" string="Customer Bank Account" invisible="1"/>
                     </group>
                 </group>
