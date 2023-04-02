@@ -16,8 +16,8 @@ class AccountPayment(models.Model):
         for pay in self:
             if pay.amount <= 0:
                 raise ValidationError(_('القيمة يجب أن تكون أكبر من صفر.'))
-            if not pay.partner_id:
-                raise ValidationError(_('يجب إدخال المستلم/المورد.'))
+            # if not pay.partner_id:
+            #     raise ValidationError(_('يجب إدخال المستلم/المورد.'))
 
 
 
