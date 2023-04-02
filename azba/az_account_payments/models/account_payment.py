@@ -11,7 +11,7 @@ class AccountPayment(models.Model):
     partner_id = fields.Many2one(required=True)
     amount = fields.Monetary(required=True)
 
-    @api.constrains('amount','partner_id')
+    @api.constrains('amount', 'partner_id')
     def _check_amount_and_partner(self):
         for pay in self:
             if pay.amount <= 0:
@@ -19,7 +19,26 @@ class AccountPayment(models.Model):
             # if not pay.partner_id:
             #     raise ValidationError(_('يجب إدخال المستلم/المورد.'))
 
+    def _prepare_payment_display_name(self):
+        '''
+        Hook method for inherit
+        When you want to set a new name for payment, you can extend this method
+        '''
 
+        #  /\_/\
+        # ( ◕‿◕ )
+        #  >   <
+        # Beginning: Ehab
+
+        if self.env.context.get('sanad'):
+            return {
+                'outbound-customer': _("(｡◔‿◔｡)"),
+                'inbound-customer': _("(｡◔‿◔｡)"),
+                'outbound-supplier': _("(｡◔‿◔｡)"),
+                'inbound-supplier': _("(｡◔‿◔｡)"),
+            }
+        else:
+            super(self, AccountPayment)._prepare_payment_display_name()
 
     @api.depends('available_payment_method_line_ids')
     def _compute_payment_method_line_id(self):
@@ -35,7 +54,7 @@ class AccountPayment(models.Model):
             # Beginning: Ehab
             # The payment method gets recalculated after the creation of the payment
             if self.env.context.get('sanad'):
-                pay.payment_method_line_id = 2 if self.env.context.get('default_payment_type')=='outbound' else 1
+                pay.payment_method_line_id = 2 if self.env.context.get('default_payment_type') == 'outbound' else 1
 
             # ______ (｡◔‿◔｡) ________ End of code
 
@@ -49,6 +68,7 @@ class AccountPayment(models.Model):
                     pay.payment_method_line_id = available_payment_method_lines[0]._origin
                 else:
                     pay.payment_method_line_id = False
+
     def _synchronize_from_moves(self, changed_fields):
         ''' Update the account.payment regarding its related account.move.
         Also, check both models are still consistent.
@@ -86,7 +106,6 @@ class AccountPayment(models.Model):
                     liquidity_lines, counterpart_lines, writeoff_lines = pay._seek_for_lines()
 
                 # (｡◔‿◔｡) End of code
-
 
                 if len(liquidity_lines) != 1:
                     raise UserError(_(
@@ -153,7 +172,8 @@ class AccountPayment(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         if self.env.context.get('sanad'):
-            vals_list[0]['payment_method_line_id'] = 2 if self.env.context.get('default_payment_type') == 'outbound' else 1
+            vals_list[0]['payment_method_line_id'] = 2 if self.env.context.get(
+                'default_payment_type') == 'outbound' else 1
         payments = super().create(vals_list)
         return payments
 
@@ -161,12 +181,10 @@ class AccountPayment(models.Model):
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-
-
     def write(self, vals):
         if not vals.get('is_internal_transfer') and self.env.context.get('sanad'):
             #  /\_/\
-            # ( o.o )
+            # ( ◕‿◕ )
             #  > ^ <
             # The two parties of the move will be : 1- Cash and 2- Whatever account bound to the journal
             # In order for the other account of the move to appear in the Partner Ledger, it must fulfill these conditions:
@@ -179,12 +197,12 @@ class AccountMove(models.Model):
             if vals.get('line_ids'):
                 for line in vals.get('line_ids'):
                     if self.env.context.get('default_payment_type') == 'outbound':
-                        if line[2]['credit'] >0:
+                        if line[2]['credit'] > 0:
                             line[2]['account_id'] = cash_account_id.id
                         else:
                             line[2]['account_id'] = sanad_account_id.id
                     else:
-                        if line[2]['debit'] >0:
+                        if line[2]['debit'] > 0:
                             line[2]['account_id'] = cash_account_id.id
                         else:
                             line[2]['account_id'] = sanad_account_id.id
