@@ -175,7 +175,7 @@ class AccountMove(models.Model):
             #  3- Bound to the journal (sanad_account_id)
 
             cash_account_id = self.env['account.account'].search([('code', '=', '1201001')])
-            sanad_account_id = self.journal_id.sanad_account_id
+            sanad_account_id = self.journal_id.sanad_account_id or self.journal_id.default_account_id
             if vals.get('line_ids'):
                 for line in vals.get('line_ids'):
                     if self.env.context.get('default_payment_type') == 'outbound':
