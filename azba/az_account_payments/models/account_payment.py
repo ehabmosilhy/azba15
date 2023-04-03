@@ -37,7 +37,12 @@ class AccountPayment(models.Model):
                 'inbound-supplier': _("(｡◔‿◔｡)"),
             }
         else:
-            super(self, AccountPayment)._prepare_payment_display_name()
+            return {
+                'outbound-customer': _("Customer Reimbursement"),
+                'inbound-customer': _("Customer Payment"),
+                'outbound-supplier': _("Vendor Payment"),
+                'inbound-supplier': _("Vendor Reimbursement"),
+            }
 
     @api.depends('available_payment_method_line_ids')
     def _compute_payment_method_line_id(self):
@@ -180,7 +185,7 @@ class AccountPayment(models.Model):
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    def update_vals(self,vals,sanad_type):
+    def update_vals(self, vals, sanad_type):
         if sanad_type == 'send_receive':
             cash_account_id = self.env['account.account'].search([('code', '=', '1201001')])
             sanad_account_id = self.journal_id.sanad_account_id or self.journal_id.default_account_id
@@ -218,9 +223,9 @@ class AccountMove(models.Model):
             #  2- Not a liquidity account
             #  3- Bound to the journal (sanad_account_id)
             if vals.get('line_ids'):
-                vals=self.update_vals(vals,'send_receive')
+                vals = self.update_vals(vals, 'send_receive')
         elif vals.get('is_internal_transfer') and self.env.context.get('sanad'):
-            vals=self.update_vals(vals,'internal_transfer')
+            vals = self.update_vals(vals, 'internal_transfer')
 
         res = super(AccountMove, self).write(vals)
         return res
