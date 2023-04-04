@@ -9,6 +9,7 @@ class AccountPayment(models.Model):
     _inherit = "account.payment"
 
     amount = fields.Monetary(required=True)
+    is_sanad = fields.Boolean()
 
     @api.constrains('amount', 'partner_id')
     def _check_amount_and_partner(self):
@@ -176,6 +177,7 @@ class AccountPayment(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         if self.env.context.get('sanad'):
+            vals_list[0]['is_sanad'] = True
             vals_list[0]['payment_method_line_id'] = 2 if self.env.context.get(
                 'default_payment_type') == 'outbound' else 1
         payments = super().create(vals_list)
@@ -184,6 +186,8 @@ class AccountPayment(models.Model):
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
+
+    is_sanad = fields.Boolean(related='payment_id.is_sanad')
 
     def update_vals(self, vals, sanad_type):
         if sanad_type == 'send_receive':

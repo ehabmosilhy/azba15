@@ -3,8 +3,8 @@
     "version": "15",
     "license": "LGPL-3",
     "category": "accounting",
-    "depends": ["az_account"]
+    "depends": ["base","account_accountant","account_reports"]
     , "data": [
-    'views/report_financial.xml',
+    # 'views/report_financial.xml',
 ]
 }

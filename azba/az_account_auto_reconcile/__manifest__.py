@@ -1,5 +1,5 @@
 {
-    "name": "AZ-Accounting - Auto Reconcile ",
+    "name": "AZ-Accounting - Auto Reconcile",
     "version": "15",
     "license": "LGPL-3",
     "category": "accounting",
