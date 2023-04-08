@@ -103,7 +103,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
                     lambda v: v['period0'] + v['period1'] + v['period2'] + v['period3'] + v['period4'] + v['period5']),
                 sortable=True,
             ),
-            self._field_column('account_name', name=_("Account"), ellipsis=True),
+            # self._field_column('account_name', name=_("Account"), ellipsis=True),
             # self._field_column('expected_pay_date'),
 
             # self._field_column('period0', name=_("As of: %s", format_date(self.env, options['date']['date_to']))),
