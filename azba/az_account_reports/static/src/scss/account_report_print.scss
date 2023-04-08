@@ -7,7 +7,7 @@
 .o_account_reports_body_print {
     background-color: white !important;
     color: black !important;
-    font-size: 12px !important;
+    font-size: 16px !important;
     .o_account_reports_header {
         padding: 10px;
         background-color: #eee;
@@ -17,7 +17,7 @@
     }
     .o_account_reports_table {
         margin-bottom: 0px;
-        font-size: 12px !important;
+        font-size: 16px !important;
         > tbody > tr {
             /* fix thead overlapping http://github.com/wkhtmltopdf/wkhtmltopdf/issues/1524 */
             page-break-inside: avoid;

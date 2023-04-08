@@ -86,3 +86,38 @@ class ReportAccountAgedPartner(models.AbstractModel):
         }
         result = self.env.cr.mogrify(query, params).decode(self.env.cr.connection.encoding)
         return result
+
+    ####################################################
+    # COLUMNS/LINES
+    ####################################################
+    @api.model
+    def _get_column_details(self, options):
+        columns = [
+            self._header_column(),
+            self._field_column('report_date'),
+            self._custom_column(  # Avoid doing twice the sub-select in the view
+                name=_('Total'),
+                classes=['number'],
+                formatter=self.format_value,
+                getter=(
+                    lambda v: v['period0'] + v['period1'] + v['period2'] + v['period3'] + v['period4'] + v['period5']),
+                sortable=True,
+            ),
+            self._field_column('account_name', name=_("Account"), ellipsis=True),
+            # self._field_column('expected_pay_date'),
+
+            # self._field_column('period0', name=_("As of: %s", format_date(self.env, options['date']['date_to']))),
+            self._field_column('period1', sortable=True),
+            self._field_column('period2', sortable=True),
+            self._field_column('period3', sortable=True),
+            self._field_column('period4', sortable=True),
+            self._field_column('period5', sortable=True),
+
+        ]
+
+        if self.user_has_groups('base.group_multi_currency'):
+            columns[2:2] = [
+                self._field_column('amount_currency'),
+                self._field_column('currency_id'),
+            ]
+        return columns
