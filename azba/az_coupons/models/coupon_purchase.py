@@ -84,11 +84,12 @@ class CouponPurchase(models.Model):
     @api.model
     def create(self, vals_list):
         # self.check_data(vals_list)
-
+        _line = vals_list['line_ids'][0][2]
         purchase_orders = {}
         coupon_lines = vals_list.get('line_ids')
         coupon = super(CouponPurchase, self).create(vals_list)
-        coupon_serial = (coupon_book_serial * 50) - 49
+        coupon_book_serial = _line['serial']
+        coupon_serial_start = (int(coupon_book_serial) * 50) - 49
 
         # We need to group the lines by vendor to make all the lines of one vendor together in
         # one purchase purchase_order
@@ -113,21 +114,21 @@ class CouponPurchase(models.Model):
                          , 'price_unit': coupon_lines[0][2]['price']
                          , 'product_qty': coupon_lines[0][2]['quantity']
                      }),
-                    # (0, 0,
-                    #  {
-                    #      "sequence": 10
-                    #      , 'product_id': 3561
-                    #      , "date_planned": vals_list['date']
-                    #      , 'price_unit': 0
-                    #      , 'product_qty': 100
-                    #  })
+                    (0, 0,
+                     {
+                         "sequence": 10
+                         , 'product_id': 3562
+                         , "date_planned": vals_list['date']
+                         , 'price_unit': 0
+                         , 'product_qty': 100
+                     })
                 ]
             }
-            lot_ids = [(0, 0,
-                        {'product_id': 39,
-                         'company_id': 1,
-                         'name': '999999999'
-                         })]
+            # lot_ids = [(0, 0,
+            #             {'product_id': 39,
+            #              'company_id': 1,
+            #              'name': '999999999'
+            #              })]
             # Create the purchase purchase_order
             _new_purchase_order = self.env['purchase.order'].create(new_purchase_order)
 
@@ -135,32 +136,37 @@ class CouponPurchase(models.Model):
             _new_purchase_order.button_confirm()
 
             # Validate the picking
+            product_no = 0
             for picking in _new_purchase_order.picking_ids:
                 picking.coupon_purchase_id = coupon.id
-                for move in picking.move_ids_without_package:
+                for i,move in enumerate(picking.move_ids_without_package):
                     # receive all the quantity
                     move.quantity_done = move.product_uom_qty
                     move.coupon_purchase_id = coupon.id
-                    for i, line in enumerate(move.move_line_ids):
-                        line.lot_name = str(55555444447 + i)
-
+                    lines=move.move_line_ids
+                    if not i:
+                        lines[0].lot_name = str(coupon_book_serial)
+                    else:
+                        for indi in range (100):
+                            lines[indi].lot_name = str(coupon_serial_start + indi)
+                picking.move_line_ids = picking.move_line_ids[:-2]
                 picking.button_validate()
 
             # Create the Vendor Bill
-            _new_purchase_order.action_create_invoice()
+            # _new_purchase_order.action_create_invoice()
 
-            # Confirm the Vendor Bill
-            for bill in _new_purchase_order.invoice_ids:
-                bill.purchase_order_id = _new_purchase_order.id
-                bill.purchase_delegate_id = _new_purchase_order.delegate_id.id
-                # The invoice date is mandatory
-                bill.invoice_date = vals_list['date']
-
-                for i in range(len(bill.invoice_line_ids)):
-                    if _new_purchase_order.order_line[i].note:
-                        bill.line_ids[i].note = _new_purchase_order.order_line[i].note
-
-                bill.action_post()
+            # # Confirm the Vendor Bill
+            # for bill in _new_purchase_order.invoice_ids:
+            #     bill.purchase_order_id = _new_purchase_order.id
+            #     bill.purchase_delegate_id = _new_purchase_order.delegate_id.id
+            #     # The invoice date is mandatory
+            #     bill.invoice_date = vals_list['date']
+            #
+            #     for i in range(len(bill.invoice_line_ids)):
+            #         if _new_purchase_order.order_line[i].note:
+            #             bill.line_ids[i].note = _new_purchase_order.order_line[i].note
+            #
+            #     bill.action_post()
 
         return coupon
 
