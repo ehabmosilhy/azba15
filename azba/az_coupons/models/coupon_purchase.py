@@ -139,19 +139,32 @@ class CouponPurchase(models.Model):
             product_no = 0
             for picking in _new_purchase_order.picking_ids:
                 picking.coupon_purchase_id = coupon.id
-                for i,move in enumerate(picking.move_ids_without_package):
+                for i, move in enumerate(picking.move_ids_without_package):
                     # receive all the quantity
                     move.quantity_done = move.product_uom_qty
                     move.coupon_purchase_id = coupon.id
-                    lines=move.move_line_ids
+                    lines = move.move_line_ids
                     if not i:
                         lines[0].lot_name = str(coupon_book_serial)
                     else:
-                        for indi in range (100):
-                            lines[indi].lot_name = str(coupon_serial_start + indi)
-                picking.move_line_ids = picking.move_line_ids[:-2]
-                picking.button_validate()
+                        # move.move_line_nosuggest_ids= [
+                        #         [0, 'virtual_2723', {
+                        #             'company_id': 1,
+                        #             'picking_id': picking.id,
+                        #             'move_id': move.id,
+                        #             'product_id': 3562,
+                        #             'lot_name': coupon_serial_start + s,
+                        #             'qty_done': 1,
+                        #             'product_uom_id': 1,
+                        #             'location_id': 4,
+                        #             'location_dest_id': 536
+                        #         }]
+                        #         for s in range(100)
+                        #     ]
+                        pass
 
+                picking.move_line_ids = picking.move_line_ids[:-3]
+                picking.button_validate()
             # Create the Vendor Bill
             # _new_purchase_order.action_create_invoice()
 
