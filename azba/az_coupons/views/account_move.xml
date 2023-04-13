@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- VIEWS -->
+        <record id="azbah_account_move_tree" model="ir.ui.view">
+            <field name="name">azbah.account.move.tree</field>
+            <field name="model">account.move</field>
+            <field name="mode">extension</field>
+            <field name="inherit_id" ref="account.view_in_invoice_bill_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ref']" position="before">
+                    <field name="purchase_order_id"/>
+                    <field name="coupon_purchase_id"/>
+                    <field name="purchase_delegate_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="azbah_account_move_form" model="ir.ui.view">
+            <field name="name">azbah.account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="mode">extension</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_reference']" position="after">
+                    <field name="purchase_order_id"/>
+                    <field name="coupon_purchase_id"/>
+                    <field name="purchase_delegate_id"/>
+                </xpath>
+
+                <xpath expr="//field[@name='price_subtotal']" position="before">
+                    <field name="note"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

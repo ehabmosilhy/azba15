@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- VIEWS -->
+        <record id="azbah_view_coupon_purchase_tree" model="ir.ui.view">
+            <field name="name">azbah.coupon.purchase.tree</field>
+            <field name="model">coupon.purchase</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" string="Serial"/>
+                    <field name="date"/>
+                    <field name="total"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="azbah_view_coupon_purchase_form" model="ir.ui.view">
+            <field name="name">azbah.coupon.purchase.form</field>
+            <field name="model">coupon.purchase</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+<!--                                                <div class="oe_button_box" name="button_box">-->
+<!--                                                    <button class="oe_stat_button" type="object"-->
+<!--                                                            name="launch_purchase_orders" icon="fa-list-ol"-->
+<!--                                                            attrs=" {'invisible':[('name', '=', 'New')]}">-->
+<!--                                                        <field name="purchase_order_count" widget="statinfo"-->
+<!--                                                               string="Purchase Orders"/>-->
+<!--                                                    </button>-->
+
+<!--                                                    <button class="oe_stat_button" type="object"-->
+<!--                                                            name="launch_vendor_bills"-->
+<!--                                                            icon="fa-pencil-square-o"-->
+<!--                                                            attrs="{'invisible':[('name', '=', 'New')]}">-->
+<!--                                                        <field name="vendor_bill_count" widget="statinfo"-->
+<!--                                                               string="Vendor Bills"/>-->
+<!--                                                    </button>-->
+<!--                                                </div>-->
+                        <group>
+                            <field name="name" string="Serial"/>
+                            <field name="date"/>
+                            <field name="total"/>
+                        </group>
+                        <notebook>
+                            <page string="Coupon Purchase">
+                                <group>
+                                    <field name="line_ids" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="product_id"
+                                                   options="{'no_create': True, 'no_create_edit':True}"/>
+                                            <field name="serial"/>
+                                            <field name="quantity"/>
+                                            <field name="price"/>
+                                            <field name="price_subtotal"/>
+                                            <field name="tax_ids" widget="many2many_tags" options="{'no_create':True}"/>
+                                            <field name="price_subtotal_with_tax"/>
+                                            <field name="note"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ACTIONS -->
+
+        <record id="action_azbah_view_coupon_purchase" model="ir.actions.act_window">
+            <field name="name">Coupon Purchase Orders</field>
+            <field name="res_model">coupon.purchase</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem parent="purchase.menu_procurement_management"
+                  id="menu_azbah_action_azbah_view_coupon_purchase"
+                  action="action_azbah_view_coupon_purchase"
+                  groups="account.group_account_user"
+                  name="كوبونات"
+                  sequence="110"/>
+
+    </data>
+</odoo>
