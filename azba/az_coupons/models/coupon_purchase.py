@@ -91,8 +91,6 @@ class CouponPurchase(models.Model):
         coupon_book_serial = _line['serial']
         coupon_serial_start = (int(coupon_book_serial) * 50) - 49
 
-        # We need to group the lines by vendor to make all the lines of one vendor together in
-        # one purchase purchase_order
         if coupon_lines:
 
             vendor_id = 3  # TODO Change this
@@ -124,12 +122,6 @@ class CouponPurchase(models.Model):
                      })
                 ]
             }
-            # lot_ids = [(0, 0,
-            #             {'product_id': 39,
-            #              'company_id': 1,
-            #              'name': '999999999'
-            #              })]
-            # Create the purchase purchase_order
             _new_purchase_order = self.env['purchase.order'].create(new_purchase_order)
 
             # Confirm the purchase_order
@@ -141,45 +133,39 @@ class CouponPurchase(models.Model):
                 picking.coupon_purchase_id = coupon.id
                 for i, move in enumerate(picking.move_ids_without_package):
                     # receive all the quantity
-                    move.quantity_done = move.product_uom_qty
+                    # move.quantity_done = move.product_uom_qty
                     move.coupon_purchase_id = coupon.id
                     lines = move.move_line_ids
                     if not i:
                         lines[0].lot_name = str(coupon_book_serial)
+                        lines[0].qty_done = 1
+                        # lines[1].lot_name = str(coupon_book_serial+1)
+                        # lines[1].qty_done = 1
                     else:
-                        # move.move_line_nosuggest_ids= [
-                        #         [0, 'virtual_2723', {
-                        #             'company_id': 1,
-                        #             'picking_id': picking.id,
-                        #             'move_id': move.id,
-                        #             'product_id': 3562,
-                        #             'lot_name': coupon_serial_start + s,
-                        #             'qty_done': 1,
-                        #             'product_uom_id': 1,
-                        #             'location_id': 4,
-                        #             'location_dest_id': 536
-                        #         }]
-                        #         for s in range(100)
-                        #     ]
-                        pass
+                        for s in range (100):
+                            lines[s].lot_name = str(coupon_serial_start) + str(s)
+                            lines[s].qty_done= 1
+                        # move_line_nosuggest_ids = []
+                        # for s in range(100):
+                        #     line = [0, f'virtual_{3548 + s}', {
+                        #         'company_id': 1,
+                        #         'picking_id': picking.id,
+                        #         'move_id': move.id,
+                        #         'product_id': 3562,
+                        #         'lot_name': str(coupon_serial_start) + str(s),
+                        #         'qty_done': 1,
+                        #         'product_uom_id': 1,
+                        #         'location_id': 4,
+                        #         'location_dest_id': 536
+                        #     }]
+                        #     move_line_nosuggest_ids.append(line)
+                        #
+                        # move.move_line_nosuggest_ids=move_line_nosuggest_ids
+                        # for i, p in enumerate(picking.move_line_ids):
+                        #     p.lot_name = coupon_serial_start + i
 
-                picking.move_line_ids = picking.move_line_ids[:-3]
+                picking.move_line_ids = picking.move_line_ids[:-2]
                 picking.button_validate()
-            # Create the Vendor Bill
-            # _new_purchase_order.action_create_invoice()
-
-            # # Confirm the Vendor Bill
-            # for bill in _new_purchase_order.invoice_ids:
-            #     bill.purchase_order_id = _new_purchase_order.id
-            #     bill.purchase_delegate_id = _new_purchase_order.delegate_id.id
-            #     # The invoice date is mandatory
-            #     bill.invoice_date = vals_list['date']
-            #
-            #     for i in range(len(bill.invoice_line_ids)):
-            #         if _new_purchase_order.order_line[i].note:
-            #             bill.line_ids[i].note = _new_purchase_order.order_line[i].note
-            #
-            #     bill.action_post()
 
         return coupon
 
