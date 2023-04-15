@@ -11,6 +11,15 @@
                     <field name="name" string="Serial"/>
                     <field name="date"/>
                     <field name="total"/>
+                    <field name="product_id"/>
+                    <field name="first_serial"/>
+                    <field name="last_serial"/>
+                    <field name="quantity"/>
+                    <field name="price"/>
+                    <field name="price_subtotal"/>
+                    <field name="tax_ids" widget="many2many_tags" options="{'no_create':True}"/>
+                    <field name="price_subtotal_with_tax"/>
+                    <field name="note"/>
                 </tree>
             </field>
         </record>
@@ -21,46 +30,39 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
-<!--                                                <div class="oe_button_box" name="button_box">-->
-<!--                                                    <button class="oe_stat_button" type="object"-->
-<!--                                                            name="launch_purchase_orders" icon="fa-list-ol"-->
-<!--                                                            attrs=" {'invisible':[('name', '=', 'New')]}">-->
-<!--                                                        <field name="purchase_order_count" widget="statinfo"-->
-<!--                                                               string="Purchase Orders"/>-->
-<!--                                                    </button>-->
+                        <!--                                                <div class="oe_button_box" name="button_box">-->
+                        <!--                                                    <button class="oe_stat_button" type="object"-->
+                        <!--                                                            name="launch_purchase_orders" icon="fa-list-ol"-->
+                        <!--                                                            attrs=" {'invisible':[('name', '=', 'New')]}">-->
+                        <!--                                                        <field name="purchase_order_count" widget="statinfo"-->
+                        <!--                                                               string="Purchase Orders"/>-->
+                        <!--                                                    </button>-->
 
-<!--                                                    <button class="oe_stat_button" type="object"-->
-<!--                                                            name="launch_vendor_bills"-->
-<!--                                                            icon="fa-pencil-square-o"-->
-<!--                                                            attrs="{'invisible':[('name', '=', 'New')]}">-->
-<!--                                                        <field name="vendor_bill_count" widget="statinfo"-->
-<!--                                                               string="Vendor Bills"/>-->
-<!--                                                    </button>-->
-<!--                                                </div>-->
+                        <!--                                                    <button class="oe_stat_button" type="object"-->
+                        <!--                                                            name="launch_vendor_bills"-->
+                        <!--                                                            icon="fa-pencil-square-o"-->
+                        <!--                                                            attrs="{'invisible':[('name', '=', 'New')]}">-->
+                        <!--                                                        <field name="vendor_bill_count" widget="statinfo"-->
+                        <!--                                                               string="Vendor Bills"/>-->
+                        <!--                                                    </button>-->
+                        <!--                                                </div>-->
                         <group>
-                            <field name="name" string="Serial"/>
-                            <field name="date"/>
-                            <field name="total"/>
+                            <group>
+                                <field name="name" string="Serial"/>
+                                <field name="date"/>
+                                <field name="product_id"/>
+                                <field name="first_serial"/>
+                                <field name="last_serial"/>
+                                <field name="quantity"/>
+                            </group>
+                            <group>
+                                <field name="price"/>
+                                <field name="price_subtotal"/>
+                                <field name="tax_ids" widget="many2many_tags" options="{'no_create':True}"/>
+                                <field name="price_subtotal_with_tax"/>
+                                <field name="note"/>
+                            </group>
                         </group>
-                        <notebook>
-                            <page string="Coupon Purchase">
-                                <group>
-                                    <field name="line_ids" nolabel="1">
-                                        <tree editable="bottom">
-                                            <field name="product_id"
-                                                   options="{'no_create': True, 'no_create_edit':True}"/>
-                                            <field name="serial"/>
-                                            <field name="quantity"/>
-                                            <field name="price"/>
-                                            <field name="price_subtotal"/>
-                                            <field name="tax_ids" widget="many2many_tags" options="{'no_create':True}"/>
-                                            <field name="price_subtotal_with_tax"/>
-                                            <field name="note"/>
-                                        </tree>
-                                    </field>
-                                </group>
-                            </page>
-                        </notebook>
                     </sheet>
                 </form>
             </field>

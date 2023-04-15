@@ -9,21 +9,31 @@ class CouponPurchase(models.Model):
                        index=True, help="Unique name for the coupon purchase with prefix DPO_")
 
     date = fields.Date(required=True, default=fields.Date.context_today)
+    product_id=fields.Many2one('product.product', string="Product", required=True)
     total = fields.Float()
-
+    first_serial = fields.Integer()
+    last_serial = fields.Integer()
+    quantity = fields.Integer()
+    price = fields.Float()
+    price_subtotal = fields.Float(string="Sub Total")
+    price_subtotal_with_tax = fields.Float(string="With Tax")
+    note = fields.Text()
+    display_type = fields.Char()
+    tax_ids = fields.Many2many(
+        comodel_name='account.tax',
+        string="Taxes",
+        help="Taxes that apply on the base amount"
+        , default=[5]  # Purchase Tax 15%
+    )
     line_ids = fields.One2many('coupon.purchase.line', 'coupon_id')
     line_count = fields.Integer(compute='_compute_line_count', string='Line count')
     purchase_order_ids = fields.One2many('purchase.order', 'coupon_purchase_id', string="Purchase Orders")
     purchase_order_count = fields.Integer(string='Purchase Order Count', compute='_compute_purchase_order_count')
-    vendor_bill_count = fields.Integer(string='Purchase Order Count', compute='_compute_vendor_bill_count')
 
     def _compute_purchase_order_count(self):
         for record in self:
             record.purchase_order_count = len(record.purchase_order_ids)
 
-    def _compute_vendor_bill_count(self):
-        for record in self:
-            record.vendor_bill_count = len([invoice.id for invoice in record.purchase_order_ids])
 
     def launch_purchase_orders(self):
         self.ensure_one()
@@ -128,42 +138,18 @@ class CouponPurchase(models.Model):
             _new_purchase_order.button_confirm()
 
             # Validate the picking
-            product_no = 0
             for picking in _new_purchase_order.picking_ids:
                 picking.coupon_purchase_id = coupon.id
                 for i, move in enumerate(picking.move_ids_without_package):
-                    # receive all the quantity
-                    # move.quantity_done = move.product_uom_qty
                     move.coupon_purchase_id = coupon.id
                     lines = move.move_line_ids
                     if not i:
                         lines[0].lot_name = str(coupon_book_serial)
                         lines[0].qty_done = 1
-                        # lines[1].lot_name = str(coupon_book_serial+1)
-                        # lines[1].qty_done = 1
                     else:
                         for s in range (100):
                             lines[s].lot_name = str(coupon_serial_start) + str(s)
                             lines[s].qty_done= 1
-                        # move_line_nosuggest_ids = []
-                        # for s in range(100):
-                        #     line = [0, f'virtual_{3548 + s}', {
-                        #         'company_id': 1,
-                        #         'picking_id': picking.id,
-                        #         'move_id': move.id,
-                        #         'product_id': 3562,
-                        #         'lot_name': str(coupon_serial_start) + str(s),
-                        #         'qty_done': 1,
-                        #         'product_uom_id': 1,
-                        #         'location_id': 4,
-                        #         'location_dest_id': 536
-                        #     }]
-                        #     move_line_nosuggest_ids.append(line)
-                        #
-                        # move.move_line_nosuggest_ids=move_line_nosuggest_ids
-                        # for i, p in enumerate(picking.move_line_ids):
-                        #     p.lot_name = coupon_serial_start + i
-
                 picking.move_line_ids = picking.move_line_ids[:-2]
                 picking.button_validate()
 
