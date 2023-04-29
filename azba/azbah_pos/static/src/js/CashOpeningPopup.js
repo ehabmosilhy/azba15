@@ -4,6 +4,7 @@ odoo.define('azbah_pos.CashOpeningPopup', function (require) {
     const CashOpeningPopup = require('point_of_sale.CashOpeningPopup');
     const Registries = require("point_of_sale.Registries")
 
+    const Ehab=0;
     const CashOpeningZero = (CashOpeningPopup) =>
         class extends CashOpeningPopup{
             constructor() {
