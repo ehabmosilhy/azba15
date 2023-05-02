@@ -37,6 +37,7 @@ class AccountMoveLine(models.Model):
                                                      self.env['account.move'].search([]).mapped('partner_id').ids)])
         for customer in customers:
             try:
+                # print (f"Now working on {customer.name}")
                 customer.auto_reconcile()
             except Exception as e:
-                print("::::::>>>>>>>>>> ", e)
+                print(f"::::>>>>> Customer {customer.name} , Error: {e}")
