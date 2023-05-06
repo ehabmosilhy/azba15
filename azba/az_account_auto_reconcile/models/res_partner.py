@@ -36,10 +36,14 @@ class AccountMoveLine(models.Model):
         customers = self.env['res.partner'].search([('customer_rank', '>', 0),
                                                     ('id', 'in',
                                                      self.env['account.move'].search([]).mapped('partner_id').ids)])
+        i=0
         for customer in customers:
             try:
                 # print (f"Now working on {customer.name}")
+                i+=1
                 customer.auto_reconcile()
+                _logger.info(f"::::::::  Customer {i}/{len(customers)}  Done::: {customer.name}")
+
             except Exception as e:
                 _logger.critical(f"::::>>>>> Customer {customer.name} , Error: {e}")
                 print(f"::::>>>>> Customer {customer.name} , Error: {e}")
