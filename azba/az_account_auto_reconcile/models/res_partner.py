@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-
+import logging
 from odoo import models
 
+_logger = logging.getLogger(__name__)
 
 class AccountMoveLine(models.Model):
     _inherit = "res.partner"
@@ -40,4 +41,5 @@ class AccountMoveLine(models.Model):
                 # print (f"Now working on {customer.name}")
                 customer.auto_reconcile()
             except Exception as e:
+                _logger.critical(f"::::>>>>> Customer {customer.name} , Error: {e}")
                 print(f"::::>>>>> Customer {customer.name} , Error: {e}")
