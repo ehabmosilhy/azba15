@@ -82,6 +82,15 @@
                                         </t>
                                     </t>
                                 </tbody>
+
+                            </table>
+
+                            <table class="table table-bordered"
+                                   style="font-weigh:bold;margin-top: 20px;direction:rtl;text-align:right">
+                                <tr>
+                                    <td>توقيع المستلم</td>
+                                    <td>أمين الخزنة</td>
+                                </tr>
                             </table>
                         </div>
                     </t>
