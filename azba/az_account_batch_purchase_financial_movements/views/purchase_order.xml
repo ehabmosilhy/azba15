@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- VIEWS -->
+        <record id="azbah_purchase_order_tree" model="ir.ui.view">
+            <field name="name">azbah.purchase.order.tree</field>
+            <field name="model">purchase.order</field>
+            <field name="mode">extension</field>
+            <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="before">
+                    <field name="batch_purchase_financial_id"/>
+                    <field name="delegate_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="azbah_purchase_order_form" model="ir.ui.view">
+            <field name="name">azbah.purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="mode">extension</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_ref']" position="after">
+                    <field name="batch_purchase_financial_id"/>
+                    <field name="delegate_id"/>
+                </xpath>
+
+                <xpath expr="//field[@name='price_subtotal']" position="before">
+                    <field name="note" invisible="1"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>
