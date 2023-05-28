@@ -6,7 +6,7 @@
     "depends": ["account","purchase","az_account_payments"]
     , "data": [
     'views/batch_purchase.xml',
-    'views/purchase_order.xml',
+    'views/account_move.xml',
     'report/batch_purchase.xml',
     'report/batch_purchase_template.xml',
     'security/batch_purchase.xml',

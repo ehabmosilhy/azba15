@@ -13,21 +13,21 @@ class BatchPurchaseFinancial(models.Model):
     total = fields.Float()
     line_ids = fields.One2many('batch.purchase.financial.line', 'batch_id')
     line_count = fields.Integer(compute='_compute_line_count', string='Line count')
-    purchase_order_ids = fields.One2many('purchase.order', 'batch_purchase_id', string="Purchase Orders")
-    purchase_order_count = fields.Integer(string='Purchase Order Count', compute='_compute_purchase_order_count')
+    vendor_bill_count = fields.Integer(string='Purchase Order Count', compute='_compute_vendor_bill_count')
 
-    def _compute_purchase_order_count(self):
+    def _compute_vendor_bill_count(self):
         for record in self:
-            record.purchase_order_count = len(record.purchase_order_ids)
+            record.vendor_bill_count = len(record.evn['account.move'].sudo().search(
+                [('move_type', '=', 'in_invoice'), ('batch_purchase_financial_id', '=', record.id)]))
 
-    def launch_purchase_orders(self):
+    def launch_vendor_bills(self):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Purchase Orders',
-            'view_mode': 'tree,kanban,form,pivot,graph,calendar,activity',
-            'res_model': 'purchase.order',
-            'domain': [('batch_purchase_id', '=', self.id)],
+            'name': 'Vendor Bills',
+            'view_mode': 'tree,kanban,form,pivot,graph,activity',
+            'res_model': 'account.move',
+            'domain': [('batch_purchase_financial_id', '=', self.id)],
             'context': "{'create': False}"
         }
 
@@ -103,36 +103,34 @@ class BatchPurchaseFinancial(models.Model):
             vals_list['name'] = new_name
         batch = super(BatchPurchaseFinancial, self).create(vals_list)
 
-        for purchase_order in purchase_orders.items():
-            vendor_id = purchase_order[0]
-            bill_lines = purchase_order[1]
+        for bill_line_order in purchase_orders.items():
+            vendor_id = bill_line_order[0]
+            bill_lines = bill_line_order[1]
 
-            new_purchase_order = {
+            new_bill = {
                 "priority": "0",
-                "batch_purchase_id": batch.id,
+                'move_type': 'in_invoice',
+                "batch_purchase_financial_id": batch.id,
                 'partner_id': vendor_id,
-                "delegate_id": vals_list['delegate_id'],
-                "currency_id": 148,
-                "picking_type_id": 551
-                , 'date_order': vals_list['date']
-                , 'date_planned': vals_list['date']
-                , 'order_line': [
+                "purchase_delegate_financial_id": vals_list['delegate_id'],
+                "currency_id": 148
+                , 'invoice_date': vals_list['date']
+                , 'invoice_line_ids': [
                     (0, 0,
                      {
                          "sequence": 10
                          , 'product_id': _line['product_id']
                          , 'note': _line['note']
-                         , "date_planned": vals_list['date']
-                         , "product_uom": _line['product_uom']
+                         , "product_uom_id": _line['product_uom']
                          , 'price_unit': _line['price']
-                         , 'product_qty': _line['quantity']
+                         , 'quantity': _line['quantity']
                      }) for _line in bill_lines]
             }
             # Create the purchase purchase_order
-            _new_purchase_order = self.env['purchase.order'].create(new_purchase_order)
+            _new_bill_order = self.env['account.move'].create(new_bill)
 
             # Confirm the purchase_order
-            _new_purchase_order.button_confirm()
+            _new_bill_order.action_post()
 
         return batch
 
