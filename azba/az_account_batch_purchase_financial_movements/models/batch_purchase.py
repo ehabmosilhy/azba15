@@ -108,7 +108,6 @@ class BatchPurchaseFinancial(models.Model):
             bill_lines = bill_line_order[1]
 
             new_bill = {
-                "priority": "0",
                 'move_type': 'in_invoice',
                 "batch_purchase_financial_id": batch.id,
                 'partner_id': vendor_id,
