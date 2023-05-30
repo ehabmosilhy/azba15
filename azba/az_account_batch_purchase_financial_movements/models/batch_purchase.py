@@ -111,6 +111,7 @@ class BatchPurchaseFinancial(models.Model):
                 'move_type': 'in_invoice',
                 "batch_purchase_financial_id": batch.id,
                 'partner_id': vendor_id,
+                'journal_id': self.env['account.journal'].search([('type', '=', 'purchase')], limit=1).id,
                 "purchase_delegate_financial_id": vals_list['delegate_id'],
                 "currency_id": 148
                 , 'invoice_date': vals_list['date']
