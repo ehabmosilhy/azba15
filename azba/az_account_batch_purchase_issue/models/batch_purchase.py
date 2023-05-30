@@ -2,8 +2,8 @@
 from odoo import models, fields, api
 
 
-class BatchPurchaseFinancial(models.Model):
-    _name = "batch.purchase.financial"
+class BatchPurchase(models.Model):
+    _name = "batch.purchase"
     name = fields.Char(string="Name", copy=False, readonly=True,
                        default="New",
                        index=True, help="Unique name for the batch purchase with prefix DPO_")
@@ -11,14 +11,30 @@ class BatchPurchaseFinancial(models.Model):
     delegate_id = fields.Many2one('hr.employee', required=True)
     date = fields.Date(required=True, default=fields.Date.context_today)
     total = fields.Float()
-    line_ids = fields.One2many('batch.purchase.financial.line', 'batch_id')
+    line_ids = fields.One2many('batch.purchase.line', 'batch_id')
     line_count = fields.Integer(compute='_compute_line_count', string='Line count')
+    purchase_order_ids = fields.One2many('purchase.order', 'batch_purchase_id', string="Purchase Orders")
+    purchase_order_count = fields.Integer(string='Purchase Order Count', compute='_compute_purchase_order_count')
     vendor_bill_count = fields.Integer(string='Purchase Order Count', compute='_compute_vendor_bill_count')
+
+    def _compute_purchase_order_count(self):
+        for record in self:
+            record.purchase_order_count = len(record.purchase_order_ids)
 
     def _compute_vendor_bill_count(self):
         for record in self:
-            record.vendor_bill_count = len(record.env['account.move'].sudo().search(
-                [('move_type', '=', 'in_invoice'), ('batch_purchase_financial_id', '=', record.id)]))
+            record.vendor_bill_count = len([invoice.id for invoice in record.purchase_order_ids])
+
+    def launch_purchase_orders(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Purchase Orders',
+            'view_mode': 'tree,kanban,form,pivot,graph,calendar,activity',
+            'res_model': 'purchase.order',
+            'domain': [('batch_purchase_id', '=', self.id)],
+            'context': "{'create': False}"
+        }
 
     def launch_vendor_bills(self):
         self.ensure_one()
@@ -27,7 +43,7 @@ class BatchPurchaseFinancial(models.Model):
             'name': 'Vendor Bills',
             'view_mode': 'tree,kanban,form,pivot,graph,activity',
             'res_model': 'account.move',
-            'domain': [('batch_purchase_financial_id', '=', self.id)],
+            'domain': [('batch_purchase_id', '=', self.id)],
             'context': "{'create': False}"
         }
 
@@ -101,42 +117,71 @@ class BatchPurchaseFinancial(models.Model):
             else:
                 new_name = "DPO_00001"
             vals_list['name'] = new_name
-        batch = super(BatchPurchaseFinancial, self).create(vals_list)
+        batch = super(BatchPurchase, self).create(vals_list)
 
-        for bill_line_order in purchase_orders.items():
-            vendor_id = bill_line_order[0]
-            bill_lines = bill_line_order[1]
+        for purchase_order in purchase_orders.items():
 
-            new_bill = {
-                'move_type': 'in_invoice',
-                "batch_purchase_financial_id": batch.id,
+            vendor_id = purchase_order[0]
+            bill_lines = purchase_order[1]
+
+            new_purchase_order = {
+                "priority": "0",
+                "batch_purchase_id": batch.id,
                 'partner_id': vendor_id,
-                "purchase_delegate_financial_id": vals_list['delegate_id'],
-                "currency_id": 148
-                , 'invoice_date': vals_list['date']
-                , 'invoice_line_ids': [
+                "delegate_id": vals_list['delegate_id'],
+                "currency_id": 148,
+                "picking_type_id": 551
+                , 'date_order': vals_list['date']
+                , 'date_planned': vals_list['date']
+                , 'order_line': [
                     (0, 0,
                      {
                          "sequence": 10
                          , 'product_id': _line['product_id']
                          , 'note': _line['note']
-                         , "product_uom_id": _line['product_uom']
+                         , "date_planned": vals_list['date']
+                         , "product_uom": _line['product_uom']
                          , 'price_unit': _line['price']
-                         , 'quantity': _line['quantity']
+                         , 'product_qty': _line['quantity']
                      }) for _line in bill_lines]
             }
             # Create the purchase purchase_order
-            _new_bill_order = self.env['account.move'].create(new_bill)
+            _new_purchase_order = self.env['purchase.order'].create(new_purchase_order)
 
             # Confirm the purchase_order
-            _new_bill_order.action_post()
+            _new_purchase_order.button_confirm()
+
+            # Validate the picking
+            for picking in _new_purchase_order.picking_ids:
+                picking.batch_purchase_id = batch.id
+                for line in picking.move_ids_without_package:
+                    # receive all the quantity
+                    line.quantity_done = line.product_uom_qty
+                    line.batch_purchase_id = batch.id
+                picking.button_validate()
+
+            # Create the Vendor Bill
+            _new_purchase_order.action_create_invoice()
+
+            # Confirm the Vendor Bill
+            for bill in _new_purchase_order.invoice_ids:
+                bill.purchase_order_id = _new_purchase_order.id
+                bill.purchase_delegate_id = _new_purchase_order.delegate_id.id
+                # The invoice date is mandatory
+                bill.invoice_date = vals_list['date']
+
+                for i in range(len(bill.invoice_line_ids)):
+                    if _new_purchase_order.order_line[i].note:
+                        bill.line_ids[i].note = _new_purchase_order.order_line[i].note
+
+                bill.action_post()
 
         return batch
 
 
-class BatchPurchaseFinancialLine(models.Model):
-    _name = "batch.purchase.financial.line"
-    batch_id = fields.Many2one('batch.purchase.financial')
+class BatchVendorBillLine(models.Model):
+    _name = "batch.purchase.line"
+    batch_id = fields.Many2one('batch.purchase')
     line_count = fields.Integer(related='batch_id.line_count')
 
     vendor_id = fields.Many2one('res.partner',
