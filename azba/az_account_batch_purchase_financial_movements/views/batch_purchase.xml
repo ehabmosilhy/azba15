@@ -58,6 +58,8 @@
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="quantity"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            <field name="account_analytic_id"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="price"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="price_subtotal"
