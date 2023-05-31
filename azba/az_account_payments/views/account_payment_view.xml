@@ -44,6 +44,7 @@
             <field name="context">
                 {
                 'default_is_internal_transfer':1,
+                'default_payment_type': 'outbound'
                 'sanad':'1'}
             </field>
         </record>
@@ -83,7 +84,7 @@
                             سند قبض
                         </span>
                         <span invisible="not context.get('default_is_internal_transfer')">
-                            تحويل داخلى
+                            معاملات بنكية
                         </span>
                     </h1>
                 </div>
@@ -233,7 +234,7 @@
                   id="menu_azbah_action_account_payments_transfer"
                   action="action_azbah_account_transfer"
                   groups="account.group_account_user"
-                  name="تحويل داخلى"
+                  name="معاملات بنكية"
                   sequence="15"/>
 
     </data>
