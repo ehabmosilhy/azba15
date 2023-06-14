@@ -124,6 +124,8 @@ class BatchPurchaseFinancial(models.Model):
                          , "product_uom_id": _line['product_uom']
                          , 'price_unit': _line['price']
                          , 'quantity': _line['quantity']
+                         , 'tax_ids': [(6, 0, [x.id for x in self.env['product.product'].sudo().search(
+                         [('id', '=', _line['product_id'])], limit=1).taxes_id])],
                      }) for _line in bill_lines]
             }
             # Create the purchase purchase_order
