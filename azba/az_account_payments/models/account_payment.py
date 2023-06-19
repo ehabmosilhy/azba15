@@ -11,6 +11,7 @@ class AccountPayment(models.Model):
     amount = fields.Monetary(required=True)
     is_sanad = fields.Boolean()
 
+
     @api.constrains('amount', 'partner_id')
     def _check_amount_and_partner(self):
         for pay in self:
