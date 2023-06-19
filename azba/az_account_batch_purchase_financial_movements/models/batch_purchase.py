@@ -133,6 +133,17 @@ class BatchPurchaseFinancial(models.Model):
 
             # Confirm the purchase_order
             _new_bill_order.action_post()
+            if _new_bill_order.amount_total > 0:
+                ctx = {'active_model': 'account.move', 'active_ids': [_new_bill_order.id]}
+                payment_journal_id = self.env['account.journal'].sudo().search([('id', '=', 9)],
+                                                                               limit=1)
+
+                payment_register = self.env['account.payment.register'].with_context(ctx).create({
+                    'amount': _new_bill_order.amount_total,
+                    'journal_id': payment_journal_id.id,
+                })
+
+                payment_register._create_payments()
 
         return batch
 
