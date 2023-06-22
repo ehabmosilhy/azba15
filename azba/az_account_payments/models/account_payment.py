@@ -9,8 +9,9 @@ class AccountPayment(models.Model):
     _inherit = "account.payment"
 
     amount = fields.Monetary(required=True)
+    taxes_id = fields.Many2many('account.tax', string='الضرائب')
     is_sanad = fields.Boolean()
-
+    available_partner_bank_ids = fields.Many2many('res.partner.bank')
 
     @api.constrains('amount', 'partner_id')
     def _check_amount_and_partner(self):
@@ -89,7 +90,7 @@ class AccountPayment(models.Model):
             # account.bank.statement.line. In that case, the synchronization will only be made with the statement line.
             if pay.move_id.statement_line_id:
                 continue
-
+            print('pay', pay.taxes_id.ids)
             move = pay.move_id
             move_vals_to_write = {}
             payment_vals_to_write = {}
@@ -100,6 +101,9 @@ class AccountPayment(models.Model):
 
             if 'line_ids' in changed_fields:
                 all_lines = move.line_ids
+                for line in all_lines:
+                    line.tax_ids = [(6, 0, pay.taxes_id.ids)]
+                print('all_lines', all_lines)
 
                 #  /\_/\
                 # ( ◕‿◕ )
@@ -166,6 +170,7 @@ class AccountPayment(models.Model):
                     'currency_id': liquidity_lines.currency_id.id,
                     'destination_account_id': counterpart_lines.account_id.id,
                     'partner_id': liquidity_lines.partner_id.id,
+
                 })
                 if liquidity_amount > 0.0:
                     payment_vals_to_write.update({'payment_type': 'inbound'})

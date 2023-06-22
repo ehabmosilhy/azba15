@@ -166,6 +166,7 @@
                                attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
                         <field name="destination_journal_id" domain="[]" invisible="0"/>
+                        <field name="taxes_id" widget="many2many_tags"/>
                         <field name="partner_bank_id" string="Customer Bank Account" invisible="1"/>
                     </group>
                 </group>
@@ -211,7 +212,7 @@
         </record>
 
 
-   <menuitem parent="account_accountant.menu_accounting"
+        <menuitem parent="account_accountant.menu_accounting"
                   id="menu_azbah_account"
                   groups="account.group_account_user"
                   name="حركات مالية"
