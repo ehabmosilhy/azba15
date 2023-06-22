@@ -11,7 +11,6 @@ class AccountPayment(models.Model):
     amount = fields.Monetary(required=True)
     taxes_id = fields.Many2many('account.tax', string='الضرائب')
     is_sanad = fields.Boolean()
-    available_partner_bank_ids = fields.Many2many('res.partner.bank')
 
     @api.constrains('amount', 'partner_id')
     def _check_amount_and_partner(self):
