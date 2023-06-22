@@ -95,7 +95,7 @@ class BatchPurchaseFinancial(models.Model):
                         purchase_orders[vendor_id] = [line]
 
         if vals_list.get('name', "New") == 'New':
-            last_dpo = self.env['batch.purchase'].search([], order='id desc', limit=1)
+            last_dpo = self.env['batch.purchase.financial'].search([], order='id desc', limit=1)
             if last_dpo:
                 new_name = 'DPO_' + str(int(last_dpo.name[4:]) + 1).zfill(5)
             else:
@@ -125,7 +125,7 @@ class BatchPurchaseFinancial(models.Model):
                          , 'price_unit': _line['price']
                          , 'quantity': _line['quantity']
                          , 'tax_ids': [(6, 0, [x.id for x in self.env['product.product'].sudo().search(
-                         [('id', '=', _line['product_id'])], limit=1).taxes_id])],
+                         [('id', '=', _line['product_id'])], limit=1).supplier_taxes_id])],
                      }) for _line in bill_lines]
             }
             # Create the purchase purchase_order
