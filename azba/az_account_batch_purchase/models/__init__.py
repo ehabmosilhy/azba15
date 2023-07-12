@@ -4,5 +4,3 @@ from . import batch_purchase
 from . import purchase_order
 from . import res_partner
 from . import stock_picking
-
-from . import sarf_moshtarayat

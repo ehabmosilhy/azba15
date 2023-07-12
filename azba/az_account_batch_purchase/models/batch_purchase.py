@@ -17,6 +17,10 @@ class BatchPurchase(models.Model):
     purchase_order_count = fields.Integer(string='Purchase Order Count', compute='_compute_purchase_order_count')
     vendor_bill_count = fields.Integer(string='Purchase Order Count', compute='_compute_vendor_bill_count')
 
+
+    # The type will distinguish between purchase and sarf
+    type = fields.Selection([('purchase', 'Purchase'), ('sarf', 'Sarf')], default='purchase')
+
     def _compute_purchase_order_count(self):
         for record in self:
             record.purchase_order_count = len(record.purchase_order_ids)
@@ -88,6 +92,20 @@ class BatchPurchase(models.Model):
             }
             raise Exception(f'warning  {warning}')
 
+    def get_name(self, _type):
+
+        if _type == 'purchase':
+            prefix = 'DPO_'
+        elif _type == 'sarf':
+            prefix = 'IPO_'
+
+        last_dpo = self.env['batch.purchase'].search([('type', '=', _type)], order='id desc', limit=1)
+        if last_dpo:
+            new_name = prefix + str(int(last_dpo.name[4:]) + 1).zfill(5)
+        else:
+            new_name = prefix + "00001"
+        return new_name
+
     @api.model
     def create(self, vals_list):
         self.check_data(vals_list)
@@ -109,14 +127,10 @@ class BatchPurchase(models.Model):
                         purchase_orders[vendor_id].append(line)
                     else:
                         purchase_orders[vendor_id] = [line]
-
+        _type = self.env.context.get('type')
+        vals_list['type'] = _type
         if vals_list.get('name', "New") == 'New':
-            last_dpo = self.env['batch.purchase'].search([], order='id desc', limit=1)
-            if last_dpo:
-                new_name = 'DPO_' + str(int(last_dpo.name[4:]) + 1).zfill(5)
-            else:
-                new_name = "DPO_00001"
-            vals_list['name'] = new_name
+            vals_list['name'] = self.get_name(_type)
 
         batch = super(BatchPurchase, self).create(vals_list)
 
@@ -206,7 +220,7 @@ class BatchVendorBillLine(models.Model):
         , default=[5]  # Purchase Tax 15%
     )
 
-    account_analytic_id = fields.Many2one('account.analytic.account', string='Analytic Account')
+    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account')
 
 
     @api.onchange('price', 'quantity', 'tax_ids')

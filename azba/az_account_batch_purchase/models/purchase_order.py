@@ -6,7 +6,7 @@ from odoo import fields, models
 
 class PurchaseOrder(models.Model):
     _inherit = "purchase.order"
-    batch_purchase_id = fields.Many2one('batch.purchase.financial', string="Batch Purchase")
+    batch_purchase_id = fields.Many2one('batch.purchase', string="Batch Purchase")
     delegate_id = fields.Many2one(related='batch_purchase_id.delegate_id')
 
 
