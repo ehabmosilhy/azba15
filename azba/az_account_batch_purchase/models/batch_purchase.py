@@ -117,6 +117,7 @@ class BatchPurchase(models.Model):
             else:
                 new_name = "DPO_00001"
             vals_list['name'] = new_name
+
         batch = super(BatchPurchase, self).create(vals_list)
 
         for purchase_order in purchase_orders.items():
@@ -204,6 +205,9 @@ class BatchVendorBillLine(models.Model):
         help="Taxes that apply on the base amount"
         , default=[5]  # Purchase Tax 15%
     )
+
+    account_analytic_id = fields.Many2one('account.analytic.account', string='Analytic Account')
+
 
     @api.onchange('price', 'quantity', 'tax_ids')
     def onchange_price_or_qty(self):
