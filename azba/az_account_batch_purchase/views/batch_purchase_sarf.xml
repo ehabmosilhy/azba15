@@ -97,6 +97,22 @@
         </record>
 
 
+        <!--Bind  Action to views-->
+
+        <record id="act_view_form_azbah_batch_purchase_order_sarf" model="ir.actions.act_window.view">
+            <field name="sequence" eval="10"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="azbah_view_batch_purchase_order_sarf_form"/>
+            <field name="act_window_id" ref="action_azbah_view_batch_purchase_order_sarf"/>
+        </record>
+        <record id="act_view_tree_azbah_batch_purchase_order_sarf" model="ir.actions.act_window.view">
+            <field name="sequence" eval="5"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="azbah_view_batch_purchase_order_sarf_tree"/>
+            <field name="act_window_id" ref="action_azbah_view_batch_purchase_order_sarf"/>
+        </record>
+
+
         <menuitem parent="az_account_payments.menu_azbah_account"
                   id="menu_azbah_action_azbah_view_batch_purchase_financial_order"
                   action="action_azbah_view_batch_purchase_order_sarf"
