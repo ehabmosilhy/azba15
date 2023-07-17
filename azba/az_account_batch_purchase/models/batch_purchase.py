@@ -160,38 +160,118 @@ class BatchPurchase(models.Model):
                          , 'product_qty': _line['quantity']
                      }) for _line in bill_lines]
             }
-            # Create the purchase purchase_order
-            _new_purchase_order = self.env['purchase.order'].create(new_purchase_order)
 
-            # Confirm the purchase_order
-            _new_purchase_order.button_confirm()
+            # Create the purchase purchase_order if _type is purchase
+            #  /\_/\
+            # ( ◕‿◕ )
+            #  >   <
+            if _type == 'purchase':
+                _new_purchase_order = self.env['purchase.order'].create(new_purchase_order)
 
-            # Validate the picking
-            for picking in _new_purchase_order.picking_ids:
-                picking.batch_purchase_id = batch.id
-                for line in picking.move_ids_without_package:
-                    # receive all the quantity
-                    line.quantity_done = line.product_uom_qty
-                    line.batch_purchase_id = batch.id
-                picking.button_validate()
+                # Confirm the purchase_order
+                _new_purchase_order.button_confirm()
 
-            # Create the Vendor Bill
-            _new_purchase_order.action_create_invoice()
+                # Validate the picking
+                for picking in _new_purchase_order.picking_ids:
+                    picking.batch_purchase_id = batch.id
+                    for line in picking.move_ids_without_package:
+                        # receive all the quantity
+                        line.quantity_done = line.product_uom_qty
+                        line.batch_purchase_id = batch.id
+                    picking.button_validate()
 
-            # Confirm the Vendor Bill
-            for bill in _new_purchase_order.invoice_ids:
-                bill.purchase_order_id = _new_purchase_order.id
-                bill.purchase_delegate_id = _new_purchase_order.delegate_id.id
-                # The invoice date is mandatory
+                # Create the Vendor Bill
+                _new_purchase_order.action_create_invoice()
+
+                # Confirm the Vendor Bill
+                for bill in _new_purchase_order.invoice_ids:
+                    bill.purchase_order_id = _new_purchase_order.id
+                    bill.purchase_delegate_id = _new_purchase_order.delegate_id.id
+                    # The invoice date is mandatory
+                    bill.invoice_date = vals_list['date']
+
+                    for i in range(len(bill.invoice_line_ids)):
+                        if _new_purchase_order.order_line[i].note:
+                            bill.line_ids[i].note = _new_purchase_order.order_line[i].note
+
+                    bill.action_post()
+
+            else:
+                _new_bill = self.po_to_invoice(new_purchase_order)
+                bill = self.env['account.move'].with_context(default_move_type='in_invoice')
+                bill=bill.with_company(self.env.user.company_id).create(_new_bill)
                 bill.invoice_date = vals_list['date']
-
-                for i in range(len(bill.invoice_line_ids)):
-                    if _new_purchase_order.order_line[i].note:
-                        bill.line_ids[i].note = _new_purchase_order.order_line[i].note
-
                 bill.action_post()
 
         return batch
+
+    def po_to_invoice(self, purchase_order):
+        # Add properties
+        purchase_order['move_type'] = 'in_invoice'
+        purchase_order['invoice_user_id'] = self.env.uid
+
+        # Remove unnecessary properties
+        properties_to_remove = [
+            'picking_type_id',
+            'date_order',
+            'date_planned',
+            'priority'
+        ]
+        for prop in properties_to_remove:
+            purchase_order.pop(prop, None)
+
+        # Modify order line properties
+        for order_line in purchase_order['order_line']:
+            order_line[2]['quantity'] = order_line[2]['product_qty']
+            order_line[2]['product_uom_id'] = order_line[2]['product_uom']
+
+            properties_to_remove = [
+                'product_qty',
+                'product_uom',
+                'date_planned',
+            ]
+            for prop in properties_to_remove:
+                order_line[2].pop(prop, None)
+
+        # Rename order line
+        purchase_order['invoice_line_ids'] = purchase_order.pop('order_line')
+
+        return purchase_order
+
+    # def po_to_invoice(self, purchase_order):
+    #
+    #     # TO ADD:
+    #     purchase_order['move_type'] = 'in_invoice'
+    #     purchase_order['invoice_user_id'] = self.env.uid
+    #     # purchase_order['order_line']['name']=
+    #
+    #
+    #
+    #     # TO DELETE:
+    #
+    #     del purchase_order['picking_type_id']
+    #     del purchase_order['date_order']
+    #     del purchase_order['date_planned']
+    #     del purchase_order['priority']
+    #
+    #     for i in range (len(purchase_order['order_line'])):
+    #         purchase_order['order_line'][i][2]['quantity']=purchase_order['order_line'][i][2]['product_qty']
+    #         purchase_order['order_line'][i][2]['product_uom_id']=purchase_order['order_line'][i][2]['product_uom']
+    #
+    #         del purchase_order['order_line'][i][2]['product_qty']
+    #         del purchase_order['order_line'][i][2]['product_uom']
+    #         del purchase_order['order_line'][i][2]['date_planned']
+    #         del purchase_order['order_line'][i][2]['note']
+    #
+    #
+    #     # To Rename
+    #     purchase_order['invoice_line_ids']=purchase_order['order_line']
+    #     purchase_order.pop('order_line')
+    #
+    #     return purchase_order
+
+
+
 
 
 class BatchVendorBillLine(models.Model):
