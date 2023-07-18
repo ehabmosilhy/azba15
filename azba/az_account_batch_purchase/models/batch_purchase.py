@@ -201,7 +201,7 @@ class BatchPurchase(models.Model):
 
         return bill
 
-    # Create 🏭
+    # Create Method 🏭
     @api.model
     def create(self, vals_list):
         self.check_data(vals_list)
