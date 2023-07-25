@@ -21,7 +21,6 @@ class BatchPurchase(models.Model):
     # The type will distinguish between purchase and sarf
     type = fields.Selection([('purchase', 'Purchase'), ('sarf', 'Sarf')], default='purchase')
 
-
     # 🧮🧮🧮 Some Computing
     def _compute_purchase_order_count(self):
         for record in self:
@@ -40,8 +39,8 @@ class BatchPurchase(models.Model):
     def _compute_line_count(self):
         for record in self:
             record.line_count = len(record.line_ids)
-    # 🧮🧮🧮 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ End of Computing 🧮
 
+    # 🧮🧮🧮 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ End of Computing 🧮
 
     # 🚀🚀🚀 Launch Buttons
     def _get_action_window(self, name, res_model, domain):
@@ -62,9 +61,6 @@ class BatchPurchase(models.Model):
         return self._get_action_window('Vendor Bills', 'account.move', [('batch_purchase_id', '=', self.id)])
 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ End of Launch Buttons 🚀
-
-
-
 
     # Update the Total
     @api.onchange('line_ids')
@@ -169,7 +165,7 @@ class BatchPurchase(models.Model):
         # Add properties
         bill['move_type'] = 'in_invoice'
         bill['invoice_user_id'] = self.env.uid
-        bill['batch_purchase_id']=batch.id
+        bill['batch_purchase_id'] = batch.id
 
         # Remove properties
         properties_to_remove = [
@@ -221,10 +217,24 @@ class BatchPurchase(models.Model):
             if _type == 'purchase':
                 self.create_purchase_order(vals_list, new_purchase_order, batch)
             else:
-                self.create_vendor_bill(vals_list,new_purchase_order, batch)
+                bill = self.create_vendor_bill(vals_list, new_purchase_order, batch)
+                bill.action_post()
+                self.pay_bill(bill)
 
         return batch
 
+
+
+    def pay_bill(self, bill):
+        _register = self.env['account.payment.register'].with_context(active_ids=[bill.id], active_model='account.move')
+        payment_register = _register.create({
+            'journal_id': 9,
+            'partner_bank_id': bill.partner_bank_id.id,
+            'amount': bill.amount_residual,
+            'payment_date': bill.invoice_date,
+            'communication': bill.name
+        })
+        payment_register.action_create_payments()
 
     def create_purchase_order(self, vals_list, new_purchase_order, batch):
         purchase_order = self.env['purchase.order'].create(new_purchase_order)
@@ -256,12 +266,10 @@ class BatchPurchase(models.Model):
         bill = bill.with_company(self.env.user.company_id).create(new_bill)
         bill.invoice_date = vals_list['date']
         # for some reason, the bill forgets the 'batch_purchase_id'
-        bill.batch_purchase_id=new_bill['batch_purchase_id']
-        bill.purchase_delegate_id=bill['delegate_id']
+        bill.batch_purchase_id = new_bill['batch_purchase_id']
+        bill.purchase_delegate_id = bill['delegate_id']
 
-        bill.action_post()
-
-
+        return bill
 
 
 class BatchVendorBillLine(models.Model):

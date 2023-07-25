@@ -101,7 +101,8 @@ class AccountPayment(models.Model):
             if 'line_ids' in changed_fields:
                 all_lines = move.line_ids
                 for line in all_lines:
-                    line.tax_ids = [(6, 0, pay.taxes_id.ids)]
+                    if line.parent_state != 'posted':
+                        line.tax_ids = [(6, 0, pay.taxes_id.ids)]
                 print('all_lines', all_lines)
 
                 #  /\_/\
