@@ -149,6 +149,7 @@ class BatchPurchase(models.Model):
             purchase_order_lines.append(purchase_order_line)
 
         new_purchase_order = {
+            'origin': 'مشتريات مندوب',
             "priority": "0",
             "batch_purchase_id": batch.id,
             'partner_id': vendor_id,
@@ -223,8 +224,6 @@ class BatchPurchase(models.Model):
 
         return batch
 
-
-
     def pay_bill(self, bill):
         _register = self.env['account.payment.register'].with_context(active_ids=[bill.id], active_model='account.move')
         payment_register = _register.create({
@@ -298,6 +297,7 @@ class BatchVendorBillLine(models.Model):
         , default=[5]  # Purchase Tax 15%
     )
 
+    account_id = fields.Many2one('account.account', 'Account')
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account')
 
     @api.onchange('price', 'quantity', 'tax_ids')

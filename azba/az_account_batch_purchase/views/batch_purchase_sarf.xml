@@ -58,13 +58,15 @@
                                                    options="{'no_create': True, 'no_create_edit':True}"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="product_uom_category_id" invisible="1"/>
-                                            <field name="product_uom" widget='selection'
+                                            <field name="product_uom" widget='selection' string="Unit"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="quantity"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="price"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="price_subtotal"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            <field name="account_id"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="analytic_account_id"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>

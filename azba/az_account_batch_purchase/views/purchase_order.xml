@@ -33,5 +33,24 @@
 
             </field>
         </record>
+
+
+        <!-- Filters -->
+
+        <record id="purchase_order_view_search_inherited" model="ir.ui.view">
+            <field name="name">purchase.order.select.inherited</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_view_search"/>
+            <field name="arch" type="xml">
+                <search>
+
+                    <!-- Add your custom filter here -->
+                    <filter name="filter_origin"
+                            string="مشتريات مندوب" domain="[('origin', '=', 'مشتريات مندوب')]"/>
+                </search>
+            </field>
+        </record>
+
+
     </data>
 </odoo>
