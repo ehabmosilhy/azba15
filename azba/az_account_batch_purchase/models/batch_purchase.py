@@ -173,7 +173,8 @@ class BatchPurchase(models.Model):
             'picking_type_id',
             'date_order',
             'date_planned',
-            'priority'
+            'priority',
+            'origin'
         ]
         for prop in properties_to_remove:
             bill.pop(prop, None)
