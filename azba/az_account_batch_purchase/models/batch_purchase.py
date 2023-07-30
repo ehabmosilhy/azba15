@@ -321,3 +321,8 @@ class BatchVendorBillLine(models.Model):
         vendor_ids = self.batch_id.line_ids.mapped('vendor_id')
         domain = [('code', 'ilike', 'v%'), ('id', 'not in', vendor_ids.ids)]
         return {'domain': {'vendor_id': domain}}
+
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        if self.product_id:
+            self.product_uom = self.product_id.uom_id.id

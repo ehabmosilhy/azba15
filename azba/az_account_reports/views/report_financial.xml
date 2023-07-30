@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<data>
+    <data>
 
-<template id="azbah_partner_ledger" inherit_id="account_reports.line_template"  primary="True">
+        <template id="azbah_partner_ledger" inherit_id="account_reports.line_template" primary="True">
             <xpath expr="." position="before">
             </xpath>
-</template>
+        </template>
     </data>
 </odoo>
