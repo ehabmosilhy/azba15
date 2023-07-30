@@ -144,7 +144,10 @@ class BatchPurchase(models.Model):
                 "product_uom": _line['product_uom'],
                 'price_unit': _line['price'],
                 'product_qty': _line['quantity'],
-                'taxes_id': _line['tax_ids']
+                'taxes_id': _line['tax_ids'],
+                'account_id': _line.get('account_id', None),
+                'analytic_account_id': _line.get('analytic_account_id', None),
+
             })
             purchase_order_lines.append(purchase_order_line)
 
