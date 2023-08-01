@@ -83,9 +83,17 @@ class ReportPartnerLedger(models.AbstractModel):
                             # pll[i]['columns'].pop(1)
 
                             # حذف الرقم المرجعى للفاتورة من رقم الإشارة
-
-                            if pll[i]['columns'][0]['name'].split("-"):
-                                pll[i]['columns'][0]['name'] = '-'.join(pll[i]['columns'][0]['name'].split("-")[1:])
+                            splitted=pll[i]['columns'][0]['name'].split("-")
+                            if splitted:
+                                if len(splitted)>2:
+                                    if splitted[1].strip()==splitted[2].strip():
+                                        splitted.pop(1)
+                                        splitted.pop(1)
+                                    else:
+                                        splitted.pop(1)
+                                elif len(splitted)==2:
+                                    splitted.pop(1)
+                                pll[i]['columns'][0]['name'] = '-'.join(splitted)
                 return pll
         else:
             return super(ReportPartnerLedger, self)._get_lines(options, line_id=None)
@@ -137,8 +145,8 @@ class AccountReport(models.AbstractModel):
                                                                                     footer.decode())))
 
             landscape = False
-            if len(self.with_context(print_mode=True).get_header(options)[-1]) > 5:
-                landscape = True
+            # if len(self.with_context(print_mode=True).get_header(options)[-1]) > 5:
+            #     landscape = True
 
             body = handle_body(body)  # (｡◔‿◔｡)
             footer = handle_footer(footer)  # (｡◔‿◔｡)
