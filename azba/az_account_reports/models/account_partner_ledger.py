@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api, _, _lt, fields
-from odoo.tools.misc import format_date
-from datetime import timedelta
-
-from collections import defaultdict
+from markupsafe import Markup
+from odoo import models, api, _
+from odoo.tools import config
 
 
 class ReportPartnerLedger(models.AbstractModel):
@@ -20,7 +18,7 @@ class ReportPartnerLedger(models.AbstractModel):
                 {'name': _('Ref')},
                 # {'name': _('Due Date'), 'class': 'date'},
                 # {'name': _('Matching Number')},
-                # {'name': _('Initial Balance'), 'class': 'number'},
+                {'name': _('Initial Balance'), 'class': 'number'},
                 {'name': _('Debit'), 'class': 'number'},
                 {'name': _('Credit'), 'class': 'number'}]
 
@@ -32,8 +30,6 @@ class ReportPartnerLedger(models.AbstractModel):
             return columns
         else:
             return super(ReportPartnerLedger, self)._get_columns_name(options)
-
-
 
     @api.model
     def _get_lines(self, options, line_id=None):
@@ -70,27 +66,92 @@ class ReportPartnerLedger(models.AbstractModel):
                     options['headers'][0].pop(1)  # Account
                     options['headers'][0].pop(2)  # Due Date
                     options['headers'][0].pop(2)  # Matching Number
-                    options['headers'][0].pop(2)  # Due Initial Balance
+                    # options['headers'][0].pop(2)  # Due Initial Balance
 
                     # pll[0]['colspan']-=2
                     # pll[-1]['colspan']-=2
                     for i in range(len(pll)):
                         print(i)
                         if pll[i].get('colspan'):
-                            pll[i]['columns'].pop(0)  # Initial Balance
+                            # pll[i]['columns'].pop(0)  # Initial Balance
                             pll[i]['colspan'] -= 4
                         else:
                             pll[i]['columns'].pop(0)
                             pll[i]['columns'].pop(0)
                             pll[i]['columns'].pop(1)
                             pll[i]['columns'].pop(1)
-                            pll[i]['columns'].pop(1)
+                            # pll[i]['columns'].pop(1)
 
+                            # حذف الرقم المرجعى للفاتورة من رقم الإشارة
+
+                            if pll[i]['columns'][0]['name'].split("-"):
+                                pll[i]['columns'][0]['name'] = '-'.join(pll[i]['columns'][0]['name'].split("-")[1:])
                 return pll
         else:
             return super(ReportPartnerLedger, self)._get_lines(options, line_id=None)
 
-
     @api.model
     def _get_report_name(self):
         return _('Partner Ledger كشف حساب')
+
+
+def handle_body(body):
+
+    return body
+
+
+def handle_footer(footer):
+    return footer
+
+class AccountReport(models.AbstractModel):
+    _inherit = 'account.report'
+
+    def get_pdf(self, options):
+
+        #  /\_/\
+        # ( ◕‿◕ )
+        #  >   <
+        # Beginning: Ehab
+
+        if 'Partner Ledger' in self._get_report_name():
+            if not config['test_enable']:
+                self = self.with_context(commit_assetsbundle=True)
+
+            base_url = self.env['ir.config_parameter'].sudo().get_param('report.url') or self.env[
+                'ir.config_parameter'].sudo().get_param('web.base.url')
+            rcontext = {
+                'mode': 'print',
+                'base_url': base_url,
+                'company': self.env.company,
+            }
+
+            body_html = self.with_context(print_mode=True).get_html(options)
+            body = self.env['ir.ui.view']._render_template(
+                "account_reports.print_template",
+                values=dict(rcontext, body_html=body_html),
+            )
+            footer = self.env['ir.actions.report']._render_template("web.internal_layout", values=rcontext)
+            footer = self.env['ir.actions.report']._render_template("web.minimal_layout",
+                                                                    values=dict(rcontext, subst=True,
+                                                                                body=Markup(
+                                                                                    footer.decode())))
+
+            landscape = False
+            if len(self.with_context(print_mode=True).get_header(options)[-1]) > 5:
+                landscape = True
+
+            body = handle_body(body)  # (｡◔‿◔｡)
+            footer = handle_footer(footer)  # (｡◔‿◔｡)
+
+            return self.env['ir.actions.report']._run_wkhtmltopdf(
+                [body],
+                footer=footer.decode(),
+                landscape=landscape,
+                specific_paperformat_args={
+                    'data-report-margin-top': 10,
+                    'data-report-header-spacing': 10
+                }
+            )
+        else:
+            return super(AccountReport, self).get_pdf(options)
+
