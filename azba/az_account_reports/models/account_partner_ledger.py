@@ -103,8 +103,8 @@ class ReportPartnerLedger(models.AbstractModel):
         partner_codes = [self.env['res.partner'].search([('id', '=', _id)]).code for _id in options['partner_ids']]
         s = []
         for i in range(len(partner_codes)):
-            s.append(options['selected_partner_ids'][i] + f"[{partner_codes[i]}")
-        options['selected_partner_ids'] = s
+            s.append(options['selected_partner_ids'][i] + f"[{partner_codes[i]}]")
+        options['selected_partner_ids'] = '-'.join(s)
 
     @api.model
     def _get_report_name(self):
@@ -132,10 +132,11 @@ def handle_body(body, options):
 
     # Your new content
     new_content = f"""
-    <table style="direction:rtl">
+    <div class="row print_only" style="direction:rtl;margin-top: 20px; margin-bottom: 10px;text-align:center">
+    <table style="text-align: center;    width: 70%;">
         <tr>
             <td colspan="1">العميل </td>
-            <td colspan="3">{options['selected_partner_ids']} </td>
+            <td colspan="3" style="text-align:right">{options['selected_partner_ids']} </td>
         </tr>
         <tr>
             <td>
@@ -149,6 +150,7 @@ def handle_body(body, options):
             </td>
         </tr>
     </table>
+    </div>
     """
 
     # Parse the new content
@@ -157,6 +159,12 @@ def handle_body(body, options):
     # Replace the old content with the new one
     div_element.clear()
     div_element.append(new_element)
+
+    header_div_element = root.find('.//div[@class="o_account_reports_header"]')
+
+    # Add style attribute
+    header_div_element.set("style", "text-align:center")
+
     body = etree.tostring(root, pretty_print=True, method="html", encoding="utf-8").decode()
 
     body = Markup(body)
