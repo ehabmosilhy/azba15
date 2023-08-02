@@ -8,7 +8,6 @@ from lxml import etree, html
 import base64
 
 
-
 class ReportPartnerLedger(models.AbstractModel):
     _inherit = "account.partner.ledger"
 
@@ -117,16 +116,13 @@ def handle_body(self, body, options):
     date_from = options.get('date').get('date_from')
     date_to = options.get('date').get('date_to')
 
-
-    logo = self.env.user.company_id.logo.decode()
+    logo = self.env['ir.attachment'].search([('name','=','logo')]).datas.decode()
     logo_tag = f"""
     <img src='data:image/png;base64,{logo}' alt='Company Logo' style='width: 250px;'>
     """
 
-
-
     body_str = str(body)
-    body_str = body_str.replace("SR", "").replace("آجل","")
+    body_str = body_str.replace("SR", "").replace("آجل", "")
 
     # Parse the HTML
     root = html.fromstring(body_str)
@@ -137,12 +133,10 @@ def handle_body(self, body, options):
     last_element = amount_elements[-1] if amount_elements else None
     # If the last element exists, get its text content
     amount = last_element.text_content().strip() if last_element is not None else 0
-    status="مدين" if float(amount)>0 else "دائن"
+    status = "مدين" if float(amount) > 0 else "دائن"
 
     amount = self.env['res.currency'].search([]).amount_to_text(float(amount))
-    amount=amount.replace('Riyal','ريال ').replace('Halala', 'هللة')
-
-
+    amount = amount.replace('Riyal', 'ريال ').replace('Halala', 'هللة')
 
     body_str = body_str.replace("</body>", f"""
     <div style="direction:rtl;text-align:center;font-weight:bold;margin-bottom:10px;">
@@ -160,32 +154,41 @@ def handle_body(self, body, options):
 
     root = html.fromstring(body_str)
     # Find the element you want to replace
-    header_div_element = root.find('.//div[@class="row print_only"]')
+    header_div_element = root.find('.//div[@class="o_account_reports_header"]')
 
     # Your new content
     new_header_content = f"""
-    <div class="row print_only" style="direction:rtl;margin-top: 20px; margin-bottom: 10px;text-align:center">
-    
-    <table style="text-align: center;width: 90%;">
-        <tr>
-            <td colspan="1">العميل </td>
-            <td colspan="3" style="text-align:right">{options['selected_partner_ids']} </td>
-            <td style="text-align:center" rowspan="2">
-            {logo_tag}
-            </td>
-        </tr>
-        <tr>
-            <td>
-            فترة الكشف
-            </td>
-            <td>
-            من: {date_from}
-            </td>
-            <td colspan="2">
-            إلى: {date_to}
-            </td>
-        </tr>
+    <div class="o_account_reports_header" style="direction:rtl;margin-top: 20px; margin-bottom: 10px;text-align:center">
+    <table width="90%">
+    <tr>
+        <td width="50%">
+               <table style="text-align: center;width: 100%;">
+                        <tr>
+                            <td colspan="4" style="font-weight: bold;font-size:1.8em">كشف حساب عميل</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1" style="font-weight: bold;">العميل </td>
+                            <td colspan="3" style="text-align:right">{options['selected_partner_ids']} </td>
+                        </tr>
+                        <tr>
+                           <td style="font-weight: bold;">
+                            فترة الكشف
+                            </td>
+                            <td>
+                            من: {date_from}
+                            </td>
+                            <td colspan="2">
+                            إلى: {date_to}
+                            </td>
+                        </tr>
+                    </table>
+        </td>
+         <td style="text-align:center" width="50%">
+        {logo_tag}
+        </td>
+    </tr>
     </table>
+    
     </div>
     """
 
@@ -196,10 +199,10 @@ def handle_body(self, body, options):
     header_div_element.clear()
     header_div_element.append(new_header_element)
 
-    header_div_element = root.find('.//div[@class="o_account_reports_header"]')
-
-    # Add style attribute
-    header_div_element.set("style", "text-align:center")
+    # header_div_element = root.find('.//div[@class="o_account_reports_header"]')
+    #
+    # # Add style attribute
+    # header_div_element.set("style", "text-align:center")
 
     body = etree.tostring(root, pretty_print=True, method="html", encoding="utf-8").decode()
 
@@ -248,7 +251,7 @@ class AccountReport(models.AbstractModel):
             # if len(self.with_context(print_mode=True).get_header(options)[-1]) > 5:
             #     landscape = True
 
-            body = handle_body(self,body, options)  # (｡◔‿◔｡)
+            body = handle_body(self, body, options)  # (｡◔‿◔｡)
             footer = handle_footer(footer)  # (｡◔‿◔｡)
 
             return self.env['ir.actions.report']._run_wkhtmltopdf(
