@@ -161,29 +161,29 @@ def handle_body(self, body, options):
     <div class="o_account_reports_header" style="direction:rtl;margin-top: 20px; margin-bottom: 10px;text-align:center">
     <table width="98%">
     <tr>
-        <td width="50%">
+        <td width="70%">
                <table style="text-align: center;width: 100%;">
                         <tr>
-                            <td colspan="4" style="font-weight: bold;font-size:1.8em;padding-top:10px;">كشف حساب عميل</td>
+                            <td colspan="4" style="font-weight: bold;font-size:1.8em;padding-top:20px;">كشف حساب عميل</td>
                         </tr>
                         <tr>
-                            <td colspan="1" style="font-weight: bold;padding-top:10px;">العميل </td>
-                            <td colspan="3" style="text-align:right;margin-top:10px;">{options['selected_partner_ids']} </td>
+                            <td colspan="1" style="font-weight: bold;padding-top:20px;">العميل </td>
+                            <td colspan="3" style="text-align:right;padding-top:20px;">{options['selected_partner_ids']} </td>
                         </tr>
                         <tr>
-                           <td style="font-weight: bold;padding-top:10px;">
+                           <td style="font-weight: bold;padding-top:20px;">
                             فترة الكشف
                             </td>
-                            <td>
+                            <td style="padding-top:20px;">
                             من: {date_from}
                             </td>
-                            <td colspan="2">
+                            <td colspan="2"  style="padding-top:20px;">
                             إلى: {date_to}
                             </td>
                         </tr>
                     </table>
         </td>
-         <td style="text-align:left" width="50%">
+         <td style="text-align:left" width="30%">
         {logo_tag}
         </td>
     </tr>
