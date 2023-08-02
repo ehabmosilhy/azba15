@@ -132,7 +132,7 @@ def handle_body(body, options):
 
     # Your new content
     new_content = f"""
-    <table>
+    <table style="direction:rtl">
         <tr>
             <td colspan="1">العميل </td>
             <td colspan="3">{options['selected_partner_ids']} </td>
