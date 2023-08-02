@@ -116,10 +116,10 @@ def handle_body(self, body, options):
     date_from = options.get('date').get('date_from')
     date_to = options.get('date').get('date_to')
 
-    logo = self.env['ir.attachment'].sudo().search([('name', '=', 'logo')]).datas.decode()
+    logo = self.env['ir.attachment'].sudo().search([('name', '=', 'logo'),('company_id','=',  self.env.company.id)])
     logo_tag = f"""
-    <img src='data:image/png;base64,{logo}' alt='Company Logo' style='width: 250px;'>
-    """
+    <img src='data:image/png;base64,{logo.datas.decode()}' alt='Company Logo' style='width: 250px;'>
+    """ if logo else ""
 
     body_str = str(body)
     body_str = body_str.replace("SR", "").replace("آجل", "")
