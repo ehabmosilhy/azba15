@@ -120,7 +120,7 @@ def handle_body(self, body, options):
 
     logo = self.env.user.company_id.logo.decode()
     logo_tag = f"""
-    <img src='data:image/png;base64,{logo}' alt='Company Logo' style='width: 100px;'>
+    <img src='data:image/png;base64,{logo}' alt='Company Logo' style='width: 250px;'>
     """
 
 
@@ -170,7 +170,7 @@ def handle_body(self, body, options):
         <tr>
             <td colspan="1">العميل </td>
             <td colspan="3" style="text-align:right">{options['selected_partner_ids']} </td>
-            <td style="text-align:center">
+            <td style="text-align:center" rowspan="2">
             {logo_tag}
             </td>
         </tr>
@@ -184,7 +184,6 @@ def handle_body(self, body, options):
             <td colspan="2">
             إلى: {date_to}
             </td>
-            <td style="text-align:center">شركة عذبة العربية للصناعة</td>
         </tr>
     </table>
     </div>
