@@ -116,7 +116,7 @@ def handle_body(self, body, options):
     date_from = options.get('date').get('date_from')
     date_to = options.get('date').get('date_to')
 
-    logo = self.env['ir.attachment'].search([('name','=','logo')]).datas.decode()
+    logo = self.env['ir.attachment'].sudo().search([('name', '=', 'logo')]).datas.decode()
     logo_tag = f"""
     <img src='data:image/png;base64,{logo}' alt='Company Logo' style='width: 250px;'>
     """
@@ -132,7 +132,7 @@ def handle_body(self, body, options):
     # Get the last element
     last_element = amount_elements[-1] if amount_elements else None
     # If the last element exists, get its text content
-    amount = last_element.text_content().strip() if last_element is not None else 0
+    amount = last_element.text_content().replace(",", "").strip() if last_element is not None else 0
     status = "مدين" if float(amount) > 0 else "دائن"
 
     amount = self.env['res.currency'].search([]).amount_to_text(float(amount))
@@ -159,19 +159,19 @@ def handle_body(self, body, options):
     # Your new content
     new_header_content = f"""
     <div class="o_account_reports_header" style="direction:rtl;margin-top: 20px; margin-bottom: 10px;text-align:center">
-    <table width="90%">
+    <table width="98%">
     <tr>
         <td width="50%">
                <table style="text-align: center;width: 100%;">
                         <tr>
-                            <td colspan="4" style="font-weight: bold;font-size:1.8em">كشف حساب عميل</td>
+                            <td colspan="4" style="font-weight: bold;font-size:1.8em;padding-top:10px;">كشف حساب عميل</td>
                         </tr>
                         <tr>
-                            <td colspan="1" style="font-weight: bold;">العميل </td>
-                            <td colspan="3" style="text-align:right">{options['selected_partner_ids']} </td>
+                            <td colspan="1" style="font-weight: bold;padding-top:10px;">العميل </td>
+                            <td colspan="3" style="text-align:right;margin-top:10px;">{options['selected_partner_ids']} </td>
                         </tr>
                         <tr>
-                           <td style="font-weight: bold;">
+                           <td style="font-weight: bold;padding-top:10px;">
                             فترة الكشف
                             </td>
                             <td>
@@ -183,7 +183,7 @@ def handle_body(self, body, options):
                         </tr>
                     </table>
         </td>
-         <td style="text-align:center" width="50%">
+         <td style="text-align:left" width="50%">
         {logo_tag}
         </td>
     </tr>
