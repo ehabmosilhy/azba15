@@ -4,6 +4,7 @@
 from markupsafe import Markup
 from odoo import models, api, _
 from odoo.tools import config
+from lxml import etree, html
 
 
 class ReportPartnerLedger(models.AbstractModel):
@@ -71,7 +72,6 @@ class ReportPartnerLedger(models.AbstractModel):
                     # pll[0]['colspan']-=2
                     # pll[-1]['colspan']-=2
                     for i in range(len(pll)):
-                        print(i)
                         if pll[i].get('colspan'):
                             # pll[i]['columns'].pop(0)  # Initial Balance
                             pll[i]['colspan'] -= 4
@@ -83,33 +83,89 @@ class ReportPartnerLedger(models.AbstractModel):
                             # pll[i]['columns'].pop(1)
 
                             # حذف الرقم المرجعى للفاتورة من رقم الإشارة
-                            splitted=pll[i]['columns'][0]['name'].split("-")
+                            splitted = pll[i]['columns'][0]['name'].split("-")
                             if splitted:
-                                if len(splitted)>2:
-                                    if splitted[1].strip()==splitted[2].strip():
+                                if len(splitted) > 2:
+                                    if splitted[1].strip() == splitted[2].strip():
                                         splitted.pop(1)
                                         splitted.pop(1)
                                     else:
                                         splitted.pop(1)
-                                elif len(splitted)==2:
+                                elif len(splitted) == 2:
                                     splitted.pop(1)
                                 pll[i]['columns'][0]['name'] = '-'.join(splitted)
+                self.add_partner_codes(options)
                 return pll
         else:
             return super(ReportPartnerLedger, self)._get_lines(options, line_id=None)
 
+    def add_partner_codes(self, options):
+        partner_codes = [self.env['res.partner'].search([('id', '=', _id)]).code for _id in options['partner_ids']]
+        s = []
+        for i in range(len(partner_codes)):
+            s.append(options['selected_partner_ids'][i] + f"[{partner_codes[i]}")
+        options['selected_partner_ids'] = s
+
     @api.model
     def _get_report_name(self):
-        return _('Partner Ledger كشف حساب')
+        return 'Partner Ledger كشف حساب عميل'
 
 
-def handle_body(body):
+def handle_body(body, options):
+    date_from = options.get('date').get('date_from')
+    date_to = options.get('date').get('date_to')
 
+    body_str = str(body)
+    body_str = body_str.replace("SR", "")
+    body_str = body_str.replace("</body>", """
+     <footer style="text-align:center; font-size: large;width:90%;margin: auto;border:1px solid black;">
+            نوافق على صحة الرصيد أعلاه .. وإذا لم نستلم منكم أى اعتراض على صحة هذا الكشف خلال أسبوع من تاريخه يعتبر الحساب صحيحاً ما عدا السهو والخطأ
+        </footer>
+        </body>
+    """)
+
+    # Parse the HTML
+    root = html.fromstring(body_str)
+
+    # Find the element you want to replace
+    div_element = root.find('.//div[@class="row print_only"]')
+
+    # Your new content
+    new_content = f"""
+    <table>
+        <tr>
+            <td colspan="1">العميل </td>
+            <td colspan="3">{options['selected_partner_ids']} </td>
+        </tr>
+        <tr>
+            <td>
+            فترة الكشف
+            </td>
+            <td>
+            من: {date_from}
+            </td>
+            <td>
+            إلى: {date_to}
+            </td>
+        </tr>
+    </table>
+    """
+
+    # Parse the new content
+    new_element = html.fromstring(new_content)
+
+    # Replace the old content with the new one
+    div_element.clear()
+    div_element.append(new_element)
+    body = etree.tostring(root, pretty_print=True, method="html", encoding="utf-8").decode()
+
+    body = Markup(body)
     return body
 
 
 def handle_footer(footer):
     return footer
+
 
 class AccountReport(models.AbstractModel):
     _inherit = 'account.report'
@@ -148,7 +204,7 @@ class AccountReport(models.AbstractModel):
             # if len(self.with_context(print_mode=True).get_header(options)[-1]) > 5:
             #     landscape = True
 
-            body = handle_body(body)  # (｡◔‿◔｡)
+            body = handle_body(body, options)  # (｡◔‿◔｡)
             footer = handle_footer(footer)  # (｡◔‿◔｡)
 
             return self.env['ir.actions.report']._run_wkhtmltopdf(
@@ -162,4 +218,3 @@ class AccountReport(models.AbstractModel):
             )
         else:
             return super(AccountReport, self).get_pdf(options)
-
