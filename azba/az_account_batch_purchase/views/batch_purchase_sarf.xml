@@ -53,6 +53,7 @@
                                             <field name="line_count" invisible="1"/>
                                             <field name="display_type" invisible="1"/>
                                             <field name="vendor_id"
+                                                   options="{'no_create': True, 'no_create_edit': False}"
                                                    attrs="{'invisible': [('display_type', '!=', 'line_section')]}"/>
                                             <field name="product_id"
                                                    options="{'no_create': True, 'no_create_edit':True}"
@@ -66,9 +67,9 @@
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="price_subtotal"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
-                                            <field name="account_id"
+                                            <field name="account_id"  options="{'no_create': True, 'no_create_edit':True}"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
-                                            <field name="analytic_account_id"
+                                            <field name="analytic_account_id"  options="{'no_create': True, 'no_create_edit':True}"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="tax_ids" widget="many2many_tags" options="{'no_create':True}"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
