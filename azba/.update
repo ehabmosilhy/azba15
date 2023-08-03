@@ -1,0 +1,4 @@
+{
+"target": "staging,production",
+"addons": "az_account_batch_purchase"
+}

@@ -9,7 +9,7 @@ from docker import DockerClient
 client = DockerClient.from_env()
 
 # Define the path to your repository
-repo_path = '/path/to/your/repo'
+repo_path = 'https://github.com/ehabmosilhy/azba15.git'
 
 # Initialize the repository
 repo = Repo(repo_path)
@@ -33,21 +33,35 @@ while True:
 
     # Check if there are new commits
     if repo.head.commit.hexsha != repo.remotes.origin.refs.master.commit.hexsha:
+        print ('New commits detected ...')
+        input("Please enter to continue ...")
         # Read the .update file
-        with open('azba/.update', 'r') as file:
+        with open('~/odoo/addons_azba/.update', 'r') as file:
             data = json.load(file)
 
         # Get the current date/time stamp
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
 
+        print (f"""Will create a new branch for {data["target"]} with name {'master_' + {timestamp}} ...""")
+        input("Please enter to continue ...")
+
         # Create a new branch without checking it out
         new_branch = repo.create_head('master_' + timestamp, 'origin/master')
+
+        print(f"""Will Pull the changes into {paths[data['target']]} ...""")
+        input("Please enter to continue ...")
 
         # Pull the changes in the selected target
         os.chdir(paths[data['target']])
         os.system('git pull')
 
+
+
         # Update the docker-compose file
+        print(f"""Will Update the docker-compose file {paths[data['target']]} ...""")
+        print(f"odoo -d {data['target']} -u {','.join(data['addons'])}")
+        input("Please enter to continue ...")
+
         with open('docker-compose.yml', 'r') as file:
             docker_compose = yaml.safe_load(file)
 
