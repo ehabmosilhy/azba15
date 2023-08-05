@@ -3,13 +3,13 @@ import time
 import json
 from git import Repo
 from datetime import datetime
-from docker import DockerClient
+# from docker import DockerClient
 
 # Initialize Docker client
-client = DockerClient.from_env()
+# client = DockerClient.from_env()
 
 # Define the path to your repository
-repo_path = 'https://github.com/ehabmosilhy/azba15.git'
+repo_path = r'd:\odoo_15\odoo\addons_azba'
 
 # Initialize the repository
 repo = Repo(repo_path)
@@ -28,7 +28,7 @@ docker_compose_paths = {
 
 while True:
     # Check for new commits every 30 seconds
-    time.sleep(30)
+    time.sleep(3)
     repo.remotes.origin.fetch()
 
     # Check if there are new commits

@@ -42,7 +42,6 @@
                         </group>
                         <notebook>
                             <page string="Purchase Orders">
-                                <group>
                                     <field name="line_ids" nolabel="1">
                                         <tree editable="bottom">
                                             <control>
@@ -75,7 +74,6 @@
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                         </tree>
                                     </field>
-                                </group>
                             </page>
                         </notebook>
                     </sheet>
