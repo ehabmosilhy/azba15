@@ -204,26 +204,81 @@ class BatchPurchase(models.Model):
     #         product = self.env['product.product'].browse(_line['product_id'])
     #         product.qty_available += _line['quantity']
 
-    def add_products_to_warehouse(self, bill_lines):
+    # def add_products_to_warehouse(self, bill_lines):
+    #     for _line in bill_lines:
+    #         product = self.env['product.product'].browse(_line['product_id'])
+    #         warehouse = self.env['stock.warehouse'].search([], limit=1)  # replace with your warehouse
+    #         location_id = warehouse.lot_stock_id
+    #
+    #         # Create an inventory adjustment
+    #         StockQuant = self.env['stock.quant']
+    #         quant = StockQuant.search([('product_id', '=', product.id), ('location_id', '=', location_id.id)], limit=1)
+    #         if quant:
+    #             # Update existing quant
+    #             quant.quantity += _line['quantity']
+    #         else:
+    #             # Create new quant
+    #             StockQuant.create({
+    #                 'product_id': product.id,
+    #                 'location_id': location_id.id,
+    #                 'quantity': _line['quantity'],
+    #                 'in_date': fields.Datetime.now(),
+    #             })
+
+    # def add_products_to_warehouse(self, bill_lines):
+    #     StockMove = self.env['stock.move']
+    #     for _line in bill_lines:
+    #         product = self.env['product.product'].browse(_line['product_id'])
+    #         warehouse = self.env['stock.warehouse'].search([], limit=1)  # replace with your warehouse
+    #         location_id = warehouse.lot_stock_id
+    #         location_dest_id = self.env.ref('stock.stock_location_customers')  # replace with your destination location
+    #
+    #         move_vals = {
+    #             'name': 'Move: ' + product.name,
+    #             'product_id': product.id,
+    #             'product_uom': product.uom_id.id,
+    #             'product_uom_qty': _line['quantity'],
+    #             'location_id': location_id.id,
+    #             'location_dest_id': location_dest_id.id,
+    #         }
+    #         StockMove.create(move_vals)
+
+    def add_products_to_warehouse(self, bill_lines,vals_list):
+        StockPicking = self.env['stock.picking']
+        StockMove = self.env['stock.move']
+        PickingType = self.env['stock.picking.type'].search([('code', '=', 'incoming')], limit=1)
+
         for _line in bill_lines:
             product = self.env['product.product'].browse(_line['product_id'])
             warehouse = self.env['stock.warehouse'].search([], limit=1)  # replace with your warehouse
-            location_id = warehouse.lot_stock_id
+            location_id = self.env.ref('stock.stock_location_suppliers')  # replace with your source location
+            location_dest_id = warehouse.lot_stock_id
 
-            # Create an inventory adjustment
-            StockQuant = self.env['stock.quant']
-            quant = StockQuant.search([('product_id', '=', product.id), ('location_id', '=', location_id.id)], limit=1)
-            if quant:
-                # Update existing quant
-                quant.quantity += _line['quantity']
-            else:
-                # Create new quant
-                StockQuant.create({
-                    'product_id': product.id,
-                    'location_id': location_id.id,
-                    'quantity': _line['quantity'],
-                    'in_date': fields.Datetime.now(),
-                })
+            picking_vals = {
+                'picking_type_id': PickingType.id,
+                'location_id': location_id.id,
+                'location_dest_id': location_dest_id.id,
+            }
+            new_picking = StockPicking.create(picking_vals)
+
+            move_vals = {
+                'name': 'Move: ' + product.name,
+                'product_id': product.id,
+                'product_uom': product.uom_id.id,
+                'product_uom_qty': _line['quantity'],
+                'quantity_done': _line['quantity'],
+                'location_id': location_id.id,
+                'location_dest_id': location_dest_id.id,
+                'picking_id': new_picking.id,
+                'origin':vals_list['name']
+            }
+            StockMove.create(move_vals)
+
+            # Validate the picking to receive the products into the warehouse
+            new_picking.action_confirm()
+            new_picking.action_assign()
+            if new_picking.state == 'assigned':
+                new_picking.button_validate()
 
     # Create Method 🏭
     @api.model
@@ -244,7 +299,7 @@ class BatchPurchase(models.Model):
 
             if _type == 'purchase':
                 # self.create_purchase_order(vals_list, new_purchase_order, batch)
-                self.add_products_to_warehouse(bill_lines)
+                self.add_products_to_warehouse(bill_lines,vals_list)
 
             bill = self.create_vendor_bill(vals_list, new_purchase_order, batch)
             bill.action_post()
