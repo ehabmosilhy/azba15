@@ -28,12 +28,7 @@ class BatchPurchase(models.Model):
 
     def _compute_vendor_bill_count(self):
         for record in self:
-            if record.type == 'purchase':
-                record.vendor_bill_count = len(record.purchase_order_ids.invoice_ids)
-            elif record.type == 'sarf':
-                record.vendor_bill_count = len(record.vendor_bill_ids)
-            else:
-                record.vendor_bill_count = 0
+            record.vendor_bill_count = len(record.vendor_bill_ids) if len(record.vendor_bill_ids) else 0
 
     @api.depends('line_ids')
     def _compute_line_count(self):
@@ -54,8 +49,8 @@ class BatchPurchase(models.Model):
             'context': "{'create': False}"
         }
 
-    def launch_purchase_orders(self):
-        return self._get_action_window('Purchase Orders', 'purchase.order', [('batch_purchase_id', '=', self.id)])
+    # def launch_purchase_orders(self):
+    #     return self._get_action_window('Purchase Orders', 'purchase.order', [('batch_purchase_id', '=', self.id)])
 
     def launch_vendor_bills(self):
         return self._get_action_window('Vendor Bills', 'account.move', [('batch_purchase_id', '=', self.id)])
@@ -202,6 +197,34 @@ class BatchPurchase(models.Model):
 
         return bill
 
+
+
+    # def add_products_to_warehouse(self, bill_lines):
+    #     for _line in bill_lines:
+    #         product = self.env['product.product'].browse(_line['product_id'])
+    #         product.qty_available += _line['quantity']
+
+    def add_products_to_warehouse(self, bill_lines):
+        for _line in bill_lines:
+            product = self.env['product.product'].browse(_line['product_id'])
+            warehouse = self.env['stock.warehouse'].search([], limit=1)  # replace with your warehouse
+            location_id = warehouse.lot_stock_id
+
+            # Create an inventory adjustment
+            StockQuant = self.env['stock.quant']
+            quant = StockQuant.search([('product_id', '=', product.id), ('location_id', '=', location_id.id)], limit=1)
+            if quant:
+                # Update existing quant
+                quant.quantity += _line['quantity']
+            else:
+                # Create new quant
+                StockQuant.create({
+                    'product_id': product.id,
+                    'location_id': location_id.id,
+                    'quantity': _line['quantity'],
+                    'in_date': fields.Datetime.now(),
+                })
+
     # Create Method 🏭
     @api.model
     def create(self, vals_list):
@@ -220,11 +243,12 @@ class BatchPurchase(models.Model):
             new_purchase_order = self.compose_purchase_order(vals_list, vendor_id, bill_lines, _type, batch)
 
             if _type == 'purchase':
-                self.create_purchase_order(vals_list, new_purchase_order, batch)
-            else:
-                bill = self.create_vendor_bill(vals_list, new_purchase_order, batch)
-                bill.action_post()
-                self.pay_bill(bill)
+                # self.create_purchase_order(vals_list, new_purchase_order, batch)
+                self.add_products_to_warehouse(bill_lines)
+
+            bill = self.create_vendor_bill(vals_list, new_purchase_order, batch)
+            bill.action_post()
+            self.pay_bill(bill)
 
         return batch
 
