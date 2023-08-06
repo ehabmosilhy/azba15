@@ -49,8 +49,8 @@ class BatchPurchase(models.Model):
             'context': "{'create': False}"
         }
 
-    # def launch_purchase_orders(self):
-    #     return self._get_action_window('Purchase Orders', 'purchase.order', [('batch_purchase_id', '=', self.id)])
+    def launch_stock_move_line(self):
+        return self._get_action_window('Stock Move Line', 'stock.move.line', [('origin', '=', self.name)])
 
     def launch_vendor_bills(self):
         return self._get_action_window('Vendor Bills', 'account.move', [('batch_purchase_id', '=', self.id)])

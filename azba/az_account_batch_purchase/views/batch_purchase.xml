@@ -23,10 +23,10 @@
                 <form>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-<!--                            <button class="oe_stat_button" type="object" name="launch_purchase_orders" icon="fa-list-ol"-->
-<!--                                    attrs=" {'invisible':[('name', '=', 'New')]}">-->
-<!--                                <field name="purchase_order_count" widget="statinfo" string="Purchase Orders"/>-->
-<!--                            </button>-->
+                            <button class="oe_stat_button" type="object" name="launch_stock_move_line" icon="fa-paper-plane"
+                                    attrs=" {'invisible':[('name', '=', 'New')]}">
+                                Stock   المخزن
+                            </button>
 
                             <button class="oe_stat_button" type="object" name="launch_vendor_bills"
                                     icon="fa-pencil-square-o" attrs="{'invisible':[('name', '=', 'New')]}">
