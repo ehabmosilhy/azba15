@@ -38,47 +38,55 @@
                             <table class="table table-bordered" style="margin-top: 20px">
                                 <tbody>
                                     <t t-foreach="o.line_ids" t-as="line">
-                                        <t t-if="line.product_id.name">
-                                            <tr>
-                                                <td>
-                                                    <span t-field="line.product_id.name"/>
-                                                </td>
-                                                <td>
-                                                    <span t-field="line.quantity"/>
-                                                </td>
-                                                <td>
-                                                    <span t-field="line.price"/>
-                                                </td>
-                                                <td>
-                                                    <span t-field="line.price_subtotal"/>
-                                                </td>
-                                                <td>
-                                                    <span t-field="line.price_subtotal_with_tax"/>
-                                                </td>
-                                                <td>
-                                                    <span t-field="line.note"/>
-                                                </td>
-                                            </tr>
-                                        </t>
-                                        <t t-else="">
+                                        <t t-if="line.vendor_id.name">
+                                            <t t-if="not line.product_id.name">
 
-                                            <tr style="text-align:center;font-size: larger;font-weight: bolder;background-color:#C8C8C8">
-                                                <td colspan="5">
-                                                    <span t-field="line.vendor_id.name"/>
-                                                </td>
-                                                <td>
-                                                    <span t-field="line.price_subtotal_with_tax"/>
-                                                </td>
-                                            </tr>
+                                                <tr style="text-align:center;font-size: larger;font-weight: bolder;background-color:#C8C8C8">
+                                                    <td colspan="6">
+                                                        <span t-field="line.vendor_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.price_subtotal_with_tax"/>
+                                                    </td>
+                                                </tr>
 
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Sub Total</th>
-                                                <th>With Tax</th>
-                                                <th>Note</th>
-                                            </tr>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>Quantity</th>
+                                                    <th>Price</th>
+                                                    <th>Sub Total</th>
+                                                    <th>With Tax</th>
+                                                    <th>Account</th>
+                                                    <th>Note</th>
+                                                </tr>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-if="line.vendor_id.name">
+                                                    <tr>
+                                                        <td>
+                                                            <span t-field="line.product_id.name"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="line.quantity"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="line.price"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="line.price_subtotal"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="line.price_subtotal_with_tax"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="line.account_id.name"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="line.note"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </t>
                                         </t>
                                     </t>
                                 </tbody>
@@ -88,8 +96,14 @@
                             <table class="table table-bordered"
                                    style="font-weigh:bold;margin-top: 20px;direction:rtl;text-align:right">
                                 <tr>
-                                    <td>توقيع المستلم</td>
-                                    <td>أمين الخزنة</td>
+                                    <td style="text-align:center">توقيع المستلم</td>
+                                    <td style="text-align:center">أمين الخزنة</td>
+                                    <td style="text-align:center">الحسابات</td>
+                                </tr>
+                                <tr style="height:5em;">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             </table>
                         </div>
