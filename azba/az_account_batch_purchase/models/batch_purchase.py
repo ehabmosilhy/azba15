@@ -88,9 +88,7 @@ class BatchPurchase(models.Model):
 
     def check_data(self, vals_list):
         if not vals_list.get('total') > 0:
-            warning = {
-                'message': "Please, check the data"
-            }
+            warning = {'message': "Please, check the data"}
             raise Exception(f'warning  {warning}')
 
     def get_name(self, _type):
@@ -166,6 +164,9 @@ class BatchPurchase(models.Model):
         bill['invoice_user_id'] = self.env.uid
         bill['batch_purchase_id'] = batch.id
 
+        bill['date'] = bill['date_order']
+        bill['invoice_date'] = bill['date_order']
+
         # Remove properties
         properties_to_remove = [
             'picking_type_id',
@@ -197,53 +198,7 @@ class BatchPurchase(models.Model):
 
         return bill
 
-
-
-    # def add_products_to_warehouse(self, bill_lines):
-    #     for _line in bill_lines:
-    #         product = self.env['product.product'].browse(_line['product_id'])
-    #         product.qty_available += _line['quantity']
-
-    # def add_products_to_warehouse(self, bill_lines):
-    #     for _line in bill_lines:
-    #         product = self.env['product.product'].browse(_line['product_id'])
-    #         warehouse = self.env['stock.warehouse'].search([], limit=1)  # replace with your warehouse
-    #         location_id = warehouse.lot_stock_id
-    #
-    #         # Create an inventory adjustment
-    #         StockQuant = self.env['stock.quant']
-    #         quant = StockQuant.search([('product_id', '=', product.id), ('location_id', '=', location_id.id)], limit=1)
-    #         if quant:
-    #             # Update existing quant
-    #             quant.quantity += _line['quantity']
-    #         else:
-    #             # Create new quant
-    #             StockQuant.create({
-    #                 'product_id': product.id,
-    #                 'location_id': location_id.id,
-    #                 'quantity': _line['quantity'],
-    #                 'in_date': fields.Datetime.now(),
-    #             })
-
-    # def add_products_to_warehouse(self, bill_lines):
-    #     StockMove = self.env['stock.move']
-    #     for _line in bill_lines:
-    #         product = self.env['product.product'].browse(_line['product_id'])
-    #         warehouse = self.env['stock.warehouse'].search([], limit=1)  # replace with your warehouse
-    #         location_id = warehouse.lot_stock_id
-    #         location_dest_id = self.env.ref('stock.stock_location_customers')  # replace with your destination location
-    #
-    #         move_vals = {
-    #             'name': 'Move: ' + product.name,
-    #             'product_id': product.id,
-    #             'product_uom': product.uom_id.id,
-    #             'product_uom_qty': _line['quantity'],
-    #             'location_id': location_id.id,
-    #             'location_dest_id': location_dest_id.id,
-    #         }
-    #         StockMove.create(move_vals)
-
-    def add_products_to_warehouse(self, bill_lines,vals_list):
+    def add_products_to_warehouse(self, bill_lines, vals_list):
         StockPicking = self.env['stock.picking']
         StockMove = self.env['stock.move']
         PickingType = self.env['stock.picking.type'].search([('code', '=', 'incoming')], limit=1)
@@ -270,7 +225,7 @@ class BatchPurchase(models.Model):
                 'location_id': location_id.id,
                 'location_dest_id': location_dest_id.id,
                 'picking_id': new_picking.id,
-                'origin':vals_list['name']
+                'origin': vals_list['name']
             }
             StockMove.create(move_vals)
 
@@ -299,7 +254,7 @@ class BatchPurchase(models.Model):
 
             if _type == 'purchase':
                 # self.create_purchase_order(vals_list, new_purchase_order, batch)
-                self.add_products_to_warehouse(bill_lines,vals_list)
+                self.add_products_to_warehouse(bill_lines, vals_list)
 
             bill = self.create_vendor_bill(vals_list, new_purchase_order, batch)
             bill.action_post()
@@ -348,6 +303,7 @@ class BatchPurchase(models.Model):
         bill = self.env['account.move'].with_context(default_move_type='in_invoice')
         bill = bill.with_company(self.env.user.company_id).create(new_bill)
         bill.invoice_date = vals_list['date']
+        bill.date = vals_list['date']
         # for some reason, the bill forgets the 'batch_purchase_id'
         bill.batch_purchase_id = new_bill['batch_purchase_id']
         bill.purchase_delegate_id = bill['delegate_id']
@@ -370,7 +326,7 @@ class BatchVendorBillLine(models.Model):
                                   domain="[('category_id', '=', product_uom_category_id)]")
     quantity = fields.Float()
     price = fields.Float()
-    price_subtotal = fields.Float(string="Sub Total")
+    price_subtotal = fields.Float(compute='_compute_price_subtotal', store=True, readonly=True, string="Sub Total")
     price_subtotal_with_tax = fields.Float(string="With Tax")
     note = fields.Text()
     display_type = fields.Char()
@@ -383,6 +339,12 @@ class BatchVendorBillLine(models.Model):
 
     account_id = fields.Many2one('account.account', 'Account')
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account')
+
+    @api.depends('price', 'quantity')  # replace 'field1', 'field2' with the fields your computation depends on
+    def _compute_price_subtotal(self):
+        for record in self:
+            if record.price and record.quantity:
+                record.price_subtotal = record.price * record.quantity
 
     @api.onchange('price', 'quantity', 'tax_ids')
     def onchange_price_or_qty(self):
