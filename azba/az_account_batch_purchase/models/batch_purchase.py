@@ -303,7 +303,8 @@ class BatchPurchase(models.Model):
 
             bill = self.create_vendor_bill(vals_list, new_purchase_order, batch)
             bill.action_post()
-            # self.pay_bill(bill)
+            if _type != 'purchase':
+                self.pay_bill(bill)
 
         return batch
 
