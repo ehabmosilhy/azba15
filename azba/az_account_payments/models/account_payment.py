@@ -180,6 +180,39 @@ class AccountPayment(models.Model):
             move.write(move._cleanup_write_orm_values(move, move_vals_to_write))
             pay.write(move._cleanup_write_orm_values(pay, payment_vals_to_write))
 
+    def _seek_for_lines(self):
+        if not self.is_sanad:  # Keep the original code
+            ''' Helper used to dispatch the journal items between:
+            - The lines using the temporary liquidity account.
+            - The lines using the counterpart account.
+            - The lines being the write-off lines.
+            :return: (liquidity_lines, counterpart_lines, writeoff_lines)
+            '''
+            self.ensure_one()
+
+            liquidity_lines = self.env['account.move.line']
+            counterpart_lines = self.env['account.move.line']
+            writeoff_lines = self.env['account.move.line']
+
+            for line in self.move_id.line_ids:
+                if line.account_id in self._get_valid_liquidity_accounts():
+                    liquidity_lines += line
+                elif line.account_id.internal_type in (
+                        'receivable', 'payable') or line.partner_id == line.company_id.partner_id:
+                    counterpart_lines += line
+                else:
+                    writeoff_lines += line
+
+            return liquidity_lines, counterpart_lines, writeoff_lines
+        else:
+            liquidity_lines = self.env['account.move.line']
+            counterpart_lines = self.env['account.move.line']
+            writeoff_lines = self.env['account.move.line']
+            liquidity_lines, counterpart_lines = self.line_ids
+            return liquidity_lines, counterpart_lines, writeoff_lines
+
+
+
     @api.model_create_multi
     def create(self, vals_list):
         if self.env.context.get('sanad'):
