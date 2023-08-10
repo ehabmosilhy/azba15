@@ -33,10 +33,10 @@ class AccountPayment(models.Model):
 
         if self.env.context.get('sanad'):
             return {
-                'outbound-customer': _("(｡◔‿◔｡)"),
-                'inbound-customer': _("(｡◔‿◔｡)"),
-                'outbound-supplier': _("(｡◔‿◔｡)"),
-                'inbound-supplier': _("(｡◔‿◔｡)"),
+                'outbound-customer': _(""),
+                'inbound-customer': _(""),
+                'outbound-supplier': _(""),
+                'inbound-supplier': _(""),
             }
         else:
             return {
