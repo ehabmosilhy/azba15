@@ -9,6 +9,7 @@
         'report/customer_invoice.xml',
         'report/payment_receipt.xml',
         'report/sanad_template.xml',
+        'report/journal_entry.xml',
     ],
 
     'assets': {

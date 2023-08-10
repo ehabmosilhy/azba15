@@ -454,12 +454,13 @@
 
 
     <record id="report_azbah_invoce_rep" model="ir.actions.report">
-        <field name="name">custom_invoice_templates.azbah_customer_invoice</field>
+        <field name="name">Customer Invoice فاتورة عميل</field>
         <field name="model">account.move</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_file">custom_invoice_templates.azbah_customer_invoice</field>
         <field name="report_name">custom_invoice_templates.azbah_customer_invoice</field>
         <field name="paperformat_id" ref="custom_invoice_templates.paperformat_azbah_id"/>
+
 
     </record>
 
