@@ -42,6 +42,7 @@
                                         <th>Price</th>
                                         <th>With Tax</th>
                                         <th>Account</th>
+                                        <th>Analytic Account</th>
                                         <th>Note</th>
                                     </tr>
                                 </thead>
@@ -50,7 +51,7 @@
                                         <t t-if="line.vendor_id.name">
                                             <t t-if="not line.product_id.name">
                                                 <tr style="text-align:center;font-size: larger;font-weight: bolder;background-color:#C8C8C8">
-                                                    <td colspan="4">
+                                                    <td colspan="5">
                                                         <span t-field="line.vendor_id.name"/>
                                                     </td>
                                                     <td>
@@ -74,6 +75,9 @@
                                                             <span t-field="line.account_id.name"/>
                                                         </td>
                                                         <td>
+                                                            <span t-field="line.analytic_account_id.name"/>
+                                                        </td>
+                                                        <td>
                                                             <span t-field="line.note"/>
                                                         </td>
                                                     </tr>
@@ -83,6 +87,22 @@
                                     </t>
                                 </tbody>
                             </table>
+
+
+                            <table class="table table-bordered"
+                                   style="font-weigh:bold;margin-top: 20px;direction:rtl;text-align:right">
+                                <tr>
+                                    <td style="tex-aling:center">توقيع المستلم</td>
+                                    <td style="tex-aling:center">أمين الخزنة</td>
+                                    <td style="tex-aling:center">الحسابات</td>
+                                </tr>
+                                <tr style="height:3em;">
+                                    <td style="height:3em;"></td>
+                                    <td style="height:3em;"></td>
+                                    <td style="height:3em;"></td>
+                                </tr>
+                            </table>
+
                         </div>
                     </t>
                 </t>
