@@ -9,8 +9,40 @@ class AccountPayment(models.Model):
     _inherit = "account.payment"
 
     amount = fields.Monetary(required=True)
-    taxes_id = fields.Many2many('account.tax', string='الضرائب')
+
     is_sanad = fields.Boolean()
+
+    taxes_id = fields.Many2many(
+        'account.tax',
+        string='الضرائب',
+        default=lambda self: self._default_tax_ids()
+    )
+
+    # journal_id = fields.Many2one('account.journal', domain=lambda self: self._get_journal_domain())
+
+    # @api.model
+    # def _get_journal_domain(self):
+    #     if self._context.get('default_is_internal_transfer'):
+    #         return [('type', '=', 'bank')]
+    #     # return super(AccountPayment, self).journal_id.domain
+    #
+    # destination_journal_id = fields.Many2one('account.journal', domain=lambda self: self._get_destination_journal_domain())
+    #
+    # @api.model
+    # def _get_destination_journal_domain(self):
+    #     if self._context.get('default_is_internal_transfer'):
+    #         return []
+    #     # return super(AccountPayment, self).destination_journal_id.domain
+
+
+
+    @api.model
+    def _default_tax_ids(self):
+        if self._context.get('default_is_internal_transfer'):
+            purchase_tax = self.env['account.tax'].search([('id', '=', '5')])  # Hardcoded: Purchase Tax
+            return purchase_tax
+        return self.env['account.tax']
+
 
     @api.constrains('amount', 'partner_id')
     def _check_amount_and_partner(self):
@@ -219,6 +251,14 @@ class AccountPayment(models.Model):
             vals_list[0]['is_sanad'] = True
             vals_list[0]['payment_method_line_id'] = 2 if self.env.context.get(
                 'default_payment_type') == 'outbound' else 1
+
+            # Update Context
+            new_context = dict(self.env.context)
+            new_context['journal_id'] = vals_list[0]['journal_id']
+            new_context['destination_journal_id'] = vals_list[0]['destination_journal_id']
+            new_context['taxes_id'] = vals_list[0]['taxes_id']
+            self = self.with_context(new_context)
+
         payments = super().create(vals_list)
         return payments
 
@@ -227,6 +267,8 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     is_sanad = fields.Boolean(related='payment_id.is_sanad')
+
+
 
     def update_vals(self, vals, sanad_type):
         if sanad_type == 'send_receive':
@@ -246,17 +288,20 @@ class AccountMove(models.Model):
                         line[2]['account_id'] = sanad_account_id.id
 
         elif sanad_type == 'internal_transfer':
+            destination_journal=self.env['account.journal'].browse(self.env.context.get('destination_journal_id'))
             source_account_id = self.journal_id.sanad_account_id or self.journal_id.default_account_id
             destination_account_id = self.destination_journal_id.sanad_account_id or self.destination_journal_id.default_account_id
-            for line in vals.get('line_ids'):
-                if line[2]['credit'] > 0:
-                    line[2]['account_id'] = source_account_id.id
-                else:
-                    line[2]['account_id'] = destination_account_id.id
+            if vals.get('line_ids'):
+                for line in vals.get('line_ids'):
+                    if not line[2]['credit'] > 0:
+                        line[2]['account_id'] = source_account_id.id
+                    else:
+                        line[2]['account_id'] = destination_account_id.id
+                vals['line_ids'].append() # الضريبة
         return vals
 
     def write(self, vals):
-        if not vals.get('is_internal_transfer') and self.env.context.get('sanad'):
+        if not self.env.context.get('default_is_internal_transfer') and self.env.context.get('sanad'):
             #  /\_/\
             # ( ◕‿◕ )
             #  > ^ <
@@ -267,7 +312,7 @@ class AccountMove(models.Model):
             #  3- Bound to the journal (sanad_account_id)
             if vals.get('line_ids'):
                 vals = self.update_vals(vals, 'send_receive')
-        elif vals.get('is_internal_transfer') and self.env.context.get('sanad'):
+        elif self.env.context.get('default_is_internal_transfer') and self.env.context.get('sanad'):
             vals = self.update_vals(vals, 'internal_transfer')
 
         res = super(AccountMove, self).write(vals)
