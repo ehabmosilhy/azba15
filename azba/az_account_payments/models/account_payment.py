@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from lxml import etree
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
@@ -7,34 +6,9 @@ from odoo.exceptions import UserError, ValidationError
 
 class AccountPayment(models.Model):
     _inherit = "account.payment"
-
     amount = fields.Monetary(required=True)
-
     is_sanad = fields.Boolean()
-
-    taxes_id = fields.Many2many(
-        'account.tax',
-        string='الضرائب',
-        default=lambda self: self._default_tax_ids()
-    )
-
-    # journal_id = fields.Many2one('account.journal', domain=lambda self: self._get_journal_domain())
-
-    # @api.model
-    # def _get_journal_domain(self):
-    #     if self._context.get('default_is_internal_transfer'):
-    #         return [('type', '=', 'bank')]
-    #     # return super(AccountPayment, self).journal_id.domain
-    #
-    # destination_journal_id = fields.Many2one('account.journal', domain=lambda self: self._get_destination_journal_domain())
-    #
-    # @api.model
-    # def _get_destination_journal_domain(self):
-    #     if self._context.get('default_is_internal_transfer'):
-    #         return []
-    #     # return super(AccountPayment, self).destination_journal_id.domain
-
-
+    taxes_id = fields.Many2many('account.tax', string='الضرائب', default=lambda self: self._default_tax_ids())
 
     @api.model
     def _default_tax_ids(self):
@@ -43,20 +17,13 @@ class AccountPayment(models.Model):
             return purchase_tax
         return self.env['account.tax']
 
-
     @api.constrains('amount', 'partner_id')
     def _check_amount_and_partner(self):
         for pay in self:
             if pay.amount <= 0:
                 raise ValidationError(_('القيمة يجب أن تكون أكبر من صفر.'))
-            # if not pay.partner_id:
-            #     raise ValidationError(_('يجب إدخال المستلم/المورد.'))
 
     def _prepare_payment_display_name(self):
-        '''
-        Hook method for inherit
-        When you want to set a new name for payment, you can extend this method
-        '''
 
         #  /\_/\
         # ( ◕‿◕ )
@@ -80,9 +47,6 @@ class AccountPayment(models.Model):
 
     @api.depends('available_payment_method_line_ids')
     def _compute_payment_method_line_id(self):
-        ''' Compute the 'payment_method_line_id' field.
-        This field is not computed in '_compute_payment_method_line_fields' because it's a stored editable one.
-        '''
 
         for pay in self:
 
@@ -116,9 +80,6 @@ class AccountPayment(models.Model):
             return
 
         for pay in self.with_context(skip_account_move_synchronization=True):
-
-            # After the migration to 14.0, the journal entry could be shared between the account.payment and the
-            # account.bank.statement.line. In that case, the synchronization will only be made with the statement line.
             if pay.move_id.statement_line_id:
                 continue
             print('pay', pay.taxes_id.ids)
@@ -143,10 +104,12 @@ class AccountPayment(models.Model):
                 # Beginning: Ehab
                 if self.env.context.get('sanad'):
                     writeoff_lines = None
-                    liquidity_lines, counterpart_lines = all_lines
+                    if len(all_lines) > 2:
+                        liquidity_lines, counterpart_lines = all_lines[0:2]
+                    else:
+                        liquidity_lines, counterpart_lines = all_lines
                 else:
                     liquidity_lines, counterpart_lines, writeoff_lines = pay._seek_for_lines()
-
                 # (｡◔‿◔｡) End of code
 
                 if len(liquidity_lines) != 1:
@@ -240,10 +203,8 @@ class AccountPayment(models.Model):
             liquidity_lines = self.env['account.move.line']
             counterpart_lines = self.env['account.move.line']
             writeoff_lines = self.env['account.move.line']
-            liquidity_lines, counterpart_lines = self.line_ids
+            liquidity_lines, counterpart_lines = self.line_ids[0:2]
             return liquidity_lines, counterpart_lines, writeoff_lines
-
-
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -251,14 +212,12 @@ class AccountPayment(models.Model):
             vals_list[0]['is_sanad'] = True
             vals_list[0]['payment_method_line_id'] = 2 if self.env.context.get(
                 'default_payment_type') == 'outbound' else 1
-
             # Update Context
             new_context = dict(self.env.context)
             new_context['journal_id'] = vals_list[0]['journal_id']
             new_context['destination_journal_id'] = vals_list[0]['destination_journal_id']
             new_context['taxes_id'] = vals_list[0]['taxes_id']
             self = self.with_context(new_context)
-
         payments = super().create(vals_list)
         return payments
 
@@ -267,8 +226,6 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     is_sanad = fields.Boolean(related='payment_id.is_sanad')
-
-
 
     def update_vals(self, vals, sanad_type):
         if sanad_type == 'send_receive':
@@ -288,16 +245,47 @@ class AccountMove(models.Model):
                         line[2]['account_id'] = sanad_account_id.id
 
         elif sanad_type == 'internal_transfer':
-            destination_journal=self.env['account.journal'].browse(self.env.context.get('destination_journal_id'))
+            destination_journal = self.env['account.journal'].browse(self.env.context.get('destination_journal_id'))
             source_account_id = self.journal_id.sanad_account_id or self.journal_id.default_account_id
-            destination_account_id = self.destination_journal_id.sanad_account_id or self.destination_journal_id.default_account_id
+            destination_account_id = destination_journal.sanad_account_id or destination_journal.default_account_id
+
             if vals.get('line_ids'):
+
+                sum_taxes = 0.0
+
+                # Get the taxes_ids value from the context
+                taxes_ids = self.env.context.get('taxes_id')
+
+                if taxes_ids:
+                    taxes_records = self.env['account.tax'].browse(taxes_ids[0][2])
+
+                    for tax_record in taxes_records:
+                        sum_taxes += tax_record.amount
+                    new_vals = []
+
                 for line in vals.get('line_ids'):
-                    if not line[2]['credit'] > 0:
+                    if line[2]['credit'] > 0:
                         line[2]['account_id'] = source_account_id.id
+                        new_vals.append(line)
+
                     else:
+                        amount =  line[2]['debit']
                         line[2]['account_id'] = destination_account_id.id
-                vals['line_ids'].append() # الضريبة
+                        line[2]['debit'] = line[2]['debit'] - (sum_taxes / 100) * line[2]['debit']
+
+                        # Duplicate the line with modified fields
+                        new_line = (0, 0, line[2].copy())
+                        new_line[2]['debit'] =  amount - line[2]['debit']
+                        new_line[2]['account_id'] = 42
+                        new_line[2]['name'] = 'الضريبة'
+
+                        # Add the modified original line and the new line to the new_vals list
+                        new_vals.append(line)
+                        new_vals.append(new_line)
+
+                # Replace the old vals['line_ids'] with the new list
+                vals['line_ids'] = new_vals
+
         return vals
 
     def write(self, vals):
