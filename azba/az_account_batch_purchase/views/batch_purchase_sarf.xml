@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- VIEWS -->
+        <record id="azbah_view_batch_purchase_order_sarf_tree" model="ir.ui.view">
+            <field name="name">azbah.batch.purchase.tree</field>
+            <field name="model">batch.purchase</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" string="Serial"/>
+                    <field name="delegate_id"/>
+                    <field name="date"/>
+                    <field name="total"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="azbah_view_batch_purchase_order_sarf_form" model="ir.ui.view">
+            <field name="name">azbah.bach.vendor.bill.form</field>
+            <field name="model">batch.purchase</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+
+
+                            <button class="oe_stat_button" type="object" name="launch_vendor_bills"
+                                    icon="fa-pencil-square-o" attrs="{'invisible':[('name', '=', 'New')]}">
+                                <field name="vendor_bill_count" widget="statinfo" string="Vendor Bills"/>
+                            </button>
+                        </div>
+                        <group>
+                            <field name="name" string="Serial"/>
+                            <field name="delegate_id"/>
+                            <field name="date"/>
+                            <field name="total"/>
+                            <field name="line_count" invisible="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Purchase Orders">
+                                    <field name="line_ids" nolabel="1">
+                                        <tree editable="bottom">
+                                            <control>
+                                                <create name="add_section_control" string="Add a Vendor"
+                                                        context="{'default_display_type': 'line_section'}"/>
+                                                <create name="add_product_control" string="Add a product"/>
+                                            </control>
+                                            <field name="batch_id" invisible="1"/>
+                                            <field name="line_count" invisible="1"/>
+                                            <field name="display_type" invisible="1"/>
+                                            <field name="vendor_id"
+                                                   options="{'no_create': True, 'no_create_edit': False}"
+                                                   attrs="{'invisible': [('display_type', '!=', 'line_section')]}"/>
+                                            <field name="product_id"
+                                                   options="{'no_create': True, 'no_create_edit':True}"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            <field name="product_uom_category_id" invisible="1"/>
+                                            <field name="product_uom" widget='selection' string="Unit"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            <field name="quantity"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            <field name="price"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            <field name="price_subtotal"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            <field name="account_id"  options="{'no_create': True, 'no_create_edit':True}"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            <field name="analytic_account_id"  options="{'no_create': True, 'no_create_edit':True}"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            <field name="tax_ids" widget="many2many_tags" options="{'no_create':True}"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            <field name="price_subtotal_with_tax"/>
+                                            <field name="note"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                        </tree>
+                                    </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ACTIONS -->
+
+        <record id="action_azbah_view_batch_purchase_order_sarf" model="ir.actions.act_window">
+            <field name="name">Batch Purchase Orders</field>
+            <field name="res_model">batch.purchase</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'type': 'sarf'}</field>
+            <field name="domain">[('type', '=', 'sarf')]</field>
+        </record>
+
+
+        <!--Bind  Action to views-->
+
+        <record id="act_view_form_azbah_batch_purchase_order_sarf" model="ir.actions.act_window.view">
+            <field name="sequence" eval="10"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="azbah_view_batch_purchase_order_sarf_form"/>
+            <field name="act_window_id" ref="action_azbah_view_batch_purchase_order_sarf"/>
+        </record>
+        <record id="act_view_tree_azbah_batch_purchase_order_sarf" model="ir.actions.act_window.view">
+            <field name="sequence" eval="5"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="azbah_view_batch_purchase_order_sarf_tree"/>
+            <field name="act_window_id" ref="action_azbah_view_batch_purchase_order_sarf"/>
+        </record>
+
+
+        <menuitem parent="az_account_payments.menu_azbah_account"
+                  id="menu_azbah_action_azbah_view_batch_purchase_financial_order"
+                  action="action_azbah_view_batch_purchase_order_sarf"
+                  groups="account.group_account_user"
+                  name="صرف مشتريات"
+                  sequence="100"/>
+
+
+    </data>
+</odoo>

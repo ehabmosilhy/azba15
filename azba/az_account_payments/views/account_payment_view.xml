@@ -44,6 +44,7 @@
             <field name="context">
                 {
                 'default_is_internal_transfer':1,
+                'default_payment_type': 'outbound'
                 'sanad':'1'}
             </field>
         </record>
@@ -83,7 +84,7 @@
                             سند قبض
                         </span>
                         <span invisible="not context.get('default_is_internal_transfer')">
-                            تحويل داخلى
+                            معاملات بنكية
                         </span>
                     </h1>
                 </div>
@@ -165,6 +166,7 @@
                                attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 
                         <field name="destination_journal_id" domain="[]" invisible="0"/>
+                        <field name="taxes_id" widget="many2many_tags"/>
                         <field name="partner_bank_id" string="Customer Bank Account" invisible="1"/>
                     </group>
                 </group>
@@ -210,7 +212,7 @@
         </record>
 
 
-   <menuitem parent="account_accountant.menu_accounting"
+        <menuitem parent="account_accountant.menu_accounting"
                   id="menu_azbah_account"
                   groups="account.group_account_user"
                   name="حركات مالية"
@@ -233,7 +235,7 @@
                   id="menu_azbah_action_account_payments_transfer"
                   action="action_azbah_account_transfer"
                   groups="account.group_account_user"
-                  name="تحويل داخلى"
+                  name="معاملات بنكية"
                   sequence="15"/>
 
     </data>

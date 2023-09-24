@@ -1,0 +1,15 @@
+@startuml packages
+set namespaceSeparator none
+package "az_account_batch_purchase.models" as az_account_batch_purchase.models {
+}
+package "az_account_batch_purchase.models.account_move" as az_account_batch_purchase.models.account_move {
+}
+package "az_account_batch_purchase.models.batch_purchase" as az_account_batch_purchase.models.batch_purchase {
+}
+package "az_account_batch_purchase.models.purchase_order" as az_account_batch_purchase.models.purchase_order {
+}
+package "az_account_batch_purchase.models.res_partner" as az_account_batch_purchase.models.res_partner {
+}
+package "az_account_batch_purchase.models.stock_picking" as az_account_batch_purchase.models.stock_picking {
+}
+@enduml

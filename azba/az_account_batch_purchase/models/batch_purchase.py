@@ -14,43 +14,48 @@ class BatchPurchase(models.Model):
     line_ids = fields.One2many('batch.purchase.line', 'batch_id')
     line_count = fields.Integer(compute='_compute_line_count', string='Line count')
     purchase_order_ids = fields.One2many('purchase.order', 'batch_purchase_id', string="Purchase Orders")
+    vendor_bill_ids = fields.One2many('account.move', 'batch_purchase_id', string="Vendor Bill Ids")
     purchase_order_count = fields.Integer(string='Purchase Order Count', compute='_compute_purchase_order_count')
-    vendor_bill_count = fields.Integer(string='Purchase Order Count', compute='_compute_vendor_bill_count')
+    vendor_bill_count = fields.Integer(string='Vendor Bill Count', compute='_compute_vendor_bill_count')
 
+    # The type will distinguish between purchase and sarf
+    type = fields.Selection([('purchase', 'Purchase'), ('sarf', 'Sarf')], default='purchase')
+
+    # 🧮🧮🧮 Some Computing
     def _compute_purchase_order_count(self):
         for record in self:
             record.purchase_order_count = len(record.purchase_order_ids)
 
     def _compute_vendor_bill_count(self):
         for record in self:
-            record.vendor_bill_count = len([invoice.id for invoice in record.purchase_order_ids])
-
-    def launch_purchase_orders(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Purchase Orders',
-            'view_mode': 'tree,kanban,form,pivot,graph,calendar,activity',
-            'res_model': 'purchase.order',
-            'domain': [('batch_purchase_id', '=', self.id)],
-            'context': "{'create': False}"
-        }
-
-    def launch_vendor_bills(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Vendor Bills',
-            'view_mode': 'tree,kanban,form,pivot,graph,activity',
-            'res_model': 'account.move',
-            'domain': [('batch_purchase_id', '=', self.id)],
-            'context': "{'create': False}"
-        }
+            record.vendor_bill_count = len(record.vendor_bill_ids) if len(record.vendor_bill_ids) else 0
 
     @api.depends('line_ids')
     def _compute_line_count(self):
         for record in self:
             record.line_count = len(record.line_ids)
+
+    # 🧮🧮🧮 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ End of Computing 🧮
+
+    # 🚀🚀🚀 Launch Buttons
+    def _get_action_window(self, name, res_model, domain):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': name,
+            'view_mode': 'tree,kanban,form,pivot',
+            'res_model': res_model,
+            'domain': domain,
+            'context': "{'create': False}"
+        }
+
+    def launch_stock_move_line(self):
+        return self._get_action_window('Stock Move Line', 'stock.move.line', [('origin', '=', self.name)])
+
+    def launch_vendor_bills(self):
+        return self._get_action_window('Vendor Bills', 'account.move', [('batch_purchase_id', '=', self.id)])
+
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ End of Launch Buttons 🚀
 
     # Update the Total
     @api.onchange('line_ids')
@@ -83,100 +88,227 @@ class BatchPurchase(models.Model):
 
     def check_data(self, vals_list):
         if not vals_list.get('total') > 0:
-            warning = {
-                'message': "Please, check the data"
-            }
+            warning = {'message': "Please, check the data"}
             raise Exception(f'warning  {warning}')
 
+    def get_name(self, _type):
+        prefix = ''
+        if _type == 'purchase':
+            prefix = 'DPO_'
+        elif _type == 'sarf':
+            prefix = 'IPO_'
+
+        last_dpo = self.env['batch.purchase'].search([('type', '=', _type)], order='id desc', limit=1)
+        new_number = str(int(last_dpo.name[4:]) + 1).zfill(5) if last_dpo else '00001'
+        new_name = prefix + new_number
+
+        return new_name
+
+    def group_lines_by_vendor(self, line_ids):
+        purchase_orders = {}
+
+        for i, line in enumerate(line_ids):
+            line_data = line[2]
+
+            if line_data.get('display_type'):
+                continue
+
+            vendor_id = line_data.get('vendor_id')
+
+            if not vendor_id:
+                vendor_id = line_ids[i - 1][2].get('vendor_id')
+                line_data['vendor_id'] = vendor_id
+
+            if vendor_id in purchase_orders:
+                purchase_orders[vendor_id].append(line_data)
+            else:
+                purchase_orders[vendor_id] = [line_data]
+
+        return purchase_orders
+
+    def compose_purchase_order(self, vals_list, vendor_id, bill_lines, _type, batch):
+        purchase_order_lines = []
+        for _line in bill_lines:
+            purchase_order_line = (0, 0, {
+                "sequence": 10,
+                'product_id': _line['product_id'],
+                'note': _line['note'],
+                "date_planned": vals_list['date'],
+                "product_uom": _line['product_uom'],
+                'price_unit': _line['price'],
+                'product_qty': _line['quantity'],
+                'taxes_id': _line['tax_ids'],
+                'account_id': _line.get('account_id', None),
+                'analytic_account_id': _line.get('analytic_account_id', None),
+
+            })
+            purchase_order_lines.append(purchase_order_line)
+
+        new_purchase_order = {
+            'origin': 'مشتريات مندوب',
+            "priority": "0",
+            "batch_purchase_id": batch.id,
+            'partner_id': vendor_id,
+            "delegate_id": vals_list['delegate_id'],
+            "currency_id": 148,
+            "picking_type_id": 551,
+            'date_order': vals_list['date'],
+            'date_planned': vals_list['date'],
+            'order_line': purchase_order_lines
+        }
+        return new_purchase_order
+
+    def po_to_invoice(self, bill, batch):
+        # Add properties
+        bill['move_type'] = 'in_invoice'
+        bill['invoice_user_id'] = self.env.uid
+        bill['batch_purchase_id'] = batch.id
+
+        bill['date'] = bill['date_order']
+        bill['invoice_date'] = bill['date_order']
+
+        # Remove properties
+        properties_to_remove = [
+            'picking_type_id',
+            'date_order',
+            'date_planned',
+            'priority',
+            'origin'
+        ]
+        for prop in properties_to_remove:
+            bill.pop(prop, None)
+
+        # Modify order line properties
+        for order_line in bill['order_line']:
+            order_line[2]['quantity'] = order_line[2]['product_qty']
+            order_line[2]['product_uom_id'] = order_line[2]['product_uom']
+            order_line[2]['tax_ids'] = order_line[2]['taxes_id']
+
+            properties_to_remove = [
+                'product_qty',
+                'product_uom',
+                'date_planned',
+                'taxes_id'
+            ]
+            for prop in properties_to_remove:
+                order_line[2].pop(prop, None)
+
+        # Rename order line
+        bill['invoice_line_ids'] = bill.pop('order_line')
+
+        return bill
+
+    def add_products_to_warehouse(self, bill_lines, vals_list):
+        StockPicking = self.env['stock.picking']
+        StockMove = self.env['stock.move']
+        PickingType = self.env['stock.picking.type'].search([('code', '=', 'incoming')], limit=1)
+
+        for _line in bill_lines:
+            product = self.env['product.product'].browse(_line['product_id'])
+            warehouse = self.env['stock.warehouse'].search([], limit=1)  # replace with your warehouse
+            location_id = self.env.ref('stock.stock_location_suppliers')  # replace with your source location
+            location_dest_id = warehouse.lot_stock_id
+
+            picking_vals = {
+                'picking_type_id': PickingType.id,
+                'location_id': location_id.id,
+                'location_dest_id': location_dest_id.id,
+            }
+            new_picking = StockPicking.create(picking_vals)
+
+            move_vals = {
+                'name': 'Move: ' + product.name,
+                'product_id': product.id,
+                'product_uom': product.uom_id.id,
+                'product_uom_qty': _line['quantity'],
+                'quantity_done': _line['quantity'],
+                'location_id': location_id.id,
+                'location_dest_id': location_dest_id.id,
+                'picking_id': new_picking.id,
+                'origin': vals_list['name']
+            }
+            StockMove.create(move_vals)
+
+            # Validate the picking to receive the products into the warehouse
+            new_picking.action_confirm()
+            new_picking.action_assign()
+            if new_picking.state == 'assigned':
+                new_picking.button_validate()
+
+    # Create Method 🏭
     @api.model
     def create(self, vals_list):
         self.check_data(vals_list)
 
-        purchase_orders = {}
-        batch_lines = vals_list.get('line_ids')
-
-        # We need to group the lines by vendor to make all the lines of one vendor together in
-        # one purchase purchase_order
-        if batch_lines:
-            for i in range(len(batch_lines)):
-                line = batch_lines[i][2]
-                if not line.get('display_type'):
-                    vendor_id = line.get('vendor_id')
-                    if not vendor_id:
-                        vendor_id = batch_lines[i - 1][2].get('vendor_id')
-                        batch_lines[i][2]['vendor_id'] = vendor_id
-                    if vendor_id in purchase_orders.keys():
-                        purchase_orders[vendor_id].append(line)
-                    else:
-                        purchase_orders[vendor_id] = [line]
+        purchase_orders = self.group_lines_by_vendor(vals_list.get('line_ids'))
+        _type = self.env.context.get('type')
+        vals_list['type'] = _type
 
         if vals_list.get('name', "New") == 'New':
-            last_dpo = self.env['batch.purchase'].search([], order='id desc', limit=1)
-            if last_dpo:
-                new_name = 'DPO_' + str(int(last_dpo.name[4:]) + 1).zfill(5)
-            else:
-                new_name = "DPO_00001"
-            vals_list['name'] = new_name
+            vals_list['name'] = self.get_name(_type)
+
         batch = super(BatchPurchase, self).create(vals_list)
 
-        for purchase_order in purchase_orders.items():
+        for vendor_id, bill_lines in purchase_orders.items():
+            new_purchase_order = self.compose_purchase_order(vals_list, vendor_id, bill_lines, _type, batch)
 
-            vendor_id = purchase_order[0]
-            bill_lines = purchase_order[1]
+            if _type == 'purchase':
+                # self.create_purchase_order(vals_list, new_purchase_order, batch)
+                self.add_products_to_warehouse(bill_lines, vals_list)
 
-            new_purchase_order = {
-                "priority": "0",
-                "batch_purchase_id": batch.id,
-                'partner_id': vendor_id,
-                "delegate_id": vals_list['delegate_id'],
-                "currency_id": 148,
-                "picking_type_id": 551
-                , 'date_order': vals_list['date']
-                , 'date_planned': vals_list['date']
-                , 'order_line': [
-                    (0, 0,
-                     {
-                         "sequence": 10
-                         , 'product_id': _line['product_id']
-                         , 'note': _line['note']
-                         , "date_planned": vals_list['date']
-                         , "product_uom": _line['product_uom']
-                         , 'price_unit': _line['price']
-                         , 'product_qty': _line['quantity']
-                     }) for _line in bill_lines]
-            }
-            # Create the purchase purchase_order
-            _new_purchase_order = self.env['purchase.order'].create(new_purchase_order)
-
-            # Confirm the purchase_order
-            _new_purchase_order.button_confirm()
-
-            # Validate the picking
-            for picking in _new_purchase_order.picking_ids:
-                picking.batch_purchase_id = batch.id
-                for line in picking.move_ids_without_package:
-                    # receive all the quantity
-                    line.quantity_done = line.product_uom_qty
-                    line.batch_purchase_id = batch.id
-                picking.button_validate()
-
-            # Create the Vendor Bill
-            _new_purchase_order.action_create_invoice()
-
-            # Confirm the Vendor Bill
-            for bill in _new_purchase_order.invoice_ids:
-                bill.purchase_order_id = _new_purchase_order.id
-                bill.purchase_delegate_id = _new_purchase_order.delegate_id.id
-                # The invoice date is mandatory
-                bill.invoice_date = vals_list['date']
-
-                for i in range(len(bill.invoice_line_ids)):
-                    if _new_purchase_order.order_line[i].note:
-                        bill.line_ids[i].note = _new_purchase_order.order_line[i].note
-
-                bill.action_post()
+            bill = self.create_vendor_bill(vals_list, new_purchase_order, batch)
+            bill.action_post()
+            if _type != 'purchase':
+                self.pay_bill(bill)
 
         return batch
+
+    def pay_bill(self, bill):
+        _register = self.env['account.payment.register'].with_context(active_ids=[bill.id], active_model='account.move')
+        payment_register = _register.create({
+            'journal_id': 9,
+            'partner_bank_id': bill.partner_bank_id.id,
+            'amount': bill.amount_residual,
+            'payment_date': bill.invoice_date,
+            'communication': bill.name
+        })
+        payment_register.action_create_payments()
+
+    def create_purchase_order(self, vals_list, new_purchase_order, batch):
+        purchase_order = self.env['purchase.order'].create(new_purchase_order)
+        purchase_order.button_confirm()
+
+        for picking in purchase_order.picking_ids:
+            picking.batch_purchase_id = batch.id
+            for line in picking.move_ids_without_package:
+                line.quantity_done = line.product_uom_qty
+                line.batch_purchase_id = batch.id
+            picking.button_validate()
+
+        purchase_order.action_create_invoice()
+
+        for bill in purchase_order.invoice_ids:
+            bill.purchase_order_id = purchase_order.id
+            bill.purchase_delegate_id = purchase_order.delegate_id.id
+            bill.invoice_date = vals_list['date']
+
+            for i, line in enumerate(bill.invoice_line_ids):
+                if purchase_order.order_line[i].note:
+                    line.note = purchase_order.order_line[i].note
+
+            bill.action_post()
+
+    def create_vendor_bill(self, vals_list, new_purchase_order, batch):
+        new_bill = self.po_to_invoice(new_purchase_order, batch)
+        bill = self.env['account.move'].with_context(default_move_type='in_invoice')
+        bill = bill.with_company(self.env.user.company_id).create(new_bill)
+        bill.invoice_date = vals_list['date']
+        bill.date = vals_list['date']
+        # for some reason, the bill forgets the 'batch_purchase_id'
+        bill.batch_purchase_id = new_bill['batch_purchase_id']
+        bill.purchase_delegate_id = bill['delegate_id']
+
+        return bill
 
 
 class BatchVendorBillLine(models.Model):
@@ -194,7 +326,7 @@ class BatchVendorBillLine(models.Model):
                                   domain="[('category_id', '=', product_uom_category_id)]")
     quantity = fields.Float()
     price = fields.Float()
-    price_subtotal = fields.Float(string="Sub Total")
+    price_subtotal = fields.Float(compute='_compute_price_subtotal', store=True, readonly=True, string="Sub Total")
     price_subtotal_with_tax = fields.Float(string="With Tax")
     note = fields.Text()
     display_type = fields.Char()
@@ -204,6 +336,15 @@ class BatchVendorBillLine(models.Model):
         help="Taxes that apply on the base amount"
         , default=[5]  # Purchase Tax 15%
     )
+
+    account_id = fields.Many2one('account.account', 'Account')
+    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account')
+
+    @api.depends('price', 'quantity')  # replace 'field1', 'field2' with the fields your computation depends on
+    def _compute_price_subtotal(self):
+        for record in self:
+            if record.price and record.quantity:
+                record.price_subtotal = record.price * record.quantity
 
     @api.onchange('price', 'quantity', 'tax_ids')
     def onchange_price_or_qty(self):
@@ -222,3 +363,8 @@ class BatchVendorBillLine(models.Model):
         vendor_ids = self.batch_id.line_ids.mapped('vendor_id')
         domain = [('code', 'ilike', 'v%'), ('id', 'not in', vendor_ids.ids)]
         return {'domain': {'vendor_id': domain}}
+
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        if self.product_id:
+            self.product_uom = self.product_id.uom_id.id

@@ -13,3 +13,5 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = "purchase.order.line"
     note = fields.Text()
+    account_id = fields.Many2one('account.account', 'Account')
+    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account')

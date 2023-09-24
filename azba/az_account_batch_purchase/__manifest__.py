@@ -7,6 +7,7 @@
     , "data": [
     'views/account_move.xml',
     'views/batch_purchase.xml',
+    'views/batch_purchase_sarf.xml',
     'views/purchase_order.xml',
     'views/stock.xml',
     'report/batch_purchase.xml',

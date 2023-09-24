@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="azbah_journal_entry">
+        <t t-foreach="docs" t-as="o">
+            <t t-set="o" t-value="o.with_context(lang=lang)"/>
+            <t t-call="web.html_container">
+                <div class="page">
+                    <div class="header" style="direction:rtl;text-align:right">
+                        <h2 style="text-align:center;font-weight:bold;margin-bottom:20px;">قيد يومية رقم :
+                            <span t-field="o.name" style="margin-left: 20px;margin-right:20px"/>
+                        </h2>
+                        <h3>
+                            <span>
+                                المرجع :
+                            </span>
+
+                            <span t-field="o.ref" style="margin-left: 20px;margin-right:20px"/>
+                        </h3>
+                        <h3>
+                            <span>
+                                التاريخ :
+                            </span>
+                            <span t-field="o.date" style="margin-left: 20px;margin-right:20px"/>
+                        </h3>
+                        <h3>
+                            <span>
+                                دفتر
+                                اليومية :
+
+                            </span>
+                            <span t-field="o.journal_id.name" style="margin-left: 20px;margin-right:20px"/>
+                        </h3>
+                    </div>
+                    <!-- Body -->
+                    <div class="article mt0 o_report_layout_standard" style="margin-top:30px !important;direction:rtl !important;text-align:right">
+                        <table class="table table-condensed" style="margin-top:30px !important;">
+                            <thead>
+                                <tr>
+                                    <th>الحساب</th>
+                                    <th>الحساب التحليلي</th>
+                                    <th>الشريك</th>
+                                    <th>بيان</th>
+                                    <th>مدين</th>
+                                    <th>دائن</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.line_ids" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <span t-field="line.account_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.analytic_account_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.partner_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-if="line.debit != '0.00 SR'">
+                                                <span t-field="line.debit"/>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <t t-if="line.credit != '0.00 SR'">
+                                                <span t-field="line.credit"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_azbah_journal_entry" model="ir.actions.report">
+        <field name="name">Journal Entry قيد يومية</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_invoice_templates.azbah_journal_entry</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

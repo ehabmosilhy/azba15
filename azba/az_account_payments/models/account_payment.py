@@ -9,6 +9,7 @@ class AccountPayment(models.Model):
     _inherit = "account.payment"
 
     amount = fields.Monetary(required=True)
+    taxes_id = fields.Many2many('account.tax', string='الضرائب')
     is_sanad = fields.Boolean()
 
     @api.constrains('amount', 'partner_id')
@@ -32,10 +33,10 @@ class AccountPayment(models.Model):
 
         if self.env.context.get('sanad'):
             return {
-                'outbound-customer': _("(｡◔‿◔｡)"),
-                'inbound-customer': _("(｡◔‿◔｡)"),
-                'outbound-supplier': _("(｡◔‿◔｡)"),
-                'inbound-supplier': _("(｡◔‿◔｡)"),
+                'outbound-customer': _(""),
+                'inbound-customer': _(""),
+                'outbound-supplier': _(""),
+                'inbound-supplier': _(""),
             }
         else:
             return {
@@ -88,7 +89,7 @@ class AccountPayment(models.Model):
             # account.bank.statement.line. In that case, the synchronization will only be made with the statement line.
             if pay.move_id.statement_line_id:
                 continue
-
+            print('pay', pay.taxes_id.ids)
             move = pay.move_id
             move_vals_to_write = {}
             payment_vals_to_write = {}
@@ -99,6 +100,10 @@ class AccountPayment(models.Model):
 
             if 'line_ids' in changed_fields:
                 all_lines = move.line_ids
+                for line in all_lines:
+                    if line.parent_state != 'posted':
+                        line.tax_ids = [(6, 0, pay.taxes_id.ids)]
+                print('all_lines', all_lines)
 
                 #  /\_/\
                 # ( ◕‿◕ )
@@ -165,6 +170,7 @@ class AccountPayment(models.Model):
                     'currency_id': liquidity_lines.currency_id.id,
                     'destination_account_id': counterpart_lines.account_id.id,
                     'partner_id': liquidity_lines.partner_id.id,
+
                 })
                 if liquidity_amount > 0.0:
                     payment_vals_to_write.update({'payment_type': 'inbound'})
@@ -173,6 +179,39 @@ class AccountPayment(models.Model):
 
             move.write(move._cleanup_write_orm_values(move, move_vals_to_write))
             pay.write(move._cleanup_write_orm_values(pay, payment_vals_to_write))
+
+    def _seek_for_lines(self):
+        if not self.is_sanad:  # Keep the original code
+            ''' Helper used to dispatch the journal items between:
+            - The lines using the temporary liquidity account.
+            - The lines using the counterpart account.
+            - The lines being the write-off lines.
+            :return: (liquidity_lines, counterpart_lines, writeoff_lines)
+            '''
+            self.ensure_one()
+
+            liquidity_lines = self.env['account.move.line']
+            counterpart_lines = self.env['account.move.line']
+            writeoff_lines = self.env['account.move.line']
+
+            for line in self.move_id.line_ids:
+                if line.account_id in self._get_valid_liquidity_accounts():
+                    liquidity_lines += line
+                elif line.account_id.internal_type in (
+                        'receivable', 'payable') or line.partner_id == line.company_id.partner_id:
+                    counterpart_lines += line
+                else:
+                    writeoff_lines += line
+
+            return liquidity_lines, counterpart_lines, writeoff_lines
+        else:
+            liquidity_lines = self.env['account.move.line']
+            counterpart_lines = self.env['account.move.line']
+            writeoff_lines = self.env['account.move.line']
+            liquidity_lines, counterpart_lines = self.line_ids
+            return liquidity_lines, counterpart_lines, writeoff_lines
+
+
 
     @api.model_create_multi
     def create(self, vals_list):

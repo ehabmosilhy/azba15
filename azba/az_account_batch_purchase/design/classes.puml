@@ -1,0 +1,68 @@
+@startuml classes
+set namespaceSeparator none
+class "AccountMove" as az_account_batch_purchase.models.account_move.AccountMove {
+  batch_purchase_id
+  purchase_delegate_id
+  purchase_order_id
+}
+class "AccountMoveLine" as az_account_batch_purchase.models.account_move.AccountMoveLine {
+  note
+}
+class "BatchPurchase" as az_account_batch_purchase.models.batch_purchase.BatchPurchase {
+  date
+  delegate_id
+  line_count
+  line_ids
+  name
+  purchase_order_count
+  purchase_order_ids
+  total
+  total : int
+  type
+  vendor_bill_count
+  check_data(vals_list)
+  create(vals_list)
+  get_name(_type)
+  launch_purchase_orders()
+  launch_vendor_bills()
+  onchange_price_or_qty()
+}
+class "BatchVendorBillLine" as az_account_batch_purchase.models.batch_purchase.BatchVendorBillLine {
+  analytic_account_id
+  batch_id
+  display_type
+  line_count
+  note
+  price
+  price_subtotal
+  price_subtotal
+  price_subtotal_with_tax
+  price_subtotal_with_tax : float
+  product_id
+  product_uom
+  product_uom_category_id
+  quantity
+  tax_ids
+  vendor_id
+  onchange_price_or_qty()
+  onchange_vendor_id()
+}
+class "PurchaseOrder" as az_account_batch_purchase.models.purchase_order.PurchaseOrder {
+  batch_purchase_id
+  delegate_id
+}
+class "PurchaseOrderLine" as az_account_batch_purchase.models.purchase_order.PurchaseOrderLine {
+  note
+}
+class "ResPartner" as az_account_batch_purchase.models.res_partner.ResPartner {
+  create(vals_list)
+}
+class "StockMove" as az_account_batch_purchase.models.stock_picking.StockMove {
+  batch_purchase_id
+  delegate_id
+}
+class "StockPicking" as az_account_batch_purchase.models.stock_picking.StockPicking {
+  batch_purchase_id
+  delegate_id
+}
+@enduml
