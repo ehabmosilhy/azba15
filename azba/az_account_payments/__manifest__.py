@@ -6,6 +6,9 @@
     "depends": ['account', 'azbah_trivial']
     , "data": [
     'views/account_payment_view.xml'
+    , 'views/account_payment_view_extensions.xml'
     , 'views/account_journal_view.xml'
+    , 'report/sanad_template.xml',
+
 ]
 }

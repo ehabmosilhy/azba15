@@ -1,4 +1,4 @@
 {
 "target": "staging,production",
-"addons": "az_account_batch_purchase"
+"addons": "custom_invoice_templates, az_account_payments"
 }

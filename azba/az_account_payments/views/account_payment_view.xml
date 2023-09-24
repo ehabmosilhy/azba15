@@ -11,6 +11,8 @@
             <field name="res_model">account.payment</field>
             <field name="context">
                 {'default_payment_type': 'outbound',
+                'default_sanad_type': 'outbound',
+
                 'default_payment_method_line_id':4,
                 'search_default_outbound_filter': 1,
                 'default_destination_journal_id':9,
@@ -27,6 +29,8 @@
             <field name="res_model">account.payment</field>
             <field name="context">
                 {'default_payment_type': 'inbound',
+                'default_sanad_type': 'inbound',
+
                 'default_payment_method_line_id':4,
                 'search_default_inbound_filter': 1,
                 'default_destination_journal_id':9,
@@ -44,7 +48,7 @@
             <field name="context">
                 {
                 'default_is_internal_transfer':1,
-                'default_payment_type': 'outbound'
+                'default_sanad_type': 'bank'
                 'sanad':'1'}
             </field>
         </record>

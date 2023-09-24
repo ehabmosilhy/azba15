@@ -9,6 +9,11 @@ class AccountPayment(models.Model):
     amount = fields.Monetary(required=True)
     is_sanad = fields.Boolean()
     taxes_id = fields.Many2many('account.tax', string='الضرائب', default=lambda self: self._default_tax_ids())
+    sanad_type = fields.Selection([
+        ('out', 'Outbound'),
+        ('in', 'Inbound'),
+        ('bank', 'Bank')
+    ])
 
     @api.model
     def _default_tax_ids(self):
@@ -210,6 +215,11 @@ class AccountPayment(models.Model):
     def create(self, vals_list):
         if self.env.context.get('sanad'):
             vals_list[0]['is_sanad'] = True
+            if self.env.context.get('default_sanad_type')=='bank':
+                vals_list[0]['sanad_type'] = 'bank'
+            else:
+                vals_list[0]['sanad_type'] = self.env.context.get('default_payment_type')
+
             vals_list[0]['payment_method_line_id'] = 2 if self.env.context.get(
                 'default_payment_type') == 'outbound' else 1
             # Update Context
@@ -269,13 +279,13 @@ class AccountMove(models.Model):
                         new_vals.append(line)
 
                     else:
-                        amount =  line[2]['debit']
+                        amount = line[2]['debit']
                         line[2]['account_id'] = destination_account_id.id
                         line[2]['debit'] = line[2]['debit'] - (sum_taxes / 100) * line[2]['debit']
 
                         # Duplicate the line with modified fields
                         new_line = (0, 0, line[2].copy())
-                        new_line[2]['debit'] =  amount - line[2]['debit']
+                        new_line[2]['debit'] = amount - line[2]['debit']
                         new_line[2]['account_id'] = 42
                         new_line[2]['name'] = 'الضريبة'
 
