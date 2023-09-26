@@ -217,8 +217,10 @@ class AccountPayment(models.Model):
             vals_list[0]['is_sanad'] = True
             if self.env.context.get('default_sanad_type')=='bank':
                 vals_list[0]['sanad_type'] = 'bank'
-            else:
-                vals_list[0]['sanad_type'] = self.env.context.get('default_payment_type')
+            elif  self.env.context.get('default_payment_type')=='outbound':
+                vals_list[0]['sanad_type'] = 'out'
+            elif  self.env.context.get('default_payment_type')=='inbound':
+                vals_list[0]['sanad_type'] = 'in'
 
             vals_list[0]['payment_method_line_id'] = 2 if self.env.context.get(
                 'default_payment_type') == 'outbound' else 1
