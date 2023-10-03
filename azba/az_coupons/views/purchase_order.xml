@@ -22,6 +22,16 @@
             <field name="mode">extension</field>
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
+
+                <xpath expr="//header" position="inside">
+                    <button name="serialize" string="Create Contextual Action" type="object"
+                            class="btn-primary"
+                            attrs="{'invisible':[('binding_model_id','!=',False)]}"
+                            help="Display an option in the 'More' top-menu in order to run this action."/>
+
+
+                </xpath>
+
                 <xpath expr="//field[@name='partner_ref']" position="after">
                     <field name="coupon_purchase_id"/>
                     <field name="delegate_id"/>

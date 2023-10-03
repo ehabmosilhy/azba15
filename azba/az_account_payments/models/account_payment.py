@@ -24,6 +24,9 @@ class AccountPayment(models.Model):
 
     @api.constrains('amount', 'partner_id')
     def _check_amount_and_partner(self):
+        ctx=self._context
+        if ctx.get('active_model')!='account.payment':
+            return
         for pay in self:
             if pay.amount <= 0:
                 raise ValidationError(_('القيمة يجب أن تكون أكبر من صفر.'))

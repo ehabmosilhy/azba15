@@ -64,7 +64,7 @@ class CouponPurchase(models.Model):
     def create(self, vals_list):
         # self.check_data(vals_list)
         # _line = vals_list['line_ids'][0][2]
-        paper_count = 100
+        paper_count = 20
         purchase_orders = {}
         coupon = super(CouponPurchase, self).create(vals_list)
         coupon_book_serials = [s for s in range(vals_list['first_serial'], vals_list['last_serial'] + 1)]
@@ -111,7 +111,7 @@ class CouponPurchase(models.Model):
             for i, move in enumerate(picking.move_ids_without_package):
                 move.coupon_purchase_id = coupon.id
                 lines = move.move_line_ids
-                if not i:
+                if i==0:
                     for line_index, s in enumerate(coupon_book_serials):
                         lines[line_index].lot_name = str(s)
                         lines[line_index].qty_done = 1

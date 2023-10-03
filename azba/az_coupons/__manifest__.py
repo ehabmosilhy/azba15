@@ -6,6 +6,7 @@
     "depends": ["sale","purchase"]
     , "data": [
     'views/coupon_purchase.xml',
+    'views/detailed_operations.xml',
     'security/coupon_purchase.xml',
 ]
 }
