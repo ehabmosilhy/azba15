@@ -65,11 +65,13 @@ class CouponPurchase(models.Model):
         # self.check_data(vals_list)
         # _line = vals_list['line_ids'][0][2]
         paper_count = 20
+        book_count = vals_list['quantity']
+        coupon_count = paper_count * book_count
         purchase_orders = {}
         coupon = super(CouponPurchase, self).create(vals_list)
         coupon_book_serials = [s for s in range(vals_list['first_serial'], vals_list['last_serial'] + 1)]
 
-        vendor_id = 5  # TODO Change this
+        vendor_id = 5  # 👈 TODO Change this
         new_purchase_order = {
             "priority": "0",
             "coupon_purchase_id": coupon.id,
@@ -79,6 +81,17 @@ class CouponPurchase(models.Model):
             , 'date_order': vals_list['date']
             , 'date_planned': vals_list['date']
             , 'order_line': [
+
+                (0, 0,
+                 {
+                     "sequence": 10
+                     , 'name': 'Coupon Paper'
+                     , 'product_id': 3651  # 👈 TODO Change this
+                     , "date_planned": vals_list['date']
+                     , 'price_unit': 0
+                     , 'product_qty': book_count * paper_count
+                     , 'product_packaging_id': 1  # 👈 TODO Change this
+                 }),
                 (0, 0,
                  {
                      "sequence": 10
@@ -89,15 +102,6 @@ class CouponPurchase(models.Model):
                      , 'price_unit': vals_list['price']
                      , 'product_qty': vals_list['quantity']
                  }),
-                (0, 0,
-                 {
-                     "sequence": 10
-                     , 'name': 'Coupon Paper'
-                     , 'product_id': 3564
-                     , "date_planned": vals_list['date']
-                     , 'price_unit': 0
-                     , 'product_qty': paper_count * vals_list['quantity']
-                 })
             ]
         }
         _new_purchase_order = self.env['purchase.order'].create(new_purchase_order)
@@ -110,16 +114,27 @@ class CouponPurchase(models.Model):
             picking.coupon_purchase_id = coupon.id
             for i, move in enumerate(picking.move_ids_without_package):
                 move.coupon_purchase_id = coupon.id
-                lines = move.move_line_ids
-                if i==0:
-                    for line_index, s in enumerate(coupon_book_serials):
-                        lines[line_index].lot_name = str(s)
-                        lines[line_index].qty_done = 1
+                lines = picking.move_line_ids
+                book_index=0
+                if 0 > i >= len(picking.move_ids_without_package)-book_count:
+                    lines[i].lot_name = str(coupon_book_serials[book_index])
+                    lines[i].qty_done = 1
+                    book_index+=1
                 else:
-                    for s in range(vals_list['quantity'] * paper_count):
-                        lines[s].lot_name = str(int(vals_list['first_serial'])* paper_count -paper_count+ s)
+                    for s in range(coupon_count):
+                        _serial = str(int(vals_list['first_serial']) * paper_count - paper_count + s + 1)
+
+                        lines[s].lot_name = _serial
                         lines[s].qty_done = 1
             # picking.move_line_ids = picking.move_line_ids[:-2]
+            picking.action_put_in_pack()
             picking.button_validate()
 
+            packs = picking.move_line_ids.mapped('result_package_id')
+            self._rename_packs(packs, coupon_book_serials)
+
         return coupon
+
+    def _rename_packs(self, packs, coupon_book_serials):
+        for i in range(len(packs)):
+            packs[i].name = str(coupon_book_serials[i])
