@@ -7,6 +7,8 @@
     , "data": [
     'views/coupon_purchase.xml',
     'views/detailed_operations.xml',
+    'views/res_config_settings_views.xml',
+    'views/ir_sequence_view.xml',
     'security/coupon_purchase.xml',
 ]
 }

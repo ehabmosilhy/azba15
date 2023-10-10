@@ -9,7 +9,7 @@ class CouponPurchase(models.Model):
                        index=True, help="Unique name for the coupon purchase with prefix DPO_")
 
     date = fields.Date(required=True, default=fields.Date.context_today)
-    product_id = fields.Many2one('product.product', string="Product", required=True)
+    # product_id = fields.Many2one('product.product', string="Product", required=True)
     total = fields.Float()
     first_serial = fields.Integer()
     last_serial = fields.Integer()
@@ -27,44 +27,15 @@ class CouponPurchase(models.Model):
     )
     purchase_order_ids = fields.One2many('purchase.order', 'coupon_purchase_id', string="Purchase Orders")
     purchase_order_count = fields.Integer(string='Purchase Order Count', compute='_compute_purchase_order_count')
-
-    def _compute_purchase_order_count(self):
-        for record in self:
-            record.purchase_order_count = len(record.purchase_order_ids)
-
-    def launch_purchase_orders(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Purchase Orders',
-            'view_mode': 'tree,kanban,form,pivot,graph,calendar,activity',
-            'res_model': 'purchase.order',
-            'domain': [('coupon_purchase_id', '=', self.id)],
-            'context': "{'create': False}"
-        }
-
-    def launch_vendor_bills(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Vendor Bills',
-            'view_mode': 'tree,kanban,form,pivot,graph,activity',
-            'res_model': 'account.move',
-            'domain': [('coupon_purchase_id', '=', self.id)],
-            'context': "{'create': False}"
-        }
-
-    @api.onchange('first_serial', 'last_serial')
-    def onchange_serials(self):
-        if self.last_serial >= self.first_serial:
-            qty = self.last_serial - self.first_serial + 1
-            self.quantity = qty
+    # TODO: [Tech Debt] Fix this, remove hardcoding
+    paper_count= fields.Selection([('20', 'دفتر 20'), ('50', 'دفتر 50'), ('100', 'دفتر 100')], string='Coupon Book')
 
     @api.model
     def create(self, vals_list):
-        # self.check_data(vals_list)
-        # _line = vals_list['line_ids'][0][2]
-        paper_count = 20
+        coupon_book_ids= {'20': (37,1), '50':(38,2), '100':(39,3)}
+        coupon_book_product_id = coupon_book_ids[vals_list['paper_count']][0]
+        vals_list['name'] = self.env['ir.sequence'].next_by_code('coupon.purchase')
+        paper_count =int(vals_list['paper_count'])
         book_count = vals_list['quantity']
         coupon_count = paper_count * book_count
         purchase_orders = {}
@@ -90,12 +61,12 @@ class CouponPurchase(models.Model):
                      , "date_planned": vals_list['date']
                      , 'price_unit': 0
                      , 'product_qty': book_count * paper_count
-                     , 'product_packaging_id': 1  # 👈 TODO Change this
+                     , 'product_packaging_id': int(coupon_book_ids[vals_list['paper_count']][1])  # 👈 TODO Change this
                  }),
                 (0, 0,
                  {
                      "sequence": 10
-                     , 'product_id': vals_list['product_id']
+                     , 'product_id': coupon_book_product_id
                      , 'product_uom': 1
                      , 'name': 'Coupon Book'
                      , "date_planned": vals_list['date']
@@ -112,24 +83,20 @@ class CouponPurchase(models.Model):
         # Validate the picking
         for picking in _new_purchase_order.picking_ids:
             picking.coupon_purchase_id = coupon.id
-            for i, move in enumerate(picking.move_ids_without_package):
-                move.coupon_purchase_id = coupon.id
-                lines = picking.move_line_ids
-                book_index=0
-                if 0 > i >= len(picking.move_ids_without_package)-book_count:
-                    lines[i].lot_name = str(coupon_book_serials[book_index])
-                    lines[i].qty_done = 1
+            lines = picking.move_line_ids
+            book_index=0
+
+            for s,line in enumerate(lines):
+                if s>=len(lines)-book_count:
+                    _serial=coupon_book_serials[book_index]
                     book_index+=1
                 else:
-                    for s in range(coupon_count):
-                        _serial = str(int(vals_list['first_serial']) * paper_count - paper_count + s + 1)
-
-                        lines[s].lot_name = _serial
-                        lines[s].qty_done = 1
-            # picking.move_line_ids = picking.move_line_ids[:-2]
+                    _serial = str(int(vals_list['first_serial']) * paper_count - paper_count + s + 1)
+                lines[s].lot_name = _serial
+                lines[s].qty_done = 1
+                print (s,line)
             picking.action_put_in_pack()
             picking.button_validate()
-
             packs = picking.move_line_ids.mapped('result_package_id')
             self._rename_packs(packs, coupon_book_serials)
 
@@ -138,3 +105,51 @@ class CouponPurchase(models.Model):
     def _rename_packs(self, packs, coupon_book_serials):
         for i in range(len(packs)):
             packs[i].name = str(coupon_book_serials[i])
+
+
+    def _compute_purchase_order_count(self):
+        for record in self:
+            record.purchase_order_count = len(record.purchase_order_ids)
+
+    def launch_purchase_orders(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Purchase Orders',
+            'view_mode': 'form',
+            'res_model': 'purchase.order',
+            'res_id': self.purchase_order_ids[0].id,
+            'domain': [('coupon_purchase_id', '=', self.id)],
+            'context': "{'create': False}"
+        }
+    def launch_picking(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Inventory',
+            'view_mode': 'form',
+            'res_model': 'stock.picking',
+            'res_id': self.purchase_order_ids.picking_ids[0].id,
+            'context': "{'create': False}"
+        }
+
+
+
+    def launch_packages(self):
+        self.ensure_one()
+        packs=self.purchase_order_ids.picking_ids.move_line_ids.mapped('result_package_id').ids
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Packs',
+            'view_mode': 'kanban,form,tree',
+            'res_model': 'stock.quant.package',
+            'domain': [('id', 'in', packs)],
+            'context': "{'create': False}"
+        }
+
+
+    @api.onchange('first_serial', 'last_serial')
+    def onchange_serials(self):
+        if self.last_serial >= self.first_serial:
+            qty = self.last_serial - self.first_serial + 1
+            self.quantity = qty

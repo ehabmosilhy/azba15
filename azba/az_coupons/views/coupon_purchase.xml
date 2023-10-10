@@ -11,7 +11,7 @@
                     <field name="name" string="Serial"/>
                     <field name="date"/>
                     <field name="total"/>
-                    <field name="product_id"/>
+                    <field name="paper_count"/>
                     <field name="first_serial"/>
                     <field name="last_serial"/>
                     <field name="quantity"/>
@@ -30,27 +30,37 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
-                        <!--                                                <div class="oe_button_box" name="button_box">-->
-                        <!--                                                    <button class="oe_stat_button" type="object"-->
-                        <!--                                                            name="launch_purchase_orders" icon="fa-list-ol"-->
-                        <!--                                                            attrs=" {'invisible':[('name', '=', 'New')]}">-->
-                        <!--                                                        <field name="purchase_order_count" widget="statinfo"-->
-                        <!--                                                               string="Purchase Orders"/>-->
-                        <!--                                                    </button>-->
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object"
+                                    name="launch_purchase_orders" icon="fa-list-ol"
+                                    string="Purchase Order"
+                                    attrs=" {'invisible':[('name', '=', 'New')]}">
+                            </button>
+                            <button class="oe_stat_button" type="object"
+                                    string="Inventory"
+                                    name="launch_picking" icon="fa-truck"
+                                    attrs=" {'invisible':[('name', '=', 'New')]}"/>
 
-                        <!--                                                    <button class="oe_stat_button" type="object"-->
-                        <!--                                                            name="launch_vendor_bills"-->
-                        <!--                                                            icon="fa-pencil-square-o"-->
-                        <!--                                                            attrs="{'invisible':[('name', '=', 'New')]}">-->
-                        <!--                                                        <field name="vendor_bill_count" widget="statinfo"-->
-                        <!--                                                               string="Vendor Bills"/>-->
-                        <!--                                                    </button>-->
-                        <!--                                                </div>-->
+                            <button name="launch_packages" string="Packages" type="object"
+                            class="oe_stat_button" icon="fa-cubes"
+                            attrs=" {'invisible':[('name', '=', 'New')]}">
+                                <field name="quantity" widget="statinfo"
+                                       string="Packages"/>
+                            </button>
+
+                            <!--                            <button class="oe_stat_button" type="object"-->
+                            <!--                                    name="launch_vendor_bills"-->
+                            <!--                                    icon="fa-pencil-square-o"-->
+                            <!--                                    attrs="{'invisible':[('name', '=', 'New')]}">-->
+                            <!--                                <field name="vendor_bill_count" widget="statinfo"-->
+                            <!--                                       string="Vendor Bills"/>-->
+                            <!--                            </button>-->
+                        </div>
                         <group>
                             <group>
-                                <field name="name" string="Serial"/>
+                                <field name="name"/>
                                 <field name="date"/>
-                                <field name="product_id"/>
+                                <field name="paper_count"/>
                                 <field name="first_serial"/>
                                 <field name="last_serial"/>
                                 <field name="quantity"/>
