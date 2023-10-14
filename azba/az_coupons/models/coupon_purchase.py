@@ -57,7 +57,7 @@ class CouponPurchase(models.Model):
                  {
                      "sequence": 10
                      , 'name': 'Coupon Paper'
-                     , 'product_id': 3651  # 👈 TODO Change this
+                     , 'product_id': 3584 #3651  # 👈 TODO Change this
                      , "date_planned": vals_list['date']
                      , 'price_unit': 0
                      , 'product_qty': book_count * paper_count
