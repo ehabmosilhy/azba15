@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+
+    <record id="view_bank_statement_amount" model="ir.ui.view">
+        <field name="name">account.bank.statement.amount</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" name="button_edit_amount"
+                        type="object"
+                        string="Edit Amount" icon="fa-pencil"/>
+            </div>
+            <xpath expr="//label[@for='balance_start']" position="before">
+                <field name="new_amount"/>
+            </xpath>
+        </field>
+
+    </record>
+
+</odoo>
