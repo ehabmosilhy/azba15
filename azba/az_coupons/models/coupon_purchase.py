@@ -32,6 +32,12 @@ class CouponPurchase(models.Model):
 
     @api.model
     def create(self, vals_list):
+
+        p = self.env['ir.config_parameter'].sudo()
+        coupon_product_id = p.get_param('az_coupons.coupon_product_id')
+        coupon_book_ids = p.get_param('az_coupons.coupon_book_ids')
+
+
         coupon_book_ids= {'20': (37,1), '50':(38,2), '100':(39,3)}
         coupon_book_product_id = coupon_book_ids[vals_list['paper_count']][0]
         vals_list['name'] = self.env['ir.sequence'].next_by_code('coupon.purchase')
