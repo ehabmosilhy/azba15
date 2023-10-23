@@ -30,6 +30,6 @@ class ResConfigSettings(models.TransientModel):
 class CouponBook(models.Model):
     _name = "coupon.book"
     product_id = fields.Many2one('product.product', string='Product')
-    page_count = fields.Integer(string='Page Count')
+    paper_count = fields.Integer(string='Paper Count')
 
 
