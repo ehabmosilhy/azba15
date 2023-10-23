@@ -27,24 +27,24 @@
             </xpath>
         </field>
     </record>
- <record id="view_res_config_settings_form" model="ir.ui.view">
-            <field name="name">res.config.settings.form</field>
-            <field name="model">res.config.settings</field>
-            <field name="arch" type="xml">
-                <form string="Configuration" class="oe_form_configuration">
-                    <header>
-                        <button string="Save" type="object" name="execute" class="oe_highlight"/>
-                        <button string="Cancel" type="object" name="cancel" class="oe_link"/>
-                    </header>
-                    <sheet>
-                        <group>
-                            <field name="coupon_product_id"/>
-                            <field name="coupon_book_ids"/>
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
+    <record id="view_res_config_settings_form" model="ir.ui.view">
+        <field name="name">res.config.settings.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="arch" type="xml">
+            <form string="Configuration" class="oe_form_configuration">
+                <header>
+                    <button string="Save" type="object" name="execute" class="oe_highlight"/>
+                    <button string="Cancel" type="object" name="cancel" class="oe_link"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="coupon_product_id"/>
+                        <field name="coupon_book_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
     <record id="view_coupon_config_form" model="ir.ui.view">
         <field name="name">Coupon Config Form</field>
@@ -84,6 +84,16 @@
                     <field name="paper_count"/>
                 </group>
             </form>
+        </field>
+    </record>
+    <record id="view_coupon_book_tree" model="ir.ui.view">
+        <field name="name">Coupon Book Tree</field>
+        <field name="model">coupon.book</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_id"/>
+                <field name="paper_count"/>
+            </tree>
         </field>
     </record>
 

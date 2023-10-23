@@ -12,24 +12,15 @@
 
         </record>
 
-<!--        <record model="ir.model.access" id="model_config_access">-->
-<!--            <field name="name">coupon.config</field>-->
-<!--            <field name="model_id" ref="model_coupon_config"/>-->
-<!--            <field name="perm_read" eval="True"/>-->
-<!--            <field name="perm_write" eval="True"/>-->
-<!--            <field name="perm_create" eval="True"/>-->
-<!--            <field name="perm_unlink" eval="True"/>-->
-<!--            <field name="group_id" ref="account.group_account_invoice"/>-->
-<!--        </record>-->
-<!--        <record model="ir.model.access" id="model_coupon_book_access">-->
-<!--            <field name="name">coupon.book</field>-->
-<!--            <field name="model_id" ref="model_coupon_book"/>-->
-<!--            <field name="perm_read" eval="True"/>-->
-<!--            <field name="perm_write" eval="True"/>-->
-<!--            <field name="perm_create" eval="True"/>-->
-<!--            <field name="perm_unlink" eval="True"/>-->
-<!--            <field name="group_id" ref="account.group_account_invoice"/>-->
-<!--        </record>-->
+        <record model="ir.model.access" id="model_coupon_book_access">
+            <field name="name">coupon.book</field>
+            <field name="model_id" ref="model_coupon_book"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="group_id" ref="account.group_account_invoice"/>
+        </record>
 
     </data>
 </odoo>
