@@ -49,7 +49,7 @@ odoo.define('azbah_pos.invoice_number',function(require){
             return receipt
         }
     })
-    model.Order = models.Order.extend({
+    model.Order = model.Order.extend({
 
         // Ehab
         get_invoice_name: function () {
