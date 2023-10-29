@@ -1,9 +1,8 @@
-
 odoo.define('azbah_pos.serials', function (require) {
     "use strict";
 
-    var models = require('point_of_sale.models');
-    var _super_orderline = models.Orderline.prototype;
+    let models = require('point_of_sale.models');
+    let _super_orderline = models.Orderline.prototype;
 
     models.Orderline = models.Orderline.extend({
         set_quantity: function (quantity, keep_price) {
@@ -13,7 +12,6 @@ odoo.define('azbah_pos.serials', function (require) {
 
             this.update_serials(this.pack_lot_lines, this.quantity);
             return result;
-
 
         },
         update_serials: function (packlot, qty) {
