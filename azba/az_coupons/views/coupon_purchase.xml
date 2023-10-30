@@ -13,8 +13,8 @@
                     <field name="total"/>
                     <field name="paper_count"/>
                     <field name="first_serial"/>
-                    <field name="last_serial"/>
                     <field name="quantity"/>
+                    <field name="last_serial"/>
                     <field name="price"/>
                     <field name="price_subtotal"/>
                     <field name="tax_ids" widget="many2many_tags" options="{'no_create':True}"/>
@@ -42,19 +42,12 @@
                                     attrs=" {'invisible':[('name', '=', 'New')]}"/>
 
                             <button name="launch_packages" string="Packages" type="object"
-                            class="oe_stat_button" icon="fa-cubes"
-                            attrs=" {'invisible':[('name', '=', 'New')]}">
+                                    class="oe_stat_button" icon="fa-cubes"
+                                    attrs=" {'invisible':[('name', '=', 'New')]}">
                                 <field name="quantity" widget="statinfo"
                                        string="Packages"/>
                             </button>
 
-                            <!--                            <button class="oe_stat_button" type="object"-->
-                            <!--                                    name="launch_vendor_bills"-->
-                            <!--                                    icon="fa-pencil-square-o"-->
-                            <!--                                    attrs="{'invisible':[('name', '=', 'New')]}">-->
-                            <!--                                <field name="vendor_bill_count" widget="statinfo"-->
-                            <!--                                       string="Vendor Bills"/>-->
-                            <!--                            </button>-->
                         </div>
                         <group>
                             <group>
@@ -62,7 +55,6 @@
                                 <field name="date"/>
                                 <field name="paper_count"/>
                                 <field name="first_serial"/>
-                                <field name="last_serial"/>
                                 <field name="quantity"/>
                             </group>
                             <group>

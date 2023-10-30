@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class CouponPurchase(models.Model):
@@ -9,11 +10,10 @@ class CouponPurchase(models.Model):
                        index=True, help="Unique name for the coupon purchase with prefix DPO_")
 
     date = fields.Date(required=True, default=fields.Date.context_today)
-    # product_id = fields.Many2one('product.product', string="Product", required=True)
     total = fields.Float()
-    first_serial = fields.Integer()
+    first_serial = fields.Integer(required=True)
     last_serial = fields.Integer()
-    quantity = fields.Integer()
+    quantity = fields.Integer(default=0, required=True)
     price = fields.Float()
     price_subtotal = fields.Float(string="Sub Total")
     price_subtotal_with_tax = fields.Float(string="With Tax")
@@ -28,10 +28,19 @@ class CouponPurchase(models.Model):
     purchase_order_ids = fields.One2many('purchase.order', 'coupon_purchase_id', string="Purchase Orders")
     purchase_order_count = fields.Integer(string='Purchase Order Count', compute='_compute_purchase_order_count')
     # TODO: [Tech Debt] Fix this, remove hardcoding
-    paper_count= fields.Selection([('20', 'دفتر 20'), ('50', 'دفتر 50'), ('100', 'دفتر 100')], string='Coupon Book')
+    paper_count = fields.Selection([('20', 'دفتر 20'), ('50', 'دفتر 50'), ('100', 'دفتر 100')]
+                                   , required=True
+                                   , string='Coupon Book')
+
+    def validate(self):
+        return self.first_serial and self.quantity
 
     @api.model
     def create(self, vals_list):
+        if not self.validate():
+            raise UserError('Must Enter First Serial and Quantity.')
+
+        vals_list['last_serial'] = int(vals_list['first_serial']) + int(vals_list['quantity']) - 1
         # Get configuration parameters
         config_params = self.get_config_params()
         coupon_product_id = config_params['coupon_product_id']
@@ -160,10 +169,10 @@ class CouponPurchase(models.Model):
         for i in range(len(packs)):
             packs[i].name = str(coupon_book_serials[i])
 
-
     def _compute_purchase_order_count(self):
         for record in self:
             record.purchase_order_count = len(record.purchase_order_ids)
+
     def launch_purchase_orders(self):
         self.ensure_one()
         return {
@@ -175,6 +184,7 @@ class CouponPurchase(models.Model):
             'domain': [('coupon_purchase_id', '=', self.id)],
             'context': "{'create': False}"
         }
+
     def launch_picking(self):
         self.ensure_one()
         return {
@@ -185,9 +195,10 @@ class CouponPurchase(models.Model):
             'res_id': self.purchase_order_ids.picking_ids[0].id,
             'context': "{'create': False}"
         }
+
     def launch_packages(self):
         self.ensure_one()
-        packs=self.purchase_order_ids.picking_ids.move_line_ids.mapped('result_package_id').ids
+        packs = self.purchase_order_ids.picking_ids.move_line_ids.mapped('result_package_id').ids
         return {
             'type': 'ir.actions.act_window',
             'name': 'Packs',
@@ -196,8 +207,16 @@ class CouponPurchase(models.Model):
             'domain': [('id', 'in', packs)],
             'context': "{'create': False}"
         }
-    @api.onchange('first_serial', 'last_serial')
-    def onchange_serials(self):
-        if self.last_serial >= self.first_serial:
-            qty = self.last_serial - self.first_serial + 1
-            self.quantity = qty
+
+    # @api.onchange('first_serial', 'last_serial')
+    # def onchange_serials(self):
+    #     if self.last_serial >= self.first_serial:
+    #         qty = self.last_serial - self.first_serial + 1
+    #         self.quantity = qty
+    #     else:
+    #         self.quantity = 1
+    #
+    # @api.onchange('quantity')
+    # def onchange_qty(self):
+    #     if self.quantity and self.first_serial:
+    #         self.last_serial = self.first_serial + self.quantity
