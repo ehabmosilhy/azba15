@@ -208,15 +208,3 @@ class CouponPurchase(models.Model):
             'context': "{'create': False}"
         }
 
-    # @api.onchange('first_serial', 'last_serial')
-    # def onchange_serials(self):
-    #     if self.last_serial >= self.first_serial:
-    #         qty = self.last_serial - self.first_serial + 1
-    #         self.quantity = qty
-    #     else:
-    #         self.quantity = 1
-    #
-    # @api.onchange('quantity')
-    # def onchange_qty(self):
-    #     if self.quantity and self.first_serial:
-    #         self.last_serial = self.first_serial + self.quantity
