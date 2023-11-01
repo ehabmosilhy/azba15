@@ -62,7 +62,6 @@
                         </div>
                     </div>
                 </t>
-                <!--            <t t-if="channel.orderedOnlineMembers.length > 0">-->
 
 
                 <t t-if="receipt.orderlines.length &gt; 0">

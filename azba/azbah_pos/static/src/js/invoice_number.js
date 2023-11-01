@@ -20,8 +20,6 @@ odoo.define('azbah_pos.invoice_number',function(require){
                         args:[order_server_id, ['account_move']]
                             }).then(function(result_dict){
                                 if(result_dict.length){
-                                    // let invoice = result_dict[0].account_move;
-                                    // self.get_order().invoice_number = invoice[1]
 
                                     let invoice = result_dict[0].account_move;
                                     let order_id = result_dict[0].id;
