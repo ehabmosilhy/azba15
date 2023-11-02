@@ -30,6 +30,25 @@ odoo.define('az_ks_pos_low_stock_alert.ks_low_stock', function (require) {
             let ks_product_model = this.ks_get_model_reference('product.product');
             let ks_product_super_loaded = ks_product_model.loaded;
             ks_product_model.loaded = (self, ks_products) => {
+
+                /*
+                #  /\_/\
+                # ( ◕‿◕ )
+                #  >   <
+                # Get the prdoduct qty in the location
+                 */
+                ks_products.forEach(ks_product => {
+                    this.rpc({
+                        model: 'product.product',
+                        method: 'get_qty_in_location',
+                        args: [ks_product.id, self.env.pos.config.id],
+                    }).then(function (qty) {
+                        self.db.qty_by_product_id[ks_product.id] = qty;
+                    })
+                });
+                // ______ (｡◔‿◔｡) ________ End of code
+
+
                 let done = $.Deferred();
                 if (!self.config.allow_order_when_product_out_of_stock) {
                     let ks_blocked_product_ids = [];
@@ -55,16 +74,8 @@ odoo.define('az_ks_pos_low_stock_alert.ks_low_stock', function (require) {
                 self.db.qty_by_product_id = {};
             }
             ks_products.forEach(ks_product => {
-                this.rpc({
-                    model: 'product.product',
-                    method: 'get_qty_in_location',
-                    args: [ks_product.id, self.env.pos.config.id],
-                }).then(function (qty) {
-                    self.db.qty_by_product_id[ks_product.id] = qty;
-                });
-
+                self.db.qty_by_product_id[ks_product.id] = ks_product.qty_available;
             });
-
             self.ks_update_qty_on_product();
         },
 
