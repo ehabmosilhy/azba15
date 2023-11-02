@@ -2,21 +2,21 @@
 <templates id="template" xml:space="preserve">
 
 <!--    Remove Refund Button -->
-
     <t t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension" owl="1">
-    <xpath expr="//div[hasclass('subpads')]" position="replace">
-        <div class="subpads">
-            <t t-if="env.session.user_has_group('base.group_system')">
-               <t t-set="_actionName">Refund</t>
-                <ActionpadWidget client="getSelectedClient()" actionName="_actionName" actionToTrigger="'do-refund'"
-                                 isActionButtonHighlighted="getHasItemsToRefund()"/>
-            </t>
-            <NumpadWidget disabledModes="['price', 'discount']" activeMode="_selectedOrderlineId and 'quantity'"
-                          disableSign="true"/>
+            <xpath expr="//div[hasclass('subpads')]" position="replace">
+                <div class="subpads">
+                    <t t-if="env.sessionz.user_has_groupz('base.group_erp_manager')">
+                       <t t-set="_actionName">Refund</t>
+                        <ActionpadWidget client="getSelectedClient()" actionName="_actionName"
+                                         actionToTrigger="'do-refund'"
+                                         isActionButtonHighlighted="getHasItemsToRefund()"/>
+                    </t>
+                    <NumpadWidget disabledModes="['price', 'discount']" activeMode="_selectedOrderlineId and 'quantity'"
+                                  disableSign="true"/>
 
-        </div>
-    </xpath>
-</t>
+                </div>
+            </xpath>
+    </t>
 
 </templates>
 
