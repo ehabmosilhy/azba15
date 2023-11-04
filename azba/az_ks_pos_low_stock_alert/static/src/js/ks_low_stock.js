@@ -6,6 +6,8 @@ odoo.define('az_ks_pos_low_stock_alert.ks_low_stock', function (require) {
     const ks_utils = require('az_ks_pos_low_stock_alert.utils');
     const Registries = require('point_of_sale.Registries');
 
+    const { float_is_zero } = require('web.utils');
+
     ks_models.load_fields('product.product', ['type', 'qty_available']);
     let ks_super_pos = ks_models.PosModel.prototype;
 
@@ -109,24 +111,99 @@ odoo.define('az_ks_pos_low_stock_alert.ks_low_stock', function (require) {
     });
 
     // overriding the existing class to validate the payment order
-    /*
     const ks_payment = (KsPaymentScreen) =>
         class extends KsPaymentScreen {
 
             async validateOrder(isForceValidate) {
-                if (await this._isOrderValid(isForceValidate) && ks_utils.ks_validate_order_items_availability(this.env.pos.get_order(), this.env.pos.config)) {
-                    // remove pending payments before finalizing the validation
-                    for (let line of this.paymentLines) {
-                        if (!line.is_done()) this.currentOrder.remove_paymentline(line);
+                if (this.env.pos.get_order().orderlines.length > 0) {
+                    if (await this._isOrderValid(isForceValidate) && ks_utils.ks_validate_order_items_availability(this.env.pos.get_order(), this.env.pos.config)) {
+                        // remove pending payments before finalizing the validation
+
+                        for (let line of this.paymentLines) {
+                            if (!line.is_done()) this.currentOrder.remove_paymentline(line);
+                        }
                     }
                     await this._finalizeValidation();
+                } else {
+
+
+
+
+
+
+
+
+
+
+                const order = this.currentOrder;
+                const change = order.get_change();
+                const paylaterPaymentMethod = this.env.pos.payment_methods.filter(
+                    (method) =>
+                        this.env.pos.config.payment_method_ids.includes(method.id) && method.type == 'pay_later'
+                )[0];
+                const existingPayLaterPayment = order
+                    .get_paymentlines()
+                    .find((payment) => payment.payment_method.type == 'pay_later');
+                if (
+                    order.get_orderlines().length === 0 &&
+                    !float_is_zero(change, this.env.pos.currency.decimals) &&
+                    paylaterPaymentMethod &&
+                    !existingPayLaterPayment
+                ) {
+                    const client = order.get_client();
+                    if (client) {
+                        const { confirmed } = await this.showPopup('ConfirmPopup', {
+                            title: this.env._t('The order is empty'),
+                            body: _.str.sprintf(
+                                this.env._t('Do you want to deposit %s to %s?'),
+                                this.env.pos.format_currency(change),
+                                order.get_client().name
+                            ),
+                            confirmText: this.env._t('Yes'),
+                        });
+                        if (confirmed) {
+                            const paylaterPayment = order.add_paymentline(paylaterPaymentMethod);
+                            paylaterPayment.set_amount(-change);
+                            return super.validateOrder(...arguments);
+                        }
+                    } else {
+                        const { confirmed } = await this.showPopup('ConfirmPopup', {
+                            title: this.env._t('The order is empty'),
+                            body: _.str.sprintf(
+                                this.env._t(
+                                    'Do you want to deposit %s to a specific customer? If so, first select him/her.'
+                                ),
+                                this.env.pos.format_currency(change)
+                            ),
+                            confirmText: this.env._t('Yes'),
+                        });
+                        if (confirmed) {
+                            const { confirmed: confirmedClient, payload: newClient } = await this.showTempScreen(
+                                'ClientListScreen'
+                            );
+                            if (confirmedClient) {
+                                order.set_client(newClient);
+                            }
+                            const paylaterPayment = order.add_paymentline(paylaterPaymentMethod);
+                            paylaterPayment.set_amount(-change);
+                            return super.validateOrder(...arguments);
+                        }
+                    }
+                } else {
+                    return super.validateOrder(...arguments);
                 }
             }
-        };
 
-    Registries.Component.extend(KsPaymentScreen, ks_payment);
 
-    return KsPaymentScreen;
 
-     */
-});
+
+
+        }
+};
+
+Registries.Component.extend(KsPaymentScreen, ks_payment);
+
+return KsPaymentScreen;
+
+})
+;
