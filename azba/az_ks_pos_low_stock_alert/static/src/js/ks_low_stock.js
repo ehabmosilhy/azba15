@@ -109,6 +109,7 @@ odoo.define('az_ks_pos_low_stock_alert.ks_low_stock', function (require) {
     });
 
     // overriding the existing class to validate the payment order
+    /*
     const ks_payment = (KsPaymentScreen) =>
         class extends KsPaymentScreen {
 
@@ -126,4 +127,6 @@ odoo.define('az_ks_pos_low_stock_alert.ks_low_stock', function (require) {
     Registries.Component.extend(KsPaymentScreen, ks_payment);
 
     return KsPaymentScreen;
+
+     */
 });
