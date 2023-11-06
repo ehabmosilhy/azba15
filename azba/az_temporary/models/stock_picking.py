@@ -1,7 +1,10 @@
 from odoo import fields, models, api
 
 
-class AccountBankStatement(models.Model):
+from odoo import SUPERUSER_ID, _, api, fields, models
+from odoo.exceptions import UserError
+
+class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
     # The field date_done needs to be read-writeable because it is used for enetering old data
@@ -29,7 +32,6 @@ class AccountBankStatement(models.Model):
 
         # ______ (｡◔‿◔｡) ________ Disable changing Effective Date
         #self.write({'date_done': fields.Datetime.now(), 'priority': '0'})
-        self.write({'date': self.date_done, 'priority': '0'})
 
         # if incoming moves make other confirmed/partially_available moves available, assign them
         done_incoming_moves = self.filtered(lambda p: p.picking_type_id.code == 'incoming').move_lines.filtered(lambda m: m.state == 'done')
@@ -37,3 +39,16 @@ class AccountBankStatement(models.Model):
 
         self._send_confirmation_email()
         return True
+
+
+    def write(self, vals):
+        if vals.get('date_done'):
+            vals['date'] = vals.get('date_done')
+        else:
+            vals['date'] = self.date_done
+        res = super(StockPicking, self).write(vals)
+        ml= self.env['stock.move.line'].search([('picking_id', 'in', self.ids)])
+        for l in ml:
+            l.date=vals.get('date')
+
+        return res
