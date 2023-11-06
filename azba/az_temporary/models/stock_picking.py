@@ -50,5 +50,6 @@ class StockPicking(models.Model):
         ml= self.env['stock.move.line'].search([('picking_id', 'in', self.ids)])
         for l in ml:
             l.date=vals.get('date')
+            l.move_id.date=vals.get('date')
 
         return res
