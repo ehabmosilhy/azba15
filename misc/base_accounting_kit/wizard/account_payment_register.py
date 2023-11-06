@@ -19,24 +19,26 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 #############################################################################
-from odoo import api, fields, models
+from odoo import models, fields
+from odoo.exceptions import ValidationError
 
 
-class ResConfigSettings(models.TransientModel):
-    _inherit = 'res.config.settings'
+class AccountPaymentRegister(models.TransientModel):
+    _inherit = 'account.payment.register'
 
-    customer_credit_limit = fields.Boolean(string="Customer Credit Limit")
+    effective_date = fields.Date('Effective Date',
+                                 help='Effective date of PDC', copy=False,
+                                 default=False)
+    bank_reference = fields.Char(copy=False)
+    cheque_reference = fields.Char(copy=False)
 
-    @api.model
-    def get_values(self):
-        res = super(ResConfigSettings, self).get_values()
-        params = self.env['ir.config_parameter'].sudo()
-        customer_credit_limit = params.get_param('customer_credit_limit',
-                                                 default=False)
-        res.update(customer_credit_limit=customer_credit_limit)
+    def _create_payment_vals_from_wizard(self):
+
+        res = super(AccountPaymentRegister,
+                    self)._create_payment_vals_from_wizard()
+        res.update({'effective_date': self.effective_date,
+                    'cheque_reference': self.cheque_reference,
+                    'bank_reference': self.bank_reference})
+        if not res['effective_date'] and self.payment_method_code == 'pdc':
+            raise ValidationError("Please choose an Effective Date.")
         return res
-
-    def set_values(self):
-        super(ResConfigSettings, self).set_values()
-        self.env['ir.config_parameter'].sudo().set_param(
-            "customer_credit_limit", self.customer_credit_limit)
