@@ -42,10 +42,11 @@ class StockPicking(models.Model):
 
 
     def write(self, vals):
-        if 'date_done' in vals and vals.get('date_done'):
-            vals['date'] = vals.get('date_done')
-        elif 'date_done' in self and self.date_done:
-            vals['date'] = self.date_done
+        if len(self) == 1:
+            if 'date_done' in vals and vals.get('date_done'):
+                vals['date'] = vals.get('date_done')
+            elif 'date_done' in self and self.date_done:
+                vals['date'] = self.date_done
         res = super(StockPicking, self).write(vals)
         ml= self.env['stock.move.line'].search([('picking_id', 'in', self.ids)])
         if 'date' in  vals:
