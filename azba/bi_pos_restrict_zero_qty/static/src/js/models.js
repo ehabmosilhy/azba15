@@ -10,3 +10,5 @@ odoo.define('bi_pos_restrict_zero_qty.pos', function(require) {
 
 
 });
+
+
