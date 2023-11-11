@@ -17,9 +17,13 @@
     ],
     'assets':{
         'point_of_sale.assets': [
-            '/bi_pos_restrict_zero_qty/static/src/js/models.js',
-            '/bi_pos_restrict_zero_qty/static/src/js/ProductScreen.js',
+            'bi_pos_restrict_zero_qty/static/src/css/**/*',
+            'bi_pos_restrict_zero_qty/static/src/js/models.js',
+            'bi_pos_restrict_zero_qty/static/src/js/ProductScreen.js',
          ],
+        'web.assets_qweb': [
+            'bi_pos_restrict_zero_qty/static/src/xml/**/*',
+        ]
     },
     'demo': [],
     'test': [],

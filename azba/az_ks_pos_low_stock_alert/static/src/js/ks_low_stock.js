@@ -37,7 +37,7 @@ odoo.define('az_ks_pos_low_stock_alert.ks_low_stock', function (require) {
                 #  /\_/\
                 # ( ◕‿◕ )
                 #  >   <
-                # Get the prdoduct qty in the location
+                # Get the product qty in the location
                  */
                 ks_products.forEach(ks_product => {
                     this.rpc({

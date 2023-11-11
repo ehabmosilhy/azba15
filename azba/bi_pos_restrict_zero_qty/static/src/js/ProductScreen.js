@@ -24,6 +24,7 @@ odoo.define('bi_pos_restrict_zero_qty.productScreen', function(require) {
                         let prd_qty_available = await this.rpc({
                             model: 'product.product',
                             method: 'get_qty_in_location',
+                            context: {current_pos_config_id: config_id},
                             args: [prd.id, config_id],
                         });
                         if (prd.type == 'product'){
@@ -72,4 +73,44 @@ odoo.define('bi_pos_restrict_zero_qty.productScreen', function(require) {
 
     return ProductScreen;
 
+});
+
+
+
+odoo.define('bi_pos_restrict_zero_qty.ProductItem', function(require) {
+    'use strict';
+
+    const ProductItem = require('point_of_sale.ProductItem');
+    const Registries = require('point_of_sale.Registries');
+    const { useExternalListener } = owl.hooks;
+
+    const MyProductItem = (ProductItem) =>
+        class extends ProductItem {
+            constructor() {
+                super(...arguments);
+                useExternalListener(window, 'update-product-qty', this.updateProductQty);
+            }
+            mounted() {
+                super.mounted();
+                this.env.pos.on('change:selectedOrder', this.updateProductQty, this);
+            }
+            willUnmount() {
+                super.willUnmount();
+                this.env.pos.off('change:selectedOrder', this.updateProductQty, this);
+            }
+            async updateProductQty() {
+                let product = this.props.product;
+                let pos_config_id = this.env.pos.config.id;
+                let qty = await this.rpc({
+                    model: 'product.product',
+                    method: 'get_qty_in_location',
+                    args: [product.id, pos_config_id],
+                });
+                product.qty_available = qty;
+            }
+        };
+
+    Registries.Component.extend(ProductItem, MyProductItem);
+
+    return MyProductItem;
 });
