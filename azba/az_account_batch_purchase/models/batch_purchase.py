@@ -17,6 +17,7 @@ class BatchPurchase(models.Model):
     vendor_bill_ids = fields.One2many('account.move', 'batch_purchase_id', string="Vendor Bill Ids")
     purchase_order_count = fields.Integer(string='Purchase Order Count', compute='_compute_purchase_order_count')
     vendor_bill_count = fields.Integer(string='Vendor Bill Count', compute='_compute_vendor_bill_count')
+    destination_location_id = fields.Many2one('stock.location', string="Location مخزن استقبال البضاعة")
 
     # The type will distinguish between purchase and sarf
     type = fields.Selection([('purchase', 'Purchase'), ('sarf', 'Sarf')], default='purchase')
@@ -205,14 +206,14 @@ class BatchPurchase(models.Model):
 
         for _line in bill_lines:
             product = self.env['product.product'].browse(_line['product_id'])
-            warehouse = self.env['stock.warehouse'].search([], limit=1)  # replace with your warehouse
-            location_id = self.env.ref('stock.stock_location_suppliers')  # replace with your source location
-            location_dest_id = warehouse.lot_stock_id
+            warehouse = self.env['stock.warehouse'].search([], limit=1)
+            location_id = self.env.ref('stock.stock_location_suppliers')
+            # location_dest_id =self.env['stock.warehouse'].browse(vals_list['destination_location_id'])
 
             picking_vals = {
                 'picking_type_id': PickingType.id,
                 'location_id': location_id.id,
-                'location_dest_id': location_dest_id.id,
+                'location_dest_id': vals_list['destination_location_id'],
             }
             new_picking = StockPicking.create(picking_vals)
 
@@ -223,7 +224,7 @@ class BatchPurchase(models.Model):
                 'product_uom_qty': _line['quantity'],
                 'quantity_done': _line['quantity'],
                 'location_id': location_id.id,
-                'location_dest_id': location_dest_id.id,
+                'location_dest_id': vals_list['destination_location_id'],
                 'picking_id': new_picking.id,
                 'origin': vals_list['name']
             }

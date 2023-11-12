@@ -36,6 +36,7 @@
                         <group>
                             <field name="name" string="Serial"/>
                             <field name="delegate_id"/>
+                            <field name="destination_location_id"/>
                             <field name="date"/>
                             <field name="total"/>
                             <field name="line_count" invisible="1"/>
