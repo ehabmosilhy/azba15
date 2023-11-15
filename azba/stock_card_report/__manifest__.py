@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
-    "name": "Stock Card Report",
+    "name": "Azbah - Stock Card Report",
     "summary": "Add stock card report on Inventory Reporting.",
     "version": "15.0.1.0.0",
     "category": "Warehouse",
