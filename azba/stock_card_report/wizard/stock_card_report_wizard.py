@@ -3,7 +3,7 @@
 
 from odoo import api, fields, models
 from odoo.tools.safe_eval import safe_eval
-
+from odoo.exceptions import ValidationError
 
 class StockCardReportWizard(models.TransientModel):
     _name = "stock.card.report.wizard"
@@ -49,12 +49,26 @@ class StockCardReportWizard(models.TransientModel):
         return self._export(report_type)
 
     def _prepare_stock_card_report(self):
+        if not any([self.product_ids, self.location_ids]):
+            raise ValidationError("Please select at least one product or one location")
+
         self.ensure_one()
+        if self.product_ids.ids:
+            product_ids = self.product_ids.ids
+        else:
+            product_ids = self.env["product.product"].search([]).ids
+
+        if self.location_ids.ids:
+            location_ids = self.location_ids.ids
+        else:
+            location_ids = self.env["stock.location"].search([]).ids
+
         return {
             "date_from": self.date_from,
             "date_to": self.date_to or fields.Date.context_today(self),
-            "product_ids": [(6, 0, self.product_ids.ids)],
-            "location_ids": self.location_ids.ids,
+
+            "product_ids": [(6, 0, product_ids)],
+            "location_ids": location_ids,
         }
 
     def _export(self, report_type):

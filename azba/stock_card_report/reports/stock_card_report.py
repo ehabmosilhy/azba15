@@ -53,6 +53,9 @@ class StockCardReport(models.TransientModel):
         self.ensure_one()
         date_from = self.date_from or "0001-01-01"
         self.date_to = self.date_to or fields.Date.context_today(self)
+        all_locations = self.env["stock.location"].search([])
+        if len(all_locations.ids) == len(self.location_ids):
+            self.location_ids = all_locations
         locations = self.env["stock.location"].search(
             [("id", "child_of", self.location_ids.ids)]
         )
@@ -87,6 +90,70 @@ class StockCardReport(models.TransientModel):
         ReportLine = self.env["stock.card.view"]
         self.results = [ReportLine.new(line).id for line in stock_card_results]
         x= (self.results)
+
+    # def _compute_results(self):
+    #     self.ensure_one()
+    #     date_from = self.date_from or "0001-01-01"
+    #     self.date_to = self.date_to or fields.Date.context_today(self)
+    #
+    #     # Prepare location condition
+    #     location_condition = ""
+    #
+    #     # all_locations = self.env["stock.location"].search([])
+    #     # if len(all_locations.ids) == len(self.location_ids):
+    #     #     self.location_ids = None
+    #
+    #     all_products = self.env["product.product"].search([]).ids
+    #     if len(all_products) == len(self.product_ids.ids):
+    #         self.product_ids = None
+    #
+    #     location_ids = []
+    #
+    #     if self.location_ids:
+    #         locations = self.env["stock.location"].search(
+    #             [("id", "child_of", self.location_ids.ids)]
+    #         )
+    #         location_ids = locations.ids
+    #         location_condition = f"move.location_id in {tuple(location_ids)} or move.location_dest_id in {tuple(location_ids)}"
+    #
+    #     # Prepare product condition
+    #     product_condition = ""
+    #     product_ids = []
+    #     if self.product_ids:
+    #         product_ids = self.product_ids.ids
+    #         if len(product_ids)>1:
+    #             product_condition = f"move.product_id in {tuple(product_ids)}"
+    #         else:
+    #             product_condition = f"move.product_id = {product_ids[0]}"
+    #
+    #     # Combine conditions
+    #     conditions = " and ".join(filter(None, [location_condition, product_condition]))
+    #     if conditions:
+    #         conditions = f" and {conditions}"
+    #
+    #     # SQL query using f-string
+    #     sql_query = f"""
+    #         SELECT move.date, move.product_id, move.product_qty,
+    #             move.product_uom_qty, move.product_uom, move.reference,
+    #             move.location_id, move.location_dest_id,
+    #             case when move.location_dest_id in {tuple(location_ids)}
+    #                 then move.product_qty end as product_in,
+    #             case when move.location_id in {tuple(location_ids)}
+    #                 then move.product_qty end as product_out,
+    #             case when move.date < %s then True else False end as is_initial,
+    #             move.picking_id
+    #         FROM stock_move move
+    #         WHERE move.state = 'done' and CAST(move.date AS date) <= %s
+    #         {conditions}
+    #         ORDER BY move.date, move.reference
+    #     """
+    #
+    #     # Execute the query
+    #     self._cr.execute(sql_query, [date_from, self.date_to])
+    #     stock_card_results = self._cr.dictfetchall()
+    #     ReportLine = self.env["stock.card.view"]
+    #     self.results = [ReportLine.new(line).id for line in stock_card_results]
+    #     return self.results
 
     def _get_initial(self, product_line):
         product_input_qty = sum(product_line.mapped("product_in"))
