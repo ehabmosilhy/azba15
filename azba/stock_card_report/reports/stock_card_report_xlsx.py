@@ -138,7 +138,7 @@ class ReportStockCardReportXlsx(models.AbstractModel):
             render_space={
                 "date_from": objects.date_from or "",
                 "date_to": objects.date_to or "",
-                "location": objects.location_ids.display_name or "",
+                "location": objects.location_id.display_name or "",
             },
             col_specs="col_specs_filter",
             wanted_list="wanted_list_filter",

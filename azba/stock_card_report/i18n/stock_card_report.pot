@@ -15,7 +15,7 @@ msgstr ""
 
 #. module: stock_card_report
 #: model:ir.actions.report,print_report_name:stock_card_report.action_stock_card_report_pdf
-msgid "'Stock Card Report - [%s]' % (object.location_ids.complete_name)"
+msgid "'Stock Card Report - [%s]' % (object.location_id.complete_name)"
 msgstr ""
 
 #. module: stock_card_report
@@ -141,9 +141,9 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: stock_card_report
-#: model:ir.model.fields,field_description:stock_card_report.field_report_stock_card_report__location_ids
-#: model:ir.model.fields,field_description:stock_card_report.field_stock_card_report_wizard__location_ids
-#: model:ir.model.fields,field_description:stock_card_report.field_stock_card_view__location_ids
+#: model:ir.model.fields,field_description:stock_card_report.field_report_stock_card_report__location_id
+#: model:ir.model.fields,field_description:stock_card_report.field_stock_card_report_wizard__location_id
+#: model:ir.model.fields,field_description:stock_card_report.field_stock_card_view__location_id
 #: model_terms:ir.ui.view,arch_db:stock_card_report.report_stock_card_report_filters
 msgid "Location"
 msgstr ""

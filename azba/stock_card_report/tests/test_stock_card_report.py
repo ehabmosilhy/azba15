@@ -38,7 +38,7 @@ class TestStockCard(common.TransactionCase):
         # Create stock picking:
         picking = self.env["stock.picking"].create(
             {
-                "location_ids": self.location_2.id,
+                "location_id": self.location_2.id,
                 "location_dest_id": self.location_1.id,
                 "picking_type_id": operation_type.id,
             }
@@ -50,7 +50,7 @@ class TestStockCard(common.TransactionCase):
                 "product_uom_qty": 50.000,
                 "product_uom": self.product_A.uom_id.id,
                 "picking_id": picking.id,
-                "location_ids": self.location_2.id,
+                "location_id": self.location_2.id,
                 "location_dest_id": self.location_1.id,
             }
         )
@@ -120,7 +120,7 @@ class TestStockCard(common.TransactionCase):
     def _getBaseFilters(self):
         return {
             "product_ids": [(6, 0, [self.product_A.id])],
-            "location_ids": self.location_1.id,
+            "location_id": self.location_1.id,
         }
 
 
@@ -159,7 +159,7 @@ class TestStockCardReport(common.TransactionCase):
         # Create stock picking:
         picking_1 = self.env["stock.picking"].create(
             {
-                "location_ids": self.location_2.id,
+                "location_id": self.location_2.id,
                 "location_dest_id": self.location_1.id,
                 "picking_type_id": operation_type.id,
             }
@@ -171,7 +171,7 @@ class TestStockCardReport(common.TransactionCase):
                 "product_uom_qty": 50.000,
                 "product_uom": self.product_A.uom_id.id,
                 "picking_id": picking_1.id,
-                "location_ids": self.location_2.id,
+                "location_id": self.location_2.id,
                 "location_dest_id": self.location_1.id,
             }
         )
@@ -181,7 +181,7 @@ class TestStockCardReport(common.TransactionCase):
 
         picking_2 = self.env["stock.picking"].create(
             {
-                "location_ids": self.location_2.id,
+                "location_id": self.location_2.id,
                 "location_dest_id": self.location_1.id,
                 "picking_type_id": operation_type.id,
             }
@@ -193,7 +193,7 @@ class TestStockCardReport(common.TransactionCase):
                 "product_uom_qty": 100.000,
                 "product_uom": self.product_B.uom_id.id,
                 "picking_id": picking_2.id,
-                "location_ids": self.location_2.id,
+                "location_id": self.location_2.id,
                 "location_dest_id": self.location_1.id,
             }
         )
@@ -205,7 +205,7 @@ class TestStockCardReport(common.TransactionCase):
         report = self.env["report.stock.card.report"].create(
             {
                 "product_ids": [(6, 0, [self.product_A.id, self.product_B.id])],
-                "location_ids": self.location_1.id,
+                "location_id": self.location_1.id,
             }
         )
         report._compute_results()
@@ -216,7 +216,7 @@ class TestStockCardReport(common.TransactionCase):
         report = self.env["report.stock.card.report"].create(
             {
                 "product_ids": [(6, 0, [self.product_A.id, self.product_B.id])],
-                "location_ids": self.location_1.id,
+                "location_id": self.location_1.id,
             }
         )
         report._compute_results()
@@ -241,7 +241,7 @@ class TestStockCardReport(common.TransactionCase):
                 "date_from": time.strftime("%Y-%m-28"),
                 "date_to": time.strftime("%Y-%m-01"),
                 "product_ids": [(6, 0, [self.product_A.id, self.product_B.id])],
-                "location_ids": self.location_1.id,
+                "location_id": self.location_1.id,
             }
         )
         wizard._onchange_date_range_id()

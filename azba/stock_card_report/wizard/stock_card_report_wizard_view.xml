@@ -12,14 +12,14 @@
                         <field name="date_to" />
                     </group>
                     <group>
-                        <field name="product_ids" widget="many2many_tags" required="0" />
-                        <field name="location_ids" widget="many2many_tags" required="0" />
+                        <field name="product_ids" widget="many2many_tags" />
+                        <field name="location_id" />
                     </group>
                 </group>
                 <footer>
                     <button
                         name="button_export_html"
-                        string="Views"
+                        string="View"
                         type="object"
                         default_focus="1"
                         class="oe_highlight"

@@ -21,7 +21,7 @@
     border-left: 0px;
     border-right: 0px;
     text-align: center;
-    font-size: 15px;
+    font-size: 10px;
     padding-right: 3px;
     padding-left: 3px;
     padding-top: 2px;
@@ -45,7 +45,7 @@
     text-align: right;
 }
 .custom_footer {
-    font-size: 10px !important;
+    font-size: 7px !important;
 }
 .button_row {
     padding-bottom: 10px;
@@ -56,9 +56,4 @@
     margin-right: auto;
     margin-left: auto;
     font-family: Helvetica, Arial;
-}
-
-.product_name{
-    font-weight:bolder;
-    font-size: 20px;
 }
