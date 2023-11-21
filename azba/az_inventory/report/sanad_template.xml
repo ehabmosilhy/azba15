@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_print_voucher">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="article" t-att-data-oe-model="o and o._name"
+                         t-att-data-oe-id="o and o.id"
+                         t-att-data-oe-lang="o and o.env.context.get('lang')">
+
+                        <t t-if="o.is_internal_transfer">
+                            <t t-set="verb_ar" t-value="'تحويل داخلى'"/>
+                            <t t-set="verb_en" t-value="'Internal Transfer'"/>
+                        </t>
+                        <t t-if="o.sanad_type== 'bank'">
+                            <t t-set="verb_ar" t-value="'معاملة بنكية'"/>
+                            <t t-set="verb_en" t-value="'Bank Transaction'"/>
+                        </t>
+                        <t t-elif="o.payment_type == 'outbound'">
+                            <t t-set="payment_type_ar" t-value="'سند صرف'"/>
+                            <t t-set="payment_type_en" t-value="'Payment Voucher'"/>
+                            <t t-set="verb_ar" t-value="'إدفعوا إلى'"/>
+                            <t t-set="verb_en" t-value="'Pay to'"/>
+                        </t>
+                        <t t-else="o.payment_type == 'inbound'">
+                            <t t-set="payment_type_ar" t-value="'سند قبض'"/>
+                            <t t-set="payment_type_en" t-value="'Money Receipt'"/>
+                            <t t-set="verb_ar" t-value="'استلمنا من'"/>
+                            <t t-set="verb_en" t-value="'Received From'"/>
+                        </t>
+
+                        <div class="page">
+                            <link href="/az_account_payments/static/src/css/sanad_styles.css" rel="stylesheet"
+                                  type="text/css"/>
+
+                            <!--Header-->
+                            <div class="header" style="width:100%;border:#00000;border-style:single;border-weight:1">
+                                <span class="title_text_ar" t-field="o.company_id.name"/>
+                                <img t-if="o.company_id.logo"
+                                     t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
+                                     style="max-height:75px;"/>
+                            </div>
+                            <!--/Header-->
+
+                            <!--BODY-->
+
+                            <div class="mybox">
+                                <table style="width: 100%;">
+                                    <tr class="bottom_border">
+                                        <!--                                        نوع العملية - قبض - صرف - تحويل -->
+                                        <td>
+                                            <div style="font-family:cairo_bold;font-size:20pt;"
+                                                 t-esc="payment_type_ar"/>
+                                            <div style="font-family:impact;font-size:20pt;" t-esc="payment_type_en"/>
+
+                                        </td>
+
+                                        <td style="text-align:center" colspan="2">
+                                            <div style="font-family:arial;font-size:18pt;font-weight:bold;direction:ltr"
+                                                 t-field="o.name"/>
+                                        </td>
+
+                                         <td>
+                                            <span class="title_text_ar">التاريخ</span>
+                                            <span class="normal_text_en">Date</span>
+                                            <div style="font-family:arial;font-size:16pt;direction:ltr"
+                                                 t-esc="o.date"/>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr class="bottom_border">
+                                        <td colspan="4">
+                                            <table width="100%">
+                                                <tr>
+                                                    <td>
+                                                        <!--                                        الفعل: استلمنا - إدفعوا ... -->
+                                                        <div class="title_text_ar"
+                                                             t-esc="verb_ar"/>
+                                                        <div class="normal_text_en" t-esc="verb_en"/>
+                                                    </td>
+                                                    <td>
+                                                        <div style="font-family:cairo_bold;font-size:12pt;"
+                                                             t-esc="o.partner_id.display_name"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+
+                                    </tr>
+
+
+
+
+                                    <tr class="bottom_border">
+                                        <td>
+                                            <span class="title_text_ar">المبلغ</span>
+                                        </td>
+
+                                        <td>
+                                            <span class="normal_text_ar" t-field="o.amount"/>
+                                        </td>
+                                        <td colspan="2">
+                                            <table width="100%">
+                                                <tr>
+                                                    <td>
+                                                        <span class="title_text_ar">فقط</span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="normal_text_ar"
+                                                             t-esc="o.currency_id.with_context(lang='ar_001').amount_to_text(o.amount).replace('Riyal','ريال').replace('Halala','هللة')"/>
+                                                        <div t-esc="o.currency_id.with_context(lang='en_US').amount_to_text(o.amount)"
+                                                             class="normal_text_ar"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+
+                                    <tr class="bottom_border">
+                                        <td colspan="4">
+                                            <table width="100%">
+                                                <tr>
+                                                    <td>
+                                                        <div class="title_text_ar"
+                                                        />
+                                                        <span class="title_text_ar">وذلك عن</span>
+                                                    </td>
+                                                    <td>
+                                                        <div style="font-family:cairo_bold;font-size:12pt;"
+                                                             t-esc="o.ref"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td width="20%">
+                                            <t t-if="o.is_internal_transfer  or o.sanad_type== 'bank' or o.payment_type == 'outbound'">
+                                                <span class="title_text_ar">الحساب المصدر</span>
+                                            </t>
+                                        </td>
+                                        <td width="30%">
+                                            <t t-if="o.is_internal_transfer or o.sanad_type== 'bank' or o.payment_type == 'outbound'">
+                                                <span class="normal_text_ar" t-field="o.journal_id.name"/>
+                                            </t>
+                                        </td>
+                                        <td width="20%">
+                                            <t t-if="o.is_internal_transfer or o.sanad_type== 'bank' or o.payment_type == 'inbound'">
+                                                <span class="title_text_ar">الحساب المستفيد</span>
+                                            </t>
+                                        </td>
+                                        <td width="30%">
+                                            <t t-if="o.is_internal_transfer or o.sanad_type== 'bank'">
+                                                <span class="normal_text_ar" t-field="o.destination_journal_id.name"/>
+                                            </t>
+                                            <t t-elif="o.payment_type == 'inbound'">
+                                                <span class="normal_text_ar" t-field="o.journal_id.name"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="4">
+                                            <table style="width:100%;background: #d0d0d3;border:black;border-width: 1px;    border-style: solid;">
+                                                <tr>
+                                                    <td>
+                                                        <strong style="direction:rtl !important;">مندوب التحصيل</strong>
+                                                        <span t-field="o.delegate_id.name"
+                                                              style="direction:rtl !important;"/>
+                                                    </td>
+                                                    <td style="direction:rtl !important;">
+                                                        <strong style="direction:rtl !important;">الحسابات</strong>
+                                                        <span t-esc="user.name"
+                                                              style="direction:rtl !important;"></span>
+                                                    </td>
+                                                    <td style="direction:rtl !important;">
+
+                                                        <strong style="direction:rtl !important;">Recipient</strong>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+
+
+                            <!--                        END OF BODY-->
+
+                            <!-- Footer -->
+
+
+                            <div class="footer" style="direction:rtl !important;">
+                                <div class="col-12">
+                                    <div style="border-bottom: 1px solid black;"/>
+                                </div>
+                                <div class="row" style="direction:rtl;">
+                                    <div class="col-12" style="text-align:center;">
+                                        <span t-if="o.company_id.street">
+                                            <span t-field="o.company_id.street"/>
+                                        </span>
+                                        <span t-if="o.company_id.street2">
+                                            <span t-field="o.company_id.street2"/>
+                                        </span>
+                                        <span t-if="o.company_id.city">
+                                            <span t-field="o.company_id.city"/>
+                                        </span>
+                                        <span t-if="o.company_id.zip">
+                                            <span t-field="o.company_id.zip"/>
+                                        </span>
+                                        <span t-if="o.company_id.country_id.name">
+                                            <span t-field="o.company_id.country_id.name"/>
+                                        </span>
+                                        <span t-if="o.company_id.phone" class="list-inline-item" direction="rtl">
+                                            <i class="fa fa-phone" role="img" aria-label="Phone"
+                                               title="Phone"/>
+                                            <span t-field="o.company_id.phone"/>
+                                        </span>
+                                        <br/>
+                                        <span t-if="o.company_id.email" class="list-inline-item">
+                                            <i class="fa fa-at" role="img" aria-label="Email"
+                                               title="Email"/>
+                                            <span t-field="o.company_id.email"/>
+                                        </span>
+                                        <span t-if="o.company_id.website" class="list-inline-item">
+                                            <i class="fa fa-globe" role="img" aria-label="Website"
+                                               title="Website"/>
+                                            <span t-field="o.company_id.website"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--                    End of Footer -->
+                        </div>
+                    </div> <!-- END OF ARTICLE -->
+                </t>
+            </t> <!--web.html_container-->
+        </template>
+
+
+        <template id="azbah_external_layout">
+            <div class="header">
+                <div class="border border-dark" style="padding: 5px 10px 1px 5px;">
+                    <div class="row">
+                        <div class="col-4" style="font-size: 30px;">
+                            <t t-if="o.company_id.partner_id.country_id.name">
+                                <span t-field="o.company_id.name"/>
+                                <img t-if="o.company_id.logo"
+                                     t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
+                                     style="max-height:133px;"/>
+                            </t>
+                        </div>
+                        <div class="col-4">
+                            <center>
+                                <img t-if="o.company_id.logo"
+                                     t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"
+                                     style="max-height:133px;"/>
+                                <br/>
+                                <t t-if="o.company_id.iso_number">
+                                    <span t-field="o.company_id.iso_number"/>
+                                </t>
+                            </center>
+                        </div>
+                        <div class="col-4" style="text-align:right;direction: ltr;font-size: 30px;">
+                            <t t-if="o.company_id.partner_id.country_id.name">
+                                <span t-field="o.company_id.name"/>
+                            </t>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+        </template>
+
+        <record id="paperformat_azbah" model="report.paperformat">
+            <field name="name">Gasoline Paper format</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">32</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <record id="report_az_payment_sanad" model="ir.actions.report">
+            <field name="name">Print Sanad</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">az_account_payments.report_print_voucher</field>
+            <field name="report_file">az_account_payments.report_print_voucher</field>
+            <field name="binding_model_id" ref="account.model_account_payment"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
+    </data>
+</odoo>
