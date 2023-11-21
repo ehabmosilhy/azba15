@@ -6,8 +6,8 @@ from odoo import fields, models
 
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
-    coupon_product_id = fields.Many2one('product.product', string="Product", required=True)
-    coupon_book_ids = fields.Many2many("coupon.book")
+    coupon_product_id = fields.Many2one('product.product', string='Voucher Product', help='Product used for paper (voucher)')
+    coupon_book_ids = fields.Many2many("coupon.book", help='Number of vouchers in each book')
 
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()
@@ -29,7 +29,7 @@ class ResConfigSettings(models.TransientModel):
 
 class CouponBook(models.Model):
     _name = "coupon.book"
-    product_id = fields.Many2one('product.product', string='Product')
-    paper_count = fields.Integer(string='Paper Count')
+    product_id = fields.Many2one('product.product', string='Voucher Product', help='Product used for paper (voucher)')
+    paper_count = fields.Integer(string='Paper Count', help='Number of vouchers in each book')
 
 

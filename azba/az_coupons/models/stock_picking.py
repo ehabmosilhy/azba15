@@ -8,22 +8,8 @@ from odoo.exceptions import UserError
 
 class StockMove(models.Model):
     _inherit = "stock.move"
-    # TODO: Delete the following line
     coupon_purchase_id = fields.Many2one('coupon.purchase', string="coupon Purchase")
 
-    # def _generate_serial_numbers(self, next_serial_count=False):
-    #     """ This method will generate `lot_name` from a string (field
-    #     `next_serial`) and create a move line for each generated `lot_name`.
-    #     """
-    #     self.ensure_one()
-    #     lot_names = self.env['stock.production.lot'].generate_lot_names(self.next_serial,
-    #                                                                     next_serial_count or self.next_serial_count)
-    #     move_lines_commands = self._generate_serial_move_line_commands(lot_names)
-    #
-    #     move_lines_commands = self.update_move_lines_commands(move_lines_commands)
-    #
-    #     self.write({'move_line_ids': move_lines_commands})
-    #     return True
 
     def update_move_lines_commands(self, move_lines_commands):
         indi = 0

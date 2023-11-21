@@ -31,13 +31,17 @@ class CouponPurchase(models.Model):
     paper_count = fields.Selection([('20', 'دفتر 20'), ('50', 'دفتر 50'), ('100', 'دفتر 100')]
                                    , required=True
                                    , string='Coupon Book')
+    picking_type_id = fields.Many2one(
+        comodel_name='stock.picking.type', string="مخزن الاستلام", required=True,
+        default=551
+    )
 
-    def validate(self):
-        return self.first_serial and self.quantity
+    def validate(self, vals_list):
+        return vals_list.get('first_serial', False) and vals_list.get('quantity', False)
 
     @api.model
     def create(self, vals_list):
-        if not self.validate():
+        if not self.validate(vals_list):
             raise UserError('Must Enter First Serial and Quantity.')
 
         vals_list['last_serial'] = int(vals_list['first_serial']) + int(vals_list['quantity']) - 1
@@ -99,7 +103,7 @@ class CouponPurchase(models.Model):
             "coupon_purchase_id": coupon.id,
             'partner_id': vendor_id,
             "currency_id": 148,
-            "picking_type_id": 551,
+            "picking_type_id": vals_list['picking_type_id'],
             'date_order': vals_list['date'],
             'date_planned': vals_list['date'],
             'order_line': [
@@ -207,4 +211,3 @@ class CouponPurchase(models.Model):
             'domain': [('id', 'in', packs)],
             'context': "{'create': False}"
         }
-
