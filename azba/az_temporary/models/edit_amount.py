@@ -7,6 +7,7 @@ class AccountBankStatement(models.Model):
 
     def button_edit_amount(self):
         if self.new_amount:
+            self.new_amount = float(self.new_amount.replace(",", ""))
             sql = f"update account_bank_statement_line set amount={self.new_amount} where statement_id={self.id}; "
             sql2 = """
                     UPDATE account_bank_statement AS s

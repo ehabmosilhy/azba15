@@ -78,9 +78,11 @@ class StockPicking(models.Model):
         if not p:
             self.add_packs()
         res = super(StockPicking, self).button_validate()
-
+        # self.remove_extra_packs()
         return True
-
+    # def remove_extra_packs(self):
+    #     lot_ids = self.move_line_ids_without_package.mapped('lot_id')
+    #     x=lot_ids
     def add_packs(self):
         lines = []
         for line in self.move_line_ids_without_package:
@@ -97,48 +99,18 @@ class StockPicking(models.Model):
 class StockMoveLine(models.Model):
     _inherit = 'stock.picking'
 
-    # @api.onchange('move_line_ids_without_package')
-    # def _onchange_lot_id(self):
-    #     if self.move_line_ids:
-    #         for line in self.move_line_ids:
-    #             if not isinstance(self.id, int):
-    #                 self_id = int(str(self.id).split('_')[1])
-    #             else:
-    #                 self_id = int(self.id)
-    #
-    #             if not isinstance(line.id, int):
-    #                 line_id = int(str(line.id).split('_')[1])
-    #             else:
-    #                 line_id = int(line.id)
-    #
-    #             if line.product_id == self.product_id and line_id > self_id:
-    #                 next_id = str(int(self.lot_id.name) + 1)
-    #
-    #                 next_lot = self.env['stock.production.lot'].search([('name', '=', next_id)], limit=1)
-    #                 previous_lot_name = line.lot_id.name
-    #                 next_lot_name= self.env['stock.production.lot'].search([('name', '=', next_id)], limit=1).name
-    #                 line.lot_id = next_lot
-
     @api.onchange('move_line_ids_without_package')
     def _onchange_lot_id(self):
         if self.move_line_ids:
-            for i in range(len(self.move_line_ids)):
-                current_line = self.move_line_ids[i]
-                if not isinstance(self.id, int):
-                    self_id = int(str(self.id).split('_')[1])
-                else:
-                    self_id = int(self.id)
-
-                if not isinstance(current_line.id, int):
-                    current_line_id = int(str(current_line.id).split('_')[1])
-                else:
-                    current_line_id = int(current_line.id)
-
-                if current_line.product_id == self.product_id and current_line_id > self_id:
-                    for j in range(i + 1, len(self.move_line_ids)):
-                        next_line = self.move_line_ids[j]
-                        if next_line.product_id == current_line.product_id:
-                            next_id = str(int(current_line.lot_id.name) + 1)
-                            next_lot = self.env['stock.production.lot'].search([('name', '=', next_id)], limit=1)
-                            if next_lot:
-                                next_line.lot_id = next_lot
+            first_line = self.move_line_ids[0]
+            available_lots = self.env['stock.quant'].search([('product_id', '=', first_line.product_id.id),
+                                                             ('location_id', '=', first_line.location_id.id),
+                                                             ('quantity', '>', 0),
+                                                             ('lot_id', '>', first_line.lot_id.id)
+                                                             ]).mapped("lot_id")
+            try:
+                for i in range(1, len(self.move_line_ids)-1):
+                    self.move_line_ids[i].lot_id = self.env['stock.production.lot'].search(
+                        [('name', '=', str(available_lots[i - 1].name))])
+            except:
+                pass
