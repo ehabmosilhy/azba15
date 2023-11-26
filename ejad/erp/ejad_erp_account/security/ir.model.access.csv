@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-,,,,,,,
-access_reverse_entry_request_all,reverse.entry.request all,model_reverse_entry_request,,1,1,1,1
-access_multi_partners_service_all,multi.partners.service all,model_multi_partners_service,,1,1,1,1
-access_account_invoice_multi_partners_line_all,account.invoice.multi.partners.line all,model_account_invoice_multi_partners_line,,1,1,1,1
-access_account_invoice_multi_partners_all,account.invoice.multi.partners all,model_account_invoice_multi_partners,,1,1,1,1
-access_account_account_category,account_account_category,model_account_account_category,,1,1,1,1

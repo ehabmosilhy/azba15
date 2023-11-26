@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <template id="assets_backend" name="pdf viewer assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" type="text/less" href="/ejad_erp_administrative_communications/static/src/less/pdf_viewer.less"/>
-            <script type="text/javascript" src="/ejad_erp_administrative_communications/static/src/js/pdf_viewer.js"></script>
-        </xpath>
-   </template>
-</odoo>

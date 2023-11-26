@@ -24,8 +24,8 @@ class AccountPayment(models.Model):
 
     @api.constrains('amount', 'partner_id')
     def _check_amount_and_partner(self):
-        ctx=self._context
-        if ctx.get('active_model')!='account.payment':
+        ctx = self._context
+        if ctx.get('active_model') != 'account.payment':
             return
         for pay in self:
             if pay.amount <= 0:
@@ -218,11 +218,11 @@ class AccountPayment(models.Model):
     def create(self, vals_list):
         if self.env.context.get('sanad'):
             vals_list[0]['is_sanad'] = True
-            if self.env.context.get('default_sanad_type')=='bank':
+            if self.env.context.get('default_sanad_type') == 'bank':
                 vals_list[0]['sanad_type'] = 'bank'
-            elif  self.env.context.get('default_payment_type')=='outbound':
+            elif self.env.context.get('default_payment_type') == 'outbound':
                 vals_list[0]['sanad_type'] = 'out'
-            elif  self.env.context.get('default_payment_type')=='inbound':
+            elif self.env.context.get('default_payment_type') == 'inbound':
                 vals_list[0]['sanad_type'] = 'in'
 
             vals_list[0]['payment_method_line_id'] = 2 if self.env.context.get(
@@ -300,6 +300,19 @@ class AccountMove(models.Model):
 
                 # Replace the old vals['line_ids'] with the new list
                 vals['line_ids'] = new_vals
+
+        # Remove the line with zero tax
+        if sanad_type in ['send_receive', 'internal_transfer']:
+            _lines = vals.get('line_ids')
+            found = -1
+            if _lines:
+                for line in range(len(_lines) - 1):
+                    if _lines[line][2]['debit'] == _lines[line][2]['credit'] == 0:
+                        found = line
+                        break
+                if found != -1:
+                    _lines.remove(_lines[found])
+                    vals['line_ids']=_lines
 
         return vals
 

@@ -73,13 +73,13 @@ class StockPicking(models.Model):
             pack = self._put_in_pack(move_line_ids[i], create_package_level=create_package_level)
         return pack
 
-    def button_validate(self):
-        p = self.package_level_ids
-        if not p:
-            self.add_packs()
-        res = super(StockPicking, self).button_validate()
-        # self.remove_extra_packs()
-        return True
+    # def button_validate(self):
+    #     p = self.package_level_ids
+    #     if not p:
+    #         self.add_packs()
+    #     res = super(StockPicking, self).button_validate()
+    #     # self.remove_extra_packs()
+    #     return True
     # def remove_extra_packs(self):
     #     lot_ids = self.move_line_ids_without_package.mapped('lot_id')
     #     x=lot_ids

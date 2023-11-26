@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_helpdesk_type_ticket_line_user,helpdesk.type.ticket.line.user,model_helpdesk_ticket_type_line,helpdesk.group_helpdesk_user,1,0,0,0
-access_helpdesk_type_ticket_line_manager,helpdesk.type.ticket.line.manager,model_helpdesk_ticket_type_line,helpdesk.group_helpdesk_manager,1,1,1,1
-access_helpdesk_refuse_wizard,helpdesk.refuse.wizard,model_helpdesk_refuse_wizard,,1,1,1,1
-access_helpdesk_return_wizard,helpdesk.return.wizard,model_helpdesk_return_wizard,,1,1,1,1

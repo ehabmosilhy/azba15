@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_mwan_account_move,access.mwan.account.move,account.model_account_move,base.group_user,1,0,0,0
-access_mwan_helpdesk_ticket,access.mwan.helpdesk.ticket,helpdesk.model_helpdesk_ticket,base.group_user,1,0,0,0
-access_mwan_purchase_order,access.mwan.purchase.order,purchase.model_purchase_order,base.group_user,1,0,0,0
-access_mwan_sale_order,access.mwan.sale.order,sale.model_sale_order,base.group_user,1,0,0,0
-access_mwan_helpdesk_stage,access.mwan.helpdesk.stage,helpdesk.model_helpdesk_stage,base.group_user,1,0,0,0
-access_helpdesk_convert_team,access.helpdesk.convert.team,ejad_erp_helpdesk_mwan.model_helpdesk_convert_team,,1,1,1,1
