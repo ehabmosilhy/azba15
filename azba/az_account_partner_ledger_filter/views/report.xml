@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!--    # Partner ledger report    -->
+     <record id="action_report_partnerledger" model="ir.actions.report">
+            <field name="name">Partner Ledger</field>
+            <field name="model">account.report.partner.ledger</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">az_account_partner_ledger_filter.report_partnerledger</field>
+            <field name="report_file">az_account_partner_ledger_filter.report_partnerledger</field>
+        </record>
+    <data>
+        <act_window name="Partner Ledger"
+            res_model="account.report.partner.ledger"
+            binding_model="res.partner"
+            view_mode="form"
+            view_id ="account_report_partner_ledger_view"
+            target="new"
+            id="action_account_partner_ledger_report_filter"
+            context="{'default_partner_ids':active_ids}"
+        />
+    </data>
+</odoo>
