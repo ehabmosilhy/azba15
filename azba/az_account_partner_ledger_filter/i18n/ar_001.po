@@ -2499,7 +2499,7 @@ msgstr "تقرير الوالدين"
 #: model:ir.ui.menu,name:az_account_partner_ledger_filter.menu_partner_ledger
 #: model_terms:ir.ui.view,arch_db:az_account_partner_ledger_filter.report_partnerledger
 msgid "Partner Ledger with Filter🔍"
-msgstr "شريك ليدجر مفلتر🔍"
+msgstr "أستاذ مساعد🔍"
 
 #. module: az_account_partner_ledger_filter
 #: model:ir.model,name:az_account_partner_ledger_filter.model_report_az_account_partner_ledger_filter_report_partnerledger
