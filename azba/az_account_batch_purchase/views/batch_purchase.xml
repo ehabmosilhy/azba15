@@ -62,7 +62,10 @@
                                             <field name="product_uom_category_id" invisible="1"/>
                                             <field name="product_uom" widget='selection'
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+
                                             <field name="quantity"
+                                                   attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
+                                            <field name="account_id"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
                                             <field name="price"
                                                    attrs="{'invisible': [('display_type', '=', 'line_section')]}"/>
