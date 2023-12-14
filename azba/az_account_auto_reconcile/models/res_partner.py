@@ -34,19 +34,36 @@ class AccountMoveLine(models.Model):
                 self.env['account.reconciliation.widget'].sudo().process_move_lines(data)
         except Exception as e:
             _logger.critical(f"::::>>>>> Customer {self.name} , Error: {e}")
+            return (self.name, e)
 
     def auto_reconcile_all(self):
         customers = self.env['res.partner'].search([('customer_rank', '>', 0),
                                                     ('id', 'in',
                                                      self.env['account.move'].search([]).mapped('partner_id').ids)])
         i=0
+        failed_customers=[]
         for customer in customers:
             try:
                 # print (f"Now working on {customer.name}")
                 i+=1
-                customer.auto_reconcile()
-                _logger.info(f"::::::::  Customer {i}/{len(customers)}  Done::: {customer.name}")
+                _error=customer.auto_reconcile()
+                if _error:
+                    failed_customers.append(_error)
 
             except Exception as e:
-                _logger.critical(f"::::>>>>> Customer {customer.name} , Error: {e}")
-                print(f"::::>>>>> Customer {customer.name} , Error: {e}")
+                failed_customers.append((customer.name, e))
+
+        print(f"::::>>>>> Customer {customer.name} , Error: {e}")
+        _logger.critical(f"::::>>>>> Failed Customers {failed_customers} , Error: {e}")
+        # write email to admin explaining failed customers
+        if failed_customers:
+            notification_ids=[(0, 0, {'res_partner_id': 3, 'notification_type': 'inbox'})]
+            self.message_post(
+                body='Failed Customers' + str(failed_customers),
+                subject='Failed Customers',
+                message_type='notification',
+                subtype_xmlid='mail.mt_note',
+                notification_ids=notification_ids,
+            )
+
+
