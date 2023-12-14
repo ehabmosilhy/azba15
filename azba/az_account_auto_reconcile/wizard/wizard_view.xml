@@ -1,0 +1,39 @@
+<odoo>
+    <data>
+        <record id="partner_auto_reconcile_wizard_form_view" model="ir.ui.view">
+            <field name="name">partner.auto.reconcile.wizard.form.view</field>
+            <field name="model">partner.auto.reconcile.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="partner_ids" widget="many2many_tags"/>
+                    </group>
+                    <footer>
+                        <button string="Execute Auto Reconcile" type="object" name="execute_auto_reconcile"
+                                class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_partner_auto_reconcile_wizard" model="ir.actions.act_window">
+            <field name="name">Auto Reconcile Wizard</field>
+            <field name="res_model">partner.auto.reconcile.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu item under E-commerce Settings -->
+        <record id="menu_auto_reconcile" model="ir.ui.menu">
+            <field name="name">تسوية تلقائية✔️</field>
+            <field name="parent_id" ref="account.root_payment_menu"/>
+            <field name="action" ref="action_partner_auto_reconcile_wizard"/>
+            <field name="sequence" eval="100"/>
+            <field
+                    name="groups_id"
+                    eval="[(6, 0, [ref('account.group_account_manager')])]"
+            />
+        </record>
+    </data>
+</odoo>

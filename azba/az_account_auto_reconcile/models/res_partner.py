@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import logging
-from odoo import models
+from odoo import models, fields
 
 _logger = logging.getLogger(__name__)
 
 class AccountMoveLine(models.Model):
     _inherit = "res.partner"
+    last_reconcile_date = fields.Datetime(string="Last Reconcile")
 
     def auto_reconcile(self):
         try:
@@ -43,15 +44,12 @@ class AccountMoveLine(models.Model):
         i=0
         failed_customers=[]
         for customer in customers:
-            try:
-                # print (f"Now working on {customer.name}")
-                i+=1
-                _error=customer.auto_reconcile()
-                if _error:
-                    failed_customers.append(_error)
+            # print (f"Now working on {customer.name}")
+            i+=1
+            _error=customer.auto_reconcile()
+            if _error:
+                failed_customers.append(_error)
 
-            except Exception as e:
-                failed_customers.append((customer.name, e))
 
         print(f"::::>>>>> Customer {customer.name} , Error: {e}")
         _logger.critical(f"::::>>>>> Failed Customers {failed_customers} , Error: {e}")

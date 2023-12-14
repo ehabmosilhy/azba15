@@ -5,5 +5,7 @@
     "category": "accounting",
     "depends": ["account"]
     , "data": [
-    'views/res_partner.xml']
+    'views/res_partner.xml',
+    'wizard/wizard_view.xml',
+    'security/ir.model.access.csv']
 }

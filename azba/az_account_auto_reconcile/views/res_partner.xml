@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="partner_form_inherit" model="ir.ui.view">
+    <record id="az_partner_form_inherit" model="ir.ui.view">
         <field name="name">Partner Form View Inherit</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
@@ -10,11 +10,14 @@
                         type="object" name="auto_reconcile" string="Auto Reconcile" class="oe_stat_button"
                         attrs="{'invisible': [('active', '=', False)]}" icon="fa-star-half-o"/>
 
-                 <button groups="base.group_no_one"
-                         type="object" name="auto_reconcile_all" string="Auto Reconcile ALL" class="oe_stat_button"
+                <button groups="base.group_no_one"
+                        type="object" name="auto_reconcile_all" string="Auto Reconcile ALL" class="oe_stat_button"
                         attrs="{'invisible': [('active', '=', False)]}" icon="fa-th"/>
 
             </div>
+            <field name="vat" position="after">
+                <field name="last_reconcile_date"/>
+            </field>
         </field>
     </record>
 </odoo>
