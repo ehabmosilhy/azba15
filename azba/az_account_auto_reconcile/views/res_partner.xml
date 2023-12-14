@@ -20,4 +20,19 @@
             </field>
         </field>
     </record>
+
+
+      <!-- Tree View  -->
+    <record id="az_res_partner_tree_inherit" model="ir.ui.view">
+        <field name="name">AZ Partner Tree Inherit</field>
+        <field name="model">res.partner</field>
+        <field name="type">tree</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                    <field name="last_reconcile_date"/>
+                </xpath>
+        </field>
+    </record>
+
 </odoo>
