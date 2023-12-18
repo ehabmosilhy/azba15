@@ -1,5 +1,5 @@
 {
-    "name": "AZ - Coupons",
+    "name": "AZ - Coupons V15.0.1",
     "version": "15",
     "license": "LGPL-3",
     "category": "sales",
