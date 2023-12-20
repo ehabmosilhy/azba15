@@ -16,11 +16,14 @@
                             <group>
                                 <field name="coupon_product_id"/>
                                 <field name="coupon_book_ids">
+
                                     <tree editable="bottom">
                                         <field name="product_id"/>
                                         <field name="paper_count"/>
                                     </tree>
                                 </field>
+                                <field name="bottle_product_id"/>
+
                             </group>
                         </div>
                     </div>
@@ -29,20 +32,6 @@
         </field>
     </record>
 
-
-<!--    <record id="res_config_settings_view_form" model="ir.ui.view">-->
-<!--        <field name="name">res.config.settings.view.form.inherit.coupons</field>-->
-<!--        <field name="model">res.config.settings</field>-->
-<!--        <field name="inherit_id" ref="base.res_config_settings_view_form"/>-->
-<!--        <field name="arch" type="xml">-->
-<!--            <xpath expr="//div[hasclass('settings')]" position="inside">-->
-<!--                <div class="app_settings_block" string="Coupons" data-string="Coupons">-->
-<!--                    <field name="coupon_product_id"/>-->
-<!--                    <field name="coupon_book_ids" widget="many2many_tags"/>-->
-<!--                </div>-->
-<!--            </xpath>-->
-<!--        </field>-->
-<!--    </record>-->
 
 </odoo>
 
