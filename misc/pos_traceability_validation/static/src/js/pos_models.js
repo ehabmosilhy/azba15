@@ -2,13 +2,16 @@ odoo.define('pos_traceability_validation.pos_models', function (require) {
     "use strict";
     const EditListPopup = require('point_of_sale.EditListPopup');
     const Registries = require('point_of_sale.Registries');
+    let core = require('web.core');
+    // Ehab
+    let _t = core._t;
     var rpc = require('web.rpc');
 
     const PosEditlistpopup = (EditListPopup) =>
         class extends EditListPopup {
             async confirm() {
-
-                if (this.props.title == 'Lot/Serial Number(s) Required') {
+                // Ehab: Enable Translation
+                if (this.props.title == _t('Lot/Serial Number(s) Required')) {
 
                     var lot_string = this.state.array
                     var lot_names = [];
@@ -19,12 +22,34 @@ odoo.define('pos_traceability_validation.pos_models', function (require) {
                         }
 
                     }
+                    // Ehab: get current config id
+                    let config_id;
 
+                    try {
+                        // Assuming self.location.href is 'http://localhost/pos/ui?config_id=28#cids=1'
+                        let location = self.location.href;
+
+                        // Create a URL object
+                        let url = new URL(location);
+
+                        // Use URLSearchParams to parse the query parameters
+                        let searchParams = new URLSearchParams(url.search);
+
+                        // Get the config_id parameter from the URL
+                        config_id = searchParams.get('config_id');
+                    } catch (error) {
+                        console.error("Error extracting config_id:", error);
+                        config_id = null;
+                    }
+
+                    // Now you can use config_id in your rpc call
+                    // If there was an error, config_id will be null
                     const result = await rpc.query({
                         model: 'serial_no.validation',
                         method: 'validate_lots',
-                        args: [lot_names]
-                    })
+                        args: [lot_names, config_id]
+                    });
+
 
                     if (result != true) {
                         if (result[0] == 'no_stock') {
