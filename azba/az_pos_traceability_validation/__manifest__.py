@@ -12,11 +12,11 @@
     'depends': ['point_of_sale'],
     'assets': {
         'web.assets_backend': [
-            'pos_traceability_validation/static/src/js/ProductScreen.js',
-            'pos_traceability_validation/static/src/js/pos_models.js',
+            'az_pos_traceability_validation/static/src/js/ProductScreen.js',
+            'az_pos_traceability_validation/static/src/js/pos_models.js',
         ],
         "point_of_sale.assets": [
-            "pos_traceability_validation/static/src/js/**/*.js",
+            "az_pos_traceability_validation/static/src/js/**/*.js",
         ],
     },
     'images': ['static/description/banner.png'],
