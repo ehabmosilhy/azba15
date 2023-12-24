@@ -1,4 +1,4 @@
-odoo.define('pos_traceability_validation.pos_models', function (require) {
+odoo.define('az_pos_traceability_validation.pos_models', function (require) {
     "use strict";
     const EditListPopup = require('point_of_sale.EditListPopup');
     const Registries = require('point_of_sale.Registries');
@@ -9,6 +9,14 @@ odoo.define('pos_traceability_validation.pos_models', function (require) {
 
     const PosEditlistpopup = (EditListPopup) =>
         class extends EditListPopup {
+
+         constructor() {
+                super(...arguments);
+                if (this.props.title === this.env._t("Lot/Serial Number(s) Required")) {
+                    this.props.product=this.env.session.product;
+                    this.props.config_id=this.env.session.config_id;
+                }
+            }
             async confirm() {
                 // Ehab: Enable Translation
                 if (this.props.title == _t('Lot/Serial Number(s) Required')) {
@@ -23,31 +31,32 @@ odoo.define('pos_traceability_validation.pos_models', function (require) {
 
                     }
                     // Ehab: get current config id
-                    let config_id;
+                    let config_id=this.props.config_id;
+                    let product_id=this.props.product.id;
 
-                    try {
-                        // Assuming self.location.href is 'http://localhost/pos/ui?config_id=28#cids=1'
-                        let location = self.location.href;
-
-                        // Create a URL object
-                        let url = new URL(location);
-
-                        // Use URLSearchParams to parse the query parameters
-                        let searchParams = new URLSearchParams(url.search);
-
-                        // Get the config_id parameter from the URL
-                        config_id = searchParams.get('config_id');
-                    } catch (error) {
-                        console.error("Error extracting config_id:", error);
-                        config_id = null;
-                    }
+                    // try {
+                    //     // Assuming self.location.href is 'http://localhost/pos/ui?config_id=28#cids=1'
+                    //     let location = self.location.href;
+                    //
+                    //     // Create a URL object
+                    //     let url = new URL(location);
+                    //
+                    //     // Use URLSearchParams to parse the query parameters
+                    //     let searchParams = new URLSearchParams(url.search);
+                    //
+                    //     // Get the config_id parameter from the URL
+                    //     config_id = searchParams.get('config_id');
+                    // } catch (error) {
+                    //     console.error("Error extracting config_id:", error);
+                    //     config_id = null;
+                    // }
 
                     // Now you can use config_id in your rpc call
                     // If there was an error, config_id will be null
                     const result = await rpc.query({
                         model: 'serial_no.validation',
                         method: 'validate_lots',
-                        args: [lot_names, config_id]
+                        args: [lot_names, config_id, product_id]
                     });
 
 
