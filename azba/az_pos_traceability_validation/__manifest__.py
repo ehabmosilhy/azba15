@@ -11,10 +11,6 @@
     'description': """Validate Serial number of a product by checking availability in stock""",
     'depends': ['point_of_sale'],
     'assets': {
-        'web.assets_backend': [
-            'az_pos_traceability_validation/static/src/js/ProductScreen.js',
-            'az_pos_traceability_validation/static/src/js/pos_models.js',
-        ],
         "point_of_sale.assets": [
             "az_pos_traceability_validation/static/src/js/**/*.js",
         ],
