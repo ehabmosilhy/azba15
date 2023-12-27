@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+bi_inventory_card_report.access_inventory_card_report,access_inventory_card_report,bi_inventory_card_report.model_inventory_card_report,base.group_user,1,1,1,1
+bi_inventory_card_report.access_excel_report,access_excel_report,bi_inventory_card_report.model_excel_report,base.group_user,1,1,1,1

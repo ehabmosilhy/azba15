@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="inventory_card_report_form" model="ir.ui.view">
+            <field name="name">inventory.card.report.form.view</field>
+            <field name="model">inventory.card.report</field>
+            <field name="arch" type="xml">
+                <form string="Inventory Card Report">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                                <field name="warehouse_id"/>
+                            </group>
+                            <group>
+                                <field name="company_id"/>
+                                <field name="location_id"/>
+                                <field name="report_by"/>
+                            </group>
+                        </group>
+                        <div>
+                            <group>
+                                <field name="product_ids"  attrs="{'invisible': [ ('report_by','!=','product')],'required':[('report_by','=', 'product')]}"/>
+                                <field name="product_category_ids" attrs="{'invisible': [ ('report_by','!=','product_category')],'required':[('report_by','=', 'product_category')]}"/>
+                            </group>
+                        </div>
+                    </sheet>
+                   <footer>
+                        <button name="stock_card_pdf_report" type="object" string="Print PDF" class="btn btn-primary"/>
+                        <button name="stock_card_xls" type="object" string="Print XLS" class="btn btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="inventory_card_report_action_form" model="ir.actions.act_window">
+            <field name="name">Inventory Card Report</field>
+            <field name="res_model">inventory.card.report</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="inventory_card_report_menu" 
+                name="Inventory Card Report"
+                parent = "stock.menu_warehouse_report"
+                action="inventory_card_report_action_form"
+                sequence="1"/>
+    </data>
+</odoo>
