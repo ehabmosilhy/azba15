@@ -70,5 +70,5 @@ msgstr "فئة المنتج"
 
 #. module: bi_inventory_card_report
 #: model:ir.model.fields,field_description:inventory_card_report.is_on_hand_only
-msgid "عرض  أرصدة فقط"
-msgstr "عرض الأرصدة المتاحة فقط"
+msgid "On Hand Only"
+msgstr "عرض الأرصدة  فقط"

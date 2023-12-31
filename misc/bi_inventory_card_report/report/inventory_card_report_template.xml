@@ -330,7 +330,7 @@
         </style>
         <h2> تقرير أرصدة أصناف</h2>
         <h4>التاريخ:
-            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
 
             ===
 
