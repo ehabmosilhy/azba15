@@ -15,8 +15,8 @@ class InventoryCardReport(models.TransientModel):
     _description = "Inventory Card Report"
     _rec_name = 'report_by'
 
-    date_from = fields.Date('Start Date',required=True)
-    date_to = fields.Date('End Date',required=True)
+    date_from = fields.Date('Start Date')
+    date_to = fields.Date('End Date')
     company_id = fields.Many2one('res.company', string="Company", required=True)
     warehouse_id = fields.Many2one('stock.warehouse', string="Warehouse", required=True,)
     location_id = fields.Many2one('stock.location', string="Location",required=True,)
@@ -25,7 +25,7 @@ class InventoryCardReport(models.TransientModel):
                                 ], string='Report By', required=True, default='product')
     product_ids = fields.Many2many('product.product',string="Product")
     product_category_ids= fields.Many2many('product.category',string="Product Category")
-
+    is_on_hand_only = fields.Boolean('عرض  أرصدة فقط')
     @api.onchange('warehouse_id')
     def _onchange_warehouse(self):
         if self.warehouse_id:

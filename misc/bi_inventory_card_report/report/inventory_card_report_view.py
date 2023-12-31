@@ -11,74 +11,7 @@ class StockCardReportTemplate(models.AbstractModel):
     _name = 'report.bi_inventory_card_report.inventory_card_report_template'
     _description = 'Stock Card Report Template'
 
-    # def _get_product_detail(self, data):
-    #     # 📅 Retrieve date range for filtering stock moves
-    #     start_date_data = data.get('date_from')
-    #     end_date_data = data.get('date_to')
-    #     location_id = data.get('location_id') and data.get('location_id').id
-    #     warehouse_id = data.get('warehouse_id') and data.get('warehouse_id').id
-    #
-    #     # 🆔 Depending on the report type, fetch product IDs
-    #     report_by = data.get('report_by')
-    #     if report_by == 'product_category':
-    #         product_category_ids = data.get('product_category_ids')
-    #         domain = [('categ_id', 'in', product_category_ids.ids)]
-    #     else:
-    #         product_ids = data.get('product_ids')
-    #         domain = [('id', 'in', product_ids.ids)]
-    #
-    #     # 🛒 Fetch all products at once
-    #     products = self.env['product.product'].search(domain)
-    #
-    #     # 🔄 Fetch all relevant stock moves at once, filtering by date and state
-    #     stock_move_domain = [
-    #         ('move_id.date', '>=', start_date_data),
-    #         ('move_id.date', '<=', end_date_data),
-    #         ('state', '=', 'done'),
-    #         ('product_id', 'in', products.ids),
-    #         '|', ('location_id', '=', location_id), ('location_dest_id', '=', location_id)
-    #     ]
-    #     if warehouse_id:
-    #         stock_move_domain += ['|', ('move_id.warehouse_id', '=', warehouse_id),
-    #                               ('move_id.warehouse_id', '=', False)]
-    #     all_stock_moves = self.env['stock.move.line'].search(stock_move_domain)
-    #
-    #     # 📊 Process stock moves to calculate balance and prepare report lines
-    #     lines = []
-    #     for product in products:
-    #         # Filter moves for the current product without querying the database
-    #         product_moves = all_stock_moves.filtered(lambda m: m.product_id.id == product.id)
-    #         balance = 0.0
-    #
-    #         for move in product_moves:
-    #             move_date = move.date
-    #             qty_done = move.qty_done
-    #
-    #             # Adjust balance based on move type
-    #             if move.location_id.usage == 'inventory' or move.picking_type_id.code == 'incoming':
-    #                 balance += qty_done
-    #             elif move.picking_type_id.code == 'outgoing':
-    #                 balance -= qty_done
-    #
-    #             # 📝 Create a report line
-    #             line = {
-    #                 'origin': move.origin or move.reference,
-    #                 'move_date': move_date,
-    #                 'product_id': move.product_id,
-    #                 'in_qty': qty_done if balance >= 0 else 0.0,
-    #                 'out_qty': -qty_done if balance < 0 else 0.0,
-    #                 'balance': balance,
-    #                 'category': move.product_id.categ_id if report_by == 'product_category' else None
-    #             }
-    #             lines.append(line)
-    #
-    #     # ⏱️ Sort lines by move date
-    #     sorted_lines = sorted(lines, key=lambda x: x['move_date'])
-    #
-    #     # 🏁 Return the sorted lines
-    #     return sorted_lines
-
-    def _get_final_balance(self, location_id, start_date_data, product_ids):
+    def _get_final_balance(self, location_id, product_ids):
         final_balance_sql = """
           SELECT
               product_id,
@@ -112,12 +45,49 @@ class StockCardReportTemplate(models.AbstractModel):
         self.env.cr.execute(initial_balance_sql, initial_balance_params)
         return {row[0]: row[1] for row in self.env.cr.fetchall()}
 
+    def _get_on_hand_only(self, data):
+        location_id = data['location_id'].id
+        product_ids = data.get('product_ids', False)
+
+        # Start with the base SQL query
+        onhand_sql = """
+            SELECT
+                tmpl.code, tmpl.name,
+                s.product_id,
+                sum(s.quantity) as quantity
+            FROM
+                stock_quant s
+                INNER JOIN product_product p ON p.id = s.product_id
+                INNER JOIN product_template tmpl ON tmpl.id = p.product_tmpl_id
+            WHERE
+                s.location_id = %s
+        """
+
+        # Initialize the parameters with the location ID
+        onhand_params = [location_id]
+
+        # If product IDs are specified, add them to the query and parameters
+        if product_ids:
+            onhand_sql += "AND s.product_id IN %s "
+            onhand_params.append(tuple(product_ids.ids))
+
+        # Add the order by clause
+        onhand_sql += "GROUP BY tmpl.code, tmpl.name, s.product_id ORDER BY tmpl.code"
+
+        # Execute the query with the parameters
+        self.env.cr.execute(onhand_sql, onhand_params)
+        result = self.env.cr.dictfetchall()
+        return result
+
     def _get_product_detail(self, data):
         # Retrieve date range for filtering stock moves
         start_date_data = data.get('date_from')
         end_date_data = data.get('date_to')
         location_id = data.get('location_id') and data.get('location_id').id
         warehouse_id = data.get('warehouse_id') and data.get('warehouse_id').id
+
+        if data.get('is_on_hand_only'):
+            return self._get_on_hand_only(location_id, data.get('product_ids').ids)
 
         # Depending on the report type, construct the product IDs SQL
         report_by = data.get('report_by')
@@ -136,7 +106,7 @@ class StockCardReportTemplate(models.AbstractModel):
 
         # Get the initial balance for each product
         initial_balances = self._get_initial_balance(location_id, start_date_data, product_ids)
-        final_balances = self._get_final_balance(location_id, start_date_data, product_ids)
+        final_balances = self._get_final_balance(location_id, product_ids)
 
         balance_dict = {product_id:
                             {'initial_balance': initial_balances.get(product_id, 0.0),
@@ -223,9 +193,8 @@ class StockCardReportTemplate(models.AbstractModel):
         sorted_lines = sorted(lines, key=lambda x: x['move_date'])
 
         sorted_lines.insert(0, balance_dict)
-        if len(sorted_lines)<2:
+        if len(sorted_lines) < 2:
             for product in sorted_lines[0].items():
-
                 '''
                 {'balance': 9908.0, 'in_qty': 0.0, 
                 'move_date': datetime.datetime(2023, 12, 28, 5, 38, 20), 
@@ -233,13 +202,13 @@ class StockCardReportTemplate(models.AbstractModel):
                 'out_qty': 162.0, 
                 'product_id': product.product(20,)}
                 '''
-                line={'product_id':self.env['product.product'].browse(product[0]),
-                      'balance': 0.0,
-                      'in_qty': -1,
-                      'move_date': '',
-                      'origin': '',
-                      'out_qty': -1,
-                      }
+                line = {'product_id': self.env['product.product'].browse(product[0]),
+                        'balance': 0.0,
+                        'in_qty': -1,
+                        'move_date': '',
+                        'origin': '',
+                        'out_qty': -1,
+                        }
                 sorted_lines.append(line)
 
         # 🏁 Return the sorted lines
@@ -247,6 +216,7 @@ class StockCardReportTemplate(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
+        is_on_hand_only = data['form']['is_on_hand_only']
         report_by = data['form']['report_by']
         date_from = data['form']['date_from']
         date_to = data['form']['date_to']
@@ -270,6 +240,7 @@ class StockCardReportTemplate(models.AbstractModel):
             location_id = False
 
         data = {
+            'is_on_hand_only': is_on_hand_only,
             'report_by': report_by,
             'date_from': date_from,
             'date_to': date_to,
@@ -283,5 +254,6 @@ class StockCardReportTemplate(models.AbstractModel):
             'doc_model': 'stock.card.report',
             'data': data,
             'get_product_detail': self._get_product_detail,
+            'get_on_hand_only': self._get_on_hand_only
         }
         return docargs
