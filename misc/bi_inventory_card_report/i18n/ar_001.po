@@ -241,33 +241,32 @@ msgstr "المخزن"
 #: model:ir.model,name:bi_inventory_card_report.model_excel_report
 msgid "excel.report"
 msgstr ""
+#. module: bi_inventory_card_report
+#: model_terms:ir.ui.view,arch_db:bi_inventory_card_report.on_hand_only
+msgid "Product"
+msgstr "اسم الصنف"
 
 #. module: bi_inventory_card_report
 #: model_terms:ir.ui.view,arch_db:bi_inventory_card_report.on_hand_only
-msgid "اسم الصنف"
-msgstr "Product"
+msgid "Date"
+msgstr "التاريخ:"
 
 #. module: bi_inventory_card_report
 #: model_terms:ir.ui.view,arch_db:bi_inventory_card_report.on_hand_only
-msgid "التاريخ:"
-msgstr "Date"
+msgid "On Hand"
+msgstr "الرصيد"
 
 #. module: bi_inventory_card_report
 #: model_terms:ir.ui.view,arch_db:bi_inventory_card_report.on_hand_only
-msgid "الرصيد"
-msgstr "On Hand"
+msgid "Product On Hand Report"
+msgstr "تقرير أرصدة أصناف"
 
 #. module: bi_inventory_card_report
 #: model_terms:ir.ui.view,arch_db:bi_inventory_card_report.on_hand_only
-msgid "تقرير أرصدة أصناف"
-msgstr "Product On Hand Report"
+msgid "Printed By:"
+msgstr "تمت الطباعة بواسطة:"
 
 #. module: bi_inventory_card_report
 #: model_terms:ir.ui.view,arch_db:bi_inventory_card_report.on_hand_only
-msgid "تمت الطباعة بواسطة:"
-msgstr "Printed By:"
-
-#. module: bi_inventory_card_report
-#: model_terms:ir.ui.view,arch_db:bi_inventory_card_report.on_hand_only
-msgid "كود"
-msgstr "Code"
+msgid "Code"
+msgstr "كود"
