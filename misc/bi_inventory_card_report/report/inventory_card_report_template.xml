@@ -324,27 +324,38 @@
             padding-top: 12px;
             padding-bottom: 12px;
             }
-            h1,h2{
+            h2,h4{
             text-align:center;
             }
         </style>
-<h1> Balance Report تقرير أرصدة أصناف</h1>
-        <h2>Location: <t t-esc="data.get('location_id').complete_name"/></h2>
-        <table class="elegant-table">
+        <h2> تقرير أرصدة أصناف</h2>
+        <h4>التاريخ:
+            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+
+            ===
+
+        الموقع:
+            <t t-esc="data.get('location_id').complete_name"/>
+        </h4>
+        <h5 style="text-align:left">
+            تمت الطباعة بواسطة: <span t-esc="user.name"/>
+        </h5>
+        <table class="elegant-table" style="direction:rtl">
+
             <thead>
                 <tr>
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Balance</th>
+                    <th>كود</th>
+                    <th>اسم الصنف</th>
+                    <th>الرصيد</th>
                 </tr>
             </thead>
             <tbody>
                 <t t-foreach="get_on_hand_only(data)" t-as="product">
                     <tr>
-                        <td>
+                        <td style="text-align:right">
                             <t t-esc="product['code']"/>
                         </td>
-                        <td>
+                        <td style="text-align:right">
                             <t t-esc="product['name']"/>
                         </td>
                         <td style="text-align:right">

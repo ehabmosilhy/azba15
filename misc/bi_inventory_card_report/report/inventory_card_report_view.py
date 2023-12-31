@@ -177,9 +177,6 @@ class StockCardReportTemplate(models.AbstractModel):
                 # Category will be added later if needed
             }
             lines.append(line)
-        # balance_dict[product_id]['final_balance'] = balance_dict[product_id]['initial_balance'] + \
-        #                                             balance_dict[product_id]['total_in'] - balance_dict[product_id][
-        #                                                 'total_out']
 
         # If report by category, add category to each line
         if report_by == 'product_category':
@@ -194,6 +191,7 @@ class StockCardReportTemplate(models.AbstractModel):
 
         sorted_lines.insert(0, balance_dict)
         if len(sorted_lines) < 2:
+            # Add dummy line
             for product in sorted_lines[0].items():
                 '''
                 {'balance': 9908.0, 'in_qty': 0.0, 
