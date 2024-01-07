@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="az_account_move_inherited" model="ir.ui.view">
+            <field name="name">az.account.move.no.po</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button string="Create Stock Transfer" type="object"
+                            name="action_create_stock_transfer"
+                            attrs="{'invisible': [('invoice_origin', '!=', False)]}"
+                            class="oe_highlight"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
