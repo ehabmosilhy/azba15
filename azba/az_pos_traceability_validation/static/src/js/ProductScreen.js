@@ -2,7 +2,7 @@
     Copyright 2022 Camptocamp SA (https://www.camptocamp.com).
     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 */
-odoo.define("pos_lot_selection.ProductScreen", function (require) {
+odoo.define("az_pos_traceability_validation.ProductScreen", function (require) {
     "use strict";
 
     const ProductScreen = require("point_of_sale.ProductScreen");
@@ -15,7 +15,6 @@ odoo.define("pos_lot_selection.ProductScreen", function (require) {
              */
             async _getAddProductOptions(product) {
                 if (["serial", "lot"].includes(product.tracking)) {
-                    this.env.session.lots = await this.env.pos.getProductLots(product);
                     //Ehab
                     this.env.session.product = product;
                     this.env.session.config_id = this.env.pos.config_id;

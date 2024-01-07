@@ -28,6 +28,13 @@ class StockMove(models.Model):
 class StockPicking(models.Model):
     _inherit = "stock.picking"
     coupon_purchase_id = fields.Many2one('coupon.purchase', string="coupon Purchase")
+    is_auto_add_packs = fields.Boolean('Auto Add Packs')
+
+    def get_config_params(self):
+        p = self.env['ir.config_parameter'].sudo()
+        return {
+            'coupon_book_ids': [int(_) for _ in p.get_param('az_coupons.coupon_book_ids').split(',')]
+        }
 
     def action_put_in_pack(self):
         self.ensure_one()
@@ -78,22 +85,37 @@ class StockPicking(models.Model):
         if not p:
             self.add_packs()
         res = super(StockPicking, self).button_validate()
-        # self.remove_extra_packs()
         return True
-    # def remove_extra_packs(self):
-    #     lot_ids = self.move_line_ids_without_package.mapped('lot_id')
-    #     x=lot_ids
+
     def add_packs(self):
         lines = []
+        # get coupons_book_ids from  config params
+        coupon_book_ids = self.get_config_params()['coupon_book_ids']
+        # get book ids from coupon.book
+        coupon_book_ids = self.env['coupon.book'].search([('id', 'in', coupon_book_ids)])
+        if coupon_book_ids:
+            coupon_book_ids = coupon_book_ids.mapped("product_id").ids
         for line in self.move_line_ids_without_package:
-            line_dict = (0, 0, {
-                'package_id': self.env['stock.quant.package'].search([('name', '=', line.lot_id.name)]).id,
-                'location_id': self.location_id.id,
-                'location_dest_id': self.location_dest_id.id,
-                'is_done': True,
-            })
-            lines.append(line_dict)
-        self.write({'package_level_ids': lines})
+            if line['product_id'].id in coupon_book_ids:
+                line_dict = (0, 0, {
+                    'package_id': self.env['stock.quant.package'].search([('name', '=', line.lot_id.name)]).id,
+                    'location_id': self.location_id.id,
+                    'location_dest_id': self.location_dest_id.id,
+                    'is_done': True,
+                })
+                lines.append(line_dict)
+        if lines:
+            self.write({'package_level_ids': lines})
+            self.write({'is_auto_add_packs': True})
+        for p in self.package_level_ids:
+            for ml in p.move_line_ids:
+                ml.product_uom_qty = 1
+
+    def _check_entire_pack(self):
+        if self.is_auto_add_packs:
+            return
+        else:
+            return super(StockPicking, self)._check_entire_pack()
 
 
 class StockMoveLine(models.Model):
@@ -107,7 +129,7 @@ class StockMoveLine(models.Model):
                                                              ('location_id', '=', first_line.location_id.id),
                                                              ('quantity', '>', 0),
                                                              ('lot_id', '>', first_line.lot_id.id)
-                                                             ],order='lot_id').mapped("lot_id")
+                                                             ], order='lot_id').mapped("lot_id")
             try:
                 for i in range(1, len(self.move_line_ids)):
                     self.move_line_ids[i].lot_id = self.env['stock.production.lot'].search(
