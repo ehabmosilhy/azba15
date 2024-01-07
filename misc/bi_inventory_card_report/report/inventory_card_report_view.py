@@ -11,41 +11,62 @@ class StockCardReportTemplate(models.AbstractModel):
     _name = 'report.bi_inventory_card_report.inventory_card_report_template'
     _description = 'Stock Card Report Template'
 
-    def _get_final_balance(self, location_id, product_ids):
-        final_balance_sql = """
-          SELECT
-              product_id,
-              quantity
-          FROM
-              stock_quant
-          WHERE
-              product_id IN %s
-              and location_id = %s
-          """
-        final_balance_params = (tuple(product_ids), location_id)
-        self.env.cr.execute(final_balance_sql, final_balance_params)
+    def parse_date(self, date_string):
+        return datetime.strptime(date_string, '%m/%d/%Y')
+
+    def calculate_balance_at_date(self, movements, today_balance, target_date=None):
+        # Sort movements by date in descending order
+        movements.sort(key=lambda x: self.parse_date(x['date']), reverse=True)
+
+        # Calculate the balance at the target date
+        balance = today_balance
+        for movement in movements:
+            movement_date = self.parse_date(movement['date'])
+            if target_date and movement_date < target_date:
+                break
+            if movement['type'] == 'reconciliation':
+                balance = float(movement['amount'])
+            else:
+                balance -= float(movement['amount'])
+
+        return balance
+
+    def calculate_opening_balance(self, movements, today_balance):
+        return self.calculate_balance_at_date(movements, today_balance)
+
+    def get_today_balance(self, location_id, product_ids):
+        """Retrieves the today's balance (the very last balance) of products for a given location and a list of product IDs.
+
+        Args:
+            location_id (int): The ID of the location for which the balance is requested.
+            product_ids (List[int]): A list of product IDs for which the balance is requested.
+
+        Returns:
+            Dict[int, int]: A dictionary where the key is the product ID and the value is the quantity.
+
+        Example:
+            >>> location_id = 1
+            >>> product_ids = [1001, 1002, 1003]
+            >>> balance = self.get_today_balance(location_id, product_ids)
+            >>> print(balance)
+            {1001: 10, 1002: 5, 1003: 2}
+        """
+        today_balance_sql = """
+            SELECT
+                product_id,
+                quantity
+            FROM
+                stock_quant
+            WHERE
+                product_id IN %s
+                AND location_id = %s
+        """
+        today_balance_params = (tuple(product_ids), location_id)
+        self.env.cr.execute(today_balance_sql, today_balance_params)
         return {row[0]: row[1] for row in self.env.cr.fetchall()}
 
-    def _get_initial_balance(self, location_id, start_date_data, product_ids):
-        initial_balance_sql = """
-          SELECT
-              product_id,
-              SUM(CASE WHEN location_dest_id = %s THEN product_qty ELSE 0 END) -
-              SUM(CASE WHEN location_id = %s THEN product_qty ELSE 0 END) as initial_balance
-          FROM
-              stock_move
-          WHERE
-              date < %s AND
-              state = 'done' AND
-              product_id IN %s
-          GROUP BY
-              product_id
-          """
-        initial_balance_params = (location_id, location_id, start_date_data, tuple(product_ids))
-        self.env.cr.execute(initial_balance_sql, initial_balance_params)
-        return {row[0]: row[1] for row in self.env.cr.fetchall()}
 
-    def _get_on_hand_only(self, data):
+    def get_on_hand_only(self, data):
         location_id = data['location_id'].id
         product_ids = data.get('product_ids', False)
 
@@ -79,7 +100,7 @@ class StockCardReportTemplate(models.AbstractModel):
         result = self.env.cr.dictfetchall()
         return result
 
-    def _get_product_detail(self, data):
+    def get_product_detail(self, data):
         # Retrieve date range for filtering stock moves
         start_date_data = data.get('date_from')
         end_date_data = data.get('date_to')
@@ -87,7 +108,7 @@ class StockCardReportTemplate(models.AbstractModel):
         warehouse_id = data.get('warehouse_id') and data.get('warehouse_id').id
 
         if data.get('is_on_hand_only'):
-            return self._get_on_hand_only(location_id, data.get('product_ids').ids)
+            return self.get_on_hand_only(location_id, data.get('product_ids').ids)
 
         # Depending on the report type, construct the product IDs SQL
         report_by = data.get('report_by')
@@ -104,14 +125,6 @@ class StockCardReportTemplate(models.AbstractModel):
         self.env.cr.execute(product_ids_sql, product_ids_params)
         product_ids = [res[0] for res in self.env.cr.fetchall()]
 
-        # Get the initial balance for each product
-        initial_balances = self._get_initial_balance(location_id, start_date_data, product_ids)
-        final_balances = self._get_final_balance(location_id, product_ids)
-
-        balance_dict = {product_id:
-                            {'initial_balance': initial_balances.get(product_id, 0.0),
-                             'final_balance': final_balances.get(product_id, 0.0)} for product_id in product_ids
-                        }
 
         # 🔄 Construct the SQL to fetch all relevant stock moves
         stock_move_sql = f"""
@@ -136,21 +149,31 @@ class StockCardReportTemplate(models.AbstractModel):
 
         # 📈 Process stock moves to calculate balance and prepare report lines
 
+        today_balances = self.get_today_balance(location_id, product_ids)
+        opening_balances = self.get_opening_balance(location_id, start_date_data, product_ids)
+
+        balance_dict = {product_id:
+                            {'opening_balance': opening_balances.get(product_id, 0.0),
+                             'today_balance': today_balances.get(product_id, 0.0)} for product_id in product_ids
+                        }
+
+
         lines = []
         balance_dict = {product_id:
-                            {'initial_balance': initial_balances.get(product_id, 0.0),
-                             'final_balance': final_balances.get(product_id, 0.0)
+                            {'opening_balance': opening_balances.get(product_id, 0.0),
+                             'today_balance': today_balances.get(product_id, 0.0)
                              } for product_id in product_ids}
         for product_id in product_ids:
             balance_dict[product_id]['total_in'] = 0
             balance_dict[product_id]['total_out'] = 0
         # we make another balance dictionary because we need the first one to be fixed
         balances = {product_id:
-                        {'initial_balance': initial_balances.get(product_id, 0.0)} for product_id in product_ids}
+                        {'opening_balance': opening_balances.get(product_id, 0.0)} for product_id in product_ids}
+        moves =[]
         for move in stock_moves:
             in_out = None
             product_id = move['product_id']
-            balance = balances[product_id]['initial_balance']
+            balance = balances[product_id]['opening_balance']
 
             # Adjust balance based on move type
             if move['picking_type_code'] in ['incoming', 'inventory'] or (
@@ -163,9 +186,9 @@ class StockCardReportTemplate(models.AbstractModel):
                 balance -= move['qty_done']
                 in_out = 'out'
                 balance_dict[product_id]['total_out'] += move['qty_done']
-            elif move['picking_type_code'] == None:
+            elif move['picking_type_code'] is None:
                 balance = move['qty_done']
-            balances[product_id]['initial_balance'] = balance
+            balances[product_id]['opening_balance'] = balance
 
             line = {
                 'origin': move['reference'] or move['origin'],
@@ -251,7 +274,7 @@ class StockCardReportTemplate(models.AbstractModel):
         docargs = {
             'doc_model': 'stock.card.report',
             'data': data,
-            'get_product_detail': self._get_product_detail,
-            'get_on_hand_only': self._get_on_hand_only
+            'get_product_detail': self.get_product_detail,
+            'get_on_hand_only': self.get_on_hand_only
         }
         return docargs
