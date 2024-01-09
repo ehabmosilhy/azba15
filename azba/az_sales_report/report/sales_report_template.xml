@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Main template that decides which sub-template to use -->
+    <template id="sales_report_template_view">
+        <t t-call="web.external_layout">
+            <div class="page">
+
+
+                <style>
+                    .elegant-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                    }
+
+                    .elegant-table th,
+                    .elegant-table td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: left;
+                    }
+
+                    .elegant-table th {
+                    background-color: #E6E6FA;
+                    color: black;
+                    font-weight:bold;
+                    text-align:center;
+                    }
+
+                    .elegant-table tr:nth-child(even){background-color: #f2f2f2;}
+
+                    .elegant-table tr:hover {background-color: #ddd;}
+
+                    .elegant-table th {
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    }
+                    h2,h4{
+                    text-align:center;
+                    }
+                </style>
+                <h2>تقرير مبيعات</h2>
+                <h4>التاريخ:
+
+                    من
+                    <span t-esc="data['date_from']"/>
+                    ===
+
+إلى
+
+                    <span t-esc="data['date_to']"/>
+
+
+                </h4>
+                <h5 style="text-align:left">
+                    تمت الطباعة بواسطة:
+                    <span t-esc="user.name"/>
+                </h5>
+                <table class="elegant-table" style="direction:rtl">
+
+                    <thead>
+                        <tr>
+                            <th>كود</th>
+                            <th>اسم الصنف</th>
+                            <th>الكمية</th>
+                            <th>المبلغ بدون ضريبة</th>
+                            <th>المبلغ بالضريبة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="get_product_detail(data)" t-as="product">
+                            <tr>
+                                <td style="text-align:right">
+                                    <t t-esc="product['code']"/>
+                                </td>
+                                <td style="text-align:right">
+                                    <t t-esc="product['name']"/>
+                                </td>
+                                <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(product['quantity']) if isinstance(product['quantity'], int) else '{:,.2f}'.format(product['quantity']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+                                
+                                 <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(product['total_price_no_tax']) if isinstance(product['total_price_no_tax'], int) else '{:,.2f}'.format(product['total_price_no_tax']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+                                
+                                 <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(product['total_price_tax']) if isinstance(product['total_price_tax'], int) else '{:,.2f}'.format(product['total_price_tax']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+
+            </div>
+        </t>
+    </template>
+
+
+    <template id="sales_report_template">
+        <t t-call="web.html_container">
+            <t t-call="az_sales_report.sales_report_template_view"/>
+        </t>
+    </template>
+
+</odoo>

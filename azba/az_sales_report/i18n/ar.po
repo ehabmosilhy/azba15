@@ -1,0 +1,74 @@
+# Arabic translations for Odoo module
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-31 00:00+0000\n"
+"PO-Revision-Date: 2023-12-31 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Arabic <ar@example.com>\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: bi_inventory_card_report
+#: model:ir.model,name:bi_inventory_card_report.model_inventory_card_report
+msgid "Inventory Card Report"
+msgstr "تقرير بطاقة المخزون"
+
+#. module: bi_inventory_card_report
+#: model:ir.model.fields,field_description:inventory_card_report.date_from
+msgid "Start Date"
+msgstr "تاريخ البداية"
+
+#. module: bi_inventory_card_report
+#: model:ir.model.fields,field_description:inventory_card_report.date_to
+msgid "End Date"
+msgstr "تاريخ النهاية"
+
+#. module: bi_inventory_card_report
+#: model:ir.model.fields,field_description:inventory_card_report.company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: bi_inventory_card_report
+#: model:ir.model.fields,field_description:inventory_card_report.warehouse_id
+msgid "Warehouse"
+msgstr "المستودع"
+
+#. module: bi_inventory_card_report
+#: model:ir.model.fields,field_description:inventory_card_report.location_id
+msgid "Location"
+msgstr "الموقع"
+
+#. module: bi_inventory_card_report
+#: model:ir.model.fields,field_description:inventory_card_report.report_by
+msgid "Report By"
+msgstr "تقرير بواسطة"
+
+#. module: bi_inventory_card_report
+#: model:ir.model.fields,field_description:inventory_card_report.report_by
+msgid "Product"
+msgstr "المنتج"
+
+#. module: bi_inventory_card_report
+#: model:ir.model.fields,field_description:inventory_card_report.report_by
+msgid "Product Category"
+msgstr "فئة المنتج"
+
+#. module: bi_inventory_card_report
+#: model:ir.model.fields,field_description:inventory_card_report.product_ids
+msgid "Product"
+msgstr "المنتج"
+
+#. module: bi_inventory_card_report
+#: model:ir.model.fields,field_description:inventory_card_report.product_category_ids
+msgid "Product Category"
+msgstr "فئة المنتج"
+
+#. module: bi_inventory_card_report
+#: model:ir.model.fields,field_description:inventory_card_report.is_on_hand_only
+msgid "On Hand Only"
+msgstr "عرض الأرصدة  فقط"
