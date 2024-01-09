@@ -39,6 +39,13 @@
                     h2,h4{
                     text-align:center;
                     }
+
+                    .sum-data {
+                    font-weight: bold;
+                    border-top: double;
+                    margin-top: 10px;
+                    border-spacing: 0;
+                    }
                 </style>
                 <h2>تقرير مبيعات</h2>
                 <h4>التاريخ:
@@ -47,7 +54,7 @@
                     <span t-esc="data['date_from']"/>
                     ===
 
-إلى
+                    إلى
 
                     <span t-esc="data['date_to']"/>
 
@@ -68,8 +75,9 @@
                             <th>المبلغ بالضريبة</th>
                         </tr>
                     </thead>
+                    <t t-set="vals" t-value="get_product_detail(data)"/>
                     <tbody>
-                        <t t-foreach="get_product_detail(data)" t-as="product">
+                        <t t-foreach="vals[0:-1]" t-as="product">
                             <tr>
                                 <td style="text-align:right">
                                     <t t-esc="product['code']"/>
@@ -81,18 +89,39 @@
                                     <t t-esc="'{:,}'.format(product['quantity']) if isinstance(product['quantity'], int) else '{:,.2f}'.format(product['quantity']).rstrip('0').rstrip('.')"/>
 
                                 </td>
-                                
-                                 <td style="text-align:right">
+
+                                <td style="text-align:right">
                                     <t t-esc="'{:,}'.format(product['total_price_no_tax']) if isinstance(product['total_price_no_tax'], int) else '{:,.2f}'.format(product['total_price_no_tax']).rstrip('0').rstrip('.')"/>
 
                                 </td>
-                                
-                                 <td style="text-align:right">
+
+                                <td style="text-align:right">
                                     <t t-esc="'{:,}'.format(product['total_price_tax']) if isinstance(product['total_price_tax'], int) else '{:,.2f}'.format(product['total_price_tax']).rstrip('0').rstrip('.')"/>
 
                                 </td>
                             </tr>
                         </t>
+
+                        <tr class="sum-data">
+                            <td colspan="2">
+
+                            </td>
+                            <td style="text-align:right">
+
+                                <t t-esc="'{:,}'.format(vals[-1]['qty']) if isinstance(vals[-1]['qty'], int) else '{:,.2f}'.format(vals[-1]['qty']).rstrip('0').rstrip('.')"/>
+
+                            </td>
+
+                            <td style="text-align:right">
+                                <t t-esc="'{:,}'.format(vals[-1]['qty']) if isinstance(vals[-1]['qty'], int) else '{:,.2f}'.format(vals[-1]['qty']).rstrip('0').rstrip('.')"/>
+
+                            </td>
+
+                            <td style="text-align:right">
+                                <t t-esc="'{:,}'.format(vals[-1]['total_price_no_tax']) if isinstance(vals[-1]['total_price_no_tax'], int) else '{:,.2f}'.format(vals[-1]['total_price_no_tax']).rstrip('0').rstrip('.')"/>
+
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
 

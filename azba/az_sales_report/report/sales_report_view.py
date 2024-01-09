@@ -12,13 +12,14 @@ class SalesReportTemplate(models.AbstractModel):
 
     def get_product_detail(self, data):
         # Retrieve date range for filtering stock moves
+        company_id  = data.get('company_id')
         start_date_data = data.get('date_from')
         end_date_data = data.get('date_to')
 
         # Depending on the report type, construct the product IDs SQL
         product_ids = data.get('product_ids')
         product_ids_clause = ""
-        params = [start_date_data, end_date_data]
+        params = [start_date_data, end_date_data, company_id]
 
         if product_ids:
             product_ids_clause = "AND aml.product_id IN %s"
@@ -41,24 +42,34 @@ class SalesReportTemplate(models.AbstractModel):
         AND am.state = 'posted'
         {product_ids_clause}
         AND am.move_type IN ('out_invoice', 'out_refund')
+        and am.company_id = %s
         GROUP BY aml.product_id, pt.code, pt.name
         order by pt.code
         """
         self.env.cr.execute(stock_move_sql, tuple(params))
         stock_moves = self.env.cr.dictfetchall()
 
+        sums={}
+        for move in stock_moves:
+            sums['qty'] = sums.get('qty', 0) + move.get('quantity', 0)
+            sums['total_price_tax'] = sums.get('total_price_tax', 0) + move.get('total_price_tax', 0)
+            sums['total_price_no_tax'] = sums.get('total_price_no_tax', 0) + move.get('total_price_no_tax', 0)
+
+        stock_moves.append(sums)
         return stock_moves
 
     @api.model
     def _get_report_values(self, docids, data=None):
         date_from = data['form']['date_from']
         date_to = data['form']['date_to']
+        company_id = data['form']['company_id'][0]
         product_ids = self.env['product.product'].search([('product_tmpl_id', 'in', data['form']['product_tmpl_ids'])])
 
         data = {
             'date_from': date_from,
             'date_to': date_to,
             'product_ids': product_ids,
+            'company_id': company_id,
         }
         docargs = {
             'doc_model': 'az.sales.report',

@@ -9,6 +9,8 @@ class SalesReport(models.TransientModel):
 
     date_from = fields.Date('Start Date', required=True)
     date_to = fields.Date('End Date', required=True)
+    company_id = fields.Many2one('res.company',string="Company", default=lambda self: self.env.company
+                                 , required=True)
     product_tmpl_ids = fields.Many2many('product.template',string="Product")
 
     @api.constrains('date_from', 'date_to')
