@@ -33,6 +33,8 @@ class AccountMove(models.Model):
                     'partner_id': record.partner_id.id,
                     'location_id': 4,  # Vendor location
                     'location_dest_id': 536,  # S1 location
+                    'date': record.invoice_date,
+                    'date_done': record.invoice_date,
                     'scheduled_date': record.invoice_date,
                     'origin': record.name,
                     'name': self.get_serial('IN')
@@ -52,6 +54,7 @@ class AccountMove(models.Model):
                         'product_uom_qty': line.quantity,
                         'quantity_done':line.quantity,
                         'date': record.invoice_date,
+                        'date_deadline': record.invoice_date,
                         'picking_id': picking.id,
                         'location_id': picking.location_id.id,
                         'location_dest_id': picking.location_dest_id.id,
@@ -69,6 +72,8 @@ class AccountMove(models.Model):
                     'picking_type_id':552, # (الرئيسى-القديمة) (MAIN-OLD) التسلسل للخارج
                     'location_id': 536,  # S1 location
                     'location_dest_id': 5,  # Production location
+                    'date':fields.Datetime.add(record.invoice_date, hours=1),
+                    'date_done':fields.Datetime.add(record.invoice_date, hours=1),
                     'scheduled_date': fields.Datetime.add(record.invoice_date, hours=1),
                     'name': self.get_serial('OUT')
                 })
