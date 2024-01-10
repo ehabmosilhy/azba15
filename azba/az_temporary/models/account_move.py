@@ -1,9 +1,18 @@
 from odoo import models, fields, api
 from datetime import timedelta
 
+
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    def _fix_date(self, _move, picking, picking_out, _date):
+        picking.date = _date
+        picking.date_done
+        picking.scheduled_date
+        picking_out.date
+        picking_out.date_done
+        picking_out.scheduled_date
+        _move.date = _date
 
     def get_serial(self, direction):
         last_picking = self.env['stock.picking'].search([
@@ -40,9 +49,6 @@ class AccountMove(models.Model):
                     'name': self.get_serial('IN')
                 }
 
-
-
-
                 picking = self.env['stock.picking'].create(picking_vals)
 
                 # Create stock moves for the initial picking
@@ -52,7 +58,7 @@ class AccountMove(models.Model):
                         'product_id': line.product_id.id,
                         'product_uom': line.product_uom_id.id,
                         'product_uom_qty': line.quantity,
-                        'quantity_done':line.quantity,
+                        'quantity_done': line.quantity,
                         'date': record.invoice_date,
                         'date_deadline': record.invoice_date,
                         'picking_id': picking.id,
@@ -69,11 +75,11 @@ class AccountMove(models.Model):
                 del picking_vals['partner_id']
                 # Create the subsequent stock picking (S1 to Production)
                 picking_vals.update({
-                    'picking_type_id':552, # (الرئيسى-القديمة) (MAIN-OLD) التسلسل للخارج
+                    'picking_type_id': 552,  # (الرئيسى-القديمة) (MAIN-OLD) التسلسل للخارج
                     'location_id': 536,  # S1 location
                     'location_dest_id': 5,  # Production location
-                    'date':fields.Datetime.add(record.invoice_date, hours=1),
-                    'date_done':fields.Datetime.add(record.invoice_date, hours=1),
+                    'date': fields.Datetime.add(record.invoice_date, hours=1),
+                    'date_done': fields.Datetime.add(record.invoice_date, hours=1),
                     'scheduled_date': fields.Datetime.add(record.invoice_date, hours=1),
                     'name': self.get_serial('OUT')
                 })
@@ -81,11 +87,11 @@ class AccountMove(models.Model):
 
                 # Create stock moves for the subsequent picking
                 for line in move_lines:
-                    self.env['stock.move'].create({
+                    _move = self.env['stock.move'].create({
                         'name': line.name or 'S1 to Production',
                         'product_id': line.product_id.id,
                         'product_uom': line.product_uom_id.id,
-                        'quantity_done':line.quantity,
+                        'quantity_done': line.quantity,
                         'product_uom_qty': line.quantity,
                         'date': fields.Datetime.add(record.invoice_date, hours=1),
                         'picking_id': picking_out.id,
@@ -99,5 +105,5 @@ class AccountMove(models.Model):
                 picking_out.button_validate()
 
                 record.invoice_origin = picking_out.name
-                print (record.invoice_origin)
-
+                self._fix_date(_move, picking, picking_out, record.invoice_date)
+                print(record.invoice_origin)
