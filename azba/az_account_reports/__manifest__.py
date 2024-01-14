@@ -8,5 +8,11 @@
         'account_reports.assets_financial_report': [
             'az_account_reports/static/src/scss/account_financial_report.scss',
             'az_account_reports/static/src/scss/account_report_print.scss',
-        ]}
+        ]},
+    "data": [
+        'security/ir.model.access.csv',
+        'wizard/ledger_report_view.xml',
+        'report/ledger_report.xml',
+        'report/ledger_report_template.xml',
+    ],
 }

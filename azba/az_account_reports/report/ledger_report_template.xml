@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Main template that decides which sub-template to use -->
+    <template id="ledger_report_template_view">
+        <t t-call="web.external_layout">
+            <div class="page">
+
+
+                <style>
+                    .elegant-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                    }
+
+                    .elegant-table th,
+                    .elegant-table td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: left;
+                    }
+
+                    .elegant-table th {
+                    background-color: #E6E6FA;
+                    color: black;
+                    font-weight:bold;
+                    text-align:center;
+                    }
+
+                    .elegant-table tr:nth-child(even){background-color: #f2f2f2;}
+
+                    .elegant-table tr:hover {background-color: #ddd;}
+
+                    .elegant-table th {
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    }
+                    h2,h4{
+                    text-align:center;
+                    }
+
+                    .sum-data {
+                    font-weight: bold;
+                    border-top: double;
+                    margin-top: 10px;
+                    border-spacing: 0;
+                    }
+                </style>
+                <h2>أرصدة الأستاذ المساعد</h2>
+                <h4>التاريخ:
+
+                    من
+                    <span t-esc="data['date_from']"/>
+                    ===
+
+                    إلى
+
+                    <span t-esc="data['date_to']"/>
+
+
+                </h4>
+                <h5 style="text-align:left">
+                    تمت الطباعة بواسطة:
+                    <span t-esc="user.name"/>
+                </h5>
+                <table class="elegant-table" style="direction:rtl">
+
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2">ما قبله</th>
+                            <th colspan="2">خلال الفترة</th>
+                            <th colspan="2">الإجمالى</th>
+                            <th colspan="2">الرصيد</th>
+                        </tr>
+                        <tr>
+                            <th>كود</th>
+                            <th>اسم الحساب</th>
+                            <th>مدين</th>
+                            <th>دائن</th>
+                            <th>مدين</th>
+                            <th>دائن</th>
+                            <th>مدين</th>
+                            <th>دائن</th>
+                            <th>مدين</th>
+                            <th>دائن</th>
+                        </tr>
+                    </thead>
+                    <t t-set="vals" t-value="get_ledger_detail(data)"/>
+                    <tbody>
+                        <t t-foreach="vals" t-as="ledger">
+                            <tr>
+                                <td style="text-align:right">
+                                    <t t-esc="ledger['code']"/>
+                                </td>
+                                <td style="text-align:right">
+                                    <t t-esc="ledger['name']"/>
+                                </td>
+                                <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(ledger['before_period_debit']) if isinstance(ledger['before_period_debit'], int) else '{:,.2f}'.format(ledger['before_period_debit']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+                                
+                                 <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(ledger['before_period_credit']) if isinstance(ledger['before_period_credit'], int) else '{:,.2f}'.format(ledger['before_period_credit']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                                  <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(ledger['period_debit']) if isinstance(ledger['period_debit'], int) else '{:,.2f}'.format(ledger['period_debit']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                                 <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(ledger['period_credit']) if isinstance(ledger['period_credit'], int) else '{:,.2f}'.format(ledger['period_credit']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+                                <t t-set="total_debit" t-value="ledger['before_period_debit']+ledger['period_debit']"/>
+                                <t t-set="total_credit" t-value="ledger['before_period_credit']+ledger['period_credit']"/>
+
+
+                                  <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(total_debit) if isinstance(total_debit, int) else '{:,.2f}'.format(total_debit).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                                 <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(total_credit) if isinstance(total_credit, int) else '{:,.2f}'.format(total_credit).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                                <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(ledger['final_debit']) if isinstance(ledger['before_period_debit'], int) else '{:,.2f}'.format(ledger['before_period_debit']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                                <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(ledger['final_credit']) if isinstance(ledger['before_period_credit'], int) else '{:,.2f}'.format(ledger['before_period_credit']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                            </tr>
+                        </t>
+
+                    </tbody>
+                </table>
+
+
+            </div>
+        </t>
+    </template>
+
+
+    <template id="ledger_report_template">
+        <t t-call="web.html_container">
+            <t t-call="az_account_reports.ledger_report_template_view"/>
+        </t>
+    </template>
+
+</odoo>
