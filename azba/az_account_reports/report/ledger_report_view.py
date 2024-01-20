@@ -60,7 +60,7 @@ class ledgerReportTemplate(models.AbstractModel):
                 GROUP BY
                     aml.account_id, aa.name, p.id, p.name, pd.total_debit_before, pd.total_credit_before
                 ORDER BY
-                    aa.name, p.name;
+                    p.code;
             """
 
 

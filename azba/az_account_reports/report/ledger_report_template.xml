@@ -41,6 +41,7 @@
                     }
 
                     .sum-data {
+                    background-color: #E6E6FA;
                     font-weight: bold;
                     border-top: double;
                     margin-top: 10px;
@@ -175,7 +176,7 @@
                             <t t-set="sum_balance_credit" t-value="sum_balance_credit+balance_credit"/>
 
                         </t>
-                        <tr>
+                        <tr class="sum-data">
                             <td colspan="2">
 
 
