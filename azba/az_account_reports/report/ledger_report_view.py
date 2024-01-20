@@ -102,19 +102,19 @@ class ledgerReportTemplate(models.AbstractModel):
         self.env.cr.execute(account_move_sql, tuple(params))
         account_moves = self.env.cr.dictfetchall()
 
-        # sums = {
-        #     'period_debit': 0,
-        #     'period_credit': 0,
-        #     'before_period_debit': 0,
-        #     'before_credit': 0,
-        # }
-        # for move in account_moves:
-        #     sums['period_debit'] += move.get('period_debit', 0)
-        #     sums['period_credit'] += move.get('period_credit', 0)
-        #     sums['before_debit'] += move.get('before_debit', 0)
-        #     sums['before_credit'] += move.get('before_credit', 0)
-        #
-        # account_moves.append(sums)
+        sums = {
+            'period_debit': 0,
+            'period_credit': 0,
+            'before_period_debit': 0,
+            'before_period_credit': 0,
+        }
+        for move in account_moves:
+            sums['period_debit'] += move.get('period_debit', 0)
+            sums['period_credit'] += move.get('period_credit', 0)
+            sums['before_period_debit'] += move.get('before_debit', 0)
+            sums['before_period_debit'] += move.get('before_credit', 0)
+
+        account_moves.append(sums)
 
         return account_moves
 
