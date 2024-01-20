@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="ledger_report_form" model="ir.ui.view">
+            <field name="name">ledger.report.form.view</field>
+            <field name="model">az.ledger.report</field>
+            <field name="arch" type="xml">
+                <form string="Ledger Report">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="company_id"/>
+                            </group>
+                            <group>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                            </group>
+                        </group>
+                        <div>
+                            <group>
+                                <field name="account_ids">
+                                    <tree>
+                                        <field name="code" string="Code"/>
+                                        <field name="name"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button name="get_ledger_report" type="object" string="Print" class="btn btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="ledger_report_action_form" model="ir.actions.act_window">
+            <field name="name">Ledger Report</field>
+            <field name="res_model">az.ledger.report</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="ledger_report_menu"
+                  name="Ledger Report Filtered💵"
+                  parent="account_reports.account_reports_audit_reports_menu"
+                  action="ledger_report_action_form"
+                  sequence="10"/>
+    </data>
+</odoo>

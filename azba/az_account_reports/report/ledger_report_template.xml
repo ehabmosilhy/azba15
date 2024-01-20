@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Main template that decides which sub-template to use -->
+    <template id="ledger_report_template_view">
+        <t t-call="web.external_layout">
+            <div class="page">
+
+
+                <style>
+                    .elegant-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                    }
+
+                    .elegant-table th,
+                    .elegant-table td {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: left;
+                    }
+
+                    .elegant-table th {
+                    background-color: #E6E6FA;
+                    color: black;
+                    font-weight:bold;
+                    text-align:center;
+                    }
+
+                    .elegant-table tr:nth-child(even){background-color: #f2f2f2;}
+
+                    .elegant-table tr:hover {background-color: #ddd;}
+
+                    .elegant-table th {
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    }
+                    h2,h3,h4{
+                    text-align:center;
+                    }
+
+                    .sum-data {
+                    background-color: #E6E6FA;
+                    font-weight: bold;
+                    border-top: double;
+                    margin-top: 10px;
+                    border-spacing: 0;
+                    }
+                </style>
+                <h2>أرصدة الأستاذ المساعد</h2>
+                <t t-if="data['account_ids']">
+                    <h3>الحساب: <span t-esc="data['account_ids'][1]"/></h3>
+                </t>
+                <h4>التاريخ:
+
+                    من
+                    <span t-esc="data['date_from']"/>
+                    ===
+
+                    إلى
+
+                    <span t-esc="data['date_to']"/>
+
+
+                </h4>
+                <h5 style="text-align:left">
+                    تمت الطباعة بواسطة:
+                    <span t-esc="user.name"/>
+                </h5>
+                <table class="elegant-table" style="direction:rtl">
+
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2">ما قبله</th>
+                            <th colspan="2">خلال الفترة</th>
+                            <th colspan="2">الإجمالى</th>
+                            <th colspan="2">الرصيد</th>
+                        </tr>
+                        <tr>
+                            <th>كود</th>
+                            <th>اسم الحساب</th>
+                            <th>مدين</th>
+                            <th>دائن</th>
+                            <th>مدين</th>
+                            <th>دائن</th>
+                            <th>مدين</th>
+                            <th>دائن</th>
+                            <th>مدين</th>
+                            <th>دائن</th>
+                        </tr>
+                    </thead>
+                    <t t-set="vals" t-value="get_ledger_detail(data)[:-1]"/>
+                    <tbody>
+
+                        <t t-set="sum_before_period_debit" t-value="0"/>
+                        <t t-set="sum_before_period_credit" t-value="0"/>
+                        <t t-set="sum_period_debit" t-value="0"/>
+                        <t t-set="sum_period_credit" t-value="0"/>
+                        <t t-set="sum_total_debit" t-value="0"/>
+                        <t t-set="sum_total_credit" t-value="0"/>
+                        <t t-set="sum_balance_debit" t-value="0"/>
+                        <t t-set="sum_balance_credit" t-value="0"/>
+
+                        <t t-foreach="vals" t-as="ledger">
+                            <tr>
+                                <td style="text-align:right">
+                                    <t t-esc="ledger['code']"/>
+                                </td>
+                                <td style="text-align:right">
+                                    <t t-esc="ledger['name']"/>
+                                </td>
+                                <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(ledger['before_period_debit']) if isinstance(ledger['before_period_debit'], int) else '{:,.2f}'.format(ledger['before_period_debit']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                                <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(ledger['before_period_credit']) if isinstance(ledger['before_period_credit'], int) else '{:,.2f}'.format(ledger['before_period_credit']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                                <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(ledger['period_debit']) if isinstance(ledger['period_debit'], int) else '{:,.2f}'.format(ledger['period_debit']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                                <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(ledger['period_credit']) if isinstance(ledger['period_credit'], int) else '{:,.2f}'.format(ledger['period_credit']).rstrip('0').rstrip('.')"/>
+
+                                </td>
+                                <t t-set="total_debit" t-value="ledger['before_period_debit']+ledger['period_debit']"/>
+                                <t t-set="total_credit"
+                                   t-value="ledger['before_period_credit']+ledger['period_credit']"/>
+
+
+                                <t t-set="balance_credit"
+                                   t-value="0 if total_credit - total_debit &lt; 0 else total_credit - total_debit"/>
+                                <t t-set="balance_debit"
+                                   t-value="0 if total_credit - total_debit &gt; 0 else total_debit - total_credit"/>
+
+
+                                <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(total_debit) if isinstance(total_debit, int) else '{:,.2f}'.format(total_debit).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                                <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(total_credit) if isinstance(total_credit, int) else '{:,.2f}'.format(total_credit).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                                <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(balance_debit) if isinstance(balance_debit, int) else '{:,.2f}'.format(balance_debit).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                                <td style="text-align:right">
+                                    <t t-esc="'{:,}'.format(balance_credit) if isinstance(balance_credit, int) else '{:,.2f}'.format(balance_credit).rstrip('0').rstrip('.')"/>
+
+                                </td>
+
+                            </tr>
+
+                            <t t-set="sum_before_period_debit"
+                               t-value="sum_before_period_debit+ledger['before_period_debit']"/>
+                            <t t-set="sum_before_period_credit"
+                               t-value="sum_before_period_credit+ledger['before_period_credit']"/>
+                            <t t-set="sum_period_debit" t-value="sum_period_debit+ledger['period_debit']"/>
+                            <t t-set="sum_period_credit" t-value="sum_period_credit+ledger['period_credit']"/>
+                            <t t-set="sum_total_debit" t-value="sum_total_debit+total_debit"/>
+                            <t t-set="sum_total_credit" t-value="sum_total_credit+total_credit"/>
+                            <t t-set="sum_balance_debit" t-value="sum_balance_debit+balance_debit"/>
+                            <t t-set="sum_balance_credit" t-value="sum_balance_credit+balance_credit"/>
+
+                        </t>
+                        <tr class="sum-data">
+                            <td colspan="2">
+
+
+                            </td>
+
+                            <td style="text-align:right">
+                                <t t-esc="'{:,}'.format(sum_before_period_debit) if isinstance(sum_before_period_debit, int) else '{:,.2f}'.format(sum_before_period_debit).rstrip('0').rstrip('.')"/>
+                            </td>
+                            <td style="text-align:right">
+                                <t t-esc="'{:,}'.format(sum_before_period_credit) if isinstance(sum_before_period_credit, int) else '{:,.2f}'.format(sum_before_period_credit).rstrip('0').rstrip('.')"/>
+                            </td>
+                            <td style="text-align:right">
+                                <t t-esc="'{:,}'.format(sum_period_debit) if isinstance(sum_period_debit, int) else '{:,.2f}'.format(sum_period_debit).rstrip('0').rstrip('.')"/>
+                            </td>
+                            <td style="text-align:right">
+                                <t t-esc="'{:,}'.format(sum_period_credit) if isinstance(sum_period_credit, int) else '{:,.2f}'.format(sum_period_credit).rstrip('0').rstrip('.')"/>
+                            </td>
+                            <td style="text-align:right">
+                                <t t-esc="'{:,}'.format(sum_total_debit) if isinstance(sum_total_debit, int) else '{:,.2f}'.format(sum_total_debit).rstrip('0').rstrip('.')"/>
+                            </td>
+                            <td style="text-align:right">
+                                <t t-esc="'{:,}'.format(sum_total_credit) if isinstance(sum_total_credit, int) else '{:,.2f}'.format(sum_total_credit).rstrip('0').rstrip('.')"/>
+                            </td>
+                            <td style="text-align:right">
+                                <t t-esc="'{:,}'.format(sum_balance_debit) if isinstance(sum_balance_debit, int) else '{:,.2f}'.format(sum_balance_debit).rstrip('0').rstrip('.')"/>
+                            </td>
+                            <td style="text-align:right">
+                                <t t-esc="'{:,}'.format(sum_balance_credit) if isinstance(sum_balance_credit, int) else '{:,.2f}'.format(sum_balance_credit).rstrip('0').rstrip('.')"/>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+        </t>
+    </template>
+
+
+    <template id="ledger_report_template">
+        <t t-call="web.html_container">
+            <t t-call="az_account_reports.ledger_report_template_view"/>
+        </t>
+    </template>
+
+</odoo>
