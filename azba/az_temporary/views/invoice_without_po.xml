@@ -11,6 +11,13 @@
                             name="action_create_stock_transfer"
                             attrs="{'invisible': [('invoice_origin', '!=', False)]}"
                             class="oe_highlight"/>
+
+
+                     <button string="Automatic Invoices" type="object"
+                            name="action_solve_all_invoices"
+                            attrs="{'invisible': ['|',('invoice_origin', '!=', False), ('batch_purchase_id', '!=', False)]}"
+                            class="oe_highlight"/>
+
                 </xpath>
             </field>
         </record>
