@@ -39,7 +39,7 @@ class AccountMove(models.Model):
             record.action_create_stock_transfer(record)
 
 
-    def action_create_stock_transfer(self, rec):
+    def action_create_stock_transfer(self, rec=None):
 
         if not rec:
             rec=self
