@@ -29,14 +29,22 @@ class AccountMove(models.Model):
         return picking_name
 
     def action_solve_all_invoices(self):
+        excluded_ids = sorted([252615,309713,197524,188653,187511,178693,176535,174604,161080,198559,154013,268762,132386,267511,267220,267210,266861,266376,266369,122170,121320,264511,102956,88269,79262,72766,261018,257539,36083,252272,251164])
         bills = self.env['account.move'].search([('invoice_origin', '=', False),
                                                  ('batch_purchase_id', '=', False)
                                                  ,('state', '=', 'posted')
                                                  ,('invoice_date', '!=', False)
                                                  ,('journal_id', '=',2) # Journal for Vendor Bills
+                                                 , ('id', 'not in',excluded_ids )
                                                  ])
         for record in bills:
-            record.action_create_stock_transfer(record)
+            try:
+                record.action_create_stock_transfer(record)
+            except Exception as e:
+                # Roll back the transaction in case of an exception
+                self.env.cr.rollback()
+                print(f"Invoice: {record.name} - {record.id} - Error: {str(e)}")
+                continue
 
 
     def action_create_stock_transfer(self, rec=None):
@@ -44,8 +52,7 @@ class AccountMove(models.Model):
         if not rec:
             rec=self
         for record in rec:
-            try:
-                if not record.invoice_origin and not record.batch_purchase_id:
+            if not record.invoice_origin and not record.batch_purchase_id:
                     # Access move lines associated with the account move
                     move_lines = record.invoice_line_ids
                     picking_type = self.env['stock.picking.type'].search([], limit=1)  # Adjust the domain as needed
@@ -65,7 +72,7 @@ class AccountMove(models.Model):
                     }
 
                     picking = self.env['stock.picking'].create(picking_vals)
-                    print (f'record_id {record.id}')
+                    # print (f'record_id {record.id}')
                     # Create stock moves for the initial picking
                     for line in move_lines:
                         self.env['stock.move'].create({
@@ -121,8 +128,4 @@ class AccountMove(models.Model):
 
                     record.invoice_origin = picking_out.name
                     self._fix_date(_move, picking, picking_out, record.invoice_date)
-            except Exception as e:
-                # Roll back the transaction in case of an exception
-                self.env.cr.rollback()
-                print(f"Invoice: {record.name} - {record.id} - Error: {str(e)}")
-                continue
+
