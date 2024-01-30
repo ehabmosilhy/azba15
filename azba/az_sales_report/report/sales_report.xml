@@ -13,7 +13,6 @@
         <field name="header_spacing">40</field>
         <field name="dpi">90</field>
     </record>
-
     <record id="sales_report_action_view" model="ir.actions.report">
         <field name="name">Sales Report</field>
         <field name="model">az.sales.report</field>

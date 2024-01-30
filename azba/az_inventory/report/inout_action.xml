@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inout_report_action" model="ir.actions.report">
+        <field name="name">Inout Report</field>
+        <field name="model">az.product.inout</field>
+        <field name="binding_model_id" ref="model_az_product_inout"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">az_inventory.inout_report_template</field>
+        <field name="report_file">az_inventory.inout_report_template</field>
+        <field name="paperformat_id" ref="paperformat_stock_card_report"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

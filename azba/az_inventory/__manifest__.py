@@ -5,6 +5,10 @@
     "category": "stock",
     "depends": ["stock"]
     , "data": [
-    'views/stock_picking.xml'
+    'wizard/inout_report_view.xml',
+    'security/ir.model.access.csv',
+    'report/inout_paperformat.xml',
+    'report/inout_action.xml',
+    'report/inout_template.xml',
 ]
 }

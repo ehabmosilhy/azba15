@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="inout_report_form" model="ir.ui.view">
+            <field name="name">inout.report.form.view</field>
+            <field name="model">az.product.inout</field>
+            <field name="arch" type="xml">
+                <form string="Product In-out Report">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="company_id"/>
+                            </group>
+                            <group>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                            </group>
+                        </group>
+                        <div>
+                            <group>
+                                <group>
+                                    <field name="source_location"/>
+                                </group>
+                                <group>
+                                    <field name="destination_location"/>
+                                </group>
+                            </group>
+                        </div>
+                        <div>
+                            <group>
+                                <field name="product_ids"/>
+                            </group>
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button name="get_inout_report" type="object" string="Print" class="btn btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="inout_report_action_form" model="ir.actions.act_window">
+            <field name="name">Product Inout Report</field>
+            <field name="res_model">az.product.inout</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="inout_report_menu"
+                  name="Product In-Out Report🔀"
+                  parent="stock.menu_warehouse_report"
+                  action="inout_report_action_form"
+                  sequence="10"/>
+    </data>
+</odoo>
