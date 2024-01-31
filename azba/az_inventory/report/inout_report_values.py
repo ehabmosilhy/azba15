@@ -9,20 +9,20 @@ class InoutReportTemplate(models.AbstractModel):
 
     def get_inout_details(self, data):
         # Retrieve date range for filtering account moves
-        product_ids = tuple(data.get('product_ids'))
+        _product_ids= data.get('product_ids')
+        product_ids = tuple(_product_ids) if len(_product_ids) > 0 else f'({_product_ids})'
         company_id = data.get('company_id')
         start_date = data.get('date_from')
         end_date = data.get('date_to')
-        destination_location= data.get('destination_location')[0]
-        source_location= data.get('source_location')[0]
+        location= data.get('location')[0]
 
         q = f"""
         
             SELECT pt.code, pt.name,
-        SUM(CASE WHEN (sml.location_dest_id = {destination_location}  or sml.location_id in (select id from stock_location where location_id=5)) AND sp.date < '{start_date}' THEN sml.qty_done ELSE 0 END) AS qty_in_before_start_date,
-        SUM(CASE WHEN (sml.location_id = {source_location}  or sml.location_id in (select id from stock_location where location_id=160)) AND sp.date < '{start_date}' THEN sml.qty_done ELSE 0 END) AS qty_out_before_start_date,
-        SUM(CASE WHEN (sml.location_dest_id = {destination_location}  or sml.location_id in (select id from stock_location where location_id=5)) AND sp.date >= '{start_date}' THEN sml.qty_done ELSE 0 END) AS qty_in,
-        SUM(CASE WHEN (sml.location_id = {source_location} or sml.location_id in (select id from stock_location where location_id=160)) AND sp.date >= '{start_date}' THEN sml.qty_done ELSE 0 END) AS qty_out
+        SUM(CASE WHEN (sml.location_dest_id = {location}  or sml.location_dest_id in (select id from stock_location where location_id={location})) AND sp.date < '{start_date}' THEN sml.qty_done ELSE 0 END) AS qty_in_before_start_date,
+        SUM(CASE WHEN (sml.location_id = {location}  or sml.location_id in (select id from stock_location where location_id={location})) AND sp.date < '{start_date}' THEN sml.qty_done ELSE 0 END) AS qty_out_before_start_date,
+        SUM(CASE WHEN (sml.location_dest_id = {location}  or sml.location_dest_id in (select id from stock_location where location_id={location})) AND sp.date >= '{start_date}' THEN sml.qty_done ELSE 0 END) AS qty_in,
+        SUM(CASE WHEN (sml.location_id = {location} or sml.location_id in (select id from stock_location where location_id={location})) AND sp.date >= '{start_date}' THEN sml.qty_done ELSE 0 END) AS qty_out
             FROM
                 stock_move_line sml
             JOIN
@@ -53,16 +53,14 @@ class InoutReportTemplate(models.AbstractModel):
         date_to = data['form']['date_to']
         company_id = data['form']['company_id'][0]
         product_ids = data['form']['product_ids']
-        source_location = data['form']['source_location']
-        destination_location = data['form']['destination_location']
+        location = data['form']['location']
 
         data = {
             'date_from': date_from,
             'date_to': date_to,
             'company_id': company_id,
             'product_ids': product_ids,
-            'source_location': source_location,
-            'destination_location': destination_location
+            'location': location,
         }
         docargs = {
             'doc_model': 'az.product.inout',

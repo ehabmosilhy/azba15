@@ -9,8 +9,7 @@ class ProductInOut(models.TransientModel):
 
     date_from = fields.Date('Start Date', required=True)
     date_to = fields.Date('End Date', required=True)
-    source_location = fields.Many2one('stock.location', string="Source Location")
-    destination_location = fields.Many2one('stock.location', string="Destination Location")
+    location = fields.Many2one('stock.location', string="Location")
     company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company
                                  , required=True)
     product_ids = fields.Many2many("product.product", string="Product")

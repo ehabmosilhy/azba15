@@ -19,12 +19,7 @@
                         </group>
                         <div>
                             <group>
-                                <group>
-                                    <field name="source_location"/>
-                                </group>
-                                <group>
-                                    <field name="destination_location"/>
-                                </group>
+                                    <field name="location"/>
                             </group>
                         </div>
                         <div>
