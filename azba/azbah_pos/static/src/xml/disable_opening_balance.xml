@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.CashOpeningPopup" t-inherit-mode="extension" owl="1">
+      <xpath expr="//div[contains(@class, 'cash-input-sub-section')]" position="replace">
+
+           <input class="pos-input" type="number" t-model.number="state.openingCash" disabled="disabled"/>
+          <div class="button icon" t-on-click="openDetailsPopup()">
+                                <i class="fa fa-calculator" role="img" title="Open the money details popup"/>
+                            </div>
+
+
+      </xpath>
+    </t>
+  </templates>
