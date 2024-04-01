@@ -30,6 +30,7 @@
                     </sheet>
                     <footer>
                         <button name="get_ledger_report" type="object" string="Print" class="btn btn-primary"/>
+                        <button name="get_ledger_report_xls" type="object" string="Print Excel" class="btn btn-primary"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </form>
