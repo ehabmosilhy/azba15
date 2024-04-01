@@ -33,14 +33,129 @@ class LedgerReport(models.TransientModel):
         action = self.env.ref('az_account_reports.ledger_report_action_view').report_action(self, data=datas)
         return action
 
+    def get_ledger_detail(self, data):
+        # Retrieve date range for filtering account moves
+        data= data['form']
+        company_id = data.get('company_id')[0]
+        start_date = data.get('date_from')
+        end_date = data.get('date_to')
+
+        # Depending on the report type, construct the account IDs SQL
+        account_ids = data.get('account_ids')[0] if data.get('account_ids') else None
+        account_ids_clause = ""
+        params = [company_id]
+
+        if account_ids:
+            account_move_sql = f"""
+                  SELECT
+                      aa.name AS account_name,
+                      p.code,
+                      p.name AS name,
+                      SUM(aml.debit) AS period_debit,
+                      SUM(aml.credit) AS period_credit,
+                      COALESCE(pd.total_debit_before, 0) AS before_period_debit,
+                      COALESCE(pd.total_credit_before, 0) AS before_period_credit,
+                      aml.account_id,
+                      0 as final_debit,
+                      0 as final_credit
+                  FROM
+                      account_move_line aml
+                      LEFT JOIN account_account aa ON aml.account_id = aa.id
+                      LEFT JOIN res_partner p ON aml.partner_id = p.id
+                      LEFT JOIN (
+                          SELECT
+                              partner_id,
+                              account_id,
+                              SUM(debit) AS total_debit_before,
+                              SUM(credit) AS total_credit_before
+                          FROM
+                              account_move_line
+                          WHERE
+                              date < '{start_date}' 
+                              AND (display_type NOT IN ('line_section', 'line_note') OR display_type IS NULL)
+                              AND parent_state = 'posted'
+                              AND (company_id IS NULL OR company_id ={company_id})
+                          GROUP BY
+                              partner_id, account_id
+                      ) pd ON aml.partner_id = pd.partner_id AND aml.account_id = pd.account_id
+                  WHERE
+                      (aml.display_type NOT IN ('line_section', 'line_note') OR aml.display_type IS NULL)
+                      AND aml.parent_state = 'posted'
+                      AND (aml.company_id IS NULL OR aml.company_id ={company_id})
+                      AND aml.date BETWEEN '{start_date}' AND '{end_date}'
+                      and aml.account_id = {account_ids}
+                  GROUP BY
+                      aml.account_id, aa.name, p.id, p.name, pd.total_debit_before, pd.total_credit_before
+                  ORDER BY
+                      p.code;
+              """
+
+
+        # Construct the SQL to fetch all relevant account moves
+        else:
+            account_move_sql = f"""
+                  SELECT
+                  aa.name,
+                  aa.code,
+                      min(aml.id) AS id,
+                      count(aml.id) AS account_id_count,
+                      min(aml.date) AS date,
+                      sum(CASE WHEN aml.date BETWEEN '{start_date}' AND '{end_date}' THEN aml.debit ELSE 0 END) AS period_debit,
+                      sum(CASE WHEN aml.date BETWEEN '{start_date}' AND '{end_date}' THEN aml.credit ELSE 0 END) AS period_credit,
+                      sum(CASE WHEN aml.date <'{start_date}' THEN aml.debit ELSE 0 END) AS before_period_debit,
+                      sum(CASE WHEN aml.date < '{start_date}' THEN aml.credit ELSE 0 END) AS before_period_credit,
+                       sum(aml.debit) AS final_debit,
+                  sum(aml.credit) AS final_credit,
+                      aml.account_id
+                  FROM
+                      account_move_line aml
+                  LEFT JOIN
+                      account_account aa ON aml.account_id = aa.id
+                  LEFT JOIN
+                      res_company rc ON aa.company_id = rc.id
+                  WHERE
+                      (aml.display_type NOT IN ('line_section', 'line_note') OR aml.display_type IS NULL)
+                      AND aml.parent_state = 'posted'
+                      AND (aml.company_id IS NULL OR aml.company_id IN (%s))
+                      {account_ids_clause}
+                  GROUP BY
+                      aml.account_id,
+                      aa.name,
+                      aa.code
+                  ORDER BY
+                      aa.code
+              """
+        # Execute the SQL query
+        self.env.cr.execute(account_move_sql, tuple(params))
+        account_moves = self.env.cr.dictfetchall()
+
+        sums = {
+            'period_debit': 0,
+            'period_credit': 0,
+            'before_period_debit': 0,
+            'before_period_credit': 0,
+        }
+        for move in account_moves:
+            sums['period_debit'] += move.get('period_debit', 0)
+            sums['period_credit'] += move.get('period_credit', 0)
+            sums['before_period_debit'] += move.get('before_debit', 0)
+            sums['before_period_debit'] += move.get('before_credit', 0)
+
+        account_moves.append(sums)
+
+        return account_moves
+
     def get_ledger_report_xls(self):
+
         data = {
             'form': self.read()[0],
-
         }
-        filename = 'Inventory Card Report.xls'
+
+        filename = 'Ledger Report.xls'
         workbook = xlwt.Workbook()
         worksheet = workbook.add_sheet("Sheet 1", cell_overwrite_ok=True)
+        # make worksheet right to left
+        worksheet.cols_right_to_left = True
         worksheet.col(0).width = 5000
         style_header = xlwt.easyxf(
             "font:height 300; font: name Liberation Sans, bold on,color black; align: vert centre, horiz center;pattern: pattern solid, pattern_fore_colour gray25;")
@@ -54,255 +169,73 @@ class LedgerReport(models.TransientModel):
         worksheet.col(2).width = 6000
         worksheet.col(3).width = 6000
         worksheet.col(4).width = 6000
-        line = 1
-        if self.report_by == 'product':
-            worksheet.write_merge(0, 1, 0, 4, "Inventory Card Report - Product\n", style=style_header)
-        else:
-            worksheet.write_merge(0, 1, 0, 4, "Inventory Card Report - Product Category\n", style=style_header)
-        line += 2
-        for i in data:
-            worksheet.write_merge(line, line, 0, 1, 'Start Date', style=style_line_heading)
-            worksheet.write_merge(line, line, 3, 4, 'End Date', style=style_line_heading)
-            worksheet.write_merge(line + 1, line + 1, 0, 1, str(self.date_from),
-                                  style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-            worksheet.write_merge(line + 1, line + 1, 3, 4, str(self.date_to),
-                                  style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
+        line = 0
+        worksheet.write_merge(line, line, 0, 9, "أرصدة الأستاذ المساعد", style=style_header)
+        line += 1
+        if self.account_ids:
+            worksheet.write_merge(line, line, 0, 9, "الحساب: " + self.account_ids.name, style=style_header)
+            line += 1
+        worksheet.write_merge(line, line, 0, 9, "التاريخ: من " + str(self.date_from) + " === إلى " + str(self.date_to), style=style_header)
+        line += 1
+        worksheet.write_merge(line, line, 0, 1, "", style=style_line_heading)
+        worksheet.write_merge(line, line, 2, 3, "ما قبله", style=style_line_heading)
+        worksheet.write_merge(line, line, 4, 5, "خلال الفترة", style=style_line_heading)
+        worksheet.write_merge(line, line, 6, 7, "الإجمالى", style=style_line_heading)
+        worksheet.write_merge(line, line, 8, 9, "الرصيد", style=style_line_heading)
+        line += 1
+        worksheet.write(line, 0, "كود", style=style_line_heading)
+        worksheet.write(line, 1, "اسم الحساب", style=style_line_heading)
+        worksheet.write(line, 2, "مدين", style=style_line_heading)
+        worksheet.write(line, 3, "دائن", style=style_line_heading)
+        worksheet.write(line, 4, "مدين", style=style_line_heading)
+        worksheet.write(line, 5, "دائن", style=style_line_heading)
+        worksheet.write(line, 6, "مدين", style=style_line_heading)
+        worksheet.write(line, 7, "دائن", style=style_line_heading)
+        worksheet.write(line, 8, "مدين", style=style_line_heading)
+        worksheet.write(line, 9, "دائن", style=style_line_heading)
+        line += 1
 
-        line += 2
-        warehouse_id = self.env['stock.warehouse'].search([('id', '=', self.warehouse_id.id)])
-        location_id = self.env['stock.location'].search([('id', '=', self.location_id.id)])
-        context = self._context
-        current_uid = context.get('uid')
-        user = self.env['res.users'].browse(current_uid)
+        vals = self.get_ledger_detail(data)
 
-        worksheet.write(line, 0, 'User', style=style_line_heading)
-        worksheet.write_merge(line, line, 1, 2, 'Warehouse', style=style_line_heading)
-        worksheet.write_merge(line, line, 3, 4, 'Location', style=style_line_heading)
+        sum_before_period_debit = 0
+        sum_before_period_credit = 0
+        sum_period_debit = 0
+        sum_period_credit = 0
+        sum_total_debit = 0
+        sum_total_credit = 0
+        sum_balance_debit = 0
+        sum_balance_credit = 0
 
-        worksheet.write(line + 1, 0, user.name, style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-        worksheet.write_merge(line + 1, line + 1, 1, 2, warehouse_id.name,
-                              style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-        worksheet.write_merge(line + 1, line + 1, 3, 4, location_id.name,
-                              style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;\n"))
+        style_normal_right = xlwt.easyxf("font: name Liberation Sans; align: horiz right;")
 
-        line += 3
-        for i in data:
-            worksheet.write(line, 0, 'Date', style=style_line_heading)
-            worksheet.write(line, 1, 'Origin', style=style_line_heading)
-            worksheet.write(line, 2, 'In Quantity', style=style_line_heading)
-            worksheet.write(line, 3, 'Out Quantity', style=style_line_heading)
-            worksheet.write(line, 4, 'Balance', style=style_line_heading)
+        for ledger in vals:
+            worksheet.write(line, 0, ledger.get('code'), style=style_normal_right)
+            worksheet.write(line, 1, ledger.get('name'), style=style_normal_right)
+            worksheet.write(line, 2, ledger.get('before_period_debit', 0), style=style_normal_right)
+            worksheet.write(line, 3, ledger.get('before_period_credit', 0), style=style_normal_right)
+            worksheet.write(line, 4, ledger.get('period_debit', 0), style=style_normal_right)
+            worksheet.write(line, 5, ledger.get('period_credit', 0), style=style_normal_right)
 
-        line += 2
+            total_debit = ledger.get('before_period_debit', 0) + ledger.get('period_debit', 0)
+            total_credit = ledger.get('before_period_credit', 0) + ledger.get('period_credit', 0)
 
-        if self.report_by == 'product_category':
-            product_category_ids = self.env['product.category'].search([('id', 'in', self.product_category_ids.ids)])
-            product_ids = self.env['product.product'].search([('categ_id', 'in', product_category_ids.ids)])
-            lines = []
-            for product in product_ids:
-                move_line_ids = self.env['stock.move.line'].search(
-                    [('move_id.date', '>=', self.date_from), ('move_id.date', '<=', self.date_to),
-                     ('state', '=', 'done'), ('product_id', '=', product.id),
-                     '|', ('location_id', '=', self.location_id.id),
-                     ('location_dest_id', '=', self.location_id.id)
-                     ])
-                balance = 0.0
-                for stock_move in move_line_ids:
-                    for move in self.env['stock.move.line'].search(
-                            [('id', '=', stock_move.id), ('location_id.usage', '=', 'inventory')]):
-                        if move:
-                            move_date = move.date
-                            lines.append({'origin': 'Inventory Adjustment', 'move_date': move_date,
-                                          'product_id': move.product_id, 'in_qty': move.qty_done, 'out_qty': 0.0,
-                                          'category': move.product_id.categ_id})
+            balance_credit = max(total_credit - total_debit, 0)
+            balance_debit = max(total_debit - total_credit, 0)
 
-                    for move in self.env['stock.move.line'].search(
-                            [('id', '=', stock_move.id), ('picking_type_id.code', '=', 'incoming'), '|',
-                             ('move_id.warehouse_id', '=', self.warehouse_id.id),
-                             ('move_id.warehouse_id', '=', False)]):
-                        if move:
-                            move_date = move.date
-                            if move.origin:
-                                lines.append(
-                                    {'origin': move.origin, 'move_date': move_date, 'product_id': move.product_id,
-                                     'in_qty': move.qty_done, 'out_qty': 0.0, 'category': move.product_id.categ_id, })
-                            else:
-                                lines.append(
-                                    {'origin': move.reference, 'move_date': move_date, 'product_id': move.product_id,
-                                     'in_qty': move.qty_done, 'out_qty': 0.0, 'category': move.product_id.categ_id, })
+            worksheet.write(line, 6, total_debit, style=style_normal_right)
+            worksheet.write(line, 7, total_credit, style=style_normal_right)
+            worksheet.write(line, 8, balance_debit, style=style_normal_right)
+            worksheet.write(line, 9, balance_credit, style=style_normal_right)
 
-                    for move in self.env['stock.move.line'].search(
-                            [('id', '=', stock_move.id), ('picking_type_id.code', '=', 'outgoing'), '|',
-                             ('move_id.warehouse_id', '=', self.warehouse_id.id),
-                             ('move_id.warehouse_id', '=', False)]):
-                        if move:
-                            move_date = move.date
-                            if move.origin:
-                                lines.append({'origin': move.origin, 'move_date': move_date, 'out_qty': move.qty_done,
-                                              'product_id': move.product_id, 'in_qty': 0.0,
-                                              'category': move.product_id.categ_id, })
-                            else:
-                                lines.append(
-                                    {'origin': move.reference, 'move_date': move_date, 'out_qty': move.qty_done,
-                                     'product_id': move.product_id, 'in_qty': 0.0,
-                                     'category': move.product_id.categ_id, })
-
-            sorted_lines = sorted(lines, key=lambda x: x['move_date'], reverse=False)
-
-            category = []
-            for rec in sorted_lines:
-                category.append(rec['category'])
-            line_categ = line
-            for categ in set(category):
-                if categ:
-                    worksheet.write_merge(line_categ, line_categ, 0, 4, categ.complete_name, style=xlwt.easyxf(
-                        "font: name Liberation Sans, bold on;align: horiz centre; pattern: pattern solid, pattern_fore_colour light_orange;"))
-                product = []
-                for rec in sorted_lines:
-                    product.append(rec['product_id'])
-                line_pro = line_categ
-                for product_id in set(product):
-                    if categ.id == product_id.categ_id.id:
-                        worksheet.write_merge(line_pro + 1, line_pro + 1, 0, 4, product_id.display_name,
-                                              style=xlwt.easyxf(
-                                                  "font: name Liberation Sans, bold on;align: horiz centre; pattern: pattern solid, pattern_fore_colour light_blue;"))
-                        line = line_pro + 2
-                        worksheet.write_merge(line, line, 0, 3, 'Opening Balance',
-                                              style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                        worksheet.write(line, 4, '0',
-                                        style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                        total_in_qty = 0.0
-                        total_out_qty = 0.0
-                        total_balance = 0.0
-                        balance = 0.0
-                        line = line + 1
-                        for rec in sorted_lines:
-                            if product_id.id == rec['product_id'].id:
-                                worksheet.write(line, 0, rec['move_date'].strftime('%m-%d-%Y'),
-                                                style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                                worksheet.write(line, 1, rec['origin'],
-                                                style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                                worksheet.write(line, 2, rec['in_qty'],
-                                                style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                                worksheet.write(line, 3, rec['out_qty'],
-                                                style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                                balance += rec['in_qty']
-                                balance -= rec['out_qty']
-                                worksheet.write(line, 4, balance,
-                                                style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                                line += 1
-                                total_in_qty += rec['in_qty']
-                                total_out_qty += rec['out_qty']
-                                total_balance = total_in_qty - total_out_qty
-                        worksheet.write(line, 0, ' ', style=xlwt.easyxf(
-                            "font: name Liberation Sans; align: horiz center; pattern: pattern solid, pattern_fore_colour gray50;"))
-                        worksheet.write(line, 1, 'Total', style=xlwt.easyxf(
-                            "font: name Liberation Sans; align: horiz center; pattern: pattern solid, pattern_fore_colour gray50;"))
-                        worksheet.write(line, 2, total_in_qty, style=xlwt.easyxf(
-                            "font: name Liberation Sans; align: horiz center; pattern: pattern solid, pattern_fore_colour gray50;"))
-                        worksheet.write(line, 3, total_out_qty, style=xlwt.easyxf(
-                            "font: name Liberation Sans; align: horiz center; pattern: pattern solid, pattern_fore_colour gray50;"))
-                        worksheet.write(line, 4, total_balance, style=xlwt.easyxf(
-                            "font: name Liberation Sans; align: horiz center; pattern: pattern solid, pattern_fore_colour gray50;"))
-                    line_pro = line + 1
-                line_categ = line + 1
-
-        else:
-            product_ids = self.env['product.product'].search([('id', 'in', self.product_ids.ids)])
-            lines = []
-            for product in product_ids:
-                move_line_ids = self.env['stock.move.line'].search(
-                    [('date', '>=', self.date_from), ('date', '<=', self.date_to), ('state', '=', 'done'),
-                     ('product_id', '=', product.id),
-                     '|', ('location_id', '=', self.location_id.id),
-                     ('location_dest_id', '=', self.location_id.id),
-                     ])
-                balance = 0.0
-                for stock_move in move_line_ids:
-                    for move in self.env['stock.move.line'].search(
-                            [('id', '=', stock_move.id), ('location_id.usage', '=', 'inventory')]):
-                        if move:
-                            move_date = move.date
-                            lines.append({'origin': 'Inventory Adjustment', 'move_date': move_date,
-                                          'product_id': move.product_id, 'in_qty': move.qty_done, 'out_qty': 0.0})
-
-                    for move in self.env['stock.move.line'].search(
-                            [('id', '=', stock_move.id), ('picking_type_id.code', '=', 'incoming'), '|',
-                             ('move_id.warehouse_id', '=', self.warehouse_id.id),
-                             ('move_id.warehouse_id', '=', False)]):
-                        if move:
-                            move_date = move.date
-                            if move.origin:
-                                lines.append(
-                                    {'origin': move.origin, 'move_date': move_date, 'product_id': move.product_id,
-                                     'in_qty': move.qty_done, 'out_qty': 0.0})
-                            else:
-                                lines.append(
-                                    {'origin': move.reference, 'move_date': move_date, 'product_id': move.product_id,
-                                     'in_qty': move.qty_done, 'out_qty': 0.0})
-
-                    for move in self.env['stock.move.line'].search(
-                            [('id', '=', stock_move.id), ('picking_type_id.code', '=', 'outgoing'), '|',
-                             ('move_id.warehouse_id', '=', self.warehouse_id.id),
-                             ('move_id.warehouse_id', '=', False)]):
-                        if move:
-                            move_date = move.date
-                            if move.origin:
-                                lines.append({'origin': move.origin, 'move_date': move_date, 'out_qty': move.qty_done,
-                                              'product_id': move.product_id, 'in_qty': 0.0})
-                            else:
-                                lines.append(
-                                    {'origin': move.reference, 'move_date': move_date, 'out_qty': move.qty_done,
-                                     'product_id': move.product_id, 'in_qty': 0.0})
-
-            sorted_lines = sorted(lines, key=lambda x: x['move_date'], reverse=False)
-
-            product = []
-            for rec in sorted_lines:
-                product.append(rec['product_id'])
-            line_row = line
-            for product_id in set(product):
-                if product_id:
-                    worksheet.write_merge(line_row, line_row, 0, 4, product_id.display_name, style=xlwt.easyxf(
-                        "font: name Liberation Sans, bold on;align: horiz centre; pattern: pattern solid, pattern_fore_colour light_blue;"))
-                    line = line_row + 1
-                    worksheet.write_merge(line, line, 0, 3, 'Opening Balance',
-                                          style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                    worksheet.write(line, 4, '0', style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                    total_in_qty = 0.0
-                    total_out_qty = 0.0
-                    total_balance = 0.0
-                    balance = 0.0
-                    line = line + 1
-                    for rec in sorted_lines:
-                        if product_id.id == rec['product_id'].id:
-                            worksheet.write(line, 0, rec['move_date'].strftime('%m-%d-%Y'),
-                                            style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                            worksheet.write(line, 1, rec['origin'],
-                                            style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                            worksheet.write(line, 2, rec['in_qty'],
-                                            style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                            worksheet.write(line, 3, rec['out_qty'],
-                                            style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                            balance += rec['in_qty']
-                            balance -= rec['out_qty']
-                            worksheet.write(line, 4, balance,
-                                            style=xlwt.easyxf("font: name Liberation Sans; align: horiz center;"))
-                            line += 1
-                            total_in_qty += rec['in_qty']
-                            total_out_qty += rec['out_qty']
-                            total_balance = total_in_qty - total_out_qty
-                    worksheet.write(line, 0, ' ', style=xlwt.easyxf(
-                        "font: name Liberation Sans; align: horiz center; pattern: pattern solid, pattern_fore_colour gray50;"))
-                    worksheet.write(line, 1, 'Total', style=xlwt.easyxf(
-                        "font: name Liberation Sans; align: horiz center; pattern: pattern solid, pattern_fore_colour gray50;"))
-                    worksheet.write(line, 2, total_in_qty, style=xlwt.easyxf(
-                        "font: name Liberation Sans; align: horiz center; pattern: pattern solid, pattern_fore_colour gray50;"))
-                    worksheet.write(line, 3, total_out_qty, style=xlwt.easyxf(
-                        "font: name Liberation Sans; align: horiz center; pattern: pattern solid, pattern_fore_colour gray50;"))
-                    worksheet.write(line, 4, total_balance, style=xlwt.easyxf(
-                        "font: name Liberation Sans; align: horiz center; pattern: pattern solid, pattern_fore_colour gray50;"))
-                line_row = line + 2
+            sum_before_period_debit += ledger.get('before_period_debit', 0)
+            sum_before_period_credit += ledger.get('before_period_credit', 0)
+            sum_period_debit += ledger.get('period_debit', 0)
+            sum_period_credit += ledger.get('period_credit', 0)
+            sum_total_debit += total_debit
+            sum_total_credit += total_credit
+            sum_balance_debit += balance_debit
+            sum_balance_credit += balance_credit
+            line += 1
 
         fp = io.BytesIO()
         workbook.save(fp)
