@@ -50,7 +50,9 @@
                 </style>
                 <h2>أرصدة الأستاذ المساعد</h2>
                 <t t-if="data['account_ids']">
-                    <h3>الحساب: <span t-esc="data['account_ids'][1]"/></h3>
+                    <h3>الحساب:
+                        <span t-esc="data['account_ids'][1]"/>
+                    </h3>
                 </t>
                 <h4>التاريخ:
 
@@ -80,6 +82,7 @@
                             <th colspan="2">الرصيد</th>
                         </tr>
                         <tr>
+                            <th>م</th>
                             <th>كود</th>
                             <th>اسم الحساب</th>
                             <th>مدين</th>
@@ -103,7 +106,7 @@
                         <t t-set="sum_total_credit" t-value="0"/>
                         <t t-set="sum_balance_debit" t-value="0"/>
                         <t t-set="sum_balance_credit" t-value="0"/>
-
+                        <t t-set="counter" t-value="0"/>
                         <t t-foreach="vals" t-as="ledger">
                             <tr>
                                 <td style="text-align:right">
