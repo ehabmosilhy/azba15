@@ -197,6 +197,11 @@ class LedgerReport(models.TransientModel):
 
         vals = self.get_ledger_detail(data)
 
+
+        style_normal_right = xlwt.easyxf("font: name Liberation Sans; align: horiz right;")
+        style_bold_right = xlwt.easyxf("font:height 200; font: name Liberation Sans, bold on,color black; align: vert centre, horiz center;pattern: pattern solid, pattern_fore_colour gray25;")
+
+        # Initialize sum variables before the loop
         sum_before_period_debit = 0
         sum_before_period_credit = 0
         sum_period_debit = 0
@@ -205,8 +210,6 @@ class LedgerReport(models.TransientModel):
         sum_total_credit = 0
         sum_balance_debit = 0
         sum_balance_credit = 0
-
-        style_normal_right = xlwt.easyxf("font: name Liberation Sans; align: horiz right;")
 
         for ledger in vals:
             worksheet.write(line, 0, ledger.get('code'), style=style_normal_right)
@@ -236,6 +239,27 @@ class LedgerReport(models.TransientModel):
             sum_balance_debit += balance_debit
             sum_balance_credit += balance_credit
             line += 1
+
+        # Write the summation line
+        worksheet.write(line, 1, 'Total', style=style_bold_right)
+        worksheet.write(line, 2, sum_before_period_debit, style=style_bold_right)
+        worksheet.write(line, 3, sum_before_period_credit, style=style_bold_right)
+        worksheet.write(line, 4, sum_period_debit, style=style_bold_right)
+        worksheet.write(line, 5, sum_period_credit, style=style_bold_right)
+        worksheet.write(line, 6, sum_total_debit, style=style_bold_right)
+        worksheet.write(line, 7, sum_total_credit, style=style_bold_right)
+        worksheet.write(line, 8, sum_balance_debit, style=style_bold_right)
+        worksheet.write(line, 9, sum_balance_credit, style=style_bold_right)
+
+        balance = sum_balance_debit-sum_balance_credit
+        if balance>0:
+            cell = 8
+        else:
+            cell = 9
+        line += 2
+        worksheet.write(line, 7, "الرصيد", style=style_bold_right)
+        worksheet.write(line, cell, abs(balance), style=style_bold_right)
+
 
         fp = io.BytesIO()
         workbook.save(fp)
