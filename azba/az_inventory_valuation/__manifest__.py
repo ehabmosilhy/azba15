@@ -5,6 +5,7 @@
     'summary': 'Wizard to get stock valuation as of a specific date',
     'depends': ['stock', 'purchase'],
     'data': [
+        'security/ir.model.access.csv',
         'wizard/stock_valuation.xml',
     ],
     'installable': True,
