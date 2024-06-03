@@ -1,0 +1,36 @@
+<odoo>
+    <record id="view_stock_valuation_wizard_form" model="ir.ui.view">
+        <field name="name">stock.valuation.wizard.form</field>
+        <field name="model">stock.valuation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Stock Valuation Wizard">
+                <group>
+                    <field name="date"/>
+                </group>
+                <footer>
+                    <button string="Get Valuation" type="object" name="get_stock_valuation" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+                <group>
+                    <field name="report_file" filename="report_filename" readonly="1"/>
+                    <button string="Download Report" type="object" name="download_report"
+                            attrs="{'invisible': [('report_file', '=', False)]}" class="btn-primary"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_valuation_wizard" model="ir.actions.act_window">
+        <field name="name">Stock Valuation Wizard</field>
+        <field name="res_model">stock.valuation.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_stock_valuation_wizard" name="تقييم مخزون بتاريخ"
+              sequence="7"
+              parent="stock.menu_warehouse_report" action="action_stock_valuation_wizard"/>
+
+</odoo>
+
+
