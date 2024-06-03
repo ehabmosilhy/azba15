@@ -15,28 +15,49 @@ class StockValuationWizard(models.TransientModel):
         self.ensure_one()
         date = self.date
 
-        products = self.env['product.product'].search([])
+        # SQL query to fetch summed quantities and values from stock_valuation_layer
+        query = """
+        SELECT
+            product_id as product_id,
+            SUM(quantity) as total_quantity,
+            SUM(value) as total_value
+        FROM
+            stock_valuation_layer
+        WHERE
+            create_date <= %s AND
+            company_id in %s
+        GROUP BY
+            product_id;
+        """
+        self.env.cr.execute(query, (date, tuple(self.env.user.company_ids.ids)))
+        result = self.env.cr.dictfetchall()
+
+        # Fetch all products at once
+        product_ids = [res['product_id'] for res in result]
+        products = {prod.id: prod for prod in self.env['product.product'].browse(product_ids)}
+
         valuation_lines = []
+        for res in result:
+            product = products.get(res['product_id'])
+            if product:
+                # Fetch the latest purchase price before or on the given date
+                latest_purchase_line = self.env['purchase.order.line'].search([
+                    ('product_id', '=', product.id),
+                    ('order_id.date_order', '<=', date)
+                ], order='date_order desc', limit=1)
+                price = latest_purchase_line.price_unit if latest_purchase_line else 0.0
+                value = res['total_quantity'] * price
+                code = f'{product.product_tmpl_id.code.strip()}' if product.product_tmpl_id.code else '[]'
 
-        for product in products:
-            quantity = sum(self.env['stock.quant'].search([
-                ('product_id', '=', product.id),
-                ('location_id.usage', '=', 'internal')
-            ]).mapped('quantity'))
-
-            latest_purchase_line = self.env['purchase.order.line'].search([
-                ('product_id', '=', product.id)
-            ], order='date_order desc', limit=1)
-
-            price = latest_purchase_line.price_unit if latest_purchase_line else 0.0
-            value = quantity * price
-            name_and_code = f'[{product.product_tmpl_id.code.strip()}] {product.name}' if product.product_tmpl_id.code else product.name
-            valuation_lines.append({
-                'product': name_and_code,
-                'quantity': quantity,
-                'uom': product.uom_id.name,
-                'value': value,
-            })
+                # Include product code and latest purchase price in the results
+                valuation_lines.append({
+                    'product': product.name,
+                    'product_code':code,
+                    'latest_purchase_price': price,
+                    'quantity': res['total_quantity'],
+                    'uom': product.uom_id.name,
+                    'value': value,
+                })
 
         self._generate_excel_report(valuation_lines)
 
@@ -55,16 +76,18 @@ class StockValuationWizard(models.TransientModel):
         worksheet = workbook.add_worksheet('Stock Valuation')
 
         # Define the headers
-        headers = ['Product', 'Quantity', 'Unit of Measure', 'Value']
+        headers = ['Product', 'Product Code', 'Latest Purchase Price', 'Quantity', 'Unit of Measure', 'Value']
         for col_num, header in enumerate(headers):
             worksheet.write(0, col_num, header)
 
         # Write data to the sheet
         for row_num, line in enumerate(valuation_lines, start=1):
             worksheet.write(row_num, 0, line['product'])
-            worksheet.write(row_num, 1, line['quantity'])
-            worksheet.write(row_num, 2, line['uom'])
-            worksheet.write(row_num, 3, line['value'])
+            worksheet.write(row_num, 1, line['product_code'])
+            worksheet.write(row_num, 2, line['latest_purchase_price'])
+            worksheet.write(row_num, 3, line['quantity'])
+            worksheet.write(row_num, 4, line['uom'])
+            worksheet.write(row_num, 5, line['value'])
 
         workbook.close()
         output.seek(0)
@@ -79,11 +102,3 @@ class StockValuationWizard(models.TransientModel):
                 self.id),
             'target': 'new',
         }
-class StockValuationResult(models.TransientModel):
-    _name = 'stock.valuation.result'
-    _description = 'Stock Valuation Result'
-
-    product = fields.Char(string='Product')
-    quantity = fields.Float(string='Quantity')
-    uom = fields.Char(string='Unit of Measure')
-    value = fields.Float(string='Value')
