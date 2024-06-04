@@ -2,6 +2,8 @@ from odoo import models, fields, api
 import io
 import xlsxwriter
 import base64
+from datetime import datetime, time
+
 
 class StockValuationWizard(models.TransientModel):
     _name = 'stock.valuation.wizard'
@@ -40,19 +42,63 @@ class StockValuationWizard(models.TransientModel):
         for res in result:
             product = products.get(res['product_id'])
             if product:
-                # Fetch the latest purchase price before or on the given date
+                # Fetch the latest purchase price before or on the given date from purchase order lines
                 latest_purchase_line = self.env['purchase.order.line'].search([
                     ('product_id', '=', product.id),
                     ('order_id.date_order', '<=', date)
                 ], order='date_order desc', limit=1)
-                price = latest_purchase_line.price_unit if latest_purchase_line else 0.0
+
+                # Fetch the latest purchase price before or on the given date from vendor bill lines
+                latest_vendor_bill_line = self.env['account.move.line'].search([
+                    ('product_id', '=', product.id),
+                    ('move_id.invoice_date', '<=', date),
+                    ('move_id.move_type', 'in', ['in_invoice', 'in_refund'])  # Consider vendor bills and refunds
+                ], order='date desc', limit=1)
+
+                # Determine the latest price from either purchase order line or vendor bill line
+
+
+                # Fetch the latest purchase price before or on the given date from purchase order lines
+
+                # Fetch the latest purchase price before or on the given date from purchase order lines
+                latest_purchase_line = self.env['purchase.order.line'].search([
+                    ('product_id', '=', product.id),
+                    ('order_id.date_order', '<=', date)
+                ], order='date_order desc', limit=1)
+
+                # Fetch the latest purchase price before or on the given date from vendor bill lines
+                latest_vendor_bill_line = self.env['account.move.line'].search([
+                    ('product_id', '=', product.id),
+                    ('move_id.invoice_date', '<=', date),
+                    ('move_id.move_type', 'in', ['in_invoice', 'in_refund'])  # Consider vendor bills and refunds
+                ], order='date desc', limit=1)
+
+                # Determine the latest price from either purchase order line or vendor bill line
+                if latest_purchase_line and latest_vendor_bill_line:
+                    # Convert date_order to datetime with the last possible time of the day
+                    purchase_date_order = datetime.combine(latest_purchase_line.order_id.date_order, time.max)
+                    # Convert invoice_date to datetime with the last possible time of the day
+                    vendor_invoice_date = datetime.combine(latest_vendor_bill_line.move_id.invoice_date, time.max)
+
+                    if purchase_date_order >= vendor_invoice_date:
+                        price = latest_purchase_line.price_unit
+                    else:
+                        price = latest_vendor_bill_line.price_unit
+                elif latest_purchase_line:
+                    price = latest_purchase_line.price_unit
+                elif latest_vendor_bill_line:
+                    price = latest_vendor_bill_line.price_unit
+                else:
+                    price = 0.0
+
+
                 value = res['total_quantity'] * price
                 code = f'{product.product_tmpl_id.code.strip()}' if product.product_tmpl_id.code else '[]'
 
                 # Include product code and latest purchase price in the results
                 valuation_lines.append({
-                    'product': product.name,
                     'product_code':code,
+                    'product': product.name,
                     'latest_purchase_price': price,
                     'quantity': res['total_quantity'],
                     'uom': product.uom_id.name,
@@ -86,8 +132,9 @@ class StockValuationWizard(models.TransientModel):
             worksheet.write(row_num, 1, line['product_code'])
             worksheet.write(row_num, 2, line['latest_purchase_price'])
             worksheet.write(row_num, 3, line['quantity'])
-            worksheet.write(row_num, 4, line['uom'])
-            worksheet.write(row_num, 5, line['value'])
+            worksheet.write(row_num, 4, line['value'])
+            worksheet.write(row_num, 5, line['uom'])
+
 
         workbook.close()
         output.seek(0)
