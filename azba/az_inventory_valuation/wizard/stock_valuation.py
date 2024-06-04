@@ -9,13 +9,18 @@ class StockValuationWizard(models.TransientModel):
     _name = 'stock.valuation.wizard'
     _description = 'Stock Valuation Wizard'
 
-    date = fields.Date(string='Date', required=True)
+    date = fields.Datetime(string='Date', required=True)
     report_file = fields.Binary(string='Report File')
     report_filename = fields.Char(string='Report Filename', default='stock_valuation.xlsx')
 
+
     def get_stock_valuation(self):
         self.ensure_one()
+        # Convert the date to a datetime object with the last possible time of the day
         date = self.date
+        # end_of_day = datetime.combine(date, "08:15:00")
+        if date.time() == time(0, 0, 0):
+            date = date.replace(hour=8, minute=15, second=0)
 
         # SQL query to fetch summed quantities and values from stock_valuation_layer
         query = """
@@ -56,24 +61,6 @@ class StockValuationWizard(models.TransientModel):
                 ], order='date desc', limit=1)
 
                 # Determine the latest price from either purchase order line or vendor bill line
-
-
-                # Fetch the latest purchase price before or on the given date from purchase order lines
-
-                # Fetch the latest purchase price before or on the given date from purchase order lines
-                latest_purchase_line = self.env['purchase.order.line'].search([
-                    ('product_id', '=', product.id),
-                    ('order_id.date_order', '<=', date)
-                ], order='date_order desc', limit=1)
-
-                # Fetch the latest purchase price before or on the given date from vendor bill lines
-                latest_vendor_bill_line = self.env['account.move.line'].search([
-                    ('product_id', '=', product.id),
-                    ('move_id.invoice_date', '<=', date),
-                    ('move_id.move_type', 'in', ['in_invoice', 'in_refund'])  # Consider vendor bills and refunds
-                ], order='date desc', limit=1)
-
-                # Determine the latest price from either purchase order line or vendor bill line
                 if latest_purchase_line and latest_vendor_bill_line:
                     # Convert date_order to datetime with the last possible time of the day
                     purchase_date_order = datetime.combine(latest_purchase_line.order_id.date_order, time.max)
@@ -91,13 +78,12 @@ class StockValuationWizard(models.TransientModel):
                 else:
                     price = 0.0
 
-
                 value = res['total_quantity'] * price
                 code = f'{product.product_tmpl_id.code.strip()}' if product.product_tmpl_id.code else '[]'
 
                 # Include product code and latest purchase price in the results
                 valuation_lines.append({
-                    'product_code':code,
+                    'product_code': code,
                     'product': product.name,
                     'latest_purchase_price': price,
                     'quantity': res['total_quantity'],
@@ -115,26 +101,24 @@ class StockValuationWizard(models.TransientModel):
             'res_id': self.id,
             'target': 'new',
         }
-
     def _generate_excel_report(self, valuation_lines):
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet('Stock Valuation')
 
         # Define the headers
-        headers = ['Product', 'Product Code', 'Latest Purchase Price', 'Quantity', 'Unit of Measure', 'Value']
+        headers = ['Code', 'Product', 'Latest Purchase Price', 'Quantity', 'Value', 'Unit of Measure']
         for col_num, header in enumerate(headers):
             worksheet.write(0, col_num, header)
 
         # Write data to the sheet
         for row_num, line in enumerate(valuation_lines, start=1):
-            worksheet.write(row_num, 0, line['product'])
-            worksheet.write(row_num, 1, line['product_code'])
+            worksheet.write(row_num, 0, line['product_code'])
+            worksheet.write(row_num, 1, line['product'])
             worksheet.write(row_num, 2, line['latest_purchase_price'])
             worksheet.write(row_num, 3, line['quantity'])
             worksheet.write(row_num, 4, line['value'])
             worksheet.write(row_num, 5, line['uom'])
-
 
         workbook.close()
         output.seek(0)
