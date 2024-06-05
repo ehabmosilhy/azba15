@@ -2,7 +2,8 @@ from odoo import models, fields, api
 import io
 import xlsxwriter
 import base64
-from datetime import datetime, time
+from datetime import time, datetime, timedelta
+from collections import defaultdict
 
 
 class StockValuationWizard(models.TransientModel):
@@ -13,58 +14,45 @@ class StockValuationWizard(models.TransientModel):
     report_file = fields.Binary(string='Report File')
     report_filename = fields.Char(string='Report Filename', default='stock_valuation.xlsx')
 
-
     def get_stock_valuation(self):
         self.ensure_one()
-        # Convert the date to a datetime object with the last possible time of the day
         date = self.date
-        # end_of_day = datetime.combine(date, "08:15:00")
+
         if date.time() == time(0, 0, 0):
-            date = date.replace(hour=8, minute=15, second=0)
+            date = date - timedelta(days=1)
+            date = date.replace(hour=23, minute=59, second=59, microsecond=0)
 
-        # SQL query to fetch summed quantities and values from stock_valuation_layer
-        query = """
-        SELECT
-            product_id as product_id,
-            SUM(quantity) as total_quantity,
-            SUM(value) as total_value
-        FROM
-            stock_valuation_layer
-        WHERE
-            create_date <= %s AND
-            company_id in %s
-        GROUP BY
-            product_id;
-        """
-        self.env.cr.execute(query, (date, tuple(self.env.user.company_ids.ids)))
-        result = self.env.cr.dictfetchall()
+        stock_history_model = self.env['stock.quantity.history'].create({
+            'inventory_datetime': date
+        })
 
-        # Fetch all products at once
-        product_ids = [res['product_id'] for res in result]
-        products = {prod.id: prod for prod in self.env['product.product'].browse(product_ids)}
+        action = stock_history_model.open_at_date()
+        domain = [('create_date', '<=', self.date), ('product_id.type', '=', 'product')]
+        # domain += [('company_id', 'in', self.env.user.company_ids.ids)]
+
+        stock_valuation_lines = self.env['stock.valuation.layer'].search(domain)
+        # Aggregate quantities by product_id
+        product_quantities = defaultdict(float)
+        for line in stock_valuation_lines:
+            product_quantities[line.product_id.id] += line.quantity
 
         valuation_lines = []
-        for res in result:
-            product = products.get(res['product_id'])
+        for product_id, total_quantity in product_quantities.items():
+            product = self.env['product.product'].browse(product_id)
             if product:
-                # Fetch the latest purchase price before or on the given date from purchase order lines
                 latest_purchase_line = self.env['purchase.order.line'].search([
                     ('product_id', '=', product.id),
                     ('order_id.date_order', '<=', date)
                 ], order='date_order desc', limit=1)
 
-                # Fetch the latest purchase price before or on the given date from vendor bill lines
                 latest_vendor_bill_line = self.env['account.move.line'].search([
                     ('product_id', '=', product.id),
                     ('move_id.invoice_date', '<=', date),
-                    ('move_id.move_type', 'in', ['in_invoice', 'in_refund'])  # Consider vendor bills and refunds
+                    ('move_id.move_type', 'in', ['in_invoice', 'in_refund'])
                 ], order='date desc', limit=1)
 
-                # Determine the latest price from either purchase order line or vendor bill line
                 if latest_purchase_line and latest_vendor_bill_line:
-                    # Convert date_order to datetime with the last possible time of the day
                     purchase_date_order = datetime.combine(latest_purchase_line.order_id.date_order, time.max)
-                    # Convert invoice_date to datetime with the last possible time of the day
                     vendor_invoice_date = datetime.combine(latest_vendor_bill_line.move_id.invoice_date, time.max)
 
                     if purchase_date_order >= vendor_invoice_date:
@@ -78,15 +66,14 @@ class StockValuationWizard(models.TransientModel):
                 else:
                     price = 0.0
 
-                value = res['total_quantity'] * price
+                value = total_quantity * price
                 code = f'{product.product_tmpl_id.code.strip()}' if product.product_tmpl_id.code else '[]'
 
-                # Include product code and latest purchase price in the results
                 valuation_lines.append({
                     'product_code': code,
                     'product': product.name,
                     'latest_purchase_price': price,
-                    'quantity': res['total_quantity'],
+                    'quantity': total_quantity,
                     'uom': product.uom_id.name,
                     'value': value,
                 })
@@ -101,17 +88,16 @@ class StockValuationWizard(models.TransientModel):
             'res_id': self.id,
             'target': 'new',
         }
+
     def _generate_excel_report(self, valuation_lines):
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet('Stock Valuation')
 
-        # Define the headers
         headers = ['Code', 'Product', 'Latest Purchase Price', 'Quantity', 'Value', 'Unit of Measure']
         for col_num, header in enumerate(headers):
             worksheet.write(0, col_num, header)
 
-        # Write data to the sheet
         for row_num, line in enumerate(valuation_lines, start=1):
             worksheet.write(row_num, 0, line['product_code'])
             worksheet.write(row_num, 1, line['product'])
