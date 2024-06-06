@@ -38,11 +38,6 @@ class StockValuationWizard(models.TransientModel):
         for product_id, total_quantity in product_quantities.items():
             product = self.env['product.product'].browse(product_id)
             if product:
-                latest_purchase_line = self.env['purchase.order.line'].search([
-                    ('product_id', '=', product.id),
-                    ('order_id.date_order', '<=', date)
-                ], order='date_order desc', limit=1)
-
                 latest_vendor_bill_line = self.env['account.move.line'].search([
                     ('product_id', '=', product.id),
                     ('move_id.invoice_date', '<=', date),
@@ -52,19 +47,7 @@ class StockValuationWizard(models.TransientModel):
                 price = 0.0
                 last_purchase_document_id = None
 
-                if latest_purchase_line and latest_vendor_bill_line:
-                    if latest_purchase_line.order_id.date_order >= datetime.combine(
-                            latest_vendor_bill_line.move_id.invoice_date, datetime.min.time()):
-
-                        price = latest_purchase_line.price_unit
-                        last_purchase_document_id = latest_purchase_line.order_id.name
-                    else:
-                        price = latest_vendor_bill_line.price_unit
-                        last_purchase_document_id = latest_vendor_bill_line.move_id.name
-                elif latest_purchase_line:
-                    price = latest_purchase_line.price_unit
-                    last_purchase_document_id = latest_purchase_line.order_id.name
-                elif latest_vendor_bill_line:
+                if latest_vendor_bill_line:
                     price = latest_vendor_bill_line.price_unit
                     last_purchase_document_id = latest_vendor_bill_line.move_id.name
 
@@ -97,8 +80,7 @@ class StockValuationWizard(models.TransientModel):
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet('Stock Valuation')
 
-        headers = ['Code', 'Product', 'Latest Purchase Price', 'Quantity', 'Value', 'Unit of Measure',
-                   'Last Purchase Document ID']
+        headers = ['Code', 'Product', 'Latest Purchase Price', 'Quantity', 'Value', 'Unit of Measure', 'Last Purchase Document ID']
         for col_num, header in enumerate(headers):
             worksheet.write(0, col_num, header)
 
