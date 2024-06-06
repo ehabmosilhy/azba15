@@ -2,7 +2,7 @@ from odoo import models, fields, api
 import io
 import xlsxwriter
 import base64
-from datetime import time, datetime, timedelta
+from datetime import datetime, timedelta
 from collections import defaultdict
 
 
@@ -18,7 +18,7 @@ class StockValuationWizard(models.TransientModel):
         self.ensure_one()
         date = self.date
 
-        if date.time() == time(0, 0, 0):
+        if date.time() == datetime.min.time():
             date = date - timedelta(days=1)
             date = date.replace(hour=23, minute=59, second=59, microsecond=0)
 
@@ -28,10 +28,8 @@ class StockValuationWizard(models.TransientModel):
 
         action = stock_history_model.open_at_date()
         domain = [('create_date', '<=', self.date), ('product_id.type', '=', 'product')]
-        # domain += [('company_id', 'in', self.env.user.company_ids.ids)]
 
         stock_valuation_lines = self.env['stock.valuation.layer'].search(domain)
-        # Aggregate quantities by product_id
         product_quantities = defaultdict(float)
         for line in stock_valuation_lines:
             product_quantities[line.product_id.id] += line.quantity
@@ -51,20 +49,24 @@ class StockValuationWizard(models.TransientModel):
                     ('move_id.move_type', 'in', ['in_invoice', 'in_refund'])
                 ], order='date desc', limit=1)
 
-                if latest_purchase_line and latest_vendor_bill_line:
-                    purchase_date_order = datetime.combine(latest_purchase_line.order_id.date_order, time.max)
-                    vendor_invoice_date = datetime.combine(latest_vendor_bill_line.move_id.invoice_date, time.max)
+                price = 0.0
+                last_purchase_document_id = None
 
-                    if purchase_date_order >= vendor_invoice_date:
+                if latest_purchase_line and latest_vendor_bill_line:
+                    if latest_purchase_line.order_id.date_order >= datetime.combine(
+                            latest_vendor_bill_line.move_id.invoice_date, datetime.min.time()):
+
                         price = latest_purchase_line.price_unit
+                        last_purchase_document_id = latest_purchase_line.order_id.name
                     else:
                         price = latest_vendor_bill_line.price_unit
+                        last_purchase_document_id = latest_vendor_bill_line.move_id.name
                 elif latest_purchase_line:
                     price = latest_purchase_line.price_unit
+                    last_purchase_document_id = latest_purchase_line.order_id.name
                 elif latest_vendor_bill_line:
                     price = latest_vendor_bill_line.price_unit
-                else:
-                    price = 0.0
+                    last_purchase_document_id = latest_vendor_bill_line.move_id.name
 
                 value = total_quantity * price
                 code = f'{product.product_tmpl_id.code.strip()}' if product.product_tmpl_id.code else '[]'
@@ -76,6 +78,7 @@ class StockValuationWizard(models.TransientModel):
                     'quantity': total_quantity,
                     'uom': product.uom_id.name,
                     'value': value,
+                    'last_purchase_document_id': last_purchase_document_id,
                 })
 
         self._generate_excel_report(valuation_lines)
@@ -94,7 +97,8 @@ class StockValuationWizard(models.TransientModel):
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet('Stock Valuation')
 
-        headers = ['Code', 'Product', 'Latest Purchase Price', 'Quantity', 'Value', 'Unit of Measure']
+        headers = ['Code', 'Product', 'Latest Purchase Price', 'Quantity', 'Value', 'Unit of Measure',
+                   'Last Purchase Document ID']
         for col_num, header in enumerate(headers):
             worksheet.write(0, col_num, header)
 
@@ -105,6 +109,7 @@ class StockValuationWizard(models.TransientModel):
             worksheet.write(row_num, 3, line['quantity'])
             worksheet.write(row_num, 4, line['value'])
             worksheet.write(row_num, 5, line['uom'])
+            worksheet.write(row_num, 6, line['last_purchase_document_id'])
 
         workbook.close()
         output.seek(0)
