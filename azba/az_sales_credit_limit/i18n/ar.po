@@ -1,0 +1,26 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#   * az_sales_credit_limit
+#
+
+#. module: az_sales_credit_limit
+#: model:ir.actions.act_window,name:az_sales_credit_limit.action_credit_limit_category
+#: model:ir.ui.menu,name:az_sales_credit_limit.menu_credit_limit_category
+msgid "Credit Limit Categories"
+msgstr "فئات حد الائتمان"
+
+#. module: az_sales_credit_limit
+#: model:ir.model.fields,field_description:az_sales_credit_limit.field_res_partner__credit_limit_category_id
+#: model:ir.model.fields,field_description:az_sales_credit_limit.field_res_users__credit_limit_category_id
+msgid "Credit Limit Category"
+msgstr "فئة حد الائتمان"
+
+#. module: az_sales_credit_limit
+#: model:ir.model.fields,field_description:az_sales_credit_limit.field_credit_limit_category__name
+msgid "Category Name"
+msgstr "اسم الفئة"
+
+#. module: az_sales_credit_limit
+#: model:ir.model.fields,field_description:az_sales_credit_limit.field_credit_limit_category__credit_limit
+msgid "Credit Limit"
+msgstr "حد الائتمان"
