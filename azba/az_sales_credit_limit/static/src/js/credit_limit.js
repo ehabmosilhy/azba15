@@ -45,7 +45,7 @@ odoo.define('az_sales_credit_limit.credit_limit', function (require) {
 
                 // Check if any of the payment lines are credit payments
                 const paymentLines = order.get_paymentlines();
-                const isCreditPayment = paymentLines.some(line => line.cashregister.journal.type === 'credit');
+                const isCreditPayment = paymentLines.some(line => line.payment_method && (line.payment_method.type === 'credit' || line.payment_method.type === 'pay_later'));
 
                 // 🕵️‍♂️ Check if partner is set, has a credit limit category, and is paying with credit.
                 if (partner && partner.credit_limit_category_id && isCreditPayment) {
