@@ -43,8 +43,12 @@ odoo.define('az_sales_credit_limit.credit_limit', function (require) {
                 const order = this.env.pos.get_order();
                 const partner = order.get_client();
 
-                // 🕵️‍♂️ Check if partner is set and has a credit limit category.
-                if (partner && partner.credit_limit_category_id) {
+                // Check if any of the payment lines are credit payments
+                const paymentLines = order.get_paymentlines();
+                const isCreditPayment = paymentLines.some(line => line.cashregister.journal.type === 'credit');
+
+                // 🕵️‍♂️ Check if partner is set, has a credit limit category, and is paying with credit.
+                if (partner && partner.credit_limit_category_id && isCreditPayment) {
                     const creditLimitCategory = this.env.pos.credit_limit_category_by_id[partner.credit_limit_category_id[0]];
                     const creditLimit = creditLimitCategory ? creditLimitCategory.credit_limit : 0;
                     const totalAmount = order.get_total_with_tax() + partner.total_due; // 🔄 Updated to include 'total_due' in the check
