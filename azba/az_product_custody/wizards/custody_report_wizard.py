@@ -31,14 +31,25 @@ class CustodyReportWizard(models.TransientModel):
         moves = self.env['stock.move'].search(domain)
 
         data = {}
+        detailed_data = []
         for move in moves:
-            partner = move.partner_id.name
-            product = move.product_id.name
+            partner = f"[{move.partner_id.code}] {move.partner_id.name}"
+            product = f"[{move.product_id.product_tmpl_id.code}] {move.product_id.name}"
             if partner not in data:
                 data[partner] = {}
             if product not in data[partner]:
                 data[partner][product] = {'out': 0, 'in': 0}
             data[partner][product]['out'] += move.product_uom_qty
+            if self.partner_id:
+                detailed_data.append({
+                    'date': move.date,
+                    'picking_name': move.picking_id.name,
+                    'partner': partner,
+                    'product': product,
+                    'quantity_out': move.product_uom_qty,
+                    'quantity_in': 0,
+                    'type': 'out'
+                })
 
         domain_return = [
             ('location_dest_id', '=', self.location_id.id),
@@ -53,32 +64,62 @@ class CustodyReportWizard(models.TransientModel):
         moves_return = self.env['stock.move'].search(domain_return)
 
         for move in moves_return:
-            partner = move.partner_id.name
-            product = move.product_id.name
+            partner = f"[{move.partner_id.code.strip()}] {move.partner_id.name}"
+            product = f"[{move.product_id.product_tmpl_id.code.strip()}] {move.product_id.name}"
             if partner not in data:
                 data[partner] = {}
             if product not in data[partner]:
                 data[partner][product] = {'out': 0, 'in': 0}
             data[partner][product]['in'] += move.product_uom_qty
+            if self.partner_id:
+                detailed_data.append({
+                    'date': move.date,
+                    'picking_name': move.picking_id.name,
+                    'partner': partner,
+                    'product': product,
+                    'quantity_out': 0,
+                    'quantity_in': move.product_uom_qty,
+                    'type': 'in'
+                })
 
         file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
         worksheet = workbook.add_worksheet()
 
-        worksheet.write(0, 0, 'Partner')
-        worksheet.write(0, 1, 'Product')
-        worksheet.write(0, 2, 'Sum Out')
-        worksheet.write(0, 3, 'Sum In')
-        worksheet.write(0, 4, 'Balance')
+        if not self.partner_id:
+            worksheet.write(0, 0, 'Partner')
+            worksheet.write(0, 1, 'Product')
+            worksheet.write(0, 2, 'Sum Out')
+            worksheet.write(0, 3, 'Sum In')
+            worksheet.write(0, 4, 'Balance')
 
-        row = 1
-        for partner, products in data.items():
-            for product, values in products.items():
-                worksheet.write(row, 0, partner)
-                worksheet.write(row, 1, product)
-                worksheet.write(row, 2, values['out'])
-                worksheet.write(row, 3, values['in'])
-                worksheet.write(row, 4, values['out'] - values['in'])
+            row = 1
+            for partner, products in data.items():
+                for product, values in products.items():
+                    worksheet.write(row, 0, partner)
+                    worksheet.write(row, 1, product)
+                    worksheet.write(row, 2, values['out'])
+                    worksheet.write(row, 3, values['in'])
+                    worksheet.write(row, 4, values['out'] - values['in'])
+                    row += 1
+        else:
+            worksheet.write(0, 0, 'Date')
+            worksheet.write(0, 1, 'Picking')
+            worksheet.write(0, 2, 'Partner')
+            worksheet.write(0, 3, 'Product')
+            worksheet.write(0, 4, 'Quantity Out')
+            worksheet.write(0, 5, 'Quantity In')
+            worksheet.write(0, 6, 'Type')
+
+            row = 1
+            for record in detailed_data:
+                worksheet.write(row, 0, record['date'].strftime('%Y-%m-%d %H:%M:%S'))
+                worksheet.write(row, 1, record['picking_name'])
+                worksheet.write(row, 2, record['partner'])
+                worksheet.write(row, 3, record['product'])
+                worksheet.write(row, 4, record['quantity_out'])
+                worksheet.write(row, 5, record['quantity_in'])
+                worksheet.write(row, 6, record['type'])
                 row += 1
 
         workbook.close()
