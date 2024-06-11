@@ -22,48 +22,44 @@ class CustodyReportWizard(models.TransientModel):
             ('location_id', '=', self.location_id.id),
             ('date', '>=', self.start_date),
             ('date', '<=', self.end_date),
-            ('product_id', 'in', custody_product_ids)
+            ('product_id', 'in', custody_product_ids),
+            ('state', '=', 'done')
         ]
         if self.partner_id:
             domain.append(('partner_id', '=', self.partner_id.id))
 
-        pickings = self.env['stock.move'].search(domain)
+        moves = self.env['stock.move'].search(domain)
 
         data = {}
-        for pick in pickings:
-            partner = pick.partner_id.name
-            for move in pick.move_ids_without_package.filtered(lambda m: m.state == 'done'):
-                product = move.product_id.name
-                if move.product_id.id not in custody_product_ids:
-                    continue
-                if partner not in data:
-                    data[partner] = {}
-                if product not in data[partner]:
-                    data[partner][product] = {'out': 0, 'in': 0}
-                data[partner][product]['out'] += move.qty_done
+        for move in moves:
+            partner = move.partner_id.name
+            product = move.product_id.name
+            if partner not in data:
+                data[partner] = {}
+            if product not in data[partner]:
+                data[partner][product] = {'out': 0, 'in': 0}
+            data[partner][product]['out'] += move.product_uom_qty
 
         domain_return = [
             ('location_dest_id', '=', self.location_id.id),
-            ('scheduled_date', '>=', self.start_date),
-            ('scheduled_date', '<=', self.end_date),
-            ('move_ids_without_package.product_id', 'in', custody_product_ids)
+            ('date', '>=', self.start_date),
+            ('date', '<=', self.end_date),
+            ('product_id', 'in', custody_product_ids),
+            ('state', '=', 'done')
         ]
         if self.partner_id:
             domain_return.append(('partner_id', '=', self.partner_id.id))
 
-        pickings_return = self.env['stock.picking'].search(domain_return)
+        moves_return = self.env['stock.move'].search(domain_return)
 
-        for pick in pickings_return:
-            partner = pick.partner_id.name
-            for move in pick.move_ids_without_package.filtered(lambda m: m.state == 'done'):
-                product = move.product_id.name
-                if move.product_id.id not in custody_product_ids:
-                    continue
-                if partner not in data:
-                    data[partner] = {}
-                if product not in data[partner]:
-                    data[partner][product] = {'out': 0, 'in': 0}
-                data[partner][product]['in'] += move.product_uom_qty
+        for move in moves_return:
+            partner = move.partner_id.name
+            product = move.product_id.name
+            if partner not in data:
+                data[partner] = {}
+            if product not in data[partner]:
+                data[partner][product] = {'out': 0, 'in': 0}
+            data[partner][product]['in'] += move.product_uom_qty
 
         file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
