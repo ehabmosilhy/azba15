@@ -13,5 +13,6 @@
         'wizards/custody_report_wizard.xml',
         'security/ir.model.access.csv',
 
+
     ],
 }

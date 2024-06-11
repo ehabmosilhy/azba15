@@ -34,6 +34,9 @@
         </field>
     </record>
 
-        <menuitem id="menu_product_custody" name="أصناف عهدة" parent="stock.menu_product_in_config_stock" action="action_product_custody"/>
+    <menuitem id="menu_product_custody" name="أصناف عهدة"
+              parent="stock.menu_product_in_config_stock" action="action_product_custody"
+              groups="base.group_system,base.group_user"
+    />
 
 </odoo>
