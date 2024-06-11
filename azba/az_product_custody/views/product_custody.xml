@@ -1,0 +1,39 @@
+<odoo>
+    <record id="view_product_custody_tree" model="ir.ui.view">
+        <field name="name">product.custody.tree</field>
+        <field name="model">product.custody</field>
+        <field name="arch" type="xml">
+            <tree string="Custody Products">
+                <field name="product_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_product_custody_form" model="ir.ui.view">
+        <field name="name">product.custody.form</field>
+        <field name="model">product.custody</field>
+        <field name="arch" type="xml">
+            <form string="Custody Products">
+                <sheet>
+                    <group>
+                        <field name="product_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_product_custody" model="ir.actions.act_window">
+        <field name="name">Custody Products</field>
+        <field name="res_model">product.custody</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first custody product
+            </p>
+        </field>
+    </record>
+
+        <menuitem id="menu_product_custody" name="أصناف عهدة" parent="stock.menu_product_in_config_stock" action="action_product_custody"/>
+
+</odoo>

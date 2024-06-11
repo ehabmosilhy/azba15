@@ -1,0 +1,139 @@
+Directory Structure:
+├── models
+│   ├── product_custody.py
+│   ├── stock_picking.py
+│   ├── __init__.py
+│   └── __pycache__
+│       ├── product_custody.cpython-38.pyc
+│       ├── stock_picking.cpython-38.pyc
+│       └── __init__.cpython-38.pyc
+├── out.txt
+├── security
+│   └── ir.model.access.csv
+├── views
+│   ├── product_custody.xml
+│   └── stock_picking.xml
+├── __init__.py
+├── __manifest__.py
+└── __pycache__
+    └── __init__.cpython-38.pyc
+
+
+===== .\__init__.py =====
+from . import models
+===== .\__manifest__.py =====
+# -*- coding: utf-8 -*-
+{
+    'name': "Product Custody",
+    'summary': "Manage custody products",
+    'description': "Module to manage custody products.",
+    'author': "Ehab",
+    'category': 'Inventory',
+    'version': '0.1',
+    'depends': ['base', 'stock'],
+    'data': [
+        'views/product_custody.xml',
+        'views/stock_picking.xml',
+        'security/ir.model.access.csv',
+
+    ],
+}
+
+===== .\models\product_custody.py =====
+# -*- coding: utf-8 -*-
+
+from odoo import fields, models
+
+
+class CustodyProduct(models.Model):
+    _name = 'product.custody'
+    _description = 'Custody Products'
+    product_id = fields.Many2one('product.product', string="Product", required=True)
+
+===== .\models\stock_picking.py =====
+# -*- coding: utf-8 -*-
+from odoo import fields, models, api
+
+class StockPicking(models.Model):
+    _inherit = 'stock.picking'
+
+    custody_product_exists = fields.Boolean(
+        string="صنف عهدة",
+        compute='_compute_custody_product_exists'
+    )
+
+    @api.onchange('move_ids_without_package')
+    def _compute_custody_product_exists(self):
+        for record in self:
+            custody_products = self.env['product.custody'].search([])
+            custody_product_ids = custody_products.mapped('product_id').ids
+            record.custody_product_exists = any(
+                move.product_id.id in custody_product_ids for move in record.move_ids_without_package
+            )
+
+
+===== .\models\__init__.py =====
+from . import product_custody
+from . import stock_picking
+===== .\security\ir.model.access.csv =====
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_custody_admin,access.product.custody.admin,model_product_custody,base.group_system,1,1,1,1
+
+===== .\views\product_custody.xml =====
+<odoo>
+    <record id="view_product_custody_tree" model="ir.ui.view">
+        <field name="name">product.custody.tree</field>
+        <field name="model">product.custody</field>
+        <field name="arch" type="xml">
+            <tree string="Custody Products">
+                <field name="product_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_product_custody_form" model="ir.ui.view">
+        <field name="name">product.custody.form</field>
+        <field name="model">product.custody</field>
+        <field name="arch" type="xml">
+            <form string="Custody Products">
+                <sheet>
+                    <group>
+                        <field name="product_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_product_custody" model="ir.actions.act_window">
+        <field name="name">Custody Products</field>
+        <field name="res_model">product.custody</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first custody product
+            </p>
+        </field>
+    </record>
+
+        <menuitem id="menu_product_custody" name="أصناف عهدة" parent="stock.menu_product_in_config_stock" action="action_product_custody"/>
+
+</odoo>
+===== .\views\stock_picking.xml =====
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- VIEWS -->
+        <record id="view_picking_form_inherit_custody" model="ir.ui.view">
+            <field name="name">az.stock.picking.form.custody</field>
+            <field name="model">stock.picking</field>
+            <field name="mode">extension</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="custody_product_exists" readonly="1" attrs="{'invisible': [('custody_product_exists', '=', False)]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
