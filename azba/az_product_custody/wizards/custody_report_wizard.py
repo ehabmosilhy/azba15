@@ -27,6 +27,8 @@ class CustodyReportWizard(models.TransientModel):
         ]
         if self.partner_id:
             domain.append(('partner_id', '=', self.partner_id.id))
+        else:
+            domain.append(('partner_id', '!=', False))
 
         moves = self.env['stock.move'].search(domain)
 
@@ -65,7 +67,7 @@ class CustodyReportWizard(models.TransientModel):
 
         for move in moves_return:
             partner = f"[{move.partner_id.code.strip() if move.partner_id.code else ''}] {move.partner_id.name}"
-            product = f"[{move.product_id.product_tmpl_id.code.strip()  if move.product_id.product_tmpl_id.code else ''}] {move.product_id.name}"
+            product = f"[{move.product_id.product_tmpl_id.code.strip() if move.product_id.product_tmpl_id.code else ''}] {move.product_id.name}"
             if partner not in data:
                 data[partner] = {}
             if product not in data[partner]:
