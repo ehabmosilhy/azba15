@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+
+        <!-- VIEWS -->
+        <record id="view_picking_form_inherit_custody" model="ir.ui.view">
+            <field name="name">az.stock.picking.form.custody</field>
+            <field name="model">stock.picking</field>
+            <field name="mode">extension</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="custody_product_exists" readonly="1"
+                           attrs="{'invisible': [('custody_product_exists', '=', False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
