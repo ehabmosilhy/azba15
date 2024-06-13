@@ -62,6 +62,8 @@ class CustodyReportWizard(models.TransientModel):
         ]
         if self.partner_id:
             domain_return.append(('partner_id', '=', self.partner_id.id))
+        else:
+            domain_return.append(('partner_id', '!=', False))
 
         moves_return = self.env['stock.move'].search(domain_return)
 
