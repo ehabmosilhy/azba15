@@ -23,8 +23,12 @@ class CustodyReportWizard(models.TransientModel):
             ('date', '>=', self.start_date),
             ('date', '<=', self.end_date),
             ('product_id', 'in', custody_product_ids),
-            ('state', '=', 'done')
+            ('state', '=', 'done'),
+            '|',  # This is a logical OR operator
+            ('picking_id.name', 'ilike', '/out/'),
+            ('picking_id.name', 'ilike', '/in/')
         ]
+
         if self.partner_id:
             domain.append(('partner_id', '=', self.partner_id.id))
         else:
@@ -58,7 +62,10 @@ class CustodyReportWizard(models.TransientModel):
             ('date', '>=', self.start_date),
             ('date', '<=', self.end_date),
             ('product_id', 'in', custody_product_ids),
-            ('state', '=', 'done')
+            ('state', '=', 'done'),
+            '|',  # This is a logical OR operator
+            ('picking_id.name', 'ilike', '/out/'),
+            ('picking_id.name', 'ilike', '/in/')
         ]
         if self.partner_id:
             domain_return.append(('partner_id', '=', self.partner_id.id))
