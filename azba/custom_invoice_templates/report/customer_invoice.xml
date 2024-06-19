@@ -11,17 +11,37 @@
                         <span t-field="o.name"/>
                     </div>
 
-                    <table class="invoice-details">
-                        <tr>
-                            <td colspan="4" class="customer-details">
-                                السادة /
-                                <t t-esc="o.partner_id.name"/>
-                                - [<t t-esc="o.partner_id.code"/>]
+
+                    <table class="rounded" style="float:right;  width:100%;
+                            direction:ltr !important;padding-top: 0px;
+                           table-layout : fixed;
+                           margin-top: 1.9cm; margin-bottom: 0.6cm;
+                           border:1px solid black;padding:2px 2px 2px 2px;  box-shadow: 10px 10px 10px grey;">
+
+
+                        <tr style="direction:ltr !important;text-align: center; ">
+                            <td colspan="4" style="padding:5px;">
+                                <div style="float:left;  width: 100%; font-family: 'Cairo';
+  font-style: normal;
+  font-weight: bold;
+  font-size:25px;
+                            direction:rtl !important">
+                                    السادة
+                                    /
+                                    <t t-esc="o.partner_id.name"/>
+                                    -
+                                    [
+                                    <t t-esc="o.partner_id.code"/>
+                                    ]
+                                </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Invoice | رقم الفاتورة</td>
-                            <td>
+                        <tr style="direction:ltr !important;text-align: left; ">
+                            <td style="width: 25%;vertical-align:top; padding:1px;">
+                                Invoice | رقم الفاتورة
+                            </td>
+
+                            <td style="width: 25%;vertical-align:top; padding:1px;">
                                 <span t-field="o.name"/>
                             </td>
                             <td>Date | التاريخ</td>
@@ -29,10 +49,11 @@
                                 <span t-field="o.invoice_date" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Manual Ref | إذن التسليم</td>
-                            <td>
-                                <span t-field="o.manual_ref"/>
+
+                        <tr style="direction:ltr !important;text-align: left; ">
+                            <td style="width: 25%;vertical-align:top; padding:1px;">
+                                Manual Ref |
+                                إذن التسليم
                             </td>
                             <td>Payment Method | طريقة الدفع</td>
                             <td>
@@ -41,9 +62,15 @@
                                 </t>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Due Date | تاريخ الإستحقاق</td>
-                            <td>
+
+
+                        <tr style="direction:ltr !important;text-align: left; ">
+                            <td style="width: 25%;vertical-align:top; padding:1px;">
+                                Due Date |
+                                تاريخ الإستحقاق
+                            </td>
+
+                            <td style="width: 25%;vertical-align:top; padding:1px;">
                                 <span t-field="o.invoice_date_due"
                                       t-options='{"widget": "date","format": "dd-MM-yyyy"}'/>
                             </td>
@@ -52,9 +79,15 @@
                                 <span t-field="o.invoice_origin"/>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Reference | المرجع</td>
-                            <td>
+
+
+                        <tr style="direction:ltr !important;text-align: left; ">
+                            <td style="width: 25%;vertical-align:top; padding:1px;">
+                                Reference | المرجع
+
+                            </td>
+
+                            <td style="width: 25%;vertical-align:top; padding:1px;">
                                 <span t-field="o.ref"/>
                             </td>
                             <td>VAT | الرقم الضريبي</td>
@@ -62,8 +95,15 @@
                                 <div t-field="o.partner_id.vat"></div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Delivery address<br/>عنوان التوصيل
+
+
+                        <tr style="direction:ltr !important;text-align: left; ">
+
+
+                            <td style="width: 25.5%;vertical-align:top; padding:1px;">
+                                Delivery address
+                                <br/>
+                                عنوان التوصيل
                             </td>
                             <td colspan="3">
                                 <div t-field="o.partner_shipping_id"
@@ -72,10 +112,77 @@
                         </tr>
                     </table>
 
-                    <table class="items-table">
-                        <tr>
-                            <td colspan="7" class="invoice-title">
-                                تفاصيل الفاتورة
+
+                    <table class="items_table" style=" float: left;
+    width: 100%;
+    text-align: center;
+    direction: ltr !important;
+    padding-top: 0px;
+    margin-top: 0.1cm;
+    margin-bottom: 0.6cm;
+     border: 1px solid black;text-align:center;
+    box-shadow: 10px 10px 10px grey;">
+
+                        <tr style="direction:ltr !important;text-align: center; ">
+                            <td colspan="7" style="padding:5px;">
+                                <div style="float:left;  width: 100%; font-family: 'Cairo';
+  font-style: normal;
+  font-weight: bold;
+  font-size:30px;
+                            direction:rtl !important">
+                                    تفاصيل الفاتورة
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr style="direction:ltr !important;text-align: left; ; text-align:center">
+                            <td style="width: 35%;vertical-align:top; padding:1px;  text-align:center">
+                                Description
+                            </td>
+                            <td style="width: 10%;vertical-align:top; padding:1px; text-align:center">
+                                Qty
+                            </td>
+                            <td style="width: 10%;vertical-align:top; padding:1px; text-align:center">
+                                Sales Price
+                            </td>
+                            <td style="width: 10%;vertical-align:top; padding:1px; text-align:center">
+                                Amount
+                            </td>
+                            <td style="width: 10%;vertical-align:top; padding:1px; text-align:center">
+                                Tax %
+                            </td>
+                            <td style="width: 10%;vertical-align:top; padding:1px;  text-align:center">
+                                Tax Amt.
+                            </td>
+                            <td style="width: 15%;vertical-align:top; padding:1px; text-align:center">
+                                Amt After Tax
+                            </td>
+
+                        </tr>
+
+                        <tr style="direction:ltr !important;text-align: left; ">
+                            <td style="width: 35%;vertical-align:top; padding:1px; text-align:center">
+                                الوصف
+                            </td>
+                            <td style="width: 10%;vertical-align:top; padding:1px; text-align:center">
+                                الكمية
+                            </td>
+                            <td style="width: 10%;vertical-align:top; padding:1px;text-align:center">
+                                سعر البيع
+                            </td>
+                            <td style="width: 10%;vertical-align:top; padding:1px;text-align:center">
+                                المبلغ
+                            </td>
+                            <td style="width: 10%;vertical-align:top; padding:1px;text-align:center">
+                                نسبة الضريبة
+                            </td>
+                            <td style="width: 10%;vertical-align:top; padding:1px;text-align:center">
+                                قيمة الضريبة
+                            </td>
+                            <td style="width: 15%;vertical-align:top; padding:1px;text-align:center">
+                                الإجمالى بالضريبة
                             </td>
                         </tr>
                         <tr class="table-header">
@@ -124,9 +231,20 @@
                         </tr>
                     </table>
 
-                    <table class="total-table">
-                        <tr class="total-row">
-                            <td>Total before VAT<br/>الاجمالي قبل الضريبة
+                    <table
+                            style="float:right;  width:100%;
+                            direction:ltr !important;padding-top: 0px;
+                           border:1px solid black;padding:2px 2px 2px 2px
+                           box-shadow: 10px 10px 10px grey;
+                            margin-bottom: 0.5cm; 
+                            ">
+
+                        <tr style="border-bottom: 3px solid black !important; direction:ltr !important;">
+                            <td
+                                    style=" direction:ltr !important; text-align: center;">
+                                Total before VAT
+                                <br/>
+                                الاجمالي قبل الضريبة
                             </td>
                             <td>
                                 <span style="font-weight: bold" t-field="o.amount_untaxed"/>
