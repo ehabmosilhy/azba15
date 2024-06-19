@@ -16,14 +16,13 @@
     padding: 2px;
     margin-top: 1.9cm;
     margin-bottom: 0.6cm;
-    box-shadow: 10px 10px 10px grey;
     table-layout: fixed;
 }
 
 .invoice-details td, .items-table td, .total-table td {
     padding: 1px;
-    text-align: left;
     vertical-align: top;
+    border: 1px solid black;
 }
 
 .customer-details {
@@ -43,7 +42,6 @@
     font-size: 30px;
     direction: rtl !important;
     padding: 5px;
-    text-align: center;
 }
 
 .table-header {
@@ -64,7 +62,7 @@
 
 .amount-in-words {
     direction: ltr;
-    text-align: right;
+    text-align: center;
 }
 
 .amount-in-words h4 {
@@ -76,12 +74,12 @@
     position: fixed;
     top: 22.5cm;
     width: 95%;
+    text-align: center;
 }
 
 .qr-code {
     border: 1px solid black;
     padding: 2px;
-    box-shadow: 10px 10px 10px grey;
     float: left;
     direction: ltr !important;
     text-align: center;
@@ -93,17 +91,19 @@
     width: 70%;
     border-collapse: collapse;
     direction: ltr !important;
+    text-align: center;
 }
 
 .bank-details th, .bank-details td {
     border: 1px solid black;
     padding: 10px;
-    text-align: left;
+    text-align: center;
     padding-left: 10px;
 }
 
 .footer {
     direction: ltr !important;
+    text-align: center;
 }
 
 .footer-left, .footer-right {

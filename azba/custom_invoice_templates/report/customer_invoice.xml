@@ -14,7 +14,7 @@
                     <table class="invoice-details">
                         <tr>
                             <td colspan="4" class="customer-details">
-                                السادة و /
+                                السادة /
                                 <t t-esc="o.partner_id.name"/>
                                 - [<t t-esc="o.partner_id.code"/>]
                             </td>
