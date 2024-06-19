@@ -27,7 +27,7 @@
                            border:1px solid black;padding:2px 2px 2px 2px;  box-shadow: 10px 10px 10px grey;">
 
 
-                        <tr style="direction:ltr !important;text-align: center; background-color:#78c2e4">
+                        <tr style="direction:ltr !important;text-align: center; ">
                             <td colspan="4" style="padding:5px;">
                                 <div style="float:left;  width: 100%; font-family: 'Cairo';
   font-style: normal;
@@ -45,7 +45,7 @@
                             </td>
 
                         </tr>
-                        <tr style="direction:ltr !important;text-align: left; background-color:#c1def4">
+                        <tr style="direction:ltr !important;text-align: left; ">
                             <td style="width: 25%;vertical-align:top; padding:1px;">
                                 Invoice | رقم الفاتورة
                             </td>
@@ -67,7 +67,7 @@
 
                         </tr>
 
-                        <tr style="direction:ltr !important;text-align: left; background-color:#ffffff">
+                        <tr style="direction:ltr !important;text-align: left; ">
                             <td style="width: 25%;vertical-align:top; padding:1px;">
                                 Manual Ref |
                                 إذن التسليم
@@ -94,7 +94,7 @@
                         </tr>
 
 
-                        <tr style="direction:ltr !important;text-align: left; background-color:#c1def4">
+                        <tr style="direction:ltr !important;text-align: left; ">
                             <td style="width: 25%;vertical-align:top; padding:1px;">
                                 Due Date |
                                 تاريخ الإستحقاق
@@ -118,7 +118,7 @@
                         </tr>
 
 
-                        <tr style="direction:ltr !important;text-align: left; background-color:#ffffff">
+                        <tr style="direction:ltr !important;text-align: left; ">
                             <td style="width: 25%;vertical-align:top; padding:1px;">
                                 Reference | المرجع
 
@@ -138,7 +138,7 @@
                         </tr>
 
 
-                        <tr style="direction:ltr !important;text-align: left; background-color:#c1def4">
+                        <tr style="direction:ltr !important;text-align: left; ">
 
 
                             <td style="width: 25.5%;vertical-align:top; padding:1px;">
@@ -167,7 +167,7 @@
      border: 1px solid black;text-align:center;
     box-shadow: 10px 10px 10px grey;">
 
-                        <tr style="direction:ltr !important;text-align: center; background-color:#78c2e4">
+                        <tr style="direction:ltr !important;text-align: center; ">
                             <td colspan="7" style="padding:5px;">
                                 <div style="float:left;  width: 100%; font-family: 'Cairo';
   font-style: normal;
@@ -181,7 +181,7 @@
 
                         </tr>
 
-                        <tr style="direction:ltr !important;text-align: left; background-color:#78c2e4; text-align:center">
+                        <tr style="direction:ltr !important;text-align: left; ; text-align:center">
                             <td style="width: 35%;vertical-align:top; padding:1px;  text-align:center">
                                 Description
                             </td>
@@ -206,7 +206,7 @@
 
                         </tr>
 
-                        <tr style="direction:ltr !important;text-align: left; background-color:#78c2e4">
+                        <tr style="direction:ltr !important;text-align: left; ">
                             <td style="width: 35%;vertical-align:top; padding:1px; text-align:center">
                                 الوصف
                             </td>
@@ -293,10 +293,10 @@
                             direction:ltr !important;padding-top: 0px;
                            border:1px solid black;padding:2px 2px 2px 2px
                            box-shadow: 10px 10px 10px grey;
-                            margin-bottom: 0.5cm; background-color:#c1def4;
+                            margin-bottom: 0.5cm; 
                             ">
 
-                        <tr style="background-color:#c1def4;border-bottom: 3px solid black !important; direction:ltr !important;">
+                        <tr style="border-bottom: 3px solid black !important; direction:ltr !important;">
                             <td
                                     style=" direction:ltr !important; text-align: center;">
                                 Total before VAT
