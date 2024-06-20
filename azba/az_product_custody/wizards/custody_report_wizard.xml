@@ -25,9 +25,7 @@
         <field name="target">new</field>
     </record>
 
-    <menuitem id="menu_custody_report_wizard" name="تقرير أصناف عهدة"
+    <menuitem id="menu_custody_report_wizard" name="تقرير أصناف عهدة📥"
               parent="stock.menu_warehouse_report" action="action_custody_report_wizard"
-              groups="base.group_system,base.group_user"
-
-    />
+              groups="base.group_system,base.group_user"    />
 </odoo>

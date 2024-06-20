@@ -39,8 +39,8 @@ class CustodyReportWizard(models.TransientModel):
         data = {}
         detailed_data = []
         for move in moves:
-            partner = f"[{move.partner_id.code}] {move.partner_id.name}"
-            product = f"[{move.product_id.product_tmpl_id.code}] {move.product_id.name}"
+            partner = f"[{move.partner_id.code}] {move.partner_id.name}" if move.partner_id else ''
+            product = f"[{move.product_id.product_tmpl_id.code.strip() if move.product_id.product_tmpl_id.code else ''}] {move.product_id.name}"
             if partner not in data:
                 data[partner] = {}
             if product not in data[partner]:
@@ -75,7 +75,7 @@ class CustodyReportWizard(models.TransientModel):
         moves_return = self.env['stock.move'].search(domain_return)
 
         for move in moves_return:
-            partner = f"[{move.partner_id.code.strip() if move.partner_id.code else ''}] {move.partner_id.name}"
+            partner = f"[{move.partner_id.code.strip() if move.partner_id.code else ''}] {move.partner_id.name}" if move.partner_id else ''
             product = f"[{move.product_id.product_tmpl_id.code.strip() if move.product_id.product_tmpl_id.code else ''}] {move.product_id.name}"
             if partner not in data:
                 data[partner] = {}
@@ -97,14 +97,24 @@ class CustodyReportWizard(models.TransientModel):
         workbook = xlsxwriter.Workbook(file_data)
         worksheet = workbook.add_worksheet()
 
-        if not self.partner_id:
-            worksheet.write(0, 0, 'Partner')
-            worksheet.write(0, 1, 'Product')
-            worksheet.write(0, 2, 'Sum Out')
-            worksheet.write(0, 3, 'Sum In')
-            worksheet.write(0, 4, 'Balance')
+        # Write the formatted header
+        worksheet.write(0, 0, 'Custody Report')
+        worksheet.write(1, 0, f'Date from: {self.start_date}')
+        worksheet.write(1, 2, f'Date to: {self.end_date}')
+        worksheet.write(2, 0, f'Location: {self.location_id.display_name}')
+        if self.partner_id:
+            worksheet.write(2, 2, f'Partner: {self.partner_id.display_name}')
 
-            row = 1
+        row_start = 4
+
+        if not self.partner_id:
+            worksheet.write(row_start, 0, 'Partner')
+            worksheet.write(row_start, 1, 'Product')
+            worksheet.write(row_start, 2, 'Sum Out')
+            worksheet.write(row_start, 3, 'Sum In')
+            worksheet.write(row_start, 4, 'Balance')
+
+            row = row_start + 1
             for partner, products in data.items():
                 for product, values in products.items():
                     worksheet.write(row, 0, partner)
@@ -114,22 +124,22 @@ class CustodyReportWizard(models.TransientModel):
                     worksheet.write(row, 4, values['out'] - values['in'])
                     row += 1
         else:
-            worksheet.write(0, 0, 'Date')
-            worksheet.write(0, 1, 'Picking')
-            worksheet.write(0, 2, 'Partner')
-            worksheet.write(0, 3, 'Product')
-            worksheet.write(0, 4, 'Quantity Out')
-            worksheet.write(0, 5, 'Quantity In')
-            worksheet.write(0, 6, 'Type')
+            worksheet.write(row_start, 0, 'Date')
+            worksheet.write(row_start, 1, 'Picking')
+            worksheet.write(row_start, 2, 'Product')
+            worksheet.write(row_start, 3, 'Quantity Out')
+            worksheet.write(row_start, 4, 'Quantity In')
+            worksheet.write(row_start, 5, 'Balance')
+            worksheet.write(row_start, 6, 'Type')
 
-            row = 1
+            row = row_start + 1
             for record in detailed_data:
                 worksheet.write(row, 0, record['date'].strftime('%Y-%m-%d %H:%M:%S'))
                 worksheet.write(row, 1, record['picking_name'])
-                worksheet.write(row, 2, record['partner'])
-                worksheet.write(row, 3, record['product'])
-                worksheet.write(row, 4, record['quantity_out'])
-                worksheet.write(row, 5, record['quantity_in'])
+                worksheet.write(row, 2, record['product'])
+                worksheet.write(row, 3, record['quantity_out'])
+                worksheet.write(row, 4, record['quantity_in'])
+                worksheet.write(row, 5, record['quantity_out'] - record['quantity_in'])
                 worksheet.write(row, 6, record['type'])
                 row += 1
 
