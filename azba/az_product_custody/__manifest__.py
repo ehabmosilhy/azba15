@@ -6,13 +6,13 @@
     'author': "Ehab",
     'category': 'Inventory',
     'version': '0.1',
-    'depends': ['base', 'stock'],
+    'depends': ['base', 'stock' ],
     'data': [
         'views/product_custody.xml',
         'views/stock_picking.xml',
+        'reports/custody_report.xml',
+        'reports/custody_report_template.xml',
         'wizards/custody_report_wizard.xml',
         'security/ir.model.access.csv',
-
-
     ],
 }

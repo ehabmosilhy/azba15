@@ -10,8 +10,9 @@
                     <field name="location_id"/>
                     <field name="partner_id"/>
                 </group>
-                <footer>
-                    <button string="Generate Report" type="object" name="generate_report" class="btn-primary"/>
+               <footer>
+                    <button string="Generate Excel Report" type="object" name="generate_report" class="btn-primary"/>
+                    <button string="Generate PDF Report" type="object" name="generate_pdf_report" class="btn-secondary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

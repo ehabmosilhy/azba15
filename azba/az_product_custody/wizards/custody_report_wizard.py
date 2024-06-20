@@ -5,7 +5,6 @@ from datetime import datetime
 from odoo import fields, models, api
 import xlsxwriter
 
-
 class CustodyReportWizard(models.TransientModel):
     _name = 'custody.report.wizard'
     _description = 'Custody Report Wizard'
@@ -15,7 +14,7 @@ class CustodyReportWizard(models.TransientModel):
     location_id = fields.Many2one('stock.location', string='Location', required=True)
     partner_id = fields.Many2one('res.partner', string='Partner')
 
-    def generate_report(self):
+    def _prepare_report_data(self):
         custody_product_ids = self.env['product.custody'].search([]).mapped('product_id.id')
 
         domain = [
@@ -93,6 +92,11 @@ class CustodyReportWizard(models.TransientModel):
                     'type': 'in'
                 })
 
+        return data, detailed_data
+
+    def generate_report(self):
+        data, detailed_data = self._prepare_report_data()
+
         file_data = BytesIO()
         workbook = xlsxwriter.Workbook(file_data)
         worksheet = workbook.add_worksheet()
@@ -161,3 +165,10 @@ class CustodyReportWizard(models.TransientModel):
             'url': '/web/content/%s?download=true' % attachment.id,
             'target': 'new',
         }
+
+    def generate_pdf_report(self):
+        data, detailed_data = self._prepare_report_data()
+
+        self.data = data  # Add the data to the context
+
+        return self.env.ref('az_product_custody.custody_report_pdf_action').report_action(self)
