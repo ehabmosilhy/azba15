@@ -6,34 +6,34 @@
                 <div class="article" t-att-data-oe-model="docs and docs._name"
                      t-att-data-oe-id="docs and docs.id"
                      t-att-data-oe-lang="docs and docs.env.context.get('lang')">
-                    <h2>Custody Report</h2>
+                    <h2 style="text-align: center">تقرير عهدة</h2>
                     <p>
-                        <strong>Date from:</strong>
+                        <strong>تاريخ البداية</strong>
                         <t t-esc="wizard['start_date']"/>
                     </p>
                     <p>
-                        <strong>Date to:</strong>
+                        <strong>تاريخ النهاية</strong>
                         <t t-esc="wizard['end_date']"/>
                     </p>
                     <p>
-                        <strong>Location:</strong>
-                        <t t-esc="wizard['location_id']"/>
+                        <strong>المخزن</strong>
+                        <t t-esc="wizard['location_id'][1]"/>
                     </p>
                     <t t-if="wizard['partner_id']">
-                        <p>
-                            <strong>Partner:</strong>
-                            <t t-esc="wizard['partner_id']"/>
-                        </p>
-                        <h3>Detailed Transactions</h3>
+                        <h3 style="text-align: center">تقرير تفصيلى لعميل:
+
+                            <t t-esc="wizard['partner_id'][1]"/>
+
+                        </h3>
                         <table class="table table-condensed">
                             <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Picking Name</th>
-                                    <th>Previous Balance</th>
-                                    <th>Quantity Out</th>
-                                    <th>Quantity In</th>
-                                    <th>End Balance</th>
+                                    <th>التاريخ</th>
+                                    <th>الحركة</th>
+                                    <th>ما قبله</th>
+                                    <th>كمية خارجة</th>
+                                    <th>كمية داخلة</th>
+                                    <th>رصيد</th>
                                 </tr>
                             </thead>
                             <tbody>
