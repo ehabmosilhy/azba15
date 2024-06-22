@@ -3,28 +3,71 @@
     <data>
         <template id="custody_report_pdf_template">
             <t t-call="web.html_container">
-                    <div class="article" t-att-data-oe-model="docs and docs._name"
-                         t-att-data-oe-id="docs and docs.id"
-                         t-att-data-oe-lang="docs and docs.env.context.get('lang')">
-                        <h2>Custody Report</h2>
-                        <p>
-                            <strong>Date from:</strong>
-                            <t t-esc="docs.start_date"/>
-                        </p>
-                        <p>
-                            <strong>Date to:</strong>
-                            <t t-esc="docs.end_date"/>
-                        </p>
-                        <p>
-                            <strong>Location:</strong>
-                            <t t-esc="docs.location_id.display_name"/>
-                        </p>
-                        <t t-if="docs.partner_id">
-                            <p>
-                                <strong>Partner:</strong>
-                                <t t-esc="docs.partner_id.display_name"/>
-                            </p>
-                        </t>
+                <div class="article" t-att-data-oe-model="docs and docs._name"
+                     t-att-data-oe-id="docs and docs.id"
+                     t-att-data-oe-lang="docs and docs.env.context.get('lang')">
+                    <h2>Custody Report</h2>
+                    <p>
+                        <strong>Date from:</strong>
+                        <t t-esc="wizard['start_date']"/>
+                    </p>
+                    <p>
+                        <strong>Date to:</strong>
+                        <t t-esc="wizard['end_date']"/>
+                    </p>
+                    <p>
+                        <strong>Location:</strong>
+                        <t t-esc="wizard['location_id']"/>
+                    </p>
+                    <t t-if="wizard['partner_id']">
+                        <h3>Detailed Transactions</h3>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Picking Name</th>
+                                    <th>Partner</th>
+                                    <th>Product</th>
+                                    <th>Previous Balance</th>
+                                    <th>Quantity Out</th>
+                                    <th>Quantity In</th>
+                                    <th>End Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="data" t-as="item">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="item['date']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="item['picking_name']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="item['partner']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="item['product']"/>
+                                        </td>
+                                         <td>
+                                            <t t-esc="item['balance_before_start_date']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="item['quantity_out']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="item['quantity_in']"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="item['type']"/>
+                                        </td>
+
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                    <t t-else="">
                         <table class="table table-condensed">
                             <thead>
                                 <tr>
@@ -36,26 +79,30 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <t t-foreach="data.items()" t-as="data">
+                                <t t-foreach="data" t-as="item">
                                     <tr>
                                         <td>
-                                            <t t-esc="data[0]"/>
+                                            <t t-esc="item['partner']"/>
                                         </td>
                                         <td>
-                                            <t t-esc="data[1]"/>
+                                            <t t-esc="item['product']"/>
                                         </td>
                                         <td>
+                                            <t t-esc="item['out']"/>
                                         </td>
                                         <td>
+                                            <t t-esc="item['in']"/>
                                         </td>
                                         <td>
+                                            <t t-esc="item['balance']"/>
                                         </td>
                                     </tr>
                                 </t>
                             </tbody>
                         </table>
-                    </div>
-                </t>
+                    </t>
+                </div>
+            </t>
         </template>
     </data>
 </odoo>

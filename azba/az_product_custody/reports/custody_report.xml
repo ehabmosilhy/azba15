@@ -1,11 +1,13 @@
 <odoo>
-    <report
-        id="custody_report_pdf_action"
-        string="Custody Report"
-        model="custody.report.wizard"
-        report_type="qweb-pdf"
-        name="az_product_custody.custody_report_pdf_template"
-        file="az_product_custody.custody_report_pdf_template"
-        attachment_use="False"
-    />
+
+     <record id="custody_report_pdf_action" model="ir.actions.report">
+        <field name="name">Custody Report</field>
+        <field name="model">custody.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">az_product_custody.custody_report_pdf_template</field>
+        <field name="report_file">az_product_custody.custody_report_pdf_template</field>
+        <field name="print_report_name">'Custody Report - %s' % (object.name)</field>
+        <field name="attachment_use">False</field>
+    </record>
+
 </odoo>
