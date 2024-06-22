@@ -1,39 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="custody_report_pdf_template">
-        <t t-call="web.external_layout">
-            <div class="page">
-                <h2>Custody Report</h2>
-                <p><strong>Date from:</strong> <t t-esc="docs.start_date"/></p>
-                <p><strong>Date to:</strong> <t t-esc="docs.end_date"/></p>
-                <p><strong>Location:</strong> <t t-esc="docs.location_id.display_name"/></p>
-                <t t-if="docs.partner_id">
-                    <p><strong>Partner:</strong> <t t-esc="docs.partner_id.display_name"/></p>
-                </t>
-                <table class="table table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Partner</th>
-                            <th>Product</th>
-                            <th>Sum Out</th>
-                            <th>Sum In</th>
-                            <th>Balance</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-foreach="docs.data.items()" t-as="partner, products">
-                            <t t-foreach="products.items()" t-as="product, values">
-                                <tr>
-                                    <td><t t-esc="partner"/></td>
-                                    <td><t t-esc="product"/></td>
-                                    <td><t t-esc="values['out']"/></td>
-                                    <td><t t-esc="values['in']"/></td>
-                                    <td><t t-esc="values['out'] - values['in']"/></td>
-                                </tr>
-                            </t>
+    <data>
+        <template id="custody_report_pdf_template">
+            <t t-call="web.html_container">
+                    <div class="article" t-att-data-oe-model="docs and docs._name"
+                         t-att-data-oe-id="docs and docs.id"
+                         t-att-data-oe-lang="docs and docs.env.context.get('lang')">
+                        <h2>Custody Report</h2>
+                        <p>
+                            <strong>Date from:</strong>
+                            <t t-esc="docs.start_date"/>
+                        </p>
+                        <p>
+                            <strong>Date to:</strong>
+                            <t t-esc="docs.end_date"/>
+                        </p>
+                        <p>
+                            <strong>Location:</strong>
+                            <t t-esc="docs.location_id.display_name"/>
+                        </p>
+                        <t t-if="docs.partner_id">
+                            <p>
+                                <strong>Partner:</strong>
+                                <t t-esc="docs.partner_id.display_name"/>
+                            </p>
                         </t>
-                    </tbody>
-                </table>
-            </div>
-        </t>
-    </template>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Partner</th>
+                                    <th>Product</th>
+                                    <th>Sum Out</th>
+                                    <th>Sum In</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="data.items()" t-as="data">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="data[0]"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="data[1]"/>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+        </template>
+    </data>
 </odoo>

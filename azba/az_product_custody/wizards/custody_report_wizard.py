@@ -5,6 +5,7 @@ from datetime import datetime
 from odoo import fields, models, api
 import xlsxwriter
 
+
 class CustodyReportWizard(models.TransientModel):
     _name = 'custody.report.wizard'
     _description = 'Custody Report Wizard'
@@ -168,7 +169,6 @@ class CustodyReportWizard(models.TransientModel):
 
     def generate_pdf_report(self):
         data, detailed_data = self._prepare_report_data()
+        datas = {"data": detailed_data if detailed_data else data}
 
-        self.data = data  # Add the data to the context
-
-        return self.env.ref('az_product_custody.custody_report_pdf_action').report_action(self)
+        return self.env.ref('az_product_custody.custody_report_pdf_action').report_action(self, data=datas)
