@@ -14,8 +14,8 @@ class CustodyReportWizard(models.TransientModel):
     location_id = fields.Many2one('stock.location', string='Location', required=True)
     partner_id = fields.Many2one('res.partner', string='Partner')
 
-    def _get_balance_before_start_date(self):
-        """Get the balance of the partner before the start date."""
+    def _get_previous_balance(self):
+        """Get the previous balance of the partner before the start date."""
         custody_product_ids = self.env['product.custody'].search([]).mapped('product_id.id')
 
         domain_out = [
@@ -70,7 +70,8 @@ class CustodyReportWizard(models.TransientModel):
         data_dict = {}
         detailed_data = []
 
-        balance_before_start_date = self._get_balance_before_start_date()
+        previous_balance = self._get_previous_balance()
+        end_balance = previous_balance
 
         for move in moves:
             partner = f"[{move.partner_id.code}] {move.partner_id.name}" if move.partner_id else ''
@@ -78,10 +79,11 @@ class CustodyReportWizard(models.TransientModel):
             if partner not in data_dict:
                 data_dict[partner] = {}
             if product not in data_dict[partner]:
-                data_dict[partner][product] = {'out': 0, 'in': 0, 'balance_before_start_date': balance_before_start_date}
+                data_dict[partner][product] = {'out': 0, 'in': 0, 'previous_balance': previous_balance}
 
             if move.picking_id.picking_type_id.code == 'outgoing':
                 data_dict[partner][product]['out'] += move.product_uom_qty
+                end_balance += move.product_uom_qty
                 if self.partner_id:
                     detailed_data.append({
                         'date': move.date,
@@ -90,12 +92,13 @@ class CustodyReportWizard(models.TransientModel):
                         'product': product,
                         'quantity_out': move.product_uom_qty,
                         'quantity_in': 0,
-                        'type': 'out',
-                        'balance_before_start_date': balance_before_start_date
+                        'previous_balance': previous_balance,
+                        'end_balance': end_balance
                     })
-                    balance_before_start_date += move.product_uom_qty
+                    previous_balance = end_balance
             elif move.picking_id.picking_type_id.code == 'incoming':
                 data_dict[partner][product]['in'] += move.product_uom_qty
+                end_balance -= move.product_uom_qty
                 if self.partner_id:
                     detailed_data.append({
                         'date': move.date,
@@ -104,10 +107,10 @@ class CustodyReportWizard(models.TransientModel):
                         'product': product,
                         'quantity_out': 0,
                         'quantity_in': move.product_uom_qty,
-                        'type': 'in',
-                        'balance_before_start_date': balance_before_start_date
+                        'previous_balance': previous_balance,
+                        'end_balance': end_balance
                     })
-                    balance_before_start_date -= move.product_uom_qty
+                    previous_balance = end_balance
 
         domain_return = [
             ('location_dest_id', '=', self.location_id.id),
@@ -130,10 +133,11 @@ class CustodyReportWizard(models.TransientModel):
             if partner not in data_dict:
                 data_dict[partner] = {}
             if product not in data_dict[partner]:
-                data_dict[partner][product] = {'out': 0, 'in': 0, 'balance_before_start_date': balance_before_start_date}
+                data_dict[partner][product] = {'out': 0, 'in': 0, 'previous_balance': previous_balance}
 
             if move.picking_id.picking_type_id.code == 'incoming':
                 data_dict[partner][product]['in'] += move.product_uom_qty
+                end_balance -= move.product_uom_qty
                 if self.partner_id:
                     detailed_data.append({
                         'date': move.date,
@@ -142,12 +146,13 @@ class CustodyReportWizard(models.TransientModel):
                         'product': product,
                         'quantity_out': 0,
                         'quantity_in': move.product_uom_qty,
-                        'type': 'in',
-                        'balance_before_start_date': balance_before_start_date
+                        'previous_balance': previous_balance,
+                        'end_balance': end_balance
                     })
-                    balance_before_start_date -= move.product_uom_qty
+                    previous_balance = end_balance
             elif move.picking_id.picking_type_id.code == 'outgoing':
                 data_dict[partner][product]['out'] += move.product_uom_qty
+                end_balance += move.product_uom_qty
                 if self.partner_id:
                     detailed_data.append({
                         'date': move.date,
@@ -156,10 +161,10 @@ class CustodyReportWizard(models.TransientModel):
                         'product': product,
                         'quantity_out': move.product_uom_qty,
                         'quantity_in': 0,
-                        'type': 'out',
-                        'balance_before_start_date': balance_before_start_date
+                        'previous_balance': previous_balance,
+                        'end_balance': end_balance
                     })
-                    balance_before_start_date += move.product_uom_qty
+                    previous_balance = end_balance
 
         for partner, products in data_dict.items():
             for product, values in products.items():
@@ -169,7 +174,7 @@ class CustodyReportWizard(models.TransientModel):
                     'out': values['out'],
                     'in': values['in'],
                     'balance': values['out'] - values['in'],
-                    'balance_before_start_date': values['balance_before_start_date']
+                    'previous_balance': values['previous_balance']
                 })
 
         return data, detailed_data
