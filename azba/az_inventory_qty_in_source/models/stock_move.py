@@ -1,23 +1,25 @@
 from odoo import models, fields, api
 
+
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
-    qty_in_src_location = fields.Float(compute='_compute_qty_in_src_location', string='Quantity in Source Location')
+    qty_in_src_location = fields.Char(compute='_compute_qty_in_src_location', string='Quantity in Source Location')
 
     @api.depends('picking_id.location_id', 'product_id')
     def _compute_qty_in_src_location(self):
         for move in self:
             location_id = move.picking_id.location_id
             product_id = move.product_id
-            if location_id and product_id:
+            if location_id and product_id and self.picking_type_id.code == 'outgoing':
                 quants = self.env['stock.quant'].search([
                     ('location_id', '=', location_id.id),
                     ('product_id', '=', product_id.id)
                 ])
-                move.qty_in_src_location = sum(quant.quantity for quant in quants)
+                move.qty_in_src_location = str(sum(quant.quantity for quant in quants))
             else:
-                move.qty_in_src_location = 0.0
+                move.qty_in_src_location = "---"
+
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
