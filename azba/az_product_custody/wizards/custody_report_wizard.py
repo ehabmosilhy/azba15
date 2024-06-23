@@ -68,7 +68,7 @@ class CustodyReportWizard(models.TransientModel):
         else:
             domain.append(('partner_id', '!=', False))
 
-        moves = self.env['stock.move'].search(domain, order='product_id')
+        moves = self.env['stock.move'].search(domain, order='product_id, date')
 
         data = []
         data_dict = {}

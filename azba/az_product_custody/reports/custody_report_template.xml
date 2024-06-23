@@ -75,11 +75,11 @@
                         <table class="table table-condensed">
                             <thead>
                                 <tr>
-                                    <th>Partner</th>
-                                    <th>Product</th>
-                                    <th>Sum Out</th>
-                                    <th>Sum In</th>
-                                    <th>Balance</th>
+                                    <th>العميل</th>
+                                    <th>المنتج</th>
+                                    <th>حركات خارجة</th>
+                                    <th>حركات داخلة</th>
+                                    <th>الرصيد</th>
                                 </tr>
                             </thead>
                             <tbody>
