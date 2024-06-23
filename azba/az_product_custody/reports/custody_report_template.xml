@@ -16,7 +16,7 @@
                         <t t-esc="wizard['end_date']"/>
                     </p>
                     <p>
-                        <strong>المخزن</strong>
+                        <strong>المسار</strong>
                         <t t-esc="wizard['location_id'][1]"/>
                     </p>
                     <t t-if="wizard['partner_id']">
@@ -31,8 +31,8 @@
                                     <th>التاريخ</th>
                                     <th>الحركة</th>
                                     <th>ما قبله</th>
-                                    <th>كمية خارجة</th>
-                                    <th>كمية داخلة</th>
+                                    <th>منصرف</th>
+                                    <th>وارد</th>
                                     <th>رصيد</th>
                                 </tr>
                             </thead>
@@ -77,8 +77,8 @@
                                 <tr>
                                     <th>العميل</th>
                                     <th>المنتج</th>
-                                    <th>حركات خارجة</th>
-                                    <th>حركات داخلة</th>
+                                    <th>منصرف</th>
+                                    <th>وارد</th>
                                     <th>الرصيد</th>
                                 </tr>
                             </thead>
