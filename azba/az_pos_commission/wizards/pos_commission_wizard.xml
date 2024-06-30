@@ -1,0 +1,31 @@
+<odoo>
+    <record id="view_pos_commission_report_wizard_form" model="ir.ui.view">
+        <field name="name">pos.commission.wizard.form</field>
+        <field name="model">pos.commission.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Custody Report Wizard">
+                <group>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="config_id"/>
+                </group>
+                <footer>
+                    <button string="طباعة" type="object" name="generate_pdf_report" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_pos_commission_wizard" model="ir.actions.act_window">
+        <field name="name">POS Commission Wizard</field>
+        <field name="res_model">pos.commission.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_commission" name="عمولات المناديب💰"
+              parent="point_of_sale.menu_point_rep" action="action_pos_commission_wizard"
+              groups="base.group_system,base.group_user"
+    />
+</odoo>
