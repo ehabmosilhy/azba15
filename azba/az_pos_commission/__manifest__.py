@@ -8,7 +8,6 @@
     'version': '0.1',
     'depends': ['base', 'point_of_sale'],
     'data': [
-        'views/commission_category.xml',
         'views/product_template.xml',
         'wizards/pos_commission_wizard.xml',
         'reports/commission_report.xml',
