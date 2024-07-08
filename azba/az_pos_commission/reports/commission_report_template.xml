@@ -22,21 +22,42 @@
                     <table class="table table-condensed">
                         <thead>
                             <tr>
+                                <th>المندوب</th>
+                                <th>الصنف</th>
                                 <th>الكمية</th>
                                 <th>العمولة</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <t t-esc="data['qty']"/>
-                                </td>
-                                <td>
-                                    <t t-esc="data['commission']"/>
-                                </td>
-                            </tr>
+                            <t t-foreach="data" t-as="data">
+                                <!-- Check if the employee's data should be displayed in a new row -->
+                                <t t-if="data['employee'] != current_employee">
+                                    <tr>
+                                        <td colspan="4">
+                                            <t t-set="current_employee" t-value="data['employee']"/>
+                                            <strong>
+                                                <t t-esc="data['employee']"/>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <!-- Display the data for the employee -->
+                                <tr>
+                                    <td></td> <!-- Empty cell for alignment -->
+                                    <td>
+                                        <t t-esc="data['commission_category']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['qty']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['commission']"/>
+                                    </td>
+                                </tr>
+                            </t>
                         </tbody>
                     </table>
+
                 </div>
             </t>
         </template>
