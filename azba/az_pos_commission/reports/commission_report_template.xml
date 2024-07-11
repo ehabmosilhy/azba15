@@ -15,15 +15,11 @@
                         <strong>تاريخ النهاية</strong>
                         <t t-esc="wizard['end_date']"/>
                     </p>
-                    <p>
-                        <strong>المسار</strong>
-                        <t t-esc="wizard['config_id'][1]"/>
-                    </p>
                     <table class="table table-condensed">
                         <thead>
                             <tr>
                                 <th>المندوب</th>
-                                <th>الصنف</th>
+                                <th>نوع العمولة</th>
                                 <th>الكمية</th>
                                 <th>العمولة</th>
                             </tr>
@@ -31,12 +27,12 @@
                         <tbody>
                             <t t-foreach="data" t-as="data">
                                 <!-- Check if the employee's data should be displayed in a new row -->
-                                <t t-if="data['employee'] != current_employee">
+                                <t t-if="data['emp_name'] != current_employee">
                                     <tr>
                                         <td colspan="4">
-                                            <t t-set="current_employee" t-value="data['employee']"/>
+                                            <t t-set="current_employee" t-value="data['emp_name']"/>
                                             <strong>
-                                                <t t-esc="data['employee']"/>
+                                                [<t t-esc="data['config']"/>] <t t-esc="data['emp_name']"/>
                                             </strong>
                                         </td>
                                     </tr>

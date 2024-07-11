@@ -7,7 +7,7 @@
                 <group>
                     <field name="start_date"/>
                     <field name="end_date"/>
-                    <field name="config_id"/>
+                    <field name="config_id" widget="many2many_tags"/>
                 </group>
                 <footer>
                     <button string="طباعة" type="object" name="generate_pdf_report" class="btn-secondary"/>
