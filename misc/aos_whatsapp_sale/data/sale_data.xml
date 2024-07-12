@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+	    <record id="sales_validation_status_send" model="base.automation">
+	        <field name="name">Sales Confirm by Whatsapp</field>
+	        <field name="model_id" ref="sale.model_sale_order"/>
+	        <field name="trigger">on_write</field>
+	        <field name="active" eval="True"/>
+	        <field name="filter_pre_domain">[["state","=","draft"]]</field>
+	        <field name="filter_domain">[["state","=","sale"]]</field>
+	        <field name="state">code</field>
+	        <field name="code">record.send_whatsapp_automatic()</field>
+	    </record>
+	
+	    <record id="sales_confirm_status" model="mail.template">
+	        <field name="name">Sales: Confirm Order</field>
+	        <field name="subject">Sales Confirm</field>
+	        <field name="model_id" ref="sale.model_sale_order"/>
+	        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        <t t-set="doc_name" t-value="'quotation' if object.state in ('draft', 'sent') else 'order'"/>
+        Hello,
+        <br/><br/>
+        Your
+        <t t-if="ctx.get('proforma')">
+            Pro forma invoice for <t t-out="doc_name or ''">quotation</t> <strong t-out="object.name or ''">S00052</strong>
+            <t t-if="object.origin">
+                (with reference: <t t-out="object.origin or ''"></t> )
+            </t>
+            amounting in <strong t-out="format_amount(object.amount_total, object.pricelist_id.currency_id) or ''">$ 10.00</strong> is available.
+        </t>
+        <t t-else="">
+            <t t-out="doc_name or ''">quotation</t> <strong t-out="object.name or ''"></strong>
+            <t t-if="object.origin">
+                (with reference: <t t-out="object.origin or ''">S00052</t> )
+            </t>
+            amounting in <strong t-out="format_amount(object.amount_total, object.pricelist_id.currency_id) or ''">$ 10.00</strong> is ready for review.
+        </t>
+        <br/><br/>
+        Do not hesitate to contact us if you have any questions.
+        <br/>
+    </p>
+</div>
+	            </field>
+	    </record>
+	    
+	    <record id="sales_confirm_multi" model="mail.template">
+	        <field name="name">Sales: Confirm Multi</field>
+	        <field name="subject">Sales Confirm</field>
+	        <field name="model_id" ref="sale.model_sale_order"/>
+	        <field name="body_html" type="html">
+	        	<div style="margin: 0px; padding: 0px;">
+			        <p> Hello *_PARTNER_*,</p>
+			        Your order _NUMBER_ amount _AMOUNT_TOTAL_ is Confirmed.
+			        <br/><br/>
+			        Kindly refer below link for order receipt.
+			        <br/><br/>
+		        </div>
+	        </field>
+	    </record>
+	    
+    </data>
+</odoo>
