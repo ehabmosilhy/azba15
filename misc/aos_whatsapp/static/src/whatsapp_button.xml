@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+    <!-- <t t-name="timesheet_grid.UnGroupedGridBody" t-inherit="web_grid.UnGroupedGridBody" t-inherit-mode="extension" owl="1">
+        <xpath expr="//th" position="before">
+            <th t-if="showTimerButton" class="o_grid_timer_header"/>
+        </xpath>
+    </t> -->
+    <t t-name="aos_whatsapp.SendWhatsAppButton" t-inherit="mail.ChatterTopbar" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o_ChatterTopbar_actions')]/child::*" position="after">
+            <!-- <button class="btn btn-odoo o_ChatterTopbar_button"
+                type="button" 
+                t-att-disabled="!chatterTopbar.chatter.hasReadAccess" 
+                t-on-click="chatterTopbar.chatter.onClickSendWhatsapp"
+                data-hotkey="w"
+                title="WhatsApp">
+                <i class="fa fa-whatsapp"/>
+                <small class="fw-bold ms-1">WhatsApp</small>
+            </button> -->
+            <button class="btn btn-link o_ChatterTopbar_button o_ChatterTopbar_buttonSendWhatsapp"
+                type="button"
+                t-att-class="{
+                    'o-active': chatter.composerView and !chatter.composerView.composer.isLog,
+                    'o-bordered': chatter.hasExternalBorder,
+                }"
+                t-att-disabled="chatter.isDisabled"
+                title="Send a message"
+                data-hotkey="m"
+                t-on-click="chatter.onClickSendMessage"
+            >
+                Send WhatsApp
+            </button>
+        </xpath>
+    </t>
+
+</templates>
