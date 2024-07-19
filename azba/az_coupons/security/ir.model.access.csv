@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_coupon_coupon_paper_user,access_coupon_coupon_paper_user,model_coupon_coupon_paper,base.group_user,1,0,0,0
-access_coupon_coupon_paper_admin,access_coupon_coupon_paper_admin,model_coupon_coupon_paper,base.group_system,1,1,1,1
+access_az_coupon_user,access_az_coupon_user,model_az_coupon,base.group_user,1,1,1,1
+access_az_coupon_admin,access_az_coupon_admin,model_az_coupon,base.group_system,1,1,1,1
+access_az_coupon_paper_user,access_az_coupon_paper_user,model_az_coupon_paper,base.group_user,1,1,1,1
+access_az_coupon_paper_admin,access_az_coupon_paper_admin,model_az_coupon_paper,base.group_system,1,1,1,1
