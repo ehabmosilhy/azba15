@@ -7,19 +7,25 @@
             <field name="model">az.coupon</field>
             <field name="arch" type="xml">
                 <form string="Coupon">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,valid,used"/>
+                    </header>
                     <sheet>
                         <group>
-                            <field name ='id' invisible="1"/>
-                            <field name="name"/>
-                            <field name="code"
-
-                                   attrs="{'invisible': [ ('id', '=', False)]}"
-
-                            />
-                            <field name="page_count"/>
-                            <field name="pos_order_id"/>
-                            <field name="partner_id"/>
-                            <field name="page_count"/>
+                            <group>
+                                <field name='id' invisible="1"/>
+                                <field name="name"/>
+                                <field name="code" attrs="{'invisible': [('id', '=', False)]}"/>
+                                <field name="pos_order_id"/>
+                            </group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="page_count"/>
+                                <field name="available_count"/>
+                                <field name="used_count"/>
+                            </group>
+                        </group>
+                        <group>
                             <field name="paper_ids">
                                 <tree string="Papers">
                                     <field name="code"/>
@@ -40,16 +46,25 @@
             </field>
         </record>
 
+
         <!-- Tree view for az.coupon -->
         <record id="view_az_coupon_tree" model="ir.ui.view">
             <field name="name">az.coupon.tree</field>
             <field name="model">az.coupon</field>
             <field name="arch" type="xml">
-                <tree string="Coupons">
+                <tree string="Coupons" decoration-success="state == 'valid'">
                     <field name="code"/>
+                    <field name="state"/>
+                    <field name="name"/>
+                    <field name="page_count"/>
+                    <field name="available_count"/>
+                    <field name="used_count"/>
+                    <field name="pos_order_id"/>
+                    <field name="partner_id"/>
                 </tree>
             </field>
         </record>
+
 
         <!-- Action for az.coupon -->
         <record id="action_az_coupons" model="ir.actions.act_window">

@@ -11,7 +11,7 @@ class CouponPaper(models.Model):
     coupon_book_id = fields.Many2one('az.coupon', string='Coupon Book', ondelete='cascade')
     code = fields.Char(required=True, readonly=True)
     state = fields.Selection([
-        ('new', 'Valid'),
+        ('valid', 'Valid'),
         ('sent', 'Sent'),
         ('used', 'Used'),
         ('cancel', 'Cancelled')

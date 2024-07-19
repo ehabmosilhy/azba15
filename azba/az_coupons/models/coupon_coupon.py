@@ -17,6 +17,33 @@ class Coupon(models.Model):
     partner_id = fields.Many2one(related='pos_order_id.partner_id', string='Partner')
     product_id = fields.Many2one(related='pos_order_id.lines.product_id', string='Product')
 
+    available_count = fields.Integer(compute='_compute_available_count', string='Available')
+    used_count = fields.Integer(compute='_compute_available_count', string='Used')
+
+    @api.depends('paper_ids')
+    def _compute_available_count(self):
+        # get the count of papers where state = 'valid'
+        for coupon in self:
+            coupon.available_count = self.env['az.coupon.paper'].search_count(
+                [('coupon_book_id', '=', coupon.id), ('state', '=', 'valid')]
+            )
+            coupon.used_count = self.env['az.coupon.paper'].search_count(
+                [('coupon_book_id', '=', coupon.id), ('state', '=', 'used')]
+            )
+
+
+    state = fields.Selection([
+        ('valid', 'Valid'),
+        ('sent', 'Sent'),
+        ('used', 'Used'),
+        ('cancel', 'Cancelled')
+    ], required=True, default='new')
+
+    @api.model
+    def _default_session(self):
+        return self.env['pos.session'].search([], limit=1)
+
+    session_id = fields.Many2one('pos.session', string='Session', default=_default_session)
     @api.model
     def _generate_code(self):
         """Generate a code in the format YYMMSSS where:
