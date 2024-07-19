@@ -6,6 +6,7 @@
     "depends": ["point_of_sale", "pos_coupon"],
     "data": [
         'views/coupon_coupon.xml',
+        'views/product_template.xml',
         'security/ir.model.access.csv',
     ],
     "installable": True,

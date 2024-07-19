@@ -14,8 +14,8 @@ class Coupon(models.Model):
     code = fields.Char(string='Code')
     paper_ids = fields.One2many('az.coupon.paper', 'coupon_book_id', string='Papers')
     pos_order_id = fields.Many2one('pos.order', string='POS Order')
-    partner_id = fields.Many2one(related='pos_order.partner_id', string='Partner')
-
+    partner_id = fields.Many2one(related='pos_order_id.partner_id', string='Partner')
+    product_id = fields.Many2one(related='pos_order_id.lines.product_id', string='Product')
 
     @api.model
     def _generate_code(self):

@@ -6,6 +6,6 @@ from datetime import datetime
 
 
 class Coupon(models.Model):
-    _inherit = 'product.product'
+    _inherit = 'product.template'
 
     coupon_paper_count = fields.Integer(string='Coupon Paper Count')
