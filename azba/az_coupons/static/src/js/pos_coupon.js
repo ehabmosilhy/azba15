@@ -51,13 +51,21 @@ odoo.define('pos_coupon.Coupon', function (require) {
             });
 
             // Assuming used_coupons is a string or similar that can be directly used
-            const full_name = "استبدال قارورة مياه/5 جالون" + used_coupons // Format the result to a string, adjust according to actual data structure
+            const full_name = "استبدال قارورة مياه/5 جالون" + "\n" + " دفتر كوبون " + used_coupons // Format the result to a string, adjust according to actual data structure
 
+
+            // get paper price
+            let paper_price = await rpc.query({
+                model: 'product.template',
+                method: 'read',
+                args: [[40], ['list_price']], // Pass the product ID as an array and the fields to read
+            });
+            paper_price =  paper_price[0].list_price / 20;
 
             order_lines.forEach(line => {
                 if (line.product.id === original_product_id) {
                     this.add_product(new_product, {
-                        price: 0,
+                        price:0  ,
                         product_description: full_name,
                         quantity: line.quantity,
                         extras: {

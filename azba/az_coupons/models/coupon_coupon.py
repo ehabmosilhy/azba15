@@ -8,17 +8,21 @@ from datetime import datetime
 class Coupon(models.Model):
     _name = 'az.coupon'
 
-    name = fields.Char(string='Name', required=True)
-    page_count = fields.Integer(string='Page Count', required=True)
+    name = fields.Char(string='Name', readonly=True)
+    page_count = fields.Integer(string='Page Count', readonly=True)
 
-    code = fields.Char(string='Code')
+    code = fields.Char(string='Code', readonly=True)
     paper_ids = fields.One2many('az.coupon.paper', 'coupon_book_id', string='Papers')
-    pos_order_id = fields.Many2one('pos.order', string='POS Order')
-    partner_id = fields.Many2one(related='pos_order_id.partner_id', string='Partner')
-    product_id = fields.Many2one(related='pos_order_id.lines.product_id', string='Product')
+    pos_order_id = fields.Many2one('pos.order', string='POS Order',readonly = True)
+    partner_id = fields.Many2one(related='pos_order_id.partner_id', string='Partner', readonly=True)
+    product_id = fields.Many2one(related='pos_order_id.lines.product_id', string='Product', readonly = True)
 
     available_count = fields.Integer(compute='_compute_available_count', string='Available')
     used_count = fields.Integer(compute='_compute_available_count', string='Used')
+
+    partner_name = fields.Char(related='partner_id.name', string='Partner Name', readonly=True)
+    partner_code = fields.Char(related='partner_id.code', string='Partner Code', readonly=True)
+
 
     @api.depends('paper_ids')
     def _compute_available_count(self):

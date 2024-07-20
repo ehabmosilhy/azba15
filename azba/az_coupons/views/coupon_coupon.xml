@@ -60,8 +60,28 @@
                     <field name="available_count"/>
                     <field name="used_count"/>
                     <field name="pos_order_id"/>
-                    <field name="partner_id"/>
+                    <field name="partner_id" invisible="1"/>
+                    <field name="partner_code"/>
+                    <field name="partner_name"/>
                 </tree>
+            </field>
+        </record>
+
+        <!-- Search view for az.coupon -->
+        <record id="view_az_coupon_search" model="ir.ui.view">
+            <field name="name">az.coupon.search</field>
+            <field name="model">az.coupon</field>
+            <field name="arch" type="xml">
+                <search string="Search Coupons">
+                    <field name="code"/>
+                    <field name="partner_code"/>
+                    <field name="partner_name"/>
+                    <filter string="Valid" name="valid" domain="[('state', '=', 'valid')]"/>
+                    <filter string="Used" name="used" domain="[('state', '=', 'used')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
             </field>
         </record>
 

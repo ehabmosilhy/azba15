@@ -78,11 +78,26 @@ class PosOrder(models.Model):
 
         return used_coupons  # Return the list of used coupon IDs and codes
 
+    def make_invoice(self, values):
+        lines = values['lines']
+        for line in lines:
+            if line[2]['product_id'] == 4: # قارورة مياه 5 جالون
+                # get list price of coupon book product.template 40
+                list_price = self.env['product.template'].browse(40).list_price
+                list_price=list_price/20
+                line[2]['price_unit'] = list_price
+                line[2]['price_subtotal'] = list_price * line[2]['qty']
+                line[2]['tax_ids'] = [[6, False, []]]
+
+        return values
+
+
     @api.model
     def create(self, values):
 
         session = self.env['pos.session'].browse(values['session_id'])  # 📅 Get the POS session
         values = self._complete_values_from_session(session, values)  # ✍ Complete order values from session
+        values = self.make_invoice(values) # to calculate price of pages
         order = super(PosOrder, self).create(values)  # 🌟 Create the order
 
         self.create_coupon(order, values)  # 🎁 Create coupons for the order
