@@ -9,6 +9,11 @@
         'views/product_template.xml',
         'security/ir.model.access.csv',
     ],
+
+    'assets': {
+        'point_of_sale.assets': [
+            'az_coupons/static/src/js/**/*.js',
+        ], },
     "installable": True,
     "auto_install": False,
 }
