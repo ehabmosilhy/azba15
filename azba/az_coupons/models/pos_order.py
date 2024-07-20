@@ -4,6 +4,7 @@
 from odoo import fields, models, api
 from datetime import datetime
 
+
 class PosOrder(models.Model):
     _inherit = "pos.order"
 
@@ -78,9 +79,38 @@ class PosOrder(models.Model):
                             [('coupon_book_id', '=', coupon_book.id), ('state', '=', 'valid')]):
                         coupon_book.state = 'used'
 
+                # ✨ Add a new line with the coupon product
+                self.add_coupon_product_line(values, line[2]['qty'])
+
+        return values
+
+    # ➕ Function to add a new line with the coupon product
+    def add_coupon_product_line(self, values, qty):
+        coupon_product_template_id = 5  # 🆕 Hardcoded new product template ID
+        coupon_product_id = self.env['product.product'].search([('product_tmpl_id', '=', coupon_product_template_id)])
+
+        # get last line id
+        last_line_id = values['lines'][-1][2]['id']
+        # 📝 Append the new line to values['lines']
+        values['lines'].insert(0,[
+            0, 0, {
+                'qty': qty,
+                'price_unit': 0,
+                'price_subtotal': 0,
+                'price_subtotal_incl': 0,
+                'discount': 0,
+                'product_id': coupon_product_id.id,
+                'tax_ids': [(6, False, [])],
+                'full_product_name': "Replacement for coupons",
+                'name': 'Coupon Product',
+                'id': last_line_id+1
+            }
+        ])
+        return values
+
     @api.model
     def create(self, values):
-        self.handle_papers(values)  # 🖋 Handle papers for the order
+        values = self.handle_papers(values)  # 🖋 Handle papers for the order
 
         session = self.env['pos.session'].browse(values['session_id'])  # 📅 Get the POS session
         values = self._complete_values_from_session(session, values)  # ✍ Complete order values from session

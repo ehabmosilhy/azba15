@@ -15,4 +15,4 @@ class CouponPaper(models.Model):
         ('sent', 'Sent'),
         ('used', 'Used'),
         ('cancel', 'Cancelled')
-    ], required=True, default='new')
+    ], required=True, default='valid')
