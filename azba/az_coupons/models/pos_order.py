@@ -33,7 +33,7 @@ class PosOrder(models.Model):
         product_template_id = 3733  # 🆔 Hardcoded product template ID
         product_id = self.env['product.product'].search([('product_tmpl_id', '=', product_template_id)])
         partner_id = values['partner_id']
-
+        new_lines = values['lines'][::]
         # 🛠 Loop through each line in the order values
         for line in values['lines']:
             if line[2]['product_id'] == product_id.id:
@@ -80,19 +80,19 @@ class PosOrder(models.Model):
                         coupon_book.state = 'used'
 
                 # ✨ Add a new line with the coupon product
-                self.add_coupon_product_line(values, line[2]['qty'])
-
+                new_lines = self.add_coupon_product_line(new_lines, line[2]['qty'])
+        values['lines'] = new_lines
         return values
 
     # ➕ Function to add a new line with the coupon product
-    def add_coupon_product_line(self, values, qty):
+    def add_coupon_product_line(self, new_lines, qty):
         coupon_product_template_id = 5  # 🆕 Hardcoded new product template ID
         coupon_product_id = self.env['product.product'].search([('product_tmpl_id', '=', coupon_product_template_id)])
 
         # get last line id
-        last_line_id = values['lines'][-1][2]['id']
+        last_line_id = new_lines[-1][2]['id']
         # 📝 Append the new line to values['lines']
-        values['lines'].insert(0,[
+        new_lines.insert(0,[
             0, 0, {
                 'qty': qty,
                 'price_unit': 0,
@@ -106,7 +106,7 @@ class PosOrder(models.Model):
                 'id': last_line_id+1
             }
         ])
-        return values
+        return new_lines
 
     @api.model
     def create(self, values):
