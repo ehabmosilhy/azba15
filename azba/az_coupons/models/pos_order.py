@@ -29,12 +29,13 @@ class PosOrder(models.Model):
                         })
 
     # 📄 Function to handle papers based on order values
+    @api.model
     def handle_papers(self, values):
         product_template_id = 3733  # 🆔 Hardcoded product template ID
         product_id = self.env['product.product'].search([('product_tmpl_id', '=', product_template_id)])
         partner_id = values['partner_id']
-        # new_lines = values['lines'][::]
-        # 🛠 Loop through each line in the order values
+        used_coupons = set()  # List to store the IDs and codes of used coupons
+
         for line in values['lines']:
             if line[2]['product_id'] == product_id.id:
                 qty = line[2]['qty']  # 📏 Get the quantity of the product
@@ -43,11 +44,6 @@ class PosOrder(models.Model):
                 total_valid_papers = self.env['az.coupon.paper'].search_count(
                     [('coupon_book_id.partner_id', '=', partner_id), ('state', '=', 'valid')]
                 )
-
-                # # 🚫 Raise an error if the requested quantity exceeds total valid papers
-                # if qty > total_valid_papers:
-                #     raise ValueError(
-                #         f"Requested quantity ({qty}) exceeds the total number of valid coupon papers ({total_valid_papers}).")
 
                 # ♻️ Loop until all quantities are handled
                 while qty > 0:
@@ -73,17 +69,17 @@ class PosOrder(models.Model):
                     for paper in coupon_papers:
                         paper.state = 'used'
                         qty -= 1  # 📉 Decrease the remaining quantity
-
+                        used_coupons.add( coupon_book.code)  # Add ID and code to the list
                     # 🏁 If this coupon book is exhausted, mark it as used
                     if not self.env['az.coupon.paper'].search(
                             [('coupon_book_id', '=', coupon_book.id), ('state', '=', 'valid')]):
                         coupon_book.state = 'used'
 
 
+        return used_coupons  # Return the list of used coupon IDs and codes
 
     @api.model
     def create(self, values):
-        self.handle_papers(values)  # 🖋 Handle papers for the order
 
         session = self.env['pos.session'].browse(values['session_id'])  # 📅 Get the POS session
         values = self._complete_values_from_session(session, values)  # ✍ Complete order values from session

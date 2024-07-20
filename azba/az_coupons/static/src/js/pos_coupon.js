@@ -17,6 +17,7 @@ odoo.define('pos_coupon.Coupon', function (require) {
             }
 
             const partner_id = this.get_client().id;
+
             const total_valid_papers = await rpc.query({
                 model: 'az.coupon.paper',
                 method: 'search_count',
@@ -31,6 +32,7 @@ odoo.define('pos_coupon.Coupon', function (require) {
                 }
             });
 
+
             if (required_qty > total_valid_papers) {
                 this.pos.gui.show_popup('error', {
                     'title': _t('Not enough valid coupons'),
@@ -39,19 +41,34 @@ odoo.define('pos_coupon.Coupon', function (require) {
                 return;
             }
 
+            const order = this.export_as_JSON(); // This prepares the order in a format suitable for backend processing
+
+            // Call the handle_papers function from Python and get the result
+            const used_coupons = await rpc.query({
+                model: 'pos.order',
+                method: 'handle_papers',
+                args: [order],
+            });
+
+            // Assuming used_coupons is a string or similar that can be directly used
+            const full_name = "استبدال قارورة مياه/5 جالون" + used_coupons // Format the result to a string, adjust according to actual data structure
+
+
             order_lines.forEach(line => {
                 if (line.product.id === original_product_id) {
                     this.add_product(new_product, {
-                        price: 0, // Set the price for the new product if needed
+                        price: 0,
+                        product_description: full_name,
                         quantity: line.quantity,
                         extras: {
-                            full_product_name: "استبدال قارورة مياه/5 جالون"
+                            full_product_name: full_name // Use the result from the RPC call here
                         }
                     });
                 }
             });
         }
     });
+
 
     const POSValidateOverride = PaymentScreen =>
         class extends PaymentScreen {

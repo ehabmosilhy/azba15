@@ -449,15 +449,16 @@
                     </tr>
                     <t t-foreach="receipt.orderlines" t-as="line" t-key="line.id">
                         <div style="display:hidden">
-                            <t t-if="isSimple(line)">
-                                <WrappedProductNameLines line="line"/>
-                            </t>
-                        </div>
+                                                    <t t-if="isSimple(line)">
+                                                        <WrappedProductNameLines line="line"/>
+                                                    </t>
+                                                </div>
+
 
                         <tr>
-                            <td class="client_cell">
+                            <td class="client_cell" >
                                 <!-- Product Name -->
-                                <span t-esc="line.product_name_wrapped[0]"/>
+                                <div t-esc="line.product_name_wrapped"/>
                             </td>
                             <td class="client_cell">
                                 <t t-esc="Math.round(line.quantity * Math.pow(10, env.pos.dp['Product Unit of Measure'])) / Math.pow(10, env.pos.dp['Product Unit of Measure'])"/>
