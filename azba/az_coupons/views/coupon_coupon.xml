@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Form view for az.coupon -->
+        <record id="view_az_coupon_form" model="ir.ui.view">
+            <field name="name">az.coupon.form</field>
+            <field name="model">az.coupon</field>
+            <field name="arch" type="xml">
+                <form string="Coupon">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,valid,used"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name='id' invisible="1"/>
+                                <field name="name"/>
+                                <field name="code" attrs="{'invisible': [('id', '=', False)]}"/>
+                                <field name="pos_order_id"/>
+                            </group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="page_count"/>
+                                <field name="available_count"/>
+                                <field name="used_count"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="paper_ids">
+                                <tree string="Papers">
+                                    <field name="code"/>
+                                    <field name="state"/>
+                                </tree>
+                                <form string="Paper">
+                                    <sheet>
+                                        <group>
+                                            <field name="code"/>
+                                            <field name="state"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- Tree view for az.coupon -->
+        <record id="view_az_coupon_tree" model="ir.ui.view">
+            <field name="name">az.coupon.tree</field>
+            <field name="model">az.coupon</field>
+            <field name="arch" type="xml">
+                <tree string="Coupons" decoration-success="state == 'valid'">
+                    <field name="code"/>
+                    <field name="state"/>
+                    <field name="name"/>
+                    <field name="page_count"/>
+                    <field name="available_count"/>
+                    <field name="used_count"/>
+                    <field name="pos_order_id"/>
+                    <field name="partner_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- Action for az.coupon -->
+        <record id="action_az_coupons" model="ir.actions.act_window">
+            <field name="name">Coupons</field>
+            <field name="res_model">az.coupon</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_az_coupon_tree"/>
+        </record>
+        <!-- Action for az.coupon -->
+        <record id="action_az_coupons" model="ir.actions.act_window">
+            <field name="name">Coupons</field>
+            <field name="res_model">az.coupon</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_az_coupon_tree"/>
+        </record>
+
+        <menuitem id="menu_az_coupons_coupons"
+                  name="Coupons 🎫"
+                  parent="point_of_sale.pos_config_menu_catalog"
+                  action="action_az_coupons"/>
+
+
+    </data>
+</odoo>
