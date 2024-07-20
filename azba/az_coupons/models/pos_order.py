@@ -90,30 +90,11 @@ class PosOrder(models.Model):
         coupon_product_id = self.env['product.product'].search([('product_tmpl_id', '=', coupon_product_template_id)])
         import copy
         new_line = copy.deepcopy(new_lines[-1])
-        # get last line id
-        last_line_id = new_lines[-1][2]['id']
-        # get last line id
-        new_line[2]['id']+=1
-        new_line[2]['name']=new_line[2]['name'][0:6] + str(int(new_line[2]['name'][6:])+1)
-        new_line[2]['full_product_name']="استبدال قارورة مياه/5 جالون"
-        new_line[2]['product_id']=coupon_product_id.id
+        new_line[2]['id'] += 1
+        new_line[2]['name'] = new_line[2]['name'][0:6] + str(int(new_line[2]['name'][6:]) + 1)
+        new_line[2]['full_product_name'] = "استبدال قارورة مياه/5 جالون"
+        new_line[2]['product_id'] = coupon_product_id.id
 
-
-        # 📝 Append the new line to values['lines']
-        # new_lines.insert(0,[
-        #     0, 0, {
-        #         'qty': qty,
-        #         'price_unit': 0,
-        #         'price_subtotal': 0,
-        #         'price_subtotal_incl': 0,
-        #         'discount': 0,
-        #         'product_id': coupon_product_id.id,
-        #         'tax_ids': [(6, False, [])],
-        #         'full_product_name': "Replacement for coupons",
-        #         'name': 'Coupon Product',
-        #         'id': last_line_id+1
-        #     }
-        # ])
         new_lines.append(new_line)
         return new_lines
 
