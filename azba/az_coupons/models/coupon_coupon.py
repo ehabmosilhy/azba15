@@ -48,12 +48,13 @@ class Coupon(models.Model):
         return self.env['pos.session'].search([], limit=1)
 
     session_id = fields.Many2one('pos.session', string='Session', default=_default_session)
+
     @api.model
     def _generate_code(self):
-        """Generate a code in the format YYMMSSS where:
+        """Generate a code in the format YYMMSSSS where:
         - YY: Last two digits of the year
         - MM: Two-digit month
-        - SSS: A 3-digit serial number incremented from the last coupon.
+        - SSSS: A 4-digit serial number incremented from the last coupon.
         """
         current_year = datetime.now().year % 100  # Last two digits of the year
         current_month = datetime.now().month  # Two-digit month
@@ -62,13 +63,13 @@ class Coupon(models.Model):
         last_coupon = self.search([], order='id desc', limit=1)
 
         if last_coupon and last_coupon.code:
-            last_serial = int(last_coupon.code[-3:])  # Extract the last 3 digits as serial number
+            last_serial = int(last_coupon.code[-4:])  # Extract the last 4 digits as serial number
             new_serial = last_serial + 1
         else:
-            new_serial = 1  # Start with 001 if no previous coupon exists
+            new_serial = 1  # Start with 0001 if no previous coupon exists
 
         # Format the components into a string
-        code = f"{current_year:02d}{current_month:02d}{new_serial:03d}"
+        code = f"{current_year:02d}{current_month:02d}{new_serial:04d}"
 
         return code
 
