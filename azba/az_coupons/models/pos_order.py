@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api
-from datetime import datetime
+from odoo.tools import float_repr, float_compare
+from odoo import api, fields, models, tools, _
+import psycopg2
+import logging
 
+_logger = logging.getLogger(__name__)
 
 class PosOrder(models.Model):
     _inherit = "pos.order"
@@ -31,7 +34,7 @@ class PosOrder(models.Model):
     # 📄 Function to handle papers based on order values
     @api.model
     def handle_papers(self, values):
-        product_template_id = 3733  # 🆔 Hardcoded product template ID
+        product_template_id = 3733  # TODO: Hardcode - settings
         product_id = self.env['product.product'].search([('product_tmpl_id', '=', product_template_id)])
         partner_id = values['partner_id']
         used_coupons = set()  # List to store the IDs and codes of used coupons
@@ -69,27 +72,13 @@ class PosOrder(models.Model):
                     for paper in coupon_papers:
                         paper.state = 'used'
                         qty -= 1  # 📉 Decrease the remaining quantity
-                        used_coupons.add( coupon_book.code)  # Add ID and code to the list
+                        used_coupons.add(coupon_book.code)  # Add ID and code to the list
                     # 🏁 If this coupon book is exhausted, mark it as used
                     if not self.env['az.coupon.paper'].search(
                             [('coupon_book_id', '=', coupon_book.id), ('state', '=', 'valid')]):
                         coupon_book.state = 'used'
 
-
         return used_coupons  # Return the list of used coupon IDs and codes
-
-    def make_invoice(self, values):
-        lines = values['lines']
-        for line in lines:
-            if line[2]['product_id'] == 4: # قارورة مياه 5 جالون
-                # get list price of coupon book product.template 40
-                list_price = self.env['product.template'].browse(40).list_price
-                list_price=list_price/20
-                line[2]['price_unit'] = list_price
-                line[2]['price_subtotal'] = list_price * line[2]['qty']
-                line[2]['tax_ids'] = [[6, False, []]]
-
-        return values
 
 
     @api.model
@@ -97,9 +86,80 @@ class PosOrder(models.Model):
 
         session = self.env['pos.session'].browse(values['session_id'])  # 📅 Get the POS session
         values = self._complete_values_from_session(session, values)  # ✍ Complete order values from session
-        values = self.make_invoice(values) # to calculate price of pages
+        # values = self.make_invoice(values) # to calculate price of pages
         order = super(PosOrder, self).create(values)  # 🌟 Create the order
 
         self.create_coupon(order, values)  # 🎁 Create coupons for the order
 
         return order  # 🔄 Return the created order
+
+
+
+    @api.model
+    def _process_order(self, order, draft, existing_order):
+        """Create or update an pos.order from a given dictionary.
+
+        :param dict order: dictionary representing the order.
+        :param bool draft: Indicate that the pos_order is not validated yet.
+        :param existing_order: order to be updated or False.
+        :type existing_order: pos.order.
+        :returns: id of created/updated pos.order
+        :rtype: int
+        """
+        order = order['data']
+        pos_session = self.env['pos.session'].browse(order['pos_session_id'])
+        if pos_session.state == 'closing_control' or pos_session.state == 'closed':
+            order['pos_session_id'] = self._get_valid_session(order).id
+
+        pos_order = False
+        if not existing_order:
+            pos_order = self.create(self._order_fields(order))
+        else:
+            pos_order = existing_order
+            pos_order.lines.unlink()
+            order['user_id'] = pos_order.user_id.id
+            pos_order.write(self._order_fields(order))
+
+        pos_order = pos_order.with_company(pos_order.company_id)
+        self = self.with_company(pos_order.company_id)
+        self._process_payment_lines(order, pos_order, pos_session, draft)
+
+
+        #  /\_/\
+        # ( ◕‿◕ )
+        #  >   <
+        # Beginning: Ehab
+        # Prevent Making Invoice or stock move for coupon papers
+
+        no_invoice = False
+        for line in order['lines']:
+            if line[2]['product_id'] == 3562:  # TODO: Hardcode - Settings
+                no_invoice = True
+        # ______ (｡◔‿◔｡) ________ End of code
+
+        if not draft:
+            try:
+                pos_order.action_pos_order_paid()
+            except psycopg2.DatabaseError:
+                # do not hide transactional errors, the order(s) won't be saved!
+                raise
+            except Exception as e:
+                _logger.error('Could not fully process the POS Order: %s', tools.ustr(e))
+
+            # ______ (｡◔‿◔｡) _____
+            if not no_invoice:
+                pos_order._create_order_picking()
+                pos_order._compute_total_cost_in_real_time()
+            # ______ (｡◔‿◔｡) ________ End of code
+
+
+        if not draft and pos_order.to_invoice and pos_order.state == 'paid' and not pos_order.invoice_id:
+            pos_order._create_invoice()
+
+
+        if pos_order.to_invoice and pos_order.state == 'paid' and not no_invoice: # ______ (｡◔‿◔｡) _____
+            pos_order._generate_pos_order_invoice()
+
+        # ______ (｡◔‿◔｡) ________ End of code
+
+        return pos_order.id

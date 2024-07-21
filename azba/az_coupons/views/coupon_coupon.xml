@@ -54,7 +54,7 @@
             <field name="arch" type="xml">
                 <tree string="Coupons" decoration-success="state == 'valid'">
                     <field name="code"/>
-                    <field name="state"/>
+                    <field name="state" widget="badge" decoration-success="state == 'valid'" decoration-danger="state == 'used'"/>
                     <field name="name"/>
                     <field name="page_count"/>
                     <field name="available_count"/>
