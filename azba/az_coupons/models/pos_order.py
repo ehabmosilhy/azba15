@@ -5,8 +5,10 @@ from odoo.tools import float_repr, float_compare
 from odoo import api, fields, models, tools, _
 import psycopg2
 import logging
+import urllib.parse
 
 _logger = logging.getLogger(__name__)
+
 
 class PosOrder(models.Model):
     _inherit = "pos.order"
@@ -80,18 +82,64 @@ class PosOrder(models.Model):
 
         return used_coupons  # Return the list of used coupon IDs and codes
 
-
     @api.model
     def create(self, values):
+        session = self.env['pos.session'].browse(values['session_id'])
+        values = self._complete_values_from_session(session, values)
+        order = super(PosOrder, self).create(values)
+        self.create_coupon(order, values)
 
-        session = self.env['pos.session'].browse(values['session_id'])  # 📅 Get the POS session
-        values = self._complete_values_from_session(session, values)  # ✍ Complete order values from session
-        # values = self.make_invoice(values) # to calculate price of pages
-        order = super(PosOrder, self).create(values)  # 🌟 Create the order
+        # Send WhatsApp message
+        self.send_whatsapp_message(order)
 
-        self.create_coupon(order, values)  # 🎁 Create coupons for the order
+        return order
 
-        return order  # 🔄 Return the created order
+    def send_whatsapp_message(self, order):
+        # message = f"Hi {order.partner_id.name},\nYour order {order.name} amounting {order.amount_total} {order.currency_id.symbol} is confirmed. Thank you for your purchase!"
+        # mobile = '+971527006631'  # Test number
+        #
+        # # Encode the message for URL
+        # encoded_message = urllib.parse.quote(message)
+        #
+        # # Construct the WhatsApp URL
+        # url = f"https://api.whatsapp.com/send?phone={mobile}&text={encoded_message}"
+        #
+        # # Log the message in Odoo
+        # order.partner_id.message_post(body=message)
+        #
+        # # Return action to open WhatsApp in a new tab
+        # return {
+        #     'type': 'ir.actions.act_url',
+        #     'url': url,
+        #     'target': 'new',
+        # }
+        # from twilio.rest import Client
+        #
+        # account_sid = 'ACe163c62ab44430affdf900abef670659'
+        # auth_token = '588fb1681095b0bba077163f521a69d5'
+        # client = Client(account_sid, auth_token)
+        #
+        # message = client.messages.create(
+        #     from_='whatsapp:+14155238886',
+        #     body='Your appointment is coming up on July 21 at 3PM',
+        #     to='whatsapp:+971527006631'
+        # )
+        #
+        # print(message.sid)
+
+        import requests
+
+        data = {
+            'To': 'whatsapp:+971527006631',
+            'From': 'whatsapp:+14155238886',
+            'Body': 'Hi Ehab!',
+        }
+
+        response = requests.post(
+            'https://api.twilio.com/2010-04-01/Accounts/ACe163c62ab44430affdf900abef670659/Messages.json',
+            data=data,
+            auth=('ACe163c62ab44430affdf900abef670659', '588fb1681095b0bba077163f521a69d5'),
+        )
 
 
 
@@ -124,7 +172,6 @@ class PosOrder(models.Model):
         self = self.with_company(pos_order.company_id)
         self._process_payment_lines(order, pos_order, pos_session, draft)
 
-
         #  /\_/\
         # ( ◕‿◕ )
         #  >   <
@@ -152,12 +199,11 @@ class PosOrder(models.Model):
                 pos_order._compute_total_cost_in_real_time()
             # ______ (｡◔‿◔｡) ________ End of code
 
-
-        if not draft and pos_order.to_invoice and pos_order.state == 'paid' and not pos_order.invoice_id:
+        if not draft and pos_order.to_invoice and pos_order.state == 'paid' and  (
+        hasattr(pos_order, 'invoice_id')) and not pos_order.invoice_id:
             pos_order._create_invoice()
 
-
-        if pos_order.to_invoice and pos_order.state == 'paid' and not no_invoice: # ______ (｡◔‿◔｡) _____
+        if pos_order.to_invoice and pos_order.state == 'paid' and not no_invoice:  # ______ (｡◔‿◔｡) _____
             pos_order._generate_pos_order_invoice()
 
         # ______ (｡◔‿◔｡) ________ End of code
