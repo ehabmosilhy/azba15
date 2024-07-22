@@ -34,7 +34,7 @@ class PosOrder(models.Model):
     # 📄 Function to handle papers based on order values
     @api.model
     def handle_papers(self, values):
-        product_template_id = 3733  # TODO: Hardcode - settings
+        product_template_id = 3733  # TODO: Hardcode - convert to settings
         product_id = self.env['product.product'].search([('product_tmpl_id', '=', product_template_id)])
         partner_id = values['partner_id']
         used_coupons = set()  # List to store the IDs and codes of used coupons
@@ -93,10 +93,11 @@ class PosOrder(models.Model):
         return order
 
     def send_whatsapp_message(self, order):
+        # TODO: Hardcoded - convert to settings settings
         import requests
         body = f"Order has been made \n Partner: {order.partner_id.name} \n  Session: {order.session_id.name}"
         data = {
-            'To': 'whatsapp:+966593792642',
+            'To': 'whatsapp:+971527006631',
             'From': 'whatsapp:+14155238886',
             'Body': body,
         }
@@ -106,8 +107,6 @@ class PosOrder(models.Model):
             data=data,
             auth=('ACe163c62ab44430affdf900abef670659', '588fb1681095b0bba077163f521a69d5'),
         )
-
-
 
     @api.model
     def _process_order(self, order, draft, existing_order):
@@ -125,6 +124,21 @@ class PosOrder(models.Model):
         if pos_session.state == 'closing_control' or pos_session.state == 'closed':
             order['pos_session_id'] = self._get_valid_session(order).id
 
+        #  /\_/\
+        # ( ◕‿◕ )
+        #  >   <
+        # Beginning: Ehab
+        # Prevent Making Invoice or stock move for coupon papers
+        new_lines = []
+        no_invoice = False
+        for line in order['lines']:
+            if line[2]['product_id'] == 3562:  # TODO: Hardcode - Settings
+                no_invoice = True
+            else:
+                new_lines.append(line)
+        order['lines'] = new_lines
+        # ______ (｡◔‿◔｡) ________ End of code
+
         pos_order = False
         if not existing_order:
             pos_order = self.create(self._order_fields(order))
@@ -138,18 +152,6 @@ class PosOrder(models.Model):
         self = self.with_company(pos_order.company_id)
         self._process_payment_lines(order, pos_order, pos_session, draft)
 
-        #  /\_/\
-        # ( ◕‿◕ )
-        #  >   <
-        # Beginning: Ehab
-        # Prevent Making Invoice or stock move for coupon papers
-
-        no_invoice = False
-        for line in order['lines']:
-            if line[2]['product_id'] == 3562:  # TODO: Hardcode - Settings
-                no_invoice = True
-        # ______ (｡◔‿◔｡) ________ End of code
-
         if not draft:
             try:
                 pos_order.action_pos_order_paid()
@@ -160,13 +162,13 @@ class PosOrder(models.Model):
                 _logger.error('Could not fully process the POS Order: %s', tools.ustr(e))
 
             # ______ (｡◔‿◔｡) _____
-            if not no_invoice:
-                pos_order._create_order_picking()
-                pos_order._compute_total_cost_in_real_time()
+            # if not no_invoice:
+            pos_order._create_order_picking()
+            pos_order._compute_total_cost_in_real_time()
             # ______ (｡◔‿◔｡) ________ End of code
 
-        if not draft and pos_order.to_invoice and pos_order.state == 'paid' and  (
-        hasattr(pos_order, 'invoice_id')) and not pos_order.invoice_id:
+        if not draft and pos_order.to_invoice and pos_order.state == 'paid' and (
+                hasattr(pos_order, 'invoice_id')) and not pos_order.invoice_id:
             pos_order._create_invoice()
 
         if pos_order.to_invoice and pos_order.state == 'paid' and not no_invoice:  # ______ (｡◔‿◔｡) _____

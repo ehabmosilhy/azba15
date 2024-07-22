@@ -32,7 +32,6 @@ odoo.define('pos_coupon.Coupon', function (require) {
                 }
             });
 
-
             if (required_qty > total_valid_papers) {
                 this.pos.gui.show_popup('error', {
                     'title': _t('Not enough valid coupons'),
@@ -54,13 +53,6 @@ odoo.define('pos_coupon.Coupon', function (require) {
             const full_name = "استبدال قارورة مياه/5 جالون" + "\n" + " دفتر كوبون " + used_coupons // Format the result to a string, adjust according to actual data structure
 
 
-            // get paper price
-            let paper_price = await rpc.query({
-                model: 'product.template',
-                method: 'read',
-                args: [[40], ['list_price']], // Pass the product ID as an array and the fields to read
-            });
-            paper_price =  paper_price[0].list_price / 20;
 
             order_lines.forEach(line => {
                 if (line.product.id === original_product_id) {
@@ -76,7 +68,6 @@ odoo.define('pos_coupon.Coupon', function (require) {
             });
         }
     });
-
 
     const POSValidateOverride = PaymentScreen =>
         class extends PaymentScreen {
