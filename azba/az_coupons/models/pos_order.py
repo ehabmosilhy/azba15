@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.tools import float_repr, float_compare
 from odoo import api, fields, models, tools, _
 import psycopg2
 import logging
-import urllib.parse
 
 _logger = logging.getLogger(__name__)
 
@@ -95,44 +93,12 @@ class PosOrder(models.Model):
         return order
 
     def send_whatsapp_message(self, order):
-        # message = f"Hi {order.partner_id.name},\nYour order {order.name} amounting {order.amount_total} {order.currency_id.symbol} is confirmed. Thank you for your purchase!"
-        # mobile = '+971527006631'  # Test number
-        #
-        # # Encode the message for URL
-        # encoded_message = urllib.parse.quote(message)
-        #
-        # # Construct the WhatsApp URL
-        # url = f"https://api.whatsapp.com/send?phone={mobile}&text={encoded_message}"
-        #
-        # # Log the message in Odoo
-        # order.partner_id.message_post(body=message)
-        #
-        # # Return action to open WhatsApp in a new tab
-        # return {
-        #     'type': 'ir.actions.act_url',
-        #     'url': url,
-        #     'target': 'new',
-        # }
-        # from twilio.rest import Client
-        #
-        # account_sid = 'ACe163c62ab44430affdf900abef670659'
-        # auth_token = '588fb1681095b0bba077163f521a69d5'
-        # client = Client(account_sid, auth_token)
-        #
-        # message = client.messages.create(
-        #     from_='whatsapp:+14155238886',
-        #     body='Your appointment is coming up on July 21 at 3PM',
-        #     to='whatsapp:+971527006631'
-        # )
-        #
-        # print(message.sid)
-
         import requests
-
+        body = f"Order has been made \n Partner: {order.partner_id.name} \n  Session: {order.session_id.name}"
         data = {
-            'To': 'whatsapp:+971527006631',
+            'To': 'whatsapp:+966593792642',
             'From': 'whatsapp:+14155238886',
-            'Body': 'Hi Ehab!',
+            'Body': body,
         }
 
         response = requests.post(
