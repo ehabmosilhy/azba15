@@ -3,3 +3,4 @@ from . import coupon_coupon
 from . import coupon_coupon_paper
 from . import product_template
 from . import pos_order
+from . import settings

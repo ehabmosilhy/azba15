@@ -86,25 +86,34 @@
         </record>
 
 
-        <!-- Action for az.coupon -->
-        <record id="action_az_coupons" model="ir.actions.act_window">
-            <field name="name">Coupons</field>
-            <field name="res_model">az.coupon</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_az_coupon_tree"/>
-        </record>
-        <!-- Action for az.coupon -->
-        <record id="action_az_coupons" model="ir.actions.act_window">
-            <field name="name">Coupons</field>
-            <field name="res_model">az.coupon</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_az_coupon_tree"/>
-        </record>
+       <!-- Action for az.coupon -->
+    <record id="action_az_coupons" model="ir.actions.act_window">
+        <field name="name">Coupons</field>
+        <field name="res_model">az.coupon</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_az_coupon_tree"/>
+    </record>
 
-        <menuitem id="menu_az_coupons_coupons"
-                  name="Coupons 🎫"
-                  parent="point_of_sale.pos_config_menu_catalog"
-                  action="action_az_coupons"/>
+    <!-- Menu item for Coupons -->
+    <menuitem id="menu_az_coupons_coupons"
+              name="Coupons 🎫"
+              parent="point_of_sale.pos_config_menu_catalog"
+              action="action_az_coupons"/>
+
+    <!-- Action for Settings -->
+    <record id="action_az_coupons_settings" model="ir.actions.act_window">
+        <field name="name">Coupons Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'az_coupons'}</field>
+    </record>
+
+    <!-- Menu item for Settings -->
+    <menuitem id="menu_az_coupons_settings"
+              name="Settings⚙️"
+              parent="point_of_sale.pos_config_menu_catalog"
+              action="action_az_coupons_settings"/>
 
 
     </data>

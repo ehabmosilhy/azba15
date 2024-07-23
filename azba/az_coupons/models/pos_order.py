@@ -72,7 +72,7 @@ class PosOrder(models.Model):
                     for paper in coupon_papers:
                         paper.state = 'used'
                         qty -= 1  # 📉 Decrease the remaining quantity
-                        used_coupons.add(coupon_book.code)  # Add ID and code to the list
+                        used_coupons.add(paper.code)  # Add ID and code to the list
                     # 🏁 If this coupon book is exhausted, mark it as used
                     if not self.env['az.coupon.paper'].search(
                             [('coupon_book_id', '=', coupon_book.id), ('state', '=', 'valid')]):
@@ -92,6 +92,7 @@ class PosOrder(models.Model):
 
         return order
 
+    """
     def send_whatsapp_message(self, order):
         # TODO: Hardcoded - convert to settings settings
         import requests
@@ -107,6 +108,39 @@ class PosOrder(models.Model):
             data=data,
             auth=('ACe163c62ab44430affdf900abef670659', '588fb1681095b0bba077163f521a69d5'),
         )
+    """
+
+    @api.model
+    def send_whatsapp_message(self, order):
+        import requests
+        IrConfigParam = self.env['ir.config_parameter'].sudo()
+        to_number = IrConfigParam.get_param('az_coupons.whatsapp_to_number')
+        from_number = IrConfigParam.get_param('az_coupons.whatsapp_from_number')
+        account_sid = IrConfigParam.get_param('az_coupons.twilio_account_sid')
+        auth_token = IrConfigParam.get_param('az_coupons.twilio_auth_token')
+
+        # ==========================================
+        return
+        # ==========================================
+
+        if not all([to_number, from_number, account_sid, auth_token]):
+            raise ValueError("Please configure all WhatsApp settings in the Coupons Settings.")
+
+        body = f"Order has been made \n Partner: {order.partner_id.name} \n Session: {order.session_id.name}"
+        data = {
+            'To': f'whatsapp:{to_number}',
+            'From': f'whatsapp:{from_number}',
+            'Body': body,
+        }
+
+        response = requests.post(
+            f'https://api.twilio.com/2010-04-01/Accounts/{account_sid}/Messages.json',
+            data=data,
+            auth=(account_sid, auth_token),
+        )
+
+        if response.status_code != 201:
+            raise ValueError("Failed to send WhatsApp message. Response: %s" % response.text)
 
     @api.model
     def _process_order(self, order, draft, existing_order):
