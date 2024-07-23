@@ -37,7 +37,7 @@ class PosOrder(models.Model):
         product_template_id = 3733  # TODO: Hardcode - convert to settings
         product_id = self.env['product.product'].search([('product_tmpl_id', '=', product_template_id)])
         partner_id = values['partner_id']
-        used_coupons = set()  # List to store the IDs and codes of used coupons
+        used_coupons = []  # List to store the IDs and codes of used coupons
 
         for line in values['lines']:
             if line[2]['product_id'] == product_id.id:
@@ -71,14 +71,15 @@ class PosOrder(models.Model):
                     # ✅ Update the state of each paper to 'used'
                     for paper in coupon_papers:
                         paper.state = 'used'
+                        paper.date_used = fields.Datetime.now()
                         qty -= 1  # 📉 Decrease the remaining quantity
-                        used_coupons.add(paper.code)  # Add ID and code to the list
+                        used_coupons.append(paper.code)  # Add ID and code to the list
                     # 🏁 If this coupon book is exhausted, mark it as used
                     if not self.env['az.coupon.paper'].search(
                             [('coupon_book_id', '=', coupon_book.id), ('state', '=', 'valid')]):
                         coupon_book.state = 'used'
 
-        return used_coupons  # Return the list of used coupon IDs and codes
+        return sorted(used_coupons)  # Return the list of used coupon IDs and codes
 
     @api.model
     def create(self, values):

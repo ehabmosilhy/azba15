@@ -16,3 +16,4 @@ class CouponPaper(models.Model):
         ('used', 'Used'),
         ('cancel', 'Cancelled')
     ], required=True, default='valid')
+    date_used = fields.Datetime(string='Date Used')

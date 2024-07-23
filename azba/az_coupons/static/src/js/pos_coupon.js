@@ -50,7 +50,8 @@ odoo.define('pos_coupon.Coupon', function (require) {
             });
 
             // Assuming used_coupons is a string or similar that can be directly used
-            const full_name = "استبدال قارورة مياه/5 جالون" + "\n" + " دفتر كوبون " + used_coupons // Format the result to a string, adjust according to actual data structure
+            const full_name = "استبدال قارورة مياه/5 جالون" + "-" + " كوبونات " + ","  +used_coupons // Format the result to a string, adjust according to actual data structure
+            const full_name_wrapped = full_name.split(',').join('\n');
 
 
 
@@ -61,7 +62,7 @@ odoo.define('pos_coupon.Coupon', function (require) {
                         product_description: full_name,
                         quantity: line.quantity,
                         extras: {
-                            full_product_name: full_name // Use the result from the RPC call here
+                            full_product_name: full_name_wrapped // Use the result from the RPC call here
                         }
                     });
                 }
