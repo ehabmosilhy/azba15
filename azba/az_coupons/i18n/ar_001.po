@@ -1,0 +1,333 @@
+#. module: az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.res_config_view_form_inherit_pos_coupon
+msgid "<span class=\"o_form_label\">Coupon Book Products</span>"
+msgstr "<span class=\"o_form_label\">أصناف دفتر الكوبونات</span>"
+
+#. module: az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.res_config_view_form_inherit_pos_coupon
+msgid "<span class=\"o_form_label\">Coupon Page Product</span>"
+msgstr "<span class=\"o_form_label\">صنف  الكوبون</span>"
+
+#. module: az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.res_config_view_form_inherit_pos_coupon
+msgid "<span class=\"o_form_label\">Twilio Account SID</span>"
+msgstr "<span class=\"o_form_label\">SID حساب Twilio</span>"
+
+#. module: az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.res_config_view_form_inherit_pos_coupon
+msgid "<span class=\"o_form_label\">Twilio Auth Token</span>"
+msgstr "<span class=\"o_form_label\">رمز مصادقة Twilio</span>"
+
+#. module: az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.res_config_view_form_inherit_pos_coupon
+msgid "<span class=\"o_form_label\">WhatsApp From Number</span>"
+msgstr "<span class=\"o_form_label\">رقم واتساب المرسل</span>"
+
+#. module: az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.res_config_view_form_inherit_pos_coupon
+msgid "<span class=\"o_form_label\">WhatsApp To Number</span>"
+msgstr "<span class=\"o_form_label\">رقم واتساب المستلم</span>"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__available_count
+msgid "Available"
+msgstr "متاح"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__code
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon_page__code
+msgid "Code"
+msgstr "رمز"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product_line__config_id
+msgid "Config"
+msgstr "تهيئة"
+
+#. module: az_coupons
+#: model:ir.model,name:az_coupons.model_res_config_settings
+msgid "Config Settings"
+msgstr "تهيئة الإعدادات"
+
+#. module: az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.view_az_coupon_form
+msgid "Coupon"
+msgstr "كوبون"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon_page__coupon_book_id
+msgid "Coupon Book"
+msgstr "دفتر الكوبونات"
+
+#. module: az_coupons
+#: model:ir.model,name:az_coupons.model_coupon_book_product
+msgid "Coupon Book Product"
+msgstr "صنف دفتر الكوبونات"
+
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_res_config_settings__coupon_book_product_ids
+msgid "Coupon Book Products"
+msgstr "أصناف دفتر الكوبونات"
+
+#. module: az_coupons
+#: model:ir.model,name:az_coupons.model_az_coupon_page
+msgid "Coupon Page"
+msgstr " الكوبون"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_res_config_settings__coupon_page_product
+msgid "Coupon Page Product"
+msgstr "صنف الكوبون"
+
+#. module: az_coupons
+#: code:addons/az_coupons/models/pos_order.py:0
+#: code:addons/az_coupons/models/pos_order.py:0
+#, python-format
+msgid "Coupon Page Product is not set in the settings. Please configure it first."
+msgstr "صنف  الكوبون غير محدد في الإعدادات. يرجى تهيئته أولاً."
+
+#. module: az_coupons
+#: model:ir.actions.act_window,name:az_coupons.action_az_coupons
+#: model:ir.ui.menu,name:az_coupons.menu_az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.view_az_coupon_tree
+msgid "Coupons"
+msgstr "كوبونات"
+
+#. module: az_coupons
+#: model:ir.actions.act_window,name:az_coupons.action_az_coupons_settings
+#: model_terms:ir.ui.view,arch_db:az_coupons.res_config_view_form_inherit_pos_coupon
+msgid "Coupons Settings"
+msgstr "إعدادات الكوبونات"
+
+#. module: az_coupons
+#: model:ir.ui.menu,name:az_coupons.menu_az_coupons_coupons
+msgid "Coupons 🎫"
+msgstr "كوبونات 🎫"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__create_uid
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon_page__create_uid
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product__create_uid
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product_line__create_uid
+msgid "Created by"
+msgstr "تم الإنشاء بواسطة"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__create_date
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon_page__create_date
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product__create_date
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product_line__create_date
+msgid "Created on"
+msgstr "تم الإنشاء في"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon_page__date_used
+msgid "Date Used"
+msgstr "تاريخ الاستخدام"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__display_name
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon_page__display_name
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product__display_name
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product_line__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.view_az_coupon_search
+msgid "Group By"
+msgstr "التجميع بواسطة"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__id
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon_page__id
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product__id
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product_line__id
+msgid "ID"
+msgstr "معرف"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon____last_update
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon_page____last_update
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product____last_update
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product_line____last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__write_uid
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon_page__write_uid
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product__write_uid
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product_line__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__write_date
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon_page__write_date
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product__write_date
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product_line__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__name
+msgid "Name"
+msgstr "الاسم"
+
+#. module: az_coupons
+#: model:ir.model.fields.selection,name:az_coupons.selection__az_coupon__state__valid
+msgid "New"
+msgstr "جديد"
+
+#. module: az_coupons
+#. openerp-web
+#: code:addons/az_coupons/static/src/js/pos_coupon.js:0
+#, python-format
+msgid "Not enough valid coupons"
+msgstr "لا توجد كوبونات صالحة كافية"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__pos_order_id
+msgid "POS Order"
+msgstr "طلب نقطة البيع"
+
+#. module: az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.view_az_coupon_form
+msgid "Page"
+msgstr ""
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__page_count
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product__page_count
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product_line__page_count
+msgid "Page Count"
+msgstr "عدد الصفحات"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__page_ids
+#: model_terms:ir.ui.view,arch_db:az_coupons.view_az_coupon_form
+msgid "Pages"
+msgstr "صفحات"
+
+#. module: az_coupons
+#: model:ir.model.fields.selection,name:az_coupons.selection__az_coupon__state__partial
+msgid "Partially Used"
+msgstr "مستخدم جزئيًا"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__partner_id
+msgid "Partner"
+msgstr "شريك"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__partner_code
+msgid "Partner Code"
+msgstr "رمز الشريك"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__partner_name
+msgid "Partner Name"
+msgstr "اسم الشريك"
+
+#. module: az_coupons
+#: model:ir.model,name:az_coupons.model_pos_order
+msgid "Point of Sale Orders"
+msgstr "طلبات نقطة البيع"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__product_id
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product__product_id
+#: model:ir.model.fields,field_description:az_coupons.field_coupon_book_product_line__product_id
+msgid "Product"
+msgstr "الصنف"
+
+#. module: az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.res_config_view_form_inherit_pos_coupon
+msgid "Products"
+msgstr "الأصناف"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__receipt_number
+msgid "Receipt Number"
+msgstr "رقم الإيصال"
+
+#. module: az_coupons
+#. openerp-web
+#: code:addons/az_coupons/static/src/js/pos_coupon.js:0
+#, python-format
+msgid "Requested quantity (${required_qty}) exceeds the total number of valid coupon pages (${total_valid_pages})."
+msgstr "الكمية المطلوبة (${required_qty}) تتجاوز العدد الإجمالي لصفحات الكوبونات الصالحة (${total_valid_pages})."
+
+#. module: az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.view_az_coupon_search
+msgid "Search Coupons"
+msgstr "البحث عن الكوبونات"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__session_id
+msgid "Session"
+msgstr "الجلسة"
+
+#. module: az_coupons
+#: model:ir.ui.menu,name:az_coupons.menu_az_coupons_settings
+msgid "Settings⚙️"
+msgstr "الإعدادات⚙️"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__state
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon_page__state
+#: model_terms:ir.ui.view,arch_db:az_coupons.view_az_coupon_search
+msgid "State"
+msgstr "الحالة"
+
+#. module: az_coupons
+#: code:addons/az_coupons/models/pos_order.py:0
+#, python-format
+msgid "The configured Coupon Page Product does not exist."
+msgstr "صنف  الكوبون المهيأ غير موجود."
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_res_config_settings__twilio_account_sid
+msgid "Twilio Account SID"
+msgstr "SID حساب Twilio"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_res_config_settings__twilio_auth_token
+msgid "Twilio Auth Token"
+msgstr "رمز مصادقة Twilio"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_az_coupon__used_count
+#: model:ir.model.fields.selection,name:az_coupons.selection__az_coupon__state__used
+#: model:ir.model.fields.selection,name:az_coupons.selection__az_coupon_page__state__used
+#: model_terms:ir.ui.view,arch_db:az_coupons.view_az_coupon_search
+msgid "Used"
+msgstr "مستخدم"
+
+#. module: az_coupons
+#: model:ir.model.fields.selection,name:az_coupons.selection__az_coupon_page__state__valid
+#: model_terms:ir.ui.view,arch_db:az_coupons.view_az_coupon_search
+msgid "Valid"
+msgstr "صالح"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_res_config_settings__whatsapp_from_number
+msgid "WhatsApp From Number"
+msgstr "رقم واتساب المرسل"
+
+#. module: az_coupons
+#: model:ir.model.fields,field_description:az_coupons.field_res_config_settings__whatsapp_to_number
+msgid "WhatsApp To Number"
+msgstr "رقم واتساب المستلم"
+
+#. module: az_coupons
+#: model_terms:ir.ui.view,arch_db:az_coupons.res_config_view_form_inherit_pos_coupon
+msgid "Whatsapp"
+msgstr "واتساب"
+
+#. module: az_coupons
+#: model:ir.model,name:az_coupons.model_az_coupon
+msgid "az.coupon"
+msgstr "كوبون"
