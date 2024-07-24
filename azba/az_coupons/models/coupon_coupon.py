@@ -13,6 +13,7 @@ class Coupon(models.Model):
 
     code = fields.Char(string='Code', readonly=True)
     paper_ids = fields.One2many('az.coupon.paper', 'coupon_book_id', string='Papers')
+    receipt_number = fields.Char(string='Receipt Number', readonly=True)
     pos_order_id = fields.Many2one('pos.order', string='POS Order',readonly = True)
     partner_id = fields.Many2one(related='pos_order_id.partner_id', string='Partner', readonly=True)
     product_id = fields.Many2one(related='pos_order_id.lines.product_id', string='Product', readonly = True)

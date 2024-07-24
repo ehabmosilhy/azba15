@@ -12,24 +12,25 @@ class PosOrder(models.Model):
     _inherit = "pos.order"
 
     # 📜 Function to create a coupon based on the order lines
-    def create_coupon(self, order, values):
+    @api.model
+    def create_coupon(self, receipt_number, product_id, qty):
         # 🎨 Loop through each line in the order
-        for line in values['lines']:
-            product = line[2]
-            # 🧐 Check if the product name contains 'book' or 'دفتر'
-            if 'book' in product['full_product_name'].lower() or 'دفتر' in product['full_product_name'].lower():
-                product_id = self.env['product.product'].browse(product['product_id'])
-                coupon_paper_count = product_id.coupon_paper_count
-                # 🔄 If the product has coupon papers, create coupons
-                if coupon_paper_count > 0:
-                    for i in range(product['qty']):
-                        self.env['az.coupon'].create({
-                            'name': product['full_product_name'],
-                            'page_count': coupon_paper_count,
-                            'pos_order_id': order.id,
-                            'partner_id': order.partner_id.id,
-                            'product_id': product_id.id
-                        })
+        # 🧐 Check if the product name contains 'book' or 'دفتر'
+        created_coupons = []
+        product = self.env['product.product'].browse(product_id)
+        coupon_paper_count = product.coupon_paper_count
+        # 🔄 If the product has coupon papers, create coupons
+        if coupon_paper_count > 0:
+            for i in range(qty):
+                id = self.env['az.coupon'].create({
+                    'name': product.name,
+                    'page_count': coupon_paper_count,
+                    'product_id': product_id
+                    , 'receipt_number': receipt_number
+                })
+                created_coupons.append(id.code)
+
+        return created_coupons
 
     # 📄 Function to handle papers based on order values
     @api.model
@@ -86,12 +87,17 @@ class PosOrder(models.Model):
         session = self.env['pos.session'].browse(values['session_id'])
         values = self._complete_values_from_session(session, values)
         order = super(PosOrder, self).create(values)
-        self.create_coupon(order, values)
 
         # Send WhatsApp message
         self.send_whatsapp_message(order)
-
+        self.update_coupon(order)
         return order
+
+    def update_coupon(self, order):
+        reference = order.pos_reference.replace('Order', '').strip()
+        coupons = self.env['az.coupon'].search([('receipt_number', '=', reference)])
+        for coupon in coupons:
+            coupon.pos_order_id = order.id
 
     """
     def send_whatsapp_message(self, order):
