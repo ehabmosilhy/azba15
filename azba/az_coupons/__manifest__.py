@@ -7,7 +7,6 @@
     "data": [
         'views/coupon_coupon.xml',
         'views/res_config_settings.xml',
-        'views/product_template.xml',
         'security/ir.model.access.csv',
     ],
 

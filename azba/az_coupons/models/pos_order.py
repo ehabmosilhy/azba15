@@ -4,6 +4,7 @@
 from odoo import api, fields, models, tools, _
 import psycopg2
 import logging
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -18,13 +19,18 @@ class PosOrder(models.Model):
         # 🧐 Check if the product name contains 'book' or 'دفتر'
         created_coupons = []
         product = self.env['product.product'].browse(product_id)
-        coupon_paper_count = product.coupon_paper_count
-        # 🔄 If the product has coupon papers, create coupons
-        if coupon_paper_count > 0:
+
+        # Fetch the settings
+        config = self.env['res.config.settings'].search([], limit=1)
+        # Find the page count for the given product_id
+        coupon_page_count = next(
+            (line.page_count for line in config.coupon_book_product_ids if line.product_id.id == product_id), 0)
+        # 🔄 If the product has coupon pages, create coupons
+        if coupon_page_count > 0:
             for i in range(qty):
                 id = self.env['az.coupon'].create({
                     'name': product.name,
-                    'page_count': coupon_paper_count,
+                    'page_count': coupon_page_count,
                     'product_id': product_id
                     , 'receipt_number': receipt_number
                 })
@@ -32,55 +38,66 @@ class PosOrder(models.Model):
 
         return created_coupons
 
-    # 📄 Function to handle papers based on order values
+    # 📄 Function to handle pages based on order values
     @api.model
-    def handle_papers(self, values):
-        product_template_id = 3733  # TODO: Hardcode - convert to settings
-        product_id = self.env['product.product'].search([('product_tmpl_id', '=', product_template_id)])
+    def handle_pages(self, values):
+        # Get the coupon_page_product from settings
+        IrConfigParam = self.env['ir.config_parameter'].sudo()
+        coupon_page_product_id = IrConfigParam.get_param('az_coupons.coupon_page_product')
+
+        if not coupon_page_product_id:
+            raise UserError(_("Coupon Page Product is not set in the settings. Please configure it first."))
+
+        product_id = self.env['product.product'].browse(int(coupon_page_product_id))
+
+        if not product_id.exists():
+            raise UserError(_("The configured Coupon Page Product does not exist."))
+
+        # Rest of your handle_pages method...
         partner_id = values['partner_id']
-        used_coupons = []  # List to store the IDs and codes of used coupons
+        used_coupons = []  # List to store the codes of used coupons
 
         for line in values['lines']:
             if line[2]['product_id'] == product_id.id:
-                qty = line[2]['qty']  # 📏 Get the quantity of the product
+                qty = line[2]['qty']  # Get the quantity of the product
 
-                # 🔍 Count the total valid coupon papers for this partner
-                total_valid_papers = self.env['az.coupon.paper'].search_count(
-                    [('coupon_book_id.partner_id', '=', partner_id), ('state', '=', 'valid')]
-                )
-
-                # ♻️ Loop until all quantities are handled
                 while qty > 0:
-                    # 📚 Get the oldest valid coupon book for this partner
+                    # Get the oldest valid or partial coupon book for this partner
                     coupon_book = self.env['az.coupon'].search(
-                        [('partner_id', '=', partner_id), ('state', '=', 'valid')],
+                        [('partner_id', '=', partner_id), ('state', '!=', 'used')],
                         order='id asc', limit=1
                     )
 
                     if not coupon_book:
-                        break  # 🚪 Exit loop if no valid coupon book is found
+                        break  # Exit loop if no valid or partial coupon book is found
 
-                    # 📝 Get the required number of coupon papers from the coupon book
-                    coupon_papers = self.env['az.coupon.paper'].search(
-                        [('coupon_book_id', '=', coupon_book.id), ('state', '=', 'valid')],
+                    # Get the required number of coupon pages from the coupon book
+                    coupon_pages = self.env['az.coupon.page'].search(
+                        [('coupon_book_id', '=', coupon_book.id), ('state', '!=', 'used')],
                         order='id asc', limit=qty
                     )
 
-                    if not coupon_papers:
-                        break  # 🚪 Exit loop if no valid coupon papers are found
+                    if not coupon_pages:
+                        break  # Exit loop if no valid coupon pages are found
 
-                    # ✅ Update the state of each paper to 'used'
-                    for paper in coupon_papers:
-                        paper.state = 'used'
-                        paper.date_used = fields.Datetime.now()
-                        qty -= 1  # 📉 Decrease the remaining quantity
-                        used_coupons.append(paper.code)  # Add ID and code to the list
-                    # 🏁 If this coupon book is exhausted, mark it as used
-                    if not self.env['az.coupon.paper'].search(
-                            [('coupon_book_id', '=', coupon_book.id), ('state', '=', 'valid')]):
+                    # Update the state of each page to 'used'
+                    for page in coupon_pages:
+                        page.state = 'used'
+                        page.date_used = fields.Datetime.now()
+                        qty -= 1  # Decrease the remaining quantity
+                        used_coupons.append(page.code)  # Add code to the list
+
+                    # Check the state of the coupon book after updating the pages
+                    valid_pages_left = self.env['az.coupon.page'].search_count(
+                        [('coupon_book_id', '=', coupon_book.id), ('state', '!=', 'used')]
+                    )
+
+                    if valid_pages_left == 0:
                         coupon_book.state = 'used'
+                    else:
+                        coupon_book.state = 'partial'
 
-        return sorted(used_coupons)  # Return the list of used coupon IDs and codes
+        return sorted(used_coupons)  # Return the list of used coupon codes
 
     @api.model
     def create(self, values):
@@ -119,6 +136,19 @@ class PosOrder(models.Model):
 
     @api.model
     def send_whatsapp_message(self, order):
+        qty = 0
+        for line in order.lines:
+            if line.product_id.id == 4 and line.price_subtotal == 0:
+                qty = int(line.qty)
+        if not qty:
+            return
+        partner = order.partner_id
+        coupons = self.env['az.coupon'].search([('partner_id', '=', partner.id)])
+        remaining_coupons = len(coupons.mapped('page_ids').filtered(lambda p: p.state == 'valid'))
+        last_used_coupons = coupons.mapped('page_ids').filtered(lambda p: p.state == 'used').sorted(
+            key=lambda p: p.date_used, reverse=True)[:qty]
+        last_used_coupons = last_used_coupons.mapped('code')
+
         import requests
         IrConfigParam = self.env['ir.config_parameter'].sudo()
         to_number = IrConfigParam.get_param('az_coupons.whatsapp_to_number')
@@ -126,14 +156,25 @@ class PosOrder(models.Model):
         account_sid = IrConfigParam.get_param('az_coupons.twilio_account_sid')
         auth_token = IrConfigParam.get_param('az_coupons.twilio_auth_token')
 
-        # ==========================================
-        return
-        # ==========================================
-
         if not all([to_number, from_number, account_sid, auth_token]):
             raise ValueError("Please configure all WhatsApp settings in the Coupons Settings.")
+        # get remaining coupons for this partner
 
-        body = f"Order has been made \n Partner: {order.partner_id.name} \n Session: {order.session_id.name}"
+        body = (
+            f"Dear {partner.name} \n A quantity of <{qty}> Bottles has been exchanged for coupon(s) "
+            f"{last_used_coupons}.\nYou still have <{remaining_coupons}> valid coupons.\n"
+            f"{'-'*50}\n"
+            f"عميلنا العزيز/ "
+            f"{partner.name} \n"
+            f"تم استبدال عدد "
+            f"<{qty}>"
+            f" قوارير فى مقابل الكوبونات"
+            f" {last_used_coupons} "
+            f"\n"
+            f"يتبقى لديك عدد "
+            f"<{remaining_coupons}>"
+            f"كوبون صالح للاستخدام"
+        )
         data = {
             'To': f'whatsapp:{to_number}',
             'From': f'whatsapp:{from_number}',
@@ -169,11 +210,19 @@ class PosOrder(models.Model):
         # ( ◕‿◕ )
         #  >   <
         # Beginning: Ehab
-        # Prevent Making Invoice or stock move for coupon papers
+        # Prevent Making Invoice or stock move for coupon pages
+        IrConfigParam = self.env['ir.config_parameter'].sudo()
+        coupon_page_product_id = IrConfigParam.get_param('az_coupons.coupon_page_product')
+
+        if not coupon_page_product_id:
+            raise UserError(_("Coupon Page Product is not set in the settings. Please configure it first."))
+
+        coupon_page_product_id = int(coupon_page_product_id)
+
         new_lines = []
         no_invoice = False
         for line in order['lines']:
-            if line[2]['product_id'] == 3562:  # TODO: Hardcode - Settings
+            if line[2]['product_id'] == coupon_page_product_id:
                 no_invoice = True
             else:
                 new_lines.append(line)

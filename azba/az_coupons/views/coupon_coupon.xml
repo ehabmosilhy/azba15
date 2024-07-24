@@ -27,14 +27,14 @@
                             </group>
                         </group>
                         <group>
-                            <field name="paper_ids">
-                                <tree string="Papers">
+                            <field name="page_ids">
+                                <tree string="Pages">
                                     <field name="code"/>
                                     <field name="state" widget="badge" decoration-success="state == 'valid'"
                                            decoration-danger="state == 'used'"/>
                                     <field name="date_used"/>
                                 </tree>
-                                <form string="Paper">
+                                <form string="Page">
                                     <sheet>
                                         <group>
                                             <field name="code"/>
@@ -57,7 +57,9 @@
             <field name="arch" type="xml">
                 <tree string="Coupons" decoration-success="state == 'valid'">
                     <field name="code"/>
-                    <field name="state" widget="badge" decoration-success="state == 'valid'"
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'valid'"
+                           decoration-warning="state == 'partial'"
                            decoration-danger="state == 'used'"/>
                     <field name="name"/>
                     <field name="page_count"/>
@@ -91,6 +93,11 @@
             </field>
         </record>
 
+        <!-- Menu item for Coupons -->
+        <menuitem id="menu_az_coupons"
+                  name="Coupons"
+                  parent="point_of_sale.menu_point_root"
+        />
 
         <!-- Action for az.coupon -->
         <record id="action_az_coupons" model="ir.actions.act_window">
@@ -100,10 +107,10 @@
             <field name="view_id" ref="view_az_coupon_tree"/>
         </record>
 
-        <!-- Menu item for Coupons -->
+
         <menuitem id="menu_az_coupons_coupons"
                   name="Coupons 🎫"
-                  parent="point_of_sale.pos_config_menu_catalog"
+                  parent="menu_az_coupons"
                   action="action_az_coupons"/>
 
         <!-- Action for Settings -->
@@ -118,9 +125,8 @@
         <!-- Menu item for Settings -->
         <menuitem id="menu_az_coupons_settings"
                   name="Settings⚙️"
-                  parent="point_of_sale.pos_config_menu_catalog"
+                  parent="menu_az_coupons"
                   action="action_az_coupons_settings"/>
-
 
     </data>
 </odoo>

@@ -12,7 +12,7 @@ class Coupon(models.Model):
     page_count = fields.Integer(string='Page Count', readonly=True)
 
     code = fields.Char(string='Code', readonly=True)
-    paper_ids = fields.One2many('az.coupon.paper', 'coupon_book_id', string='Papers')
+    page_ids = fields.One2many('az.coupon.page', 'coupon_book_id', string='Pages')
     receipt_number = fields.Char(string='Receipt Number', readonly=True)
     pos_order_id = fields.Many2one('pos.order', string='POS Order',readonly = True)
     partner_id = fields.Many2one(related='pos_order_id.partner_id', string='Partner', readonly=True)
@@ -25,23 +25,22 @@ class Coupon(models.Model):
     partner_code = fields.Char(related='partner_id.code', string='Partner Code', readonly=True)
 
 
-    @api.depends('paper_ids')
+    @api.depends('page_ids')
     def _compute_available_count(self):
-        # get the count of papers where state = 'valid'
+        # get the count of pages where state = 'valid'
         for coupon in self:
-            coupon.available_count = self.env['az.coupon.paper'].search_count(
+            coupon.available_count = self.env['az.coupon.page'].search_count(
                 [('coupon_book_id', '=', coupon.id), ('state', '=', 'valid')]
             )
-            coupon.used_count = self.env['az.coupon.paper'].search_count(
+            coupon.used_count = self.env['az.coupon.page'].search_count(
                 [('coupon_book_id', '=', coupon.id), ('state', '=', 'used')]
             )
 
 
     state = fields.Selection([
-        ('valid', 'Valid'),
-        ('sent', 'Sent'),
+        ('valid', 'New'),
+        ('partial', 'Partially Used'),
         ('used', 'Used'),
-        ('cancel', 'Cancelled')
     ], required=True, default='valid')
 
     @api.model
@@ -80,12 +79,12 @@ class Coupon(models.Model):
         new_coupon = super(Coupon, self).create(vals)
 
         page_count = vals.get('page_count')
-        # Generate 20 az.coupon.paper records
-        paper_vals_list = [{
+        # Generate 20 az.coupon.page records
+        page_vals_list = [{
             'code': f"{new_coupon.code}-{i:03d}",
             'coupon_book_id': new_coupon.id
         } for i in range(1, page_count + 1)]
 
-        self.env['az.coupon.paper'].create(paper_vals_list)
+        self.env['az.coupon.page'].create(page_vals_list)
 
         return new_coupon

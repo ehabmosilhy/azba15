@@ -18,8 +18,8 @@ odoo.define('pos_coupon.Coupon', function (require) {
 
             const partner_id = this.get_client().id;
 
-            const total_valid_papers = await rpc.query({
-                model: 'az.coupon.paper',
+            const total_valid_pages = await rpc.query({
+                model: 'az.coupon.page',
                 method: 'search_count',
                 args: [[['coupon_book_id.partner_id', '=', partner_id], ['state', '=', 'valid']]],
             });
@@ -32,20 +32,20 @@ odoo.define('pos_coupon.Coupon', function (require) {
                 }
             });
 
-            if (required_qty > total_valid_papers) {
+            if (required_qty > total_valid_pages) {
                 this.pos.gui.show_popup('error', {
                     'title': _t('Not enough valid coupons'),
-                    'body': _t(`Requested quantity (${required_qty}) exceeds the total number of valid coupon papers (${total_valid_papers}).`),
+                    'body': _t(`Requested quantity (${required_qty}) exceeds the total number of valid coupon pages (${total_valid_pages}).`),
                 });
                 return;
             }
 
             const order = this.export_as_JSON(); // This prepares the order in a format suitable for backend processing
 
-            // Call the handle_papers function from Python and get the result
+            // Call the handle_pages function from Python and get the result
             const used_coupons = await rpc.query({
                 model: 'pos.order',
-                method: 'handle_papers',
+                method: 'handle_pages',
                 args: [order],
             });
 
@@ -105,6 +105,7 @@ create_coupons: async function () {
             async validateOrder(isForceValidate) {
                 if (this.currentOrder.get_orderlines().length > 0) {
                     await this.currentOrder.create_coupons();
+                    await this.currentOrder.add_coupon_product_line();
                 }
                 await super.validateOrder(isForceValidate);
             }
