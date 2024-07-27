@@ -33,12 +33,14 @@
                                     <field name="state" widget="badge" decoration-success="state == 'valid'"
                                            decoration-danger="state == 'used'"/>
                                     <field name="date_used"/>
+                                    <field name="pos_session_id"/>
                                 </tree>
                                 <form string="Page">
                                     <sheet>
                                         <group>
                                             <field name="code"/>
                                             <field name="state"/>
+                                            <field name="pos_session_id"/>
                                         </group>
                                     </sheet>
                                 </form>

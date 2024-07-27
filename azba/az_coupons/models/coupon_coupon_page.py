@@ -15,3 +15,5 @@ class CouponPage(models.Model):
         ('used', 'Used'),
     ], required=True, default='valid')
     date_used = fields.Datetime(string='Date Used')
+    pos_session_id = fields.Many2one('pos.session', string='Session', ondelete='cascade', readonly=True)
+

@@ -84,6 +84,7 @@ class PosOrder(models.Model):
                     for page in coupon_pages:
                         page.state = 'used'
                         page.date_used = fields.Datetime.now()
+                        page.pos_session_id = values['pos_session_id']
                         qty -= 1  # Decrease the remaining quantity
                         used_coupons.append(page.code)  # Add code to the list
 
@@ -111,6 +112,8 @@ class PosOrder(models.Model):
         return order
 
     def update_coupon(self, order):
+        for line in order.lines:
+            line.full_product_name = line.product_id.display_name
         reference = order.pos_reference.replace('Order', '').strip()
         coupons = self.env['az.coupon'].search([('receipt_number', '=', reference)])
         for coupon in coupons:
@@ -151,19 +154,19 @@ class PosOrder(models.Model):
 
         import requests
         IrConfigParam = self.env['ir.config_parameter'].sudo()
-        to_number = IrConfigParam.get_param('az_coupons.whatsapp_to_number')
-        from_number = IrConfigParam.get_param('az_coupons.whatsapp_from_number')
-        account_sid = IrConfigParam.get_param('az_coupons.twilio_account_sid')
-        auth_token = IrConfigParam.get_param('az_coupons.twilio_auth_token')
+        to_number = partner.mobile
+        user_sender = "auth-mseg" #IrConfigParam.get_param('az_coupons.sms_user_sender')
+        api_key = "395D8B0ABD3F882431C2452FA3B3360B" #IrConfigParam.get_param('az_coupons.sms_api_key')
+        username = "samehelsawy" #IrConfigParam.get_param('az_coupons.sms_username')
 
-        if not all([to_number, from_number, account_sid, auth_token]):
-            raise ValueError("Please configure all WhatsApp settings in the Coupons Settings.")
-        # get remaining coupons for this partner
+        # if not all([to_number, user_sender, api_key, username]):
+        #     return
+            # raise ValueError("Please configure all SMS settings in the Coupons Settings.")
 
         body = (
             f"Dear {partner.name} \n A quantity of <{qty}> Bottles has been exchanged for coupon(s) "
             f"{last_used_coupons}.\nYou still have <{remaining_coupons}> valid coupons.\n"
-            f"{'-'*50}\n"
+            f"{'-' * 50}\n"
             f"عميلنا العزيز/ "
             f"{partner.name} \n"
             f"تم استبدال عدد "
@@ -175,20 +178,52 @@ class PosOrder(models.Model):
             f"<{remaining_coupons}>"
             f"كوبون صالح للاستخدام"
         )
+
         data = {
-            'To': f'whatsapp:{to_number}',
-            'From': f'whatsapp:{from_number}',
-            'Body': body,
+            'userName': username,
+            'apiKey': api_key,
+            'numbers': to_number,
+            'userSender': user_sender,
+            'msg': body,
+            'msgEncoding': 'UTF8',
+            'timeToSend': 'now',
+            'exactTime': '',
+            'reqBulkId': 'false',
+            'reqFilter': 'true',
         }
 
         response = requests.post(
-            f'https://api.twilio.com/2010-04-01/Accounts/{account_sid}/Messages.json',
+            'https://www.msegat.com/gw/sendsms.php',
             data=data,
-            auth=(account_sid, auth_token),
         )
 
-        if response.status_code != 201:
-            raise ValueError("Failed to send WhatsApp message. Response: %s" % response.text)
+        if response.status_code != 200:
+            raise ValueError("Failed to send SMS message. Response: %s" % response.text)
+
+        # WhatsApp section commented out
+        # IrConfigParam = self.env['ir.config_parameter'].sudo()
+        # to_number = IrConfigParam.get_param('az_coupons.whatsapp_to_number')
+        # from_number = IrConfigParam.get_param('az_coupons.whatsapp_from_number')
+        # account_sid = IrConfigParam.get_param('az_coupons.twilio_account_sid')
+        # auth_token = IrConfigParam.get_param('az_coupons.twilio_auth_token')
+
+        # if not all([to_number, from_number, account_sid, auth_token]):
+        #     raise ValueError("Please configure all WhatsApp settings in the Coupons Settings.")
+
+        # data = {
+        #     'To': f'whatsapp:{to_number}',
+        #     'From': f'whatsapp:{from_number}',
+        #     'Body': body,
+        # }
+
+        # response = requests.post(
+        #     f'https://api.twilio.com/2010-04-01/Accounts/{account_sid}/Messages.json',
+        #     data=data,
+        #     auth=(account_sid, auth_token),
+        # )
+
+        # if response.status_code != 201:
+        #     raise ValueError("Failed to send WhatsApp message. Response: %s" % response.text)
 
     @api.model
     def _process_order(self, order, draft, existing_order):
