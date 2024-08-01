@@ -16,6 +16,6 @@ class PosOrder(models.Model):
         if res:
             res.update({
                 'order_date': order.date_order.astimezone(timezone),
-                'invoice_number': order.account_move and order.account_move.name or ""
+                'invoice_number': order.account_move and order.account_move.name or "",
             })
         return res
