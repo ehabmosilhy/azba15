@@ -5,6 +5,7 @@ odoo.define('azbah_pos.invoice_number',function(require){
     let SuperPosModel = model.PosModel.prototype;
     let SuperOrder = model.Order.prototype;
     let rpc = require('web.rpc');
+    var field_utils = require('web.field_utils');
 
     model.PosModel = model.PosModel.extend({
         _flush_orders: function(orders, options) {
@@ -37,12 +38,25 @@ odoo.define('azbah_pos.invoice_number',function(require){
         },
     })
     model.Order = model.Order.extend({
+        init_from_JSON: function(json) {
+            SuperOrder.init_from_JSON.apply(this, arguments);
+            if(json.order_date) {
+                this.order_date = json.order_date;
+            }
+            if(json.invoice_number) {
+                this.invoice_number = json.invoice_number;
+            }
+        },
+
         export_for_printing: function(){
             let self = this
             let receipt = SuperOrder.export_for_printing.call(this)
             if(self.invoice_number){
                 receipt.invoice_number = self.invoice_number.split(" ")[0];
                 receipt.id = self.id;
+            }
+            if(! receipt.date.localestring && this.order_date  ){
+                 receipt.date.localestring = field_utils.format.datetime(moment(this.order_date), {}, {timezone: false});
             }
             return receipt
         }
