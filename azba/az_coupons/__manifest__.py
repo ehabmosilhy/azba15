@@ -13,6 +13,7 @@
     'assets': {
         'point_of_sale.assets': [
             'az_coupons/static/src/js/**/*.js',
+            'az_coupons/static/src/xml/**/*.xml',
         ], },
     "installable": True,
     "auto_install": False,
