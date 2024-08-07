@@ -107,9 +107,10 @@ class PosOrder(models.Model):
         values = self._complete_values_from_session(session, values)
         order = super(PosOrder, self).create(values)
 
+
+        self.update_coupon(order)
         # Send WhatsApp message
         self.send_whatsapp_message(order)
-        self.update_coupon(order)
         return order
 
     def update_coupon(self, order):
