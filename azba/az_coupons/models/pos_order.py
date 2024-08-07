@@ -161,10 +161,6 @@ class PosOrder(models.Model):
 
         return mobile_number
 
-    # Example usage
-    partner_mobile = '+966 0567891234'
-    to_number = format_to_whatsapp_number(partner_mobile)
-    print(to_number)  # Output: 966567891234
 
     @api.model
     def send_whatsapp_message(self, order):
