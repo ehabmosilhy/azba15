@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import base64
+import json
 
 from odoo import api, fields, models, tools, _
 import psycopg2
@@ -137,7 +138,6 @@ class PosOrder(models.Model):
         last_used_coupons = last_used_coupons.mapped('code')
 
         import requests
-        IrConfigParam = self.env['ir.config_parameter'].sudo()
         to_number = partner.mobile
         from_number = "whatsapp:966593120000"  # Twilio WhatsApp sandbox number
         messaging_service_sid = "MGbf7e1ca8d7581693a55d09285733d1cc"  # Messaging Service SID
@@ -145,31 +145,43 @@ class PosOrder(models.Model):
         account_sid = "AC2d38454d87a1d186927a4488eed3842f" #IrConfigParam.get_param('az_coupons.twilio_account_sid')
         auth_token = "74a21fd14e6f7a72f004a93a1c8dff90" #IrConfigParam.get_param('az_coupons.twilio_auth_token')
 
-        # body = (
-        #     f"Dear {partner.name} \n A quantity of <{qty}> Bottles has been exchanged for coupon(s) "
-        #     f"{last_used_coupons}.\nYou still have <{remaining_coupons}> valid coupons.\n"
-        #     f"{'-' * 50}\n"
-        #     f"عميلنا العزيز/ "
-        #     f"{partner.name} \n"
-        #     f"تم استبدال عدد "
-        #     f"<{qty}>"
-        #     f" قوارير فى مقابل الكوبونات"
-        #     f" {last_used_coupons} "
-        #     f"\n"
-        #     f"يتبقى لديك عدد "
-        #     f"<{remaining_coupons}>"
-        #     f"كوبون صالح للاستخدام"
-        # )
+        body = (
+            """
+                        ====================
+                        Azbah 💦 عذبة للمياه
+                        ====================
+                        Dear {{1}} 
+                        A quantity of <{{2}}> Bottles has been exchanged for coupon(s) {{3}}.
+                        You still have <{{4}}> valid coupons.
+                        --------------------------------------------------
+                        عميلنا العزيز/ 
+                        {{1}} 
+                        تم استبدال عدد 
+                        <{{2}}>
+                        قوارير فى مقابل الكوبونات
+                        {{3}} 
+                        يتبقى لديك عدد 
+                        <{{4}}>
+                        كوبون صالح للاستخدام
+                   """
+        )
 
-        body = "hi"
+        variables = {
+            "1": partner.name,
+            "2": str(qty),
+            "3": str(last_used_coupons),
+            "4": str(remaining_coupons)
+        }
+
+        variables = json.dumps(variables, ensure_ascii=False, indent=2)
 
         payload = {
-            'ContentSid': 'HX2d5fc4024fae95cb628976aeb499d480',
+            'ContentSid': 'HX7a099f63aa3c6df0863328709570cc1a',
             'To': f'whatsapp:{to_number}',
             'From': from_number,
             'Body': body,
             'MessagingServiceSid': messaging_service_sid,
-            'Language': 'ar'
+            'ContentVariables': variables
         }
         headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
