@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import base64
 
 from odoo import api, fields, models, tools, _
 import psycopg2
@@ -119,24 +120,6 @@ class PosOrder(models.Model):
         for coupon in coupons:
             coupon.pos_order_id = order.id
 
-    """
-    def send_whatsapp_message(self, order):
-        # TODO: Hardcoded - convert to settings settings
-        import requests
-        body = f"Order has been made \n Partner: {order.partner_id.name} \n  Session: {order.session_id.name}"
-        data = {
-            'To': 'whatsapp:+971527006631',
-            'From': 'whatsapp:+14155238886',
-            'Body': body,
-        }
-
-        response = requests.post(
-            'https://api.twilio.com/2010-04-01/Accounts/ACe163c62ab44430affdf900abef670659/Messages.json',
-            data=data,
-            auth=('ACe163c62ab44430affdf900abef670659', '588fb1681095b0bba077163f521a69d5'),
-        )
-    """
-
     @api.model
     def send_whatsapp_message(self, order):
         qty = 0
@@ -155,75 +138,115 @@ class PosOrder(models.Model):
         import requests
         IrConfigParam = self.env['ir.config_parameter'].sudo()
         to_number = partner.mobile
-        user_sender = "auth-mseg" #IrConfigParam.get_param('az_coupons.sms_user_sender')
-        api_key = "395D8B0ABD3F882431C2452FA3B3360B" #IrConfigParam.get_param('az_coupons.sms_api_key')
-        username = "samehelsawy" #IrConfigParam.get_param('az_coupons.sms_username')
+        from_number = "whatsapp:966593120000"  # Twilio WhatsApp sandbox number
+        messaging_service_sid = "MGbf7e1ca8d7581693a55d09285733d1cc"  # Messaging Service SID
 
-        # if not all([to_number, user_sender, api_key, username]):
-        #     return
-            # raise ValueError("Please configure all SMS settings in the Coupons Settings.")
+        account_sid = "AC2d38454d87a1d186927a4488eed3842f" #IrConfigParam.get_param('az_coupons.twilio_account_sid')
+        auth_token = "74a21fd14e6f7a72f004a93a1c8dff90" #IrConfigParam.get_param('az_coupons.twilio_auth_token')
 
-        body = (
-            f"Dear {partner.name} \n A quantity of <{qty}> Bottles has been exchanged for coupon(s) "
-            f"{last_used_coupons}.\nYou still have <{remaining_coupons}> valid coupons.\n"
-            f"{'-' * 50}\n"
-            f"عميلنا العزيز/ "
-            f"{partner.name} \n"
-            f"تم استبدال عدد "
-            f"<{qty}>"
-            f" قوارير فى مقابل الكوبونات"
-            f" {last_used_coupons} "
-            f"\n"
-            f"يتبقى لديك عدد "
-            f"<{remaining_coupons}>"
-            f"كوبون صالح للاستخدام"
-        )
+        # body = (
+        #     f"Dear {partner.name} \n A quantity of <{qty}> Bottles has been exchanged for coupon(s) "
+        #     f"{last_used_coupons}.\nYou still have <{remaining_coupons}> valid coupons.\n"
+        #     f"{'-' * 50}\n"
+        #     f"عميلنا العزيز/ "
+        #     f"{partner.name} \n"
+        #     f"تم استبدال عدد "
+        #     f"<{qty}>"
+        #     f" قوارير فى مقابل الكوبونات"
+        #     f" {last_used_coupons} "
+        #     f"\n"
+        #     f"يتبقى لديك عدد "
+        #     f"<{remaining_coupons}>"
+        #     f"كوبون صالح للاستخدام"
+        # )
 
-        data = {
-            'userName': username,
-            'apiKey': api_key,
-            'numbers': to_number,
-            'userSender': user_sender,
-            'msg': body,
-            'msgEncoding': 'UTF8',
-            'timeToSend': 'now',
-            'exactTime': '',
-            'reqBulkId': 'false',
-            'reqFilter': 'true',
+        body = "hi"
+
+        payload = {
+            'ContentSid': 'HX2d5fc4024fae95cb628976aeb499d480',
+            'To': f'whatsapp:{to_number}',
+            'From': from_number,
+            'Body': body,
+            'MessagingServiceSid': messaging_service_sid,
+            'Language': 'ar'
+        }
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': f'Basic {base64.b64encode(f"{account_sid}:{auth_token}".encode()).decode()}'
         }
 
         response = requests.post(
-            'https://www.msegat.com/gw/sendsms.php',
-            data=data,
+            f'https://api.twilio.com/2010-04-01/Accounts/{account_sid}/Messages.json',
+            headers=headers,
+            data=payload,
         )
 
-        if response.status_code != 200:
-            raise ValueError("Failed to send SMS message. Response: %s" % response.text)
+        if not str(response.status_code).startswith('2'):
+            raise ValueError("Failed to send WhatsApp message. Response: %s" % response.text)
 
-        # WhatsApp section commented out
-        # IrConfigParam = self.env['ir.config_parameter'].sudo()
-        # to_number = IrConfigParam.get_param('az_coupons.whatsapp_to_number')
-        # from_number = IrConfigParam.get_param('az_coupons.whatsapp_from_number')
-        # account_sid = IrConfigParam.get_param('az_coupons.twilio_account_sid')
-        # auth_token = IrConfigParam.get_param('az_coupons.twilio_auth_token')
 
-        # if not all([to_number, from_number, account_sid, auth_token]):
-        #     raise ValueError("Please configure all WhatsApp settings in the Coupons Settings.")
+    # def send_whatsapp_message(self, order):
+    #     qty = 0
+    #     for line in order.lines:
+    #         if line.product_id.id == 4 and line.price_subtotal == 0:
+    #             qty = int(line.qty)
+    #     if not qty:
+    #         return
+    #     partner = order.partner_id
+    #     coupons = self.env['az.coupon'].search([('partner_id', '=', partner.id)])
+    #     remaining_coupons = len(coupons.mapped('page_ids').filtered(lambda p: p.state == 'valid'))
+    #     last_used_coupons = coupons.mapped('page_ids').filtered(lambda p: p.state == 'used').sorted(
+    #         key=lambda p: p.date_used, reverse=True)[:qty]
+    #     last_used_coupons = last_used_coupons.mapped('code')
+    #
+    #     import requests
+    #     IrConfigParam = self.env['ir.config_parameter'].sudo()
+    #     to_number = partner.mobile
+    #     user_sender = "auth-mseg" #IrConfigParam.get_param('az_coupons.sms_user_sender')
+    #     api_key = "395D8B0ABD3F882431C2452FA3B3360B" #IrConfigParam.get_param('az_coupons.sms_api_key')
+    #     username = "samehelsawy" #IrConfigParam.get_param('az_coupons.sms_username')
+    #
+    #     # if not all([to_number, user_sender, api_key, username]):
+    #     #     return
+    #         # raise ValueError("Please configure all SMS settings in the Coupons Settings.")
+    #
+    #     body = (
+    #         f"Dear {partner.name} \n A quantity of <{qty}> Bottles has been exchanged for coupon(s) "
+    #         f"{last_used_coupons}.\nYou still have <{remaining_coupons}> valid coupons.\n"
+    #         f"{'-' * 50}\n"
+    #         f"عميلنا العزيز/ "
+    #         f"{partner.name} \n"
+    #         f"تم استبدال عدد "
+    #         f"<{qty}>"
+    #         f" قوارير فى مقابل الكوبونات"
+    #         f" {last_used_coupons} "
+    #         f"\n"
+    #         f"يتبقى لديك عدد "
+    #         f"<{remaining_coupons}>"
+    #         f"كوبون صالح للاستخدام"
+    #     )
+    #
+    #     data = {
+    #         'userName': username,
+    #         'apiKey': api_key,
+    #         'numbers': to_number,
+    #         'userSender': user_sender,
+    #         'msg': body,
+    #         'msgEncoding': 'UTF8',
+    #         'timeToSend': 'now',
+    #         'exactTime': '',
+    #         'reqBulkId': 'false',
+    #         'reqFilter': 'true',
+    #     }
+    #
+    #     response = requests.post(
+    #         'https://www.msegat.com/gw/sendsms.php',
+    #         data=data,
+    #     )
+    #
+    #     if response.status_code != 200:
+    #         raise ValueError("Failed to send SMS message. Response: %s" % response.text)
 
-        # data = {
-        #     'To': f'whatsapp:{to_number}',
-        #     'From': f'whatsapp:{from_number}',
-        #     'Body': body,
-        # }
-
-        # response = requests.post(
-        #     f'https://api.twilio.com/2010-04-01/Accounts/{account_sid}/Messages.json',
-        #     data=data,
-        #     auth=(account_sid, auth_token),
-        # )
-
-        # if response.status_code != 201:
-        #     raise ValueError("Failed to send WhatsApp message. Response: %s" % response.text)
 
     @api.model
     def _process_order(self, order, draft, existing_order):
@@ -248,7 +271,6 @@ class PosOrder(models.Model):
         # Prevent Making Invoice or stock move for coupon pages
         IrConfigParam = self.env['ir.config_parameter'].sudo()
         coupon_page_product_id = IrConfigParam.get_param('az_coupons.coupon_page_product')
-
         if not coupon_page_product_id:
             raise UserError(_("Coupon Page Product is not set in the settings. Please configure it first."))
 
