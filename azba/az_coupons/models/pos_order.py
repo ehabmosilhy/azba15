@@ -108,7 +108,6 @@ class PosOrder(models.Model):
         values = self._complete_values_from_session(session, values)
         order = super(PosOrder, self).create(values)
 
-
         self.update_coupon(order)
         # Send WhatsApp message
         self.send_whatsapp_message(order)
@@ -136,6 +135,37 @@ class PosOrder(models.Model):
         for coupon in coupons:
             coupon.pos_order_id = order.id
 
+    def format_to_whatsapp_number(mobile_number):
+        import re
+
+        # Remove any non-numeric characters
+        mobile_number = re.sub(r'\D', '', mobile_number)
+
+        # Check and remove leading '00'
+        if mobile_number.startswith('00'):
+            mobile_number = mobile_number[2:]
+
+        # Check and remove leading '+'
+        if mobile_number.startswith('+'):
+            mobile_number = mobile_number[1:]
+
+        # Ensure it starts with '966'
+        if mobile_number.startswith('966'):
+            # Remove any '0' after '966'
+            if mobile_number[3] == '0':
+                mobile_number = '966' + mobile_number[4:]
+        else:
+            # Handle other cases where the number might not start with '966'
+            # You might want to add specific logic for these cases
+            mobile_number = '966' + mobile_number
+
+        return mobile_number
+
+    # Example usage
+    partner_mobile = '+966 0567891234'
+    to_number = format_to_whatsapp_number(partner_mobile)
+    print(to_number)  # Output: 966567891234
+
     @api.model
     def send_whatsapp_message(self, order):
         qty = 0
@@ -152,12 +182,12 @@ class PosOrder(models.Model):
         last_used_coupons = last_used_coupons.mapped('code')
 
         import requests
-        to_number = partner.mobile
+        to_number = self.format_to_whatsapp_number(partner.mobile)
         from_number = "whatsapp:966593120000"  # Twilio WhatsApp sandbox number
         messaging_service_sid = "MGbf7e1ca8d7581693a55d09285733d1cc"  # Messaging Service SID
 
-        account_sid = "AC2d38454d87a1d186927a4488eed3842f" #IrConfigParam.get_param('az_coupons.twilio_account_sid')
-        auth_token = "74a21fd14e6f7a72f004a93a1c8dff90" #IrConfigParam.get_param('az_coupons.twilio_auth_token')
+        account_sid = "AC2d38454d87a1d186927a4488eed3842f"  # IrConfigParam.get_param('az_coupons.twilio_account_sid')
+        auth_token = "74a21fd14e6f7a72f004a93a1c8dff90"  # IrConfigParam.get_param('az_coupons.twilio_auth_token')
 
         # body = (
         #     """
@@ -210,7 +240,6 @@ class PosOrder(models.Model):
 
         if not str(response.status_code).startswith('2'):
             raise ValueError("Failed to send WhatsApp message. Response: %s" % response.text)
-
 
     @api.model
     def _process_order(self, order, draft, existing_order):
