@@ -135,7 +135,7 @@ class PosOrder(models.Model):
         for coupon in coupons:
             coupon.pos_order_id = order.id
 
-    def format_to_whatsapp_number(mobile_number):
+    def format_to_whatsapp_number(self, mobile_number):
         import re
 
         # Remove any non-numeric characters
