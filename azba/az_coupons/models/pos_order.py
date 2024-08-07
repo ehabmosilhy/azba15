@@ -115,10 +115,24 @@ class PosOrder(models.Model):
         return order
 
     def update_coupon(self, order):
+        # Update full product name for each line in the order
         for line in order.lines:
             line.full_product_name = line.product_id.display_name
-        reference = order.pos_reference.replace('Order', '').strip()
+
+        # Define the terms to be searched and replaced
+        terms_to_check = ['Order', 'طلب']
+        reference = order.pos_reference
+
+        # Check and replace terms
+        for term in terms_to_check:
+            if term in reference:
+                reference = reference.replace(term, '').strip()
+                break  # Exit the loop once the term is found and replaced
+
+        # Search for coupons based on the cleaned reference
         coupons = self.env['az.coupon'].search([('receipt_number', '=', reference)])
+
+        # Update coupon with the order id
         for coupon in coupons:
             coupon.pos_order_id = order.id
 
@@ -145,26 +159,26 @@ class PosOrder(models.Model):
         account_sid = "AC2d38454d87a1d186927a4488eed3842f" #IrConfigParam.get_param('az_coupons.twilio_account_sid')
         auth_token = "74a21fd14e6f7a72f004a93a1c8dff90" #IrConfigParam.get_param('az_coupons.twilio_auth_token')
 
-        body = (
-            """
-                        ====================
-                        Azbah 💦 عذبة للمياه
-                        ====================
-                        Dear {{1}} 
-                        A quantity of <{{2}}> Bottles has been exchanged for coupon(s) {{3}}.
-                        You still have <{{4}}> valid coupons.
-                        --------------------------------------------------
-                        عميلنا العزيز/ 
-                        {{1}} 
-                        تم استبدال عدد 
-                        <{{2}}>
-                        قوارير فى مقابل الكوبونات
-                        {{3}} 
-                        يتبقى لديك عدد 
-                        <{{4}}>
-                        كوبون صالح للاستخدام
-                   """
-        )
+        # body = (
+        #     """
+        #                 ====================
+        #                 Azbah 💦 عذبة للمياه
+        #                 ====================
+        #                 Dear {{1}}
+        #                 A quantity of <{{2}}> Bottles has been exchanged for coupon(s) {{3}}.
+        #                 You still have <{{4}}> valid coupons.
+        #                 --------------------------------------------------
+        #                 عميلنا العزيز/
+        #                 {{1}}
+        #                 تم استبدال عدد
+        #                 <{{2}}>
+        #                 قوارير فى مقابل الكوبونات
+        #                 {{3}}
+        #                 يتبقى لديك عدد
+        #                 <{{4}}>
+        #                 كوبون صالح للاستخدام
+        #            """
+        # )
 
         variables = {
             "1": partner.name,
@@ -179,7 +193,7 @@ class PosOrder(models.Model):
             'ContentSid': 'HX7a099f63aa3c6df0863328709570cc1a',
             'To': f'whatsapp:{to_number}',
             'From': from_number,
-            'Body': body,
+            # 'Body': body,
             'MessagingServiceSid': messaging_service_sid,
             'ContentVariables': variables
         }
