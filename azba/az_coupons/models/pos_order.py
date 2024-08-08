@@ -161,16 +161,20 @@ class PosOrder(models.Model):
 
         return mobile_number
 
-
     @api.model
     def send_whatsapp_message(self, order):
+        partner = order.partner_id
+
+        whatsapp_number = partner.whatsapp_number
+        if not whatsapp_number:
+            return
+
         qty = 0
         for line in order.lines:
             if line.product_id.id == 4 and line.price_subtotal == 0:
                 qty = int(line.qty)
         if not qty:
             return
-        partner = order.partner_id
         coupons = self.env['az.coupon'].search([('partner_id', '=', partner.id)])
         remaining_coupons = len(coupons.mapped('page_ids').filtered(lambda p: p.state == 'valid'))
         last_used_coupons = coupons.mapped('page_ids').filtered(lambda p: p.state == 'used').sorted(
@@ -178,33 +182,12 @@ class PosOrder(models.Model):
         last_used_coupons = last_used_coupons.mapped('code')
 
         import requests
-        to_number = self.format_to_whatsapp_number(partner.mobile)
+        to_number = self.format_to_whatsapp_number(whatsapp_number)
         from_number = "whatsapp:966593120000"  # Twilio WhatsApp sandbox number
         messaging_service_sid = "MGbf7e1ca8d7581693a55d09285733d1cc"  # Messaging Service SID
 
         account_sid = "AC2d38454d87a1d186927a4488eed3842f"  # IrConfigParam.get_param('az_coupons.twilio_account_sid')
         auth_token = "74a21fd14e6f7a72f004a93a1c8dff90"  # IrConfigParam.get_param('az_coupons.twilio_auth_token')
-
-        # body = (
-        #     """
-        #                 ====================
-        #                 Azbah 💦 عذبة للمياه
-        #                 ====================
-        #                 Dear {{1}}
-        #                 A quantity of <{{2}}> Bottles has been exchanged for coupon(s) {{3}}.
-        #                 You still have <{{4}}> valid coupons.
-        #                 --------------------------------------------------
-        #                 عميلنا العزيز/
-        #                 {{1}}
-        #                 تم استبدال عدد
-        #                 <{{2}}>
-        #                 قوارير فى مقابل الكوبونات
-        #                 {{3}}
-        #                 يتبقى لديك عدد
-        #                 <{{4}}>
-        #                 كوبون صالح للاستخدام
-        #            """
-        # )
 
         variables = {
             "1": partner.name,
@@ -216,7 +199,7 @@ class PosOrder(models.Model):
         variables = json.dumps(variables, ensure_ascii=False, indent=2)
 
         payload = {
-            'ContentSid': 'HX7a099f63aa3c6df0863328709570cc1a',
+            'ContentSid': 'HX0a9f3d367c6163eb0f00bd4cd0e3897f',
             'To': f'whatsapp:{to_number}',
             'From': from_number,
             # 'Body': body,
