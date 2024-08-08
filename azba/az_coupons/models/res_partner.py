@@ -14,4 +14,4 @@ _logger = logging.getLogger(__name__)
 class Partner(models.Model):
     _inherit = "res.partner"
     
-    whatsapp_number = fields.Char('Whatsapp Number')
+    # whatsapp_number = fields.Char('Whatsapp Number')
