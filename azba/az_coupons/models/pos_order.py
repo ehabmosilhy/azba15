@@ -110,7 +110,7 @@ class PosOrder(models.Model):
 
         self.update_coupon(order)
         # Send WhatsApp message
-        self.sage(order)
+        self.send_whatsapp_message(order)
         return order
 
     def update_coupon(self, order):
