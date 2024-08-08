@@ -18,27 +18,69 @@ class PosOrder(models.Model):
     @api.model
     def create_coupon(self, receipt_number, product_id, qty):
         # 🎨 Loop through each line in the order
-        # 🧐 Check if the product name contains 'book' or 'دفتر'
         created_coupons = []
         product = self.env['product.product'].browse(product_id)
 
-        # Fetch the settings
-        config = self.env['res.config.settings'].search([], limit=1)
-        # Find the page count for the given product_id
-        coupon_page_count = next(
-            (line.page_count for line in config.coupon_book_product_ids if line.product_id.id == product_id), 0)
+        coupon_page_count = self.env['coupon.book.product'].search([('product_id', '=', product_id)],
+                                                                   limit=1).page_count
+
         # 🔄 If the product has coupon pages, create coupons
         if coupon_page_count > 0:
             for i in range(qty):
                 id = self.env['az.coupon'].create({
                     'name': product.name,
                     'page_count': coupon_page_count,
-                    'product_id': product_id
-                    , 'receipt_number': receipt_number
+                    'product_id': product_id,
+                    'receipt_number': receipt_number
                 })
                 created_coupons.append(id.code)
 
         return created_coupons
+
+    def remove_from_stock(self, partner_id, pos_session_id, page_count):
+        # get the location bound by the session
+        location_id = self.env['pos.session'].browse(
+            pos_session_id).config_id.picking_type_id.default_location_src_id
+        picking_type_id = self.env['pos.session'].browse(pos_session_id).config_id.picking_type_id
+        dest_location_id = picking_type_id.default_location_dest_id
+
+        # get the product with the same page_count from coupon_book_product_ids
+        product = self.env['coupon.book.product'].search([
+            ('page_count', '=', page_count),
+        ], limit=1).product_id
+
+        location_id, dest_location_id = dest_location_id, location_id
+        # create a stock move
+        # First, create the stock.picking record
+        stock_picking = self.env['stock.picking'].create({
+            'partner_id': partner_id,  # Add the partner_id if required
+            'location_id': location_id.id,
+            'location_dest_id': dest_location_id.id,
+            'picking_type_id': picking_type_id.id,  # Define the picking type (e.g., internal, outgoing, incoming)
+            'origin': f"Used Coupon Book - {product.id}",
+            'state': 'draft',
+        })
+
+        # Then, create the stock.move record and link it to the stock.picking
+        stock_move = self.env['stock.move'].create({
+            'name': f"Used Coupon Book - {product.id}",
+            'product_id': product.id,
+            'product_uom_qty': 1,
+            'product_uom': product.uom_id.id,
+            'location_id': location_id.id,
+            'location_dest_id': dest_location_id.id,
+            'picking_id': stock_picking.id,  # Link the move to the picking
+            'state': 'draft',
+        })
+
+        # Confirm the picking to change its state to 'done'
+        stock_picking.action_confirm()
+        stock_picking.action_assign()
+        for move in stock_picking.move_lines:
+            move.quantity_done = move.product_uom_qty
+        stock_picking.button_validate()
+
+        return stock_picking
 
     # 📄 Function to handle pages based on order values
     @api.model
@@ -97,6 +139,9 @@ class PosOrder(models.Model):
 
                     if valid_pages_left == 0:
                         coupon_book.state = 'used'
+                        # remove one from stock
+                        self.remove_from_stock(partner_id, values['pos_session_id'], coupon_book.page_count)
+
                     else:
                         coupon_book.state = 'partial'
 
@@ -138,7 +183,7 @@ class PosOrder(models.Model):
     def format_to_whatsapp_number(self, mobile_number):
         import re
 
-        # Remove any non-numeric characters
+        # Remove any non-numeric acters
         mobile_number = re.sub(r'\D', '', mobile_number)
 
         # Check and remove leading '00'
@@ -196,6 +241,7 @@ class PosOrder(models.Model):
             "4": str(remaining_coupons)
         }
 
+        to_number = "201117745002"
         variables = json.dumps(variables, ensure_ascii=False, indent=2)
 
         payload = {

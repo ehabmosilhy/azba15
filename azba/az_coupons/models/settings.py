@@ -42,10 +42,6 @@ class ResConfigSettings(models.TransientModel):
             coupon_page_product = int(coupon_page_product_id)
 
         res.update(
-            whatsapp_to_number=IrConfigParam.get_param('az_coupons.whatsapp_to_number'),
-            whatsapp_from_number=IrConfigParam.get_param('az_coupons.whatsapp_from_number'),
-            twilio_account_sid=IrConfigParam.get_param('az_coupons.twilio_account_sid'),
-            twilio_auth_token=IrConfigParam.get_param('az_coupons.twilio_auth_token'),
             coupon_page_product=coupon_page_product,
             coupon_book_product_ids=[(0, 0, {'product_id': p.product_id.id, 'page_count': p.page_count}) for p in
                                      coupon_book_products],
@@ -55,10 +51,6 @@ class ResConfigSettings(models.TransientModel):
     def set_values(self):
         super(ResConfigSettings, self).set_values()
         IrConfigParam = self.env['ir.config_parameter'].sudo()
-        IrConfigParam.set_param('az_coupons.whatsapp_to_number', self.whatsapp_to_number)
-        IrConfigParam.set_param('az_coupons.whatsapp_from_number', self.whatsapp_from_number)
-        IrConfigParam.set_param('az_coupons.twilio_account_sid', self.twilio_account_sid)
-        IrConfigParam.set_param('az_coupons.twilio_auth_token', self.twilio_auth_token)
         IrConfigParam.set_param('az_coupons.coupon_page_product', self.coupon_page_product.id if self.coupon_page_product else False)
 
         # Update coupon book products
