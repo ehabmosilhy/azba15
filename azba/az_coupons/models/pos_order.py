@@ -147,14 +147,24 @@ class PosOrder(models.Model):
 
         return sorted(used_coupons)  # Return the list of used coupon codes
 
+    def create_account_moves_coupon_page(self, order):
+        no_invoice = order.to_invoice
+
+        if no_invoice:
+            move = {
+
+            }
+
+        else:
+            return
+
     @api.model
     def create(self, values):
         session = self.env['pos.session'].browse(values['session_id'])
         values = self._complete_values_from_session(session, values)
         order = super(PosOrder, self).create(values)
-
         self.update_coupon(order)
-        # Send WhatsApp message
+        self.create_account_moves_coupon_page(order)
         self.send_whatsapp_message(order)
         return order
 
@@ -211,7 +221,7 @@ class PosOrder(models.Model):
         partner = order.partner_id
 
         whatsapp_number = partner.mobile
-        if not whatsapp_number:
+        if not whatsapp_number or len(whatsapp_number) < 4:
             return
 
         qty = 0
