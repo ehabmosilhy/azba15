@@ -228,7 +228,7 @@ class PosOrder(models.Model):
 
         import requests
         to_number = self.format_to_whatsapp_number(whatsapp_number)
-        from_number = "whatsapp:966593120000"  # Twilio WhatsApp sandbox number
+        from_number = "whatsapp:966593120000"
         messaging_service_sid = "MGbf7e1ca8d7581693a55d09285733d1cc"  # Messaging Service SID
 
         account_sid = "AC2d38454d87a1d186927a4488eed3842f"  # IrConfigParam.get_param('az_coupons.twilio_account_sid')
@@ -241,7 +241,6 @@ class PosOrder(models.Model):
             "4": str(remaining_coupons)
         }
 
-        to_number = "201117745002"
         variables = json.dumps(variables, ensure_ascii=False, indent=2)
 
         payload = {

@@ -22,11 +22,6 @@ class ResConfigSettings(models.TransientModel):
     coupon_page_product = fields.Many2one('product.product', string="Coupon Page Product")
     coupon_book_product_ids = fields.One2many('coupon.book.product.line', 'config_id', string="Coupon Book Products")
 
-    whatsapp_to_number = fields.Char(string="WhatsApp To Number")
-    whatsapp_from_number = fields.Char(string="WhatsApp From Number")
-    twilio_account_sid = fields.Char(string="Twilio Account SID")
-    twilio_auth_token = fields.Char(string="Twilio Auth Token")
-
     @api.model
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()
