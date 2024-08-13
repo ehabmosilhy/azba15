@@ -7,7 +7,7 @@
                 'mail',
                 'base_setup',
                 'contacts',
-                "point_of_sale", "pos_coupon"],
+                "point_of_sale", "pos_coupon","stock"],
     "data": [
         'views/coupon_coupon.xml',
         'views/res_config_settings.xml',

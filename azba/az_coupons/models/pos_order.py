@@ -14,6 +14,8 @@ _logger = logging.getLogger(__name__)
 class PosOrder(models.Model):
     _inherit = "pos.order"
 
+    no_picking = fields.Boolean()
+
     # 📜 Function to create a coupon based on the order lines
     @api.model
     def create_coupon(self, receipt_number, product_id, qty):
@@ -218,16 +220,15 @@ class PosOrder(models.Model):
             return
 
     def add_bottles(self, values):
-        # Check if there is exactly one line and the product_id is 37
-        if len(values['lines']) == 1 and values['lines'][0][2]['product_id'] == 37:
+        # Check if there is exactly one line and the product_id is 37: COUPON BOOK 20 PCS
+        if len(values['lines']) == 1 and values['lines'][0][2]['product_id'] in (37, 38):
+            values['no_picking'] = True
             line = values['lines'][0]
 
             # Retrieve the page_count for the product in the line
             coupon_book_product = self.env['coupon.book.product'].search([('product_id', '=', line[2]['product_id'])],
                                                                          limit=1)
             page_count = coupon_book_product.page_count if coupon_book_product else 1
-
-
 
             # Duplicate the line and change the product_id to 4
             new_product = self.env['product.product'].browse(4)
@@ -241,7 +242,6 @@ class PosOrder(models.Model):
             new_line[2]['price_subtotal_incl'] = new_line[2]['price_subtotal']
             new_line[2]['full_product_name'] = new_product.display_name
 
-
             # Add the duplicated line to the values['lines']
             values['lines'].append(new_line)
 
@@ -249,7 +249,6 @@ class PosOrder(models.Model):
             line[2]['price_unit'] = 0
             line[2]['price_subtotal'] = 0
             line[2]['price_subtotal_incl'] = 0
-
 
         return values
 
@@ -262,7 +261,7 @@ class PosOrder(models.Model):
         order = super(PosOrder, self).create(values)
         self.update_coupon(order)
         self.create_account_moves_coupon_page(order)
-        self.send_whatsapp_message(order)
+        # self.send_whatsapp_message(order)
         return order
 
     def update_coupon(self, order):
@@ -434,8 +433,9 @@ class PosOrder(models.Model):
 
             # ______ (｡◔‿◔｡) _____
             # if not no_invoice:
-            pos_order._create_order_picking()
-            pos_order._compute_total_cost_in_real_time()
+            if not pos_order.no_picking:
+                pos_order._create_order_picking()
+                pos_order._compute_total_cost_in_real_time()
             # ______ (｡◔‿◔｡) ________ End of code
 
         if not draft and pos_order.to_invoice and pos_order.state == 'paid' and (
@@ -448,3 +448,17 @@ class PosOrder(models.Model):
         # ______ (｡◔‿◔｡) ________ End of code
 
         return pos_order.id
+
+
+class StockPicking(models.Model):
+    _inherit = 'stock.picking'
+
+    @api.model
+    def _create_picking_from_pos_order_lines(self, location_dest_id, lines, picking_type, partner=False):
+        pickings = self.env['stock.picking']
+        order = lines[0].order_id
+        if order.no_picking:
+            return pickings
+
+        super(StockPicking, self)._create_picking_from_pos_order_lines(location_dest_id, lines, picking_type,
+                                                                       partner=False)
