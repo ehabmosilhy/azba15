@@ -16,6 +16,18 @@ class PosOrder(models.Model):
 
     no_picking = fields.Boolean()
 
+    @api.model
+    def create(self, values):
+        session = self.env['pos.session'].browse(values['session_id'])
+        values = self._complete_values_from_session(session, values)
+        # add bottles product if  coupon book
+        values = self.add_bottles(values)
+        order = super(PosOrder, self).create(values)
+        self.update_coupon(order)
+        self.create_account_moves_coupon_page(order)
+        # self.send_whatsapp_message(order)
+        return order
+
     # 📜 Function to create a coupon based on the order lines
     @api.model
     def create_coupon(self, receipt_number, product_id, qty):
@@ -238,7 +250,7 @@ class PosOrder(models.Model):
             # Calculate the new price based on the original price divided by page_count
             new_line[2]['product_id'] = new_product.id
             new_line[2]['price_unit'] = line[2]['price_unit'] / page_count if page_count else 0
-            new_line[2]['price_subtotal'] = new_line[2]['price_unit'] * new_line[2]['qty']*page_count
+            new_line[2]['price_subtotal'] = new_line[2]['price_unit'] * new_line[2]['qty'] * page_count
             new_line[2]['price_subtotal_incl'] = new_line[2]['price_subtotal']
             new_line[2]['full_product_name'] = new_product.display_name
             new_line[2]['qty'] = line[2]['qty'] * page_count
@@ -252,18 +264,6 @@ class PosOrder(models.Model):
             line[2]['price_subtotal_incl'] = 0
 
         return values
-
-    @api.model
-    def create(self, values):
-        session = self.env['pos.session'].browse(values['session_id'])
-        values = self._complete_values_from_session(session, values)
-        # add bottles product if  coupon book
-        values = self.add_bottles(values)
-        order = super(PosOrder, self).create(values)
-        self.update_coupon(order)
-        self.create_account_moves_coupon_page(order)
-        # self.send_whatsapp_message(order)
-        return order
 
     def update_coupon(self, order):
         # Update full product name for each line in the order
@@ -449,6 +449,85 @@ class PosOrder(models.Model):
         # ______ (｡◔‿◔｡) ________ End of code
 
         return pos_order.id
+
+    def __create_invoice(self, move_vals):
+        self.ensure_one()
+        new_move = self.env['account.move'].sudo().with_company(self.company_id).with_context(default_move_type=move_vals['move_type']).create(move_vals)
+        message = _("This invoice has been created from the point of sale session: <a href=# data-oe-model=pos.order data-oe-id=%d>%s</a>") % (self.id, self.name)
+        new_move.message_post(body=message)
+        if self.config_id.cash_rounding:
+            rounding_applied = float_round(self.amount_paid - self.amount_total,
+                                           precision_rounding=new_move.currency_id.rounding)
+            rounding_line = new_move.line_ids.filtered(lambda line: line.is_rounding_line)
+            if rounding_line and rounding_line.debit > 0:
+                rounding_line_difference = rounding_line.debit + rounding_applied
+            elif rounding_line and rounding_line.credit > 0:
+                rounding_line_difference = -rounding_line.credit + rounding_applied
+            else:
+                rounding_line_difference = rounding_applied
+            if rounding_applied:
+                if rounding_applied > 0.0:
+                    account_id = new_move.invoice_cash_rounding_id.loss_account_id.id
+                else:
+                    account_id = new_move.invoice_cash_rounding_id.profit_account_id.id
+                if rounding_line:
+                    if rounding_line_difference:
+                        rounding_line.with_context(check_move_validity=False).write({
+                            'debit': rounding_applied < 0.0 and -rounding_applied or 0.0,
+                            'credit': rounding_applied > 0.0 and rounding_applied or 0.0,
+                            'account_id': account_id,
+                            'price_unit': rounding_applied,
+                        })
+
+                else:
+                    self.env['account.move.line'].with_context(check_move_validity=False).create({
+                        'debit': rounding_applied < 0.0 and -rounding_applied or 0.0,
+                        'credit': rounding_applied > 0.0 and rounding_applied or 0.0,
+                        'quantity': 1.0,
+                        'amount_currency': rounding_applied,
+                        'partner_id': new_move.partner_id.id,
+                        'move_id': new_move.id,
+                        'currency_id': new_move.currency_id if new_move.currency_id != new_move.company_id.currency_id else False,
+                        'company_id': new_move.company_id.id,
+                        'company_currency_id': new_move.company_id.currency_id.id,
+                        'is_rounding_line': True,
+                        'sequence': 9999,
+                        'name': new_move.invoice_cash_rounding_id.name,
+                        'account_id': account_id,
+                    })
+            else:
+                if rounding_line:
+                    rounding_line.with_context(check_move_validity=False).unlink()
+            if rounding_line_difference:
+                existing_terms_line = new_move.line_ids.filtered(
+                    lambda line: line.account_id.user_type_id.type in ('receivable', 'payable'))
+                if existing_terms_line.debit > 0:
+                    existing_terms_line_new_val = float_round(
+                        existing_terms_line.debit + rounding_line_difference,
+                        precision_rounding=new_move.currency_id.rounding)
+                else:
+                    existing_terms_line_new_val = float_round(
+                        -existing_terms_line.credit + rounding_line_difference,
+                        precision_rounding=new_move.currency_id.rounding)
+                existing_terms_line.write({
+                    'debit': existing_terms_line_new_val > 0.0 and existing_terms_line_new_val or 0.0,
+                    'credit': existing_terms_line_new_val < 0.0 and -existing_terms_line_new_val or 0.0,
+                })
+
+                new_move._recompute_payment_terms_lines()
+        return new_move
+
+
+
+    def _create_invoice(self, move_vals):
+        coupon_book = None
+        for line in self.lines:
+            if line.product_id.id in (37, 38):
+                coupon_book = True
+        if coupon_book:
+            self.__create_invoice(move_vals)
+        else:
+            self.invoice = super(PosOrder, self)._create_invoice(move_vals)
 
 
 class StockPicking(models.Model):
