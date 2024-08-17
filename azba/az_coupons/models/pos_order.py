@@ -220,7 +220,7 @@ class PosOrder(models.Model):
             return
 
     def add_bottles(self, values):
-        # Check if there is exactly one line and the product_id is 37: COUPON BOOK 20 PCS
+        # Check if there is exactly one line and the product_id is 37 or 3: COUPON BOOK 20 or 50 PCS
         if len(values['lines']) == 1 and values['lines'][0][2]['product_id'] in (37, 38):
             values['no_picking'] = True
             line = values['lines'][0]
@@ -238,9 +238,10 @@ class PosOrder(models.Model):
             # Calculate the new price based on the original price divided by page_count
             new_line[2]['product_id'] = new_product.id
             new_line[2]['price_unit'] = line[2]['price_unit'] / page_count if page_count else 0
-            new_line[2]['price_subtotal'] = new_line[2]['price_unit'] * new_line[2]['qty']
+            new_line[2]['price_subtotal'] = new_line[2]['price_unit'] * new_line[2]['qty']*page_count
             new_line[2]['price_subtotal_incl'] = new_line[2]['price_subtotal']
             new_line[2]['full_product_name'] = new_product.display_name
+            new_line[2]['qty'] = line[2]['qty'] * page_count
 
             # Add the duplicated line to the values['lines']
             values['lines'].append(new_line)
