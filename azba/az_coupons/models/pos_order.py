@@ -203,7 +203,7 @@ class PosOrder(models.Model):
 
             move_line_credit = {
                 'name': product_id.display_name,
-                'account_id': 147,  # Sales Account [50001]
+                'account_id': debit_account.id,
                 'debit': 0.0,
                 'credit': total_price,
                 'quantity': qty,
