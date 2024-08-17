@@ -12,8 +12,8 @@ odoo.define('pos_coupon.Coupon', function (require) {
 
     models.Order = models.Order.extend({
         add_coupon_product_line: async function () {
-            const original_product_id = 3562;
-            const new_product_template_id = 4;
+            const original_product_id = 3562;  // فوارغ كوبون
+            const new_product_template_id = 4; // قارورة مياه/5 جالون
             const new_product = this.pos.db.get_product_by_id(new_product_template_id);
             if (!new_product) {
                 console.error('New product not found');
@@ -38,6 +38,17 @@ odoo.define('pos_coupon.Coupon', function (require) {
                     body: `Requested quantity (${required_qty}) exceeds the total number of valid coupon pages (${total_valid_pages}).`,
                 });
                 return false;
+            }
+
+
+            const containsCouponBook = order_lines.some(line => [37, 38].includes(line.product.id));
+
+            if (order_lines.length > 1 && containsCouponBook) {
+                Gui.showPopup('ErrorPopup', {
+                    title: "Invalid Order",
+                    body: "You can't sell the Coupon Book with any other product, each coupon book must be sold alone!",
+                });
+                return;
             }
             const order = this.export_as_JSON();
             const used_coupons = await rpc.query({
