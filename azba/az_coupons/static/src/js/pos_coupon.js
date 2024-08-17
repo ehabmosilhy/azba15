@@ -5,10 +5,10 @@ odoo.define('pos_coupon.Coupon', function (require) {
     const Registries = require('point_of_sale.Registries');
     const models = require('point_of_sale.models');
     const rpc = require('web.rpc');
-    const { Gui } = require('point_of_sale.Gui');
+    const {Gui} = require('point_of_sale.Gui');
     const PosComponent = require('point_of_sale.PosComponent');
     const AbstractAwaitablePopup = require('point_of_sale.AbstractAwaitablePopup');
-    const { useListener } = require('web.custom_hooks');
+    const {useListener} = require('web.custom_hooks');
 
     models.Order = models.Order.extend({
         add_coupon_product_line: async function () {
@@ -40,16 +40,6 @@ odoo.define('pos_coupon.Coupon', function (require) {
                 return false;
             }
 
-
-            const containsCouponBook = order_lines.some(line => [37, 38].includes(line.product.id));
-
-            if (order_lines.length > 1 && containsCouponBook) {
-                Gui.showPopup('ErrorPopup', {
-                    title: "Invalid Order",
-                    body: "You can't sell the Coupon Book with any other product, each coupon book must be sold alone!",
-                });
-                return;
-            }
             const order = this.export_as_JSON();
             const used_coupons = await rpc.query({
                 model: 'pos.order',
@@ -64,7 +54,7 @@ odoo.define('pos_coupon.Coupon', function (require) {
                         price: 0,
                         product_description: full_name,
                         quantity: line.quantity,
-                        extras: { full_product_name: full_name_wrapped }
+                        extras: {full_product_name: full_name_wrapped}
                     });
                 }
             });
@@ -100,6 +90,20 @@ odoo.define('pos_coupon.Coupon', function (require) {
     const POSValidateOverride = PaymentScreen => class extends PaymentScreen {
         async validateOrder(isForceValidate) {
             if (this.currentOrder.get_orderlines().length > 0) {
+
+                const order_lines = this.currentOrder.get_orderlines();
+
+                const containsCouponBook = order_lines.some(line => [37, 38].includes(line.product.id));
+
+                if (order_lines.length > 1 && containsCouponBook) {
+                    Gui.showPopup('ErrorPopup', {
+                        title: "Invalid Order",
+                        body: "You can't sell the Coupon Book with any other product, each coupon book must be sold alone!",
+                    });
+                    return false;
+                }
+
+
                 await this.currentOrder.create_coupons();
                 const canProceed = await this.currentOrder.add_coupon_product_line();
                 if (!canProceed) {
@@ -121,8 +125,8 @@ odoo.define('pos_coupon.CouponProductsPopup', function (require) {
     const AbstractAwaitablePopup = require('point_of_sale.AbstractAwaitablePopup');
     const Registries = require('point_of_sale.Registries');
     const PosComponent = require('point_of_sale.PosComponent');
-    const { useState } = owl.hooks;
-    const { useListener } = require('web.custom_hooks');
+    const {useState} = owl.hooks;
+    const {useListener} = require('web.custom_hooks');
 
     class CouponProductsPopup extends AbstractAwaitablePopup {
         constructor() {
