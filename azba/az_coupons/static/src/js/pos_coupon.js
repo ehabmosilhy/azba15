@@ -66,11 +66,12 @@ odoo.define('pos_coupon.Coupon', function (require) {
                 const product_name = line.get_full_product_name().toLowerCase();
                 if (product_name.includes("دفتر كوبون") || product_name.includes("coupon book")) {
                     const quantity = line.get_quantity();
+                    const partner_id = this.get_client().id;
                     try {
                         const coupon_id = await rpc.query({
                             model: 'pos.order',
                             method: 'create_coupon',
-                            args: [line.order.uid, line.get_product().id, quantity],
+                            args: [line.order.uid,partner_id, line.get_product().id, quantity],
                         });
                         let updatedName = `${line.get_full_product_name()}  ${coupon_id}`;
                         const full_name_wrapped = updatedName.split(',').join('\n');
