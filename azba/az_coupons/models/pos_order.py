@@ -3,6 +3,8 @@
 import base64
 import json
 
+from odoo.tools import float_is_zero, float_round
+import base64
 from odoo import api, fields, models, tools, _
 import psycopg2
 import logging
@@ -24,7 +26,7 @@ class PosOrder(models.Model):
         values = self.add_bottles(values)
         order = super(PosOrder, self).create(values)
         self.update_coupon(order)
-        self.create_account_moves_coupon_page(order)
+        # self.create_account_moves_coupon_page(order)
         # self.send_whatsapp_message(order)
         return order
 
@@ -53,41 +55,41 @@ class PosOrder(models.Model):
 
         return created_coupons
 
-    def remove_from_stock(self, partner_id, pos_session_id, page_count):
-        # get the location bound by the session
-        location_id = self.env['pos.session'].browse(
-            pos_session_id).config_id.picking_type_id.default_location_src_id
-        picking_type_id = self.env['pos.session'].browse(pos_session_id).config_id.picking_type_id
-        dest_location_id = picking_type_id.default_location_dest_id
-
-        # get the product with the same page_count from coupon_book_product_ids
-        product = self.env['coupon.book.product'].search([
-            ('page_count', '=', page_count),
-        ], limit=1).product_id
-
-        location_id, dest_location_id = dest_location_id, location_id
-        # create a stock move
-        # First, create the stock.picking record
-        stock_picking = self.env['stock.picking'].create({
-            'partner_id': partner_id,  # Add the partner_id if required
-            'location_id': location_id.id,
-            'location_dest_id': dest_location_id.id,
-            'picking_type_id': picking_type_id.id,  # Define the picking type (e.g., internal, outgoing, incoming)
-            'origin': f"Used Coupon Book - {product.id}",
-            'state': 'draft',
-        })
-
-        # Then, create the stock.move record and link it to the stock.picking
-        stock_move = self.env['stock.move'].create({
-            'name': f"Used Coupon Book - {product.id}",
-            'product_id': product.id,
-            'product_uom_qty': 1,
-            'product_uom': product.uom_id.id,
-            'location_id': location_id.id,
-            'location_dest_id': dest_location_id.id,
-            'picking_id': stock_picking.id,  # Link the move to the picking
-            'state': 'draft',
-        })
+    # def remove_from_stock(self, partner_id, pos_session_id, page_count):
+    #     # get the location bound by the session
+    #     location_id = self.env['pos.session'].browse(
+    #         pos_session_id).config_id.picking_type_id.default_location_src_id
+    #     picking_type_id = self.env['pos.session'].browse(pos_session_id).config_id.picking_type_id
+    #     dest_location_id = picking_type_id.default_location_dest_id
+    #
+    #     # get the product with the same page_count from coupon_book_product_ids
+    #     product = self.env['coupon.book.product'].search([
+    #         ('page_count', '=', page_count),
+    #     ], limit=1).product_id
+    #
+    #     location_id, dest_location_id = dest_location_id, location_id
+    #     # create a stock move
+    #     # First, create the stock.picking record
+    #     stock_picking = self.env['stock.picking'].create({
+    #         'partner_id': partner_id,  # Add the partner_id if required
+    #         'location_id': location_id.id,
+    #         'location_dest_id': dest_location_id.id,
+    #         'picking_type_id': picking_type_id.id,  # Define the picking type (e.g., internal, outgoing, incoming)
+    #         'origin': f"Used Coupon Book - {product.id}",
+    #         'state': 'draft',
+    #     })
+    #
+    #     # Then, create the stock.move record and link it to the stock.picking
+    #     stock_move = self.env['stock.move'].create({
+    #         'name': f"Used Coupon Book - {product.id}",
+    #         'product_id': product.id,
+    #         'product_uom_qty': 1,
+    #         'product_uom': product.uom_id.id,
+    #         'location_id': location_id.id,
+    #         'location_dest_id': dest_location_id.id,
+    #         'picking_id': stock_picking.id,  # Link the move to the picking
+    #         'state': 'draft',
+    #     })
 
         # Confirm the picking to change its state to 'done'
         stock_picking.action_confirm()
@@ -156,7 +158,7 @@ class PosOrder(models.Model):
                     if valid_pages_left == 0:
                         coupon_book.state = 'used'
                         # remove one from stock
-                        self.remove_from_stock(partner_id, values['pos_session_id'], coupon_book.page_count)
+                        # self.remove_from_stock(partner_id, values['pos_session_id'], coupon_book.page_count)
 
                     else:
                         coupon_book.state = 'partial'
@@ -452,8 +454,11 @@ class PosOrder(models.Model):
 
     def __create_invoice(self, move_vals):
         self.ensure_one()
-        new_move = self.env['account.move'].sudo().with_company(self.company_id).with_context(default_move_type=move_vals['move_type']).create(move_vals)
-        message = _("This invoice has been created from the point of sale session: <a href=# data-oe-model=pos.order data-oe-id=%d>%s</a>") % (self.id, self.name)
+        new_move = self.env['account.move'].sudo().with_company(self.company_id).with_context(
+            default_move_type=move_vals['move_type']).create(move_vals)
+        message = _(
+            "This invoice has been created from the point of sale session: <a href=# data-oe-model=pos.order data-oe-id=%d>%s</a>") % (
+                      self.id, self.name)
         new_move.message_post(body=message)
         if self.config_id.cash_rounding:
             rounding_applied = float_round(self.amount_paid - self.amount_total,
@@ -515,9 +520,14 @@ class PosOrder(models.Model):
                 })
 
                 new_move._recompute_payment_terms_lines()
+
+        #  /\_/\
+        # ( ◕‿◕ )
+        #  >   <
+        # Beginning: Ehab
+
+        # ______ (｡◔‿◔｡) ________ End of code
         return new_move
-
-
 
     def _create_invoice(self, move_vals):
         coupon_book = None
@@ -525,9 +535,9 @@ class PosOrder(models.Model):
             if line.product_id.id in (37, 38):
                 coupon_book = True
         if coupon_book:
-            self.__create_invoice(move_vals)
+            return self.__create_invoice(move_vals)
         else:
-            self.invoice = super(PosOrder, self)._create_invoice(move_vals)
+            return super(PosOrder, self)._create_invoice(move_vals)
 
 
 class StockPicking(models.Model):
