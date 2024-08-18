@@ -55,42 +55,6 @@ class PosOrder(models.Model):
 
         return created_coupons
 
-    # def remove_from_stock(self, partner_id, pos_session_id, page_count):
-    #     # get the location bound by the session
-    #     location_id = self.env['pos.session'].browse(
-    #         pos_session_id).config_id.picking_type_id.default_location_src_id
-    #     picking_type_id = self.env['pos.session'].browse(pos_session_id).config_id.picking_type_id
-    #     dest_location_id = picking_type_id.default_location_dest_id
-    #
-    #     # get the product with the same page_count from coupon_book_product_ids
-    #     product = self.env['coupon.book.product'].search([
-    #         ('page_count', '=', page_count),
-    #     ], limit=1).product_id
-    #
-    #     location_id, dest_location_id = dest_location_id, location_id
-    #     # create a stock move
-    #     # First, create the stock.picking record
-    #     stock_picking = self.env['stock.picking'].create({
-    #         'partner_id': partner_id,  # Add the partner_id if required
-    #         'location_id': location_id.id,
-    #         'location_dest_id': dest_location_id.id,
-    #         'picking_type_id': picking_type_id.id,  # Define the picking type (e.g., internal, outgoing, incoming)
-    #         'origin': f"Used Coupon Book - {product.id}",
-    #         'state': 'draft',
-    #     })
-    #
-    #     # Then, create the stock.move record and link it to the stock.picking
-    #     stock_move = self.env['stock.move'].create({
-    #         'name': f"Used Coupon Book - {product.id}",
-    #         'product_id': product.id,
-    #         'product_uom_qty': 1,
-    #         'product_uom': product.uom_id.id,
-    #         'location_id': location_id.id,
-    #         'location_dest_id': dest_location_id.id,
-    #         'picking_id': stock_picking.id,  # Link the move to the picking
-    #         'state': 'draft',
-    #     })
-
         # Confirm the picking to change its state to 'done'
         stock_picking.action_confirm()
         stock_picking.action_assign()
@@ -157,9 +121,6 @@ class PosOrder(models.Model):
 
                     if valid_pages_left == 0:
                         coupon_book.state = 'used'
-                        # remove one from stock
-                        # self.remove_from_stock(partner_id, values['pos_session_id'], coupon_book.page_count)
-
                     else:
                         coupon_book.state = 'partial'
 
@@ -288,91 +249,6 @@ class PosOrder(models.Model):
         # Update coupon with the order id
         for coupon in coupons:
             coupon.pos_order_id = order.id
-
-    def format_to_whatsapp_number(self, mobile_number):
-        import re
-
-        # Remove any non-numeric acters
-        mobile_number = re.sub(r'\D', '', mobile_number)
-
-        # Check and remove leading '00'
-        if mobile_number.startswith('00'):
-            mobile_number = mobile_number[2:]
-
-        # Check and remove leading '+'
-        if mobile_number.startswith('+'):
-            mobile_number = mobile_number[1:]
-
-        # Ensure it starts with '966'
-        if mobile_number.startswith('966'):
-            # Remove any '0' after '966'
-            if mobile_number[3] == '0':
-                mobile_number = '966' + mobile_number[4:]
-        else:
-            # Handle other cases where the number might not start with '966'
-            # You might want to add specific logic for these cases
-            mobile_number = '966' + mobile_number
-
-        return mobile_number
-
-    @api.model
-    def send_whatsapp_message(self, order):
-        partner = order.partner_id
-
-        whatsapp_number = partner.mobile
-        if not whatsapp_number or len(whatsapp_number) < 4:
-            return
-
-        qty = 0
-        for line in order.lines:
-            if line.product_id.id == 4 and line.price_subtotal == 0:
-                qty = int(line.qty)
-        if not qty:
-            return
-        coupons = self.env['az.coupon'].search([('partner_id', '=', partner.id)])
-        remaining_coupons = len(coupons.mapped('page_ids').filtered(lambda p: p.state == 'valid'))
-        last_used_coupons = coupons.mapped('page_ids').filtered(lambda p: p.state == 'used').sorted(
-            key=lambda p: p.date_used, reverse=True)[:qty]
-        last_used_coupons = last_used_coupons.mapped('code')
-
-        import requests
-        to_number = self.format_to_whatsapp_number(whatsapp_number)
-        from_number = "whatsapp:966593120000"
-        messaging_service_sid = "MGbf7e1ca8d7581693a55d09285733d1cc"  # Messaging Service SID
-
-        account_sid = "AC2d38454d87a1d186927a4488eed3842f"  # IrConfigParam.get_param('az_coupons.twilio_account_sid')
-        auth_token = "74a21fd14e6f7a72f004a93a1c8dff90"  # IrConfigParam.get_param('az_coupons.twilio_auth_token')
-
-        variables = {
-            "1": partner.name,
-            "2": str(qty),
-            "3": str(last_used_coupons),
-            "4": str(remaining_coupons)
-        }
-
-        variables = json.dumps(variables, ensure_ascii=False, indent=2)
-
-        payload = {
-            'ContentSid': 'HX0a9f3d367c6163eb0f00bd4cd0e3897f',
-            'To': f'whatsapp:{to_number}',
-            'From': from_number,
-            # 'Body': body,
-            'MessagingServiceSid': messaging_service_sid,
-            'ContentVariables': variables
-        }
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f'Basic {base64.b64encode(f"{account_sid}:{auth_token}".encode()).decode()}'
-        }
-
-        response = requests.post(
-            f'https://api.twilio.com/2010-04-01/Accounts/{account_sid}/Messages.json',
-            headers=headers,
-            data=payload,
-        )
-
-        if not str(response.status_code).startswith('2'):
-            raise ValueError("Failed to send WhatsApp message. Response: %s" % response.text)
 
     @api.model
     def _process_order(self, order, draft, existing_order):
@@ -525,6 +401,9 @@ class PosOrder(models.Model):
         # ( ◕‿◕ )
         #  >   <
         # Beginning: Ehab
+        for line in new_move.invoice_line_ids:
+            if line.product_id.id == 4:
+                line.write({'account_id': 151})
 
         # ______ (｡◔‿◔｡) ________ End of code
         return new_move
