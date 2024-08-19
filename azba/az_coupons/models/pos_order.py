@@ -20,7 +20,7 @@ class PosOrder(models.Model):
         values = self.add_bottles(values)
         order = super(PosOrder, self).create(values)
         self.update_coupon(order)
-        # self.create_account_moves_coupon_page(order)
+        self.create_account_moves_coupon_page(order)
         # self.send_whatsapp_message(order)
         return order
 
@@ -115,7 +115,11 @@ class PosOrder(models.Model):
         return sorted(used_coupons)  # Return the list of used coupon codes
 
     def create_account_moves_coupon_page(self, order):
-        no_invoice = order.to_invoice
+        for line in order.lines:
+            if line.product_id.id == 3562:
+                order.to_invoice = False
+                break
+        no_invoice = not order.to_invoice
         product_id = 4
         product_id = self.env['product.product'].browse(product_id)
         if no_invoice:
@@ -151,7 +155,7 @@ class PosOrder(models.Model):
             move_vals = {
                 'journal_id': 3,  # Set the journal
                 'date': order.date_order,  # Set the date
-                'ref': order.name,  # Reference to the order name
+                'ref': order.pos_reference,  # Reference to the order name
                 'line_ids': [],
                 'move_type': 'entry',  # Specify the move type as 'entry'
             }
@@ -321,12 +325,17 @@ class PosOrder(models.Model):
 
     def _create_invoice(self, move_vals):
         coupon_book = None
+        coupon_page = None
         for line in self.lines:
             if line.product_id.id in (37, 38):
                 coupon_book = True
+            if line.product_id.id == 3562:
+                coupon_page=True
+
         if coupon_book:
             return self.__create_invoice(move_vals)
-        else:
+        # Coupon Page is handlded in create_account_moves_coupon_page
+        elif not coupon_page:
             return super(PosOrder, self)._create_invoice(move_vals)
 
     def _create_order_picking(self):

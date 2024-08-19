@@ -94,12 +94,12 @@ odoo.define('pos_coupon.Coupon', function (require) {
 
                 const order_lines = this.currentOrder.get_orderlines();
 
-                const containsCouponBook = order_lines.some(line => [37, 38].includes(line.product.id));
-
+                const containsCouponBook = order_lines.some(line => [37, 38,3562].includes(line.product.id));
+                // 3562 is Coupon Page
                 if (order_lines.length > 1 && containsCouponBook) {
                     Gui.showPopup('ErrorPopup', {
                         title: "Invalid Order",
-                        body: "You can't sell the Coupon Book with any other product, each coupon book must be sold alone!",
+                        body: "You can't sell the Coupons with any other product, each coupon book must be sold alone!",
                     });
                     return false;
                 }
