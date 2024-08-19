@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import base64
-import json
-
 from odoo.tools import float_is_zero, float_round
-import base64
 from odoo import api, fields, models, tools, _
-import psycopg2
 import logging
 from odoo.exceptions import UserError
 
@@ -15,7 +10,6 @@ _logger = logging.getLogger(__name__)
 
 class PosOrder(models.Model):
     _inherit = "pos.order"
-
     no_picking = fields.Boolean()
 
     @api.model
@@ -30,20 +24,15 @@ class PosOrder(models.Model):
         # self.send_whatsapp_message(order)
         return order
 
-    # 📜 Function to create a coupon based on the order lines
     @api.model
     def create_coupon(self, receipt_number, partner, product_id, qty):
-        # 🎨 Loop through each line in the order
-
         created_coupons = []
         product = self.env['product.product'].browse(product_id)
-
         coupon_page_product = self.env['coupon.book.product'].search([('product_id', '=', product_id)],
                                                                      limit=1)
 
         coupon_page_count = coupon_page_product.page_count
 
-        # 🔄 If the product has coupon pages, create coupons
         if coupon_page_count > 0:
             for i in range(qty):
                 id = self.env['az.coupon'].create({
@@ -57,7 +46,6 @@ class PosOrder(models.Model):
 
         return created_coupons
 
-        # Confirm the picking to change its state to 'done'
         stock_picking.action_confirm()
         stock_picking.action_assign()
         for move in stock_picking.move_lines:
@@ -66,7 +54,6 @@ class PosOrder(models.Model):
 
         return stock_picking
 
-    # 📄 Function to handle pages based on order values
     @api.model
     def handle_pages(self, values):
         # Get the coupon_page_product from settings
@@ -81,7 +68,6 @@ class PosOrder(models.Model):
         if not product_id.exists():
             raise UserError(_("The configured Coupon Page Product does not exist."))
 
-        # Rest of your handle_pages method...
         partner_id = values['partner_id']
         used_coupons = []  # List to store the codes of used coupons
 
@@ -231,6 +217,7 @@ class PosOrder(models.Model):
         return values
 
     def update_coupon(self, order):
+        # Add the POS Order ID to the coupon
         # Update full product name for each line in the order
         for line in order.lines:
             line.full_product_name = line.product_id.display_name
@@ -252,74 +239,6 @@ class PosOrder(models.Model):
         for coupon in coupons:
             coupon.pos_order_id = order.id
 
-    # @api.model
-    # def _process_order(self, order, draft, existing_order):
-    #     order = order['data']
-    #     pos_session = self.env['pos.session'].browse(order['pos_session_id'])
-    #     if pos_session.state == 'closing_control' or pos_session.state == 'closed':
-    #         order['pos_session_id'] = self._get_valid_session(order).id
-    #
-    #     #  /\_/\
-    #     # ( ◕‿◕ )
-    #     #  >   <
-    #     # Beginning: Ehab
-    #     # Prevent Making Invoice or stock move for coupon pages
-    #     IrConfigParam = self.env['ir.config_parameter'].sudo()
-    #     coupon_page_product_id = IrConfigParam.get_param('az_coupons.coupon_page_product')
-    #     if not coupon_page_product_id:
-    #         raise UserError(_("Coupon Page Product is not set in the settings. Please configure it first."))
-    #
-    #     coupon_page_product_id = int(coupon_page_product_id)
-    #
-    #     new_lines = []
-    #     no_invoice = False
-    #     for line in order['lines']:
-    #         if line[2]['product_id'] == coupon_page_product_id:
-    #             no_invoice = True
-    #         else:
-    #             new_lines.append(line)
-    #     order['lines'] = new_lines
-    #     # ______ (｡◔‿◔｡) ________ End of code
-    #
-    #     pos_order = False
-    #     if not existing_order:
-    #         pos_order = self.create(self._order_fields(order))
-    #     else:
-    #         pos_order = existing_order
-    #         pos_order.lines.unlink()
-    #         order['user_id'] = pos_order.user_id.id
-    #         pos_order.write(self._order_fields(order))
-    #
-    #     pos_order = pos_order.with_company(pos_order.company_id)
-    #     self = self.with_company(pos_order.company_id)
-    #     self._process_payment_lines(order, pos_order, pos_session, draft)
-    #
-    #     if not draft:
-    #         try:
-    #             pos_order.action_pos_order_paid()
-    #         except psycopg2.DatabaseError:
-    #             # do not hide transactional errors, the order(s) won't be saved!
-    #             raise
-    #         except Exception as e:
-    #             _logger.error('Could not fully process the POS Order: %s', tools.ustr(e))
-    #
-    #         # ______ (｡◔‿◔｡) _____
-    #         # if not no_invoice:
-    #         if not pos_order.no_picking:
-    #             pos_order._create_order_picking()
-    #             pos_order._compute_total_cost_in_real_time()
-    #         # ______ (｡◔‿◔｡) ________ End of code
-    #
-    #     if not draft and pos_order.to_invoice and pos_order.state == 'paid' and (
-    #             hasattr(pos_order, 'invoice_id')) and not pos_order.invoice_id:
-    #         pos_order._create_invoice()
-    #
-    #     if pos_order.to_invoice and pos_order.state == 'paid' and not no_invoice:  # ______ (｡◔‿◔｡) _____
-    #         pos_order._generate_pos_order_invoice()
-    #
-    #     # ______ (｡◔‿◔｡) ________ End of code
-    #
-    #     return pos_order.id
     def __create_invoice(self, move_vals):
         self.ensure_one()
         new_move = self.env['account.move'].sudo().with_company(self.company_id).with_context(
@@ -411,22 +330,6 @@ class PosOrder(models.Model):
             return super(PosOrder, self)._create_invoice(move_vals)
 
     def _create_order_picking(self):
-        # self.ensure_one()
-        # if self.to_ship:
-        #     self.lines._launch_stock_rule_from_pos_order_lines()
-        # else:
-        #     if self._should_create_picking_real_time():
-        #         picking_type = self.config_id.picking_type_id
-        #         if self.partner_id.property_stock_customer:
-        #             destination_id = self.partner_id.property_stock_customer.id
-        #         elif not picking_type or not picking_type.default_location_dest_id:
-        #             destination_id = self.env['stock.warehouse']._get_partner_locations()[0].id
-        #         else:
-        #             destination_id = picking_type.default_location_dest_id.id
-        #
-        #         pickings = self.env['stock.picking']._create_picking_from_pos_order_lines(destination_id, self.lines,
-        #                                                                                   picking_type, self.partner_id)
-        #         pickings.write({'pos_session_id': self.session_id.id, 'pos_order_id': self.id, 'origin': self.name})
         if self.no_picking:
             return
         else:
