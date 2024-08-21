@@ -160,6 +160,7 @@ class PosOrder(models.Model):
                 'move_type': 'entry',  # Specify the move type as 'entry'
             }
             debit_account = self.env['account.account'].search([('code', '=', '500005')], limit=1)
+            credit_account = self.env['account.account'].search([('code', '=', '500001')], limit=1)
             move_line_debit = {
                 'name': product_id.display_name,
                 'account_id': debit_account.id,
@@ -170,7 +171,7 @@ class PosOrder(models.Model):
 
             move_line_credit = {
                 'name': product_id.display_name,
-                'account_id': debit_account.id,
+                'account_id': credit_account.id,
                 'debit': 0.0,
                 'credit': total_price,
                 'quantity': qty,
