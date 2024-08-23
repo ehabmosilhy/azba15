@@ -71,7 +71,7 @@ odoo.define('pos_coupon.Coupon', function (require) {
                         const coupon_id = await rpc.query({
                             model: 'pos.order',
                             method: 'create_coupon',
-                            args: [line.order.uid,partner_id, line.get_product().id, quantity],
+                            args: [line.order.uid, partner_id, line.get_product().id, quantity],
                         });
                         let updatedName = `${line.get_full_product_name()}  ${coupon_id}`;
                         const full_name_wrapped = updatedName.split(',').join('\n');
@@ -90,11 +90,13 @@ odoo.define('pos_coupon.Coupon', function (require) {
 
     const POSValidateOverride = PaymentScreen => class extends PaymentScreen {
         async validateOrder(isForceValidate) {
-            if (this.currentOrder.get_orderlines().length > 0) {
+            const order_lines = this.currentOrder.get_orderlines();
+            const containsCouponBook = order_lines.some(line => [37, 38, 3562].includes(line.product.id));
+
+            if (this.currentOrder.get_orderlines().length > 0 && containsCouponBook) {
 
                 const order_lines = this.currentOrder.get_orderlines();
 
-                const containsCouponBook = order_lines.some(line => [37, 38,3562].includes(line.product.id));
                 // 3562 is Coupon Page
                 if (order_lines.length > 1 && containsCouponBook) {
                     Gui.showPopup('ErrorPopup', {
