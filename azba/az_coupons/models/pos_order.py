@@ -190,7 +190,7 @@ class PosOrder(models.Model):
     def add_bottles(self, values):
         # Check if there is exactly one line and the product_id is 37 or 3: COUPON BOOK 20 or 50 PCS
         if len(values['lines']) == 1 and values['lines'][0][2]['product_id'] in (37, 38):
-            values['no_picking'] = True
+            # values['no_picking'] = True
             line = values['lines'][0]
 
             # Retrieve the page_count for the product in the line
