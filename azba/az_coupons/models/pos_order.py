@@ -12,12 +12,20 @@ class PosOrder(models.Model):
     _inherit = "pos.order"
     no_picking = fields.Boolean()
 
+    def remove_paper(self, values):
+        for line in values['lines']:
+            if line[2]['product_id'] == 3562:
+                values['lines'].remove(line)
+        return values
+
     @api.model
     def create(self, values):
         session = self.env['pos.session'].browse(values['session_id'])
         values = self._complete_values_from_session(session, values)
+        # remove the coupon product line if exists  # TODO: should remove from javascript
+        values = self.remove_paper(values)
         # add bottles product if  coupon book
-        values = self.add_bottles(values)
+        # values = self.add_bottles(values)
         order = super(PosOrder, self).create(values)
         self.update_coupon(order)
         self.create_account_moves_coupon_page(order)
@@ -208,7 +216,7 @@ class PosOrder(models.Model):
             new_line[2]['price_unit'] = line[2]['price_unit'] / page_count if page_count else 0
             new_line[2]['price_subtotal'] = new_line[2]['price_unit'] * new_line[2]['qty'] * page_count
             new_line[2]['price_subtotal_incl'] = new_line[2]['price_subtotal']
-            new_line[2]['full_product_name'] = new_product.display_name
+            new_line[2]['full_product_name'] = new_product.display_name + "[استبدال كوبون]"
             new_line[2]['qty'] = line[2]['qty'] * page_count
 
             # Add the duplicated line to the values['lines']
@@ -218,6 +226,8 @@ class PosOrder(models.Model):
             line[2]['price_unit'] = 0
             line[2]['price_subtotal'] = 0
             line[2]['price_subtotal_incl'] = 0
+
+            values['lines'][0].pop()
 
         return values
 
@@ -331,7 +341,7 @@ class PosOrder(models.Model):
             if line.product_id.id in (37, 38):
                 coupon_book = True
             if line.product_id.id == 3562:
-                coupon_page=True
+                coupon_page = True
 
         if coupon_book:
             return self.__create_invoice(move_vals)
@@ -339,22 +349,22 @@ class PosOrder(models.Model):
         elif not coupon_page:
             return super(PosOrder, self)._create_invoice(move_vals)
 
-    def _create_order_picking(self):
-        if self.no_picking:
-            return
-        else:
-            super(PosOrder, self)._create_order_picking
-
-
-class StockPicking(models.Model):
-    _inherit = 'stock.picking'
-
-    @api.model
-    def _create_picking_from_pos_order_lines(self, location_dest_id, lines, picking_type, partner=False):
-        pickings = self.env['stock.picking']
-        order = lines[0].order_id
-        if order.no_picking:
-            return pickings
-
-        super(StockPicking, self)._create_picking_from_pos_order_lines(location_dest_id, lines, picking_type,
-                                                                       partner=False)
+#     def _create_order_picking(self):
+#         if self.no_picking:
+#             return
+#         else:
+#             super(PosOrder, self)._create_order_picking
+#
+#
+# class StockPicking(models.Model):
+#     _inherit = 'stock.picking'
+#
+#     @api.model
+#     def _create_picking_from_pos_order_lines(self, location_dest_id, lines, picking_type, partner=False):
+#         pickings = self.env['stock.picking']
+#         order = lines[0].order_id
+#         if order.no_picking:
+#             return pickings
+#
+#         super(StockPicking, self)._create_picking_from_pos_order_lines(location_dest_id, lines, picking_type,
+#                                                                        partner=False)
