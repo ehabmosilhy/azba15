@@ -195,11 +195,12 @@ class PosOrder(models.Model):
         else:
             return
 
-    def add_bottles(self, values):
+    def add_bottles(self, move_vals):
+        lines = move_vals['invoice_line_ids']
         # Check if there is exactly one line and the product_id is 37 or 3: COUPON BOOK 20 or 50 PCS
-        if len(values['lines']) == 1 and values['lines'][0][2]['product_id'] in (37, 38):
-            # values['no_picking'] = True
-            line = values['lines'][0]
+        if len(lines) == 1 and lines[0][2]['product_id'] in (37, 38):
+            # move_vals['no_picking'] = True
+            line = lines[0]
 
             # Retrieve the page_count for the product in the line
             coupon_book_product = self.env['coupon.book.product'].search([('product_id', '=', line[2]['product_id'])],
@@ -214,22 +215,20 @@ class PosOrder(models.Model):
             # Calculate the new price based on the original price divided by page_count
             new_line[2]['product_id'] = new_product.id
             new_line[2]['price_unit'] = line[2]['price_unit'] / page_count if page_count else 0
-            new_line[2]['price_subtotal'] = new_line[2]['price_unit'] * new_line[2]['qty'] * page_count
-            new_line[2]['price_subtotal_incl'] = new_line[2]['price_subtotal']
-            new_line[2]['full_product_name'] = new_product.display_name + "[استبدال كوبون]"
-            new_line[2]['qty'] = line[2]['qty'] * page_count
+            new_line[2]['price_subtotal'] = new_line[2]['price_unit'] * new_line[2]['quantity'] * page_count
+            # new_line[2]['price_subtotal_incl'] = new_line[2]['price_subtotal']
+            # new_line[2]['full_product_name'] = new_product.display_name
+            new_line[2]['quantity'] = line[2]['quantity'] * page_count
 
-            # Add the duplicated line to the values['lines']
-            values['lines'].append(new_line)
+            # Add the duplicated line to the move_vals['lines']
+            lines.append(new_line)
 
             # Modify the existing line: set all prices to zero
             line[2]['price_unit'] = 0
             line[2]['price_subtotal'] = 0
-            line[2]['price_subtotal_incl'] = 0
+            # line[2]['price_subtotal_incl'] = 0
 
-            values['lines'][0].pop()
-
-        return values
+        return move_vals
 
     def update_coupon(self, order):
         # Add the POS Order ID to the coupon
@@ -344,27 +343,10 @@ class PosOrder(models.Model):
                 coupon_page = True
 
         if coupon_book:
+            move_vals = self.add_bottles(move_vals)
+    
             return self.__create_invoice(move_vals)
         # Coupon Page is handlded in create_account_moves_coupon_page
         elif not coupon_page:
             return super(PosOrder, self)._create_invoice(move_vals)
 
-#     def _create_order_picking(self):
-#         if self.no_picking:
-#             return
-#         else:
-#             super(PosOrder, self)._create_order_picking
-#
-#
-# class StockPicking(models.Model):
-#     _inherit = 'stock.picking'
-#
-#     @api.model
-#     def _create_picking_from_pos_order_lines(self, location_dest_id, lines, picking_type, partner=False):
-#         pickings = self.env['stock.picking']
-#         order = lines[0].order_id
-#         if order.no_picking:
-#             return pickings
-#
-#         super(StockPicking, self)._create_picking_from_pos_order_lines(location_dest_id, lines, picking_type,
-#                                                                        partner=False)
