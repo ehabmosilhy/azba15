@@ -28,7 +28,7 @@ class PosOrder(models.Model):
         # values = self.add_bottles(values)
         order = super(PosOrder, self).create(values)
         self.update_coupon(order)
-        self.create_account_moves_coupon_page(order)
+        # self.create_account_moves_coupon_page(order)
         # self.send_whatsapp_message(order)
         return order
 
@@ -122,79 +122,6 @@ class PosOrder(models.Model):
 
         return sorted(used_coupons)  # Return the list of used coupon codes
 
-    def create_account_moves_coupon_page(self, order):
-        for line in order.lines:
-            if line.product_id.id == 3562:
-                order.to_invoice = False
-                break
-        no_invoice = not order.to_invoice
-        product_id = 4
-        product_id = self.env['product.product'].browse(product_id)
-        if no_invoice:
-            qty = int(order.lines[0].qty)
-            coupons = self.env['az.coupon'].search([('partner_id', '=', order.partner_id.id)])
-            used_page_ids = coupons.mapped('page_ids').filtered(lambda p: p.state == 'used')
-            sored_used_page_ids = used_page_ids.sorted(key=lambda p: p.date_used, reverse=True)
-            last_used_pages = sored_used_page_ids[:qty]
-
-            page_list = []
-            total_price = 0
-            for page in last_used_pages:
-                coupon_book_id = page.coupon_book_id.id
-                page_count = page.coupon_book_id.page_count
-                coupon_book_product = self.env['coupon.book.product'].search([('page_count', '=', page_count)], limit=1)
-                product = coupon_book_product.product_id
-                price = product.lst_price
-                unit_price = price / page_count if page_count > 0 else 0  # Avoid division by zero
-
-                page_list.append({
-                    'page_code': page.code,
-                    'page_count': page_count,
-                    'coupon_book_id': coupon_book_id,
-                    'product_id': product.id,
-                    'price': price,
-                    'unit_price': unit_price
-                })
-                total_price += unit_price
-                page.state = 'used'
-                page.date_used = fields.Datetime.now()
-                page.pos_session_id = order.session_id
-            # Prepare the move dictionary
-            move_vals = {
-                'journal_id': 3,  # Set the journal
-                'date': order.date_order,  # Set the date
-                'ref': order.pos_reference,  # Reference to the order name
-                'line_ids': [],
-                'move_type': 'entry',  # Specify the move type as 'entry'
-            }
-            debit_account = self.env['account.account'].search([('code', '=', '500005')], limit=1)
-            credit_account = self.env['account.account'].search([('code', '=', '500001')], limit=1)
-            move_line_debit = {
-                'name': product_id.display_name,
-                'account_id': debit_account.id,
-                'debit': total_price,
-                'credit': 0.0,
-                'quantity': qty,
-            }
-
-            move_line_credit = {
-                'name': product_id.display_name,
-                'account_id': credit_account.id,
-                'debit': 0.0,
-                'credit': total_price,
-                'quantity': qty,
-            }
-
-            move_vals['line_ids'].append((0, 0, move_line_debit))
-            move_vals['line_ids'].append((0, 0, move_line_credit))
-
-            # Create the account move
-            move = self.env['account.move'].create(move_vals)
-            move.post()
-            return move
-        else:
-            return
-
     def add_bottles(self, move_vals):
         lines = move_vals['invoice_line_ids']
         # Check if there is exactly one line and the product_id is 37 or 3: COUPON BOOK 20 or 50 PCS
@@ -216,8 +143,6 @@ class PosOrder(models.Model):
             new_line[2]['product_id'] = new_product.id
             new_line[2]['price_unit'] = line[2]['price_unit'] / page_count if page_count else 0
             new_line[2]['price_subtotal'] = new_line[2]['price_unit'] * new_line[2]['quantity'] * page_count
-            # new_line[2]['price_subtotal_incl'] = new_line[2]['price_subtotal']
-            # new_line[2]['full_product_name'] = new_product.display_name
             new_line[2]['quantity'] = line[2]['quantity'] * page_count
 
             # Add the duplicated line to the move_vals['lines']
@@ -230,6 +155,102 @@ class PosOrder(models.Model):
 
         return move_vals
 
+    def coupon_page_move(self, move_vals):
+        order = self
+        lines = order.lines
+
+        product_id = order.lines[0].product_id
+        line = lines[0]
+
+        qty = int(order.lines[0].qty)
+        coupons = self.env['az.coupon'].search([('partner_id', '=', order.partner_id.id)])
+        used_page_ids = coupons.mapped('page_ids').filtered(lambda p: p.state == 'used')
+        sored_used_page_ids = used_page_ids.sorted(key=lambda p: p.date_used, reverse=True)
+        last_used_pages = sored_used_page_ids[:qty]
+
+        page_list = []
+        total_price = 0
+        for page in last_used_pages:
+            coupon_book_id = page.coupon_book_id.id
+            page_count = page.coupon_book_id.page_count
+            coupon_book_product = self.env['coupon.book.product'].search([('page_count', '=', page_count)],
+                                                                         limit=1)
+            product = coupon_book_product.product_id
+            price = product.lst_price
+            unit_price = price / page_count if page_count > 0 else 0  # Avoid division by zero
+
+            page_list.append({
+                'page_code': page.code,
+                'page_count': page_count,
+                'coupon_book_id': coupon_book_id,
+                'product_id': product.id,
+                'price': price,
+                'unit_price': unit_price
+            })
+            total_price += unit_price
+            page.state = 'used'
+            page.date_used = fields.Datetime.now()
+            page.pos_session_id = order.session_id
+        # Prepare the move dictionary
+        move_vals = {
+            'journal_id': 3,  # Set the journal
+            'date': order.date_order,  # Set the date
+            'ref': order.pos_reference,  # Reference to the order name
+            'line_ids': [],
+            'move_type': 'entry',  # Specify the move type as 'entry'
+        }
+        debit_account = self.env['account.account'].search([('code', '=', '500005')], limit=1)
+        credit_account = self.env['account.account'].search([('code', '=', '500001')], limit=1)
+        move_line_debit = {
+            'name': product_id.display_name,
+            'account_id': debit_account.id,
+            'debit': total_price,
+            'credit': 0.0,
+            'quantity': qty,
+        }
+
+        move_line_credit = {
+            'name': product_id.display_name,
+            'account_id': credit_account.id,
+            'debit': 0.0,
+            'credit': total_price,
+            'quantity': qty,
+        }
+
+
+        # Duplicate the line and change the product_id to 4
+
+
+        move_vals = {
+            'journal_id': 3,  # Set the journal
+            'date': order.date_order,  # Set the date
+            'ref': order.pos_reference,  # Reference to the order name
+            'line_ids': [],
+            'move_type': 'entry',  # Specify the move type as 'entry'
+        }
+        debit_account = self.env['account.account'].search([('code', '=', '500005')], limit=1)
+        credit_account = self.env['account.account'].search([('code', '=', '500001')], limit=1)
+        move_line_debit = {
+            'name': product_id.display_name,
+            'account_id': debit_account.id,
+            'debit': total_price,
+            'credit': 0.0,
+            'quantity': qty,
+        }
+
+        move_line_credit = {
+            'name': product_id.display_name,
+            'account_id': credit_account.id,
+            'debit': 0.0,
+            'credit': total_price,
+            'quantity': qty,
+        }
+
+        move_vals['line_ids'].append((0, 0, move_line_debit))
+        move_vals['line_ids'].append((0, 0, move_line_credit))
+
+
+        return move_vals
     def update_coupon(self, order):
         # Add the POS Order ID to the coupon
         # Update full product name for each line in the order
@@ -339,12 +360,14 @@ class PosOrder(models.Model):
         for line in self.lines:
             if line.product_id.id in (37, 38):
                 coupon_book = True
-            if line.product_id.id == 3562:
+            if line.price_unit== 0:
                 coupon_page = True
 
         if coupon_book:
             move_vals = self.add_bottles(move_vals)
-    
+            return self.__create_invoice(move_vals)
+        elif coupon_page:
+            move_vals = self.coupon_page_move(move_vals)
             return self.__create_invoice(move_vals)
         # Coupon Page is handlded in create_account_moves_coupon_page
         elif not coupon_page:
