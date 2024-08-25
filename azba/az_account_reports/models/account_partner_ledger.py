@@ -135,7 +135,9 @@ def handle_body(self, body, options):
     amount = last_element.text_content().replace(",", "").strip() if last_element is not None else 0
     status = "مدين" if float(amount) > 0 else "دائن"
 
-    amount = self.env['res.currency'].search([]).amount_to_text(float(amount))
+    currency_record = self.env.user.company_id.currency_id
+    amount = currency_record.amount_to_text(float(amount))
+
     amount = amount.replace('Riyal', 'ريال ').replace('Halala', 'هللة')
 
     body_str = body_str.replace("</body>", f"""
