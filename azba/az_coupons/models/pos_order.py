@@ -13,9 +13,10 @@ class PosOrder(models.Model):
     no_picking = fields.Boolean()
 
     def remove_paper(self, values):
-        for line in values['lines']:
-            if line[2]['product_id'] == 3562:
-                values['lines'].remove(line)
+        if 'lines' in values and values['lines']:
+            for line in values['lines']:
+                if line[2]['product_id'] == 3562:
+                    values['lines'].remove(line)
         return values
 
     @api.model
@@ -217,9 +218,7 @@ class PosOrder(models.Model):
             'quantity': qty,
         }
 
-
         # Duplicate the line and change the product_id to 4
-
 
         move_vals = {
             'journal_id': 3,  # Set the journal
@@ -249,8 +248,8 @@ class PosOrder(models.Model):
         move_vals['line_ids'].append((0, 0, move_line_debit))
         move_vals['line_ids'].append((0, 0, move_line_credit))
 
-
         return move_vals
+
     def update_coupon(self, order):
         # Add the POS Order ID to the coupon
         # Update full product name for each line in the order
@@ -360,7 +359,7 @@ class PosOrder(models.Model):
         for line in self.lines:
             if line.product_id.id in (37, 38):
                 coupon_book = True
-            if line.price_unit== 0:
+            if line.price_unit == 0:
                 coupon_page = True
 
         if coupon_book:
@@ -372,4 +371,3 @@ class PosOrder(models.Model):
         # Coupon Page is handlded in create_account_moves_coupon_page
         elif not coupon_page:
             return super(PosOrder, self)._create_invoice(move_vals)
-
