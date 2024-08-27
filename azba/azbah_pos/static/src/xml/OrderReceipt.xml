@@ -68,7 +68,8 @@
                         <div style="direction:rtl;text-align:center;padding:15px;
                             font-weight: bolder;">
                             <t t-if="receipt.total_with_tax==0">
-                                إيصال استبدال
+
+إيصال استبدال كوبونات
                             </t>
                             <t t-else="">
                                 فاتورة ضريبية مبسطة
