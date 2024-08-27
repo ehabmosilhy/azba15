@@ -98,22 +98,22 @@ odoo.define('pos_coupon.Coupon', function (require) {
             const bottle_product_id = 4;
             const bottle_product = this.env.pos.db.get_product_by_id(bottle_product_id);
 
-
-            let qty_coupon_paper = 0;
-            order_lines.forEach(line => {
-                if (line.product.id === coupon_page_id) {
-                    qty_coupon_paper += line.quantity;
-                }
-            });
-
-            if (qty_coupon_paper > bottle_product.qty_available) {
-                Gui.showPopup('ErrorPopup', {
-                    title: "Insufficient Stock",
-                    body: `You don't have enough bottles, you only have ${bottle_product.qty_available}`,
+            if (bottle_product) {
+                let qty_coupon_paper = 0;
+                order_lines.forEach(line => {
+                    if (line.product.id === coupon_page_id) {
+                        qty_coupon_paper += line.quantity;
+                    }
                 });
-                return false;
-            }
 
+                if (qty_coupon_paper > bottle_product.qty_available) {
+                    Gui.showPopup('ErrorPopup', {
+                        title: "Insufficient Stock",
+                        body: `You don't have enough bottles, you only have ${bottle_product.qty_available}`,
+                    });
+                    return false;
+                }
+            }
             if (this.currentOrder.get_orderlines().length > 0 && containsCouponBook) {
                 // 3562 is Coupon Page
                 if (order_lines.length > 1 && containsCouponBook) {
