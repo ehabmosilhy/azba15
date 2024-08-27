@@ -1,8 +1,3 @@
-//  🚀📈
-// Extend the functionality to include a credit limit check during the payment process. If a customer exceeds their
-// credit limit, an error is displayed and the order cannot be validated.
-//  📉🚀
-
 odoo.define('az_sales_credit_limit.credit_limit', function (require) {
     "use strict";
 
@@ -49,9 +44,25 @@ odoo.define('az_sales_credit_limit.credit_limit', function (require) {
 
                 // 🕵️‍♂️ Check if partner is set, has a credit limit category, and is paying with credit.
                 if (partner && partner.credit_limit_category_id && isCreditPayment) {
+
+                    // Get the current session's orders
+                    const sessionOrders = this.env.pos.get_order_list();
+
+                    // Filter orders to only include those made by the specific customer
+                    const customerOrders = sessionOrders.filter(order => order.get_client() && order.get_client().id === partner.id);
+
+                    // Calculate the total amount paid or deposited by the customer during the session
+                    const totalSessionPayments = customerOrders.reduce((total, order) => {
+                        return total + order.get_total_with_tax(); // Sum the total amount of each order
+                    }, 0);
+
+                    // Retrieve the customer's credit limit
                     const creditLimitCategory = this.env.pos.credit_limit_category_by_id[partner.credit_limit_category_id[0]];
                     const creditLimit = creditLimitCategory ? creditLimitCategory.credit_limit : 0;
-                    const totalAmount = order.get_total_with_tax() + partner.total_due; // 🔄 Updated to include 'total_due' in the check
+
+                    // Adjust the total due considering the payments or deposits made during the session
+                    const adjustedTotalDue = partner.total_due - totalSessionPayments;
+                    const totalAmount = order.get_total_with_tax() + adjustedTotalDue;
 
                     // 🚨 If order amount exceeds credit limit, show error popup and return false.
                     if (totalAmount > creditLimit) {
