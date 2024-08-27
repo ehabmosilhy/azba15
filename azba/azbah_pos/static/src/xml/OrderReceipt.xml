@@ -63,18 +63,20 @@
                     </div>
                 </t>
 
-
                 <t t-if="receipt.orderlines.length &gt; 0">
                     <t t-if="receipt.invoice_number">
                         <div style="direction:rtl;text-align:center;padding:15px;
                             font-weight: bolder;">
-
-                       فاتورة ضريبية مبسطة
-
+                            <t t-if="receipt.total_with_tax==0">
+                                إيصال استبدال
+                            </t>
+                            <t t-else="">
+                                فاتورة ضريبية مبسطة
+                            </t>
                         </div>
                     </t>
-
                 </t>
+
 
                 <t t-else="">
                    <div style="direction:rtl;text-align:center;padding:15px;
