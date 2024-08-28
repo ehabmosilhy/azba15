@@ -38,34 +38,40 @@ odoo.define('az_sales_credit_limit.credit_limit', function (require) {
                 const order = this.env.pos.get_order();
                 const partner = order.get_client();
 
-                // Check if any of the payment lines are credit payments
-                const paymentLines = order.get_paymentlines();
-                const isCreditPayment = paymentLines.some(line => line.payment_method && (line.payment_method.type === 'credit' || line.payment_method.type === 'pay_later'));
-
                 // 🕵️‍♂️ Check if partner is set, has a credit limit category, and is paying with credit.
-                if (partner && partner.credit_limit_category_id && isCreditPayment) {
+                if (partner && partner.credit_limit_category_id) {
 
                     // Get the current session's orders
                     const sessionOrders = this.env.pos.get_order_list();
 
                     // Filter orders to only include those made by the specific customer
-                    const customerOrders = sessionOrders.filter(order => order.get_client() && order.get_client().id === partner.id);
+                    const customerOrders = sessionOrders.filter(o => o.get_client() && o.get_client().id === partner.id && o !== order);
 
-                    // Calculate the total amount paid or deposited by the customer during the session
-                    const totalSessionPayments = customerOrders.reduce((total, order) => {
-                        return total + order.get_total_with_tax(); // Sum the total amount of each order
-                    }, 0);
+                    // Calculate the total due amount by analyzing payment lines, excluding the current order
+                    let adjustedTotalDue = partner.total_due;
+
+                    customerOrders.forEach(o => {
+                        o.get_paymentlines().forEach(line => {
+                            const amount = line.get_amount();
+                            const isCash = line.payment_method.is_cash_count;
+
+                            if (amount > 0 && isCash) {
+                                // Positive cash payment reduces the due amount
+                                adjustedTotalDue -= amount;
+                            } else if (amount > 0 && !isCash) {
+                                // Positive non-cash payment increases the due amount
+                                adjustedTotalDue += amount;
+                            }
+                            // If amount is negative and is_cash_count is false, do nothing
+                        });
+                    });
 
                     // Retrieve the customer's credit limit
                     const creditLimitCategory = this.env.pos.credit_limit_category_by_id[partner.credit_limit_category_id[0]];
                     const creditLimit = creditLimitCategory ? creditLimitCategory.credit_limit : 0;
 
-                    // Adjust the total due considering the payments or deposits made during the session
-                    const adjustedTotalDue = partner.total_due - totalSessionPayments;
-                    const totalAmount = order.get_total_with_tax() + adjustedTotalDue;
-
-                    // 🚨 If order amount exceeds credit limit, show error popup and return false.
-                    if (totalAmount > creditLimit) {
+                    // 🚨 If the adjusted total due amount exceeds the credit limit, show error popup and return false.
+                    if (adjustedTotalDue > creditLimit) {
                         await this.showPopup('ErrorPopup', {
                             title: this.env._t('Credit Limit Exceeded'),
                             body: this.env._t('The total amount exceeds the customer\'s credit limit for: ') + partner.name,
