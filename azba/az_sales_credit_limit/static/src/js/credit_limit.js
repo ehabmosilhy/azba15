@@ -59,7 +59,7 @@ odoo.define('az_sales_credit_limit.credit_limit', function (require) {
                             const amount = line.get_amount();
                             const isCash = line.payment_method.is_cash_count;
                             isPayment=isCash;
-                            if (amount > 0 && isCash) {
+                            if (amount > 0 && isCash && o.is_settlement()) {
                                 // Positive cash payment reduces the due amount
                                 adjustedTotalDue -= amount;
                             } else if (amount > 0 && !isCash) {
