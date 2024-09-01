@@ -37,45 +37,56 @@ odoo.define('az_sales_credit_limit.credit_limit', function (require) {
             async validateOrder(isForceValidate) {
                 const order = this.env.pos.get_order();
                 const partner = order.get_client();
-                let isOneOrder = false; // False;
+                let isOneOrder = false;// False;
                 let isPayment = false; // False;
                 let dontCheck = false; // False;
-                // 🕵️‍♂️ Check if partner is set, has a credit limit category, and is paying with credit.
-                if (partner && partner.credit_limit_category_id) {
+                // if the order is paid with cash, don't check the credit limit
+                // the due_amount is negative if settlement and zero if the order buying with cash
+                // This order doesn't need checking and doesn't affect the total due amount
+                const paid_with_cash = order.is_paid_with_cash()
+                if (paid_with_cash)
+                    dontCheck = true;
+
+                if (partner && partner.credit_limit_category_id && !dontCheck) {
 
                     // Get the current session's orders
                     const sessionOrders = this.env.pos.get_order_list();
 
                     // Filter orders to only include those made by the specific customer
                     const customerOrders = sessionOrders.filter(o => o.get_client() && o.get_client().id === partner.id);
-                    if (customerOrders.length === 1) {
-                        isOneOrder = true;
-                    }
+
                     // Calculate the total due amount by analyzing payment lines, excluding the current order
                     let adjustedTotalDue = partner.total_due;
 
                     customerOrders.forEach(o => {
-                        o.get_paymentlines().forEach(line => {
-                            const amount = line.get_amount();
-                            const isCash = line.payment_method.is_cash_count;
-                            isPayment=isCash;
-                            if (amount > 0 && isCash && o.is_settlement()) {
-                                // Positive cash payment reduces the due amount
-                                adjustedTotalDue -= amount;
-                            } else if (amount > 0 && !isCash) {
-                                // Positive non-cash payment increases the due amount
-                                adjustedTotalDue += amount;
-                            }
-                            // If amount is negative and is_cash_count is false, do nothing
-                        });
+
+                        let is_paid_with_cash = o.is_paid_with_cash();
+                        let is_settlement = o.is_settlement();
+
+                        // buy and pay with cash (doesn't affect the total due amount)
+                        //    if (is_paid_with_cash && due >=0) {
+                        //     adjustedTotalDue +=0;
+                        //    }
+                        // settlement with cash
+                        if (is_paid_with_cash && is_settlement) {
+                            // adjustedTotalDue -= o.get_total_paid(); 
+                            // get payment lines
+                            let pl = o.get_paymentlines()[0];
+                            let amount = pl.amount;
+                            adjustedTotalDue -= Math.abs(amount);
+                        }
+                        // buy and pay with credit
+                        if (!is_paid_with_cash && !is_settlement) {
+                            adjustedTotalDue += o.get_total_paid();
+                        }
+
                     });
 
                     // Retrieve the customer's credit limit
                     const creditLimitCategory = this.env.pos.credit_limit_category_by_id[partner.credit_limit_category_id[0]];
                     const creditLimit = creditLimitCategory ? creditLimitCategory.credit_limit : 0;
-                    if (isOneOrder && isPayment ) {dontCheck=true;}
                     // 🚨 If the adjusted total due amount exceeds the credit limit, show error popup and return false.
-                    if (adjustedTotalDue > creditLimit && !dontCheck) {
+                    if (adjustedTotalDue > creditLimit) {
                         await this.showPopup('ErrorPopup', {
                             title: this.env._t('Credit Limit Exceeded'),
                             body: this.env._t('The total amount exceeds the customer\'s credit limit for: ') + partner.name,
