@@ -65,7 +65,7 @@ odoo.define('az_sales_credit_limit.credit_limit', function (require) {
 
                         let is_paid_with_cash = o.is_paid_with_cash();
                         let is_settlement = o.is_settlement();
-                        const paymentMethodName = o.get_paymentLines()[0].payment_method.name;
+                        const paymentMethodName = o.get_paymentlines()[0].payment_method.name;
                         const is_buy_with_ATM = paymentMethodName.toLowerCase().includes("atm"); 
                         
                         // settlement with cash
