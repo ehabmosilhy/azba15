@@ -1,8 +1,3 @@
-//  🚀📈
-// Extend the functionality to include a credit limit check during the payment process. If a customer exceeds their
-// credit limit, an error is displayed and the order cannot be validated.
-//  📉🚀
-
 odoo.define('az_sales_credit_limit.credit_limit', function (require) {
     "use strict";
 
@@ -22,7 +17,7 @@ odoo.define('az_sales_credit_limit.credit_limit', function (require) {
         initialize: function (session, attributes) {
             PosModelSuper.initialize.apply(this, arguments);
 
-            // ➕ Push a new model to the models list to load credit limit categories.
+            // Push a new model to the models list to load credit limit categories.
             this.models.push({
                 model: 'credit.limit.category',
                 fields: ['credit_limit'],
@@ -42,19 +37,58 @@ odoo.define('az_sales_credit_limit.credit_limit', function (require) {
             async validateOrder(isForceValidate) {
                 const order = this.env.pos.get_order();
                 const partner = order.get_client();
+                let isOneOrder = false;// False;
+                let isPayment = false; // False;
+                let dontCheck = false; // False;
 
-                // Check if any of the payment lines are credit payments
-                const paymentLines = order.get_paymentlines();
-                const isCreditPayment = paymentLines.some(line => line.payment_method && (line.payment_method.type === 'credit' || line.payment_method.type === 'pay_later'));
+                const paid_with_cash = order.is_paid_with_cash();               // Excluse cash and cash settlement
+                const is_settlement_with_ATM = (order.get_total_cost()==0);    // Exclude ATM settlemet
 
-                // 🕵️‍♂️ Check if partner is set, has a credit limit category, and is paying with credit.
-                if (partner && partner.credit_limit_category_id && isCreditPayment) {
+                const paymentMethodName = order.get_paymentlines()[0].payment_method.name;
+                const is_buy_with_ATM =  paymentMethodName.toLowerCase().includes("atm"); // Exclude ATM purchase
+
+                if (paid_with_cash || is_settlement_with_ATM || is_buy_with_ATM)
+                    dontCheck = true;
+
+                if (partner && partner.credit_limit_category_id && !dontCheck) {
+
+                    // Get the current session's orders
+                    const sessionOrders = this.env.pos.get_order_list();
+
+                    // Filter orders to only include those made by the specific customer
+                    let customerOrders = sessionOrders.filter(o => o.get_client() && o.get_client().id === partner.id && o.finalized==true);
+                    // add the current order to the list
+                    customerOrders.push(order);
+
+                    // Calculate the total due amount by analyzing payment lines, excluding the current order
+                    let adjustedTotalDue = partner.total_due;
+
+                    customerOrders.forEach(o => {
+
+                        let is_paid_with_cash = o.is_paid_with_cash();
+                        let is_settlement = o.is_settlement();
+                        const paymentMethodName = o.get_paymentlines()[0].payment_method.name;
+                        const is_buy_with_ATM = paymentMethodName.toLowerCase().includes("atm");
+
+                        // settlement with cash
+                        if (is_settlement) {
+                            let pl = o.get_paymentlines()[0];
+                            let amount = pl.amount;
+                            adjustedTotalDue -= Math.abs(amount);
+                        }
+                        // buy and pay with credit
+                        if (!is_paid_with_cash && !is_settlement && !is_buy_with_ATM) {
+                            adjustedTotalDue += o.get_total_paid();
+                        }
+
+
+                    });
+
+                    // Retrieve the customer's credit limit
                     const creditLimitCategory = this.env.pos.credit_limit_category_by_id[partner.credit_limit_category_id[0]];
                     const creditLimit = creditLimitCategory ? creditLimitCategory.credit_limit : 0;
-                    const totalAmount = order.get_total_with_tax() + partner.total_due; // 🔄 Updated to include 'total_due' in the check
-
-                    // 🚨 If order amount exceeds credit limit, show error popup and return false.
-                    if (totalAmount > creditLimit) {
+                    // 🚨 If the adjusted total due amount exceeds the credit limit, show error popup and return false.
+                    if (adjustedTotalDue > creditLimit) {
                         await this.showPopup('ErrorPopup', {
                             title: this.env._t('Credit Limit Exceeded'),
                             body: this.env._t('The total amount exceeds the customer\'s credit limit for: ') + partner.name,
