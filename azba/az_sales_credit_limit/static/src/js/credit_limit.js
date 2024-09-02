@@ -17,7 +17,7 @@ odoo.define('az_sales_credit_limit.credit_limit', function (require) {
         initialize: function (session, attributes) {
             PosModelSuper.initialize.apply(this, arguments);
 
-            // ➕ Push a new model to the models list to load credit limit categories.
+            // Push a new model to the models list to load credit limit categories.
             this.models.push({
                 model: 'credit.limit.category',
                 fields: ['credit_limit'],
@@ -56,8 +56,10 @@ odoo.define('az_sales_credit_limit.credit_limit', function (require) {
                     const sessionOrders = this.env.pos.get_order_list();
 
                     // Filter orders to only include those made by the specific customer
-                    const customerOrders = sessionOrders.filter(o => o.get_client() && o.get_client().id === partner.id);
-
+                    let customerOrders = sessionOrders.filter(o => o.get_client() && o.get_client().id === partner.id && o.finalized==true);
+                    // add the current order to the list
+                    customerOrders.push(order);
+                    
                     // Calculate the total due amount by analyzing payment lines, excluding the current order
                     let adjustedTotalDue = partner.total_due;
 
