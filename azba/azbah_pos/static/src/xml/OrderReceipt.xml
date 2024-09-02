@@ -63,18 +63,21 @@
                     </div>
                 </t>
 
-
                 <t t-if="receipt.orderlines.length &gt; 0">
                     <t t-if="receipt.invoice_number">
                         <div style="direction:rtl;text-align:center;padding:15px;
                             font-weight: bolder;">
+                            <t t-if="receipt.total_with_tax==0">
 
-                       فاتورة ضريبية مبسطة
-
+إيصال استبدال كوبونات
+                            </t>
+                            <t t-else="">
+                                فاتورة ضريبية مبسطة
+                            </t>
                         </div>
                     </t>
-
                 </t>
+
 
                 <t t-else="">
                    <div style="direction:rtl;text-align:center;padding:15px;
@@ -448,16 +451,20 @@
                 </td>
                     </tr>
                     <t t-foreach="receipt.orderlines" t-as="line" t-key="line.id">
+
                         <div style="display:hidden">
                             <t t-if="isSimple(line)">
                                 <WrappedProductNameLines line="line"/>
                             </t>
                         </div>
 
-                        <tr>
+                        <tr t-if="!line.product_name.includes('80200')">
                             <td class="client_cell">
                                 <!-- Product Name -->
-                                <span t-esc="line.product_name_wrapped[0]"/>
+                                <!--                                <div t-esc="line.product_name_wrapped"/>-->
+                                <div t-esc="line.product_name_wrapped" style="white-space: pre-wrap;"/>
+
+
                             </td>
                             <td class="client_cell">
                                 <t t-esc="Math.round(line.quantity * Math.pow(10, env.pos.dp['Product Unit of Measure'])) / Math.pow(10, env.pos.dp['Product Unit of Measure'])"/>
