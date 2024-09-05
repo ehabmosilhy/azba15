@@ -4,6 +4,7 @@
     "license": "LGPL-3",
     "category": "Sales",
     "depends": ["base",
+                "stock_account",
                 'mail',
                 'base_setup',
                 'contacts',

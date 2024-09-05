@@ -10,8 +10,6 @@ _logger = logging.getLogger(__name__)
 
 class PosOrder(models.Model):
     _inherit = "pos.order"
-    no_picking = fields.Boolean()
-
     def remove_paper(self, values):
         if 'lines' in values and values['lines']:
             for line in values['lines']:
@@ -54,14 +52,6 @@ class PosOrder(models.Model):
                 created_coupons.append(id.code)
 
         return created_coupons
-
-        stock_picking.action_confirm()
-        stock_picking.action_assign()
-        for move in stock_picking.move_lines:
-            move.quantity_done = move.product_uom_qty
-        stock_picking.button_validate()
-
-        return stock_picking
 
     @api.model
     def handle_pages(self, values):
@@ -371,3 +361,4 @@ class PosOrder(models.Model):
         # Coupon Page is handlded in create_account_moves_coupon_page
         elif not coupon_page:
             return super(PosOrder, self)._create_invoice(move_vals)
+
