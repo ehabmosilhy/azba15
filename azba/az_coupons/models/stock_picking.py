@@ -10,7 +10,8 @@ class StockPicking(models.Model):
     @api.model
     def _create_picking_from_pos_order_lines(self, location_dest_id, lines, picking_type, partner=False):
         """Don't create picking for coupon books"""
-        if any(line.product_id.id in (37, 38) for line in lines):
-            lines = []
+        lines_to_remove = lines.filtered(lambda line: line.product_id.id in (37, 38))
+        for line in lines_to_remove:
+            lines -= line
         return super(StockPicking, self)._create_picking_from_pos_order_lines(location_dest_id, lines, picking_type,
                                                                               partner)
