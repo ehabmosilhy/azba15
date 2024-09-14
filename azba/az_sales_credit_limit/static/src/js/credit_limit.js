@@ -1,8 +1,3 @@
-//  🚀📈
-// Extend the functionality to include a credit limit check during the payment process. If a customer exceeds their
-// credit limit, an error is displayed and the order cannot be validated.
-//  📉🚀
-
 odoo.define('az_sales_credit_limit.credit_limit', function (require) {
     "use strict";
 
@@ -42,6 +37,20 @@ odoo.define('az_sales_credit_limit.credit_limit', function (require) {
             async validateOrder(isForceValidate) {
                 const order = this.env.pos.get_order();
                 const partner = order.get_client();
+                let isOneOrder = false;// False;
+                let isPayment = false; // False;
+                let dontCheck = false; // False;
+
+                const paid_with_cash = order.is_paid_with_cash();               // Excluse cash and cash settlement
+                const is_settlement_with_ATM = (order.get_total_cost()==0);    // Exclude ATM settlemet
+
+                const paymentMethodName = order.get_paymentlines()[0].payment_method.name;
+                const is_buy_with_ATM =  paymentMethodName.toLowerCase().includes("atm"); // Exclude ATM purchase
+
+                if (paid_with_cash || is_settlement_with_ATM || is_buy_with_ATM)
+                    dontCheck = true;
+
+                if (partner && partner.credit_limit_category_id && !dontCheck) {
 
                     // Get the current session's orders
                     const sessionOrders = this.env.pos.get_order_list();
