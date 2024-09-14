@@ -18,9 +18,19 @@ odoo.define('bi_pos_restrict_zero_qty.productScreen', function(require) {
                 let call_super = true;
                 var config_id=self.env.pos.config.id;
                 let prod_used_qty = {};
+
+                // List of product IDs that are exempt from zero quantity restriction
+                const exempted_product_ids = [3562, 37, 38];
+
                 if(pos_config.restrict_zero_qty){
                     for (let line of lines) {
                         let prd = line.product;
+
+                        // Skip the check for exempted products
+                        if (exempted_product_ids.includes(prd.id)) {
+                            continue;
+                        }
+
                         let prd_qty_available = await this.rpc({
                             model: 'product.product',
                             method: 'get_qty_in_location',
@@ -51,6 +61,12 @@ odoo.define('bi_pos_restrict_zero_qty.productScreen', function(require) {
                         let product = self.env.pos.db.get_product_by_id(i);
                         let check = pq[0] - pq[1];
                         let wrning = product.display_name + ' is out of stock.';
+
+                        // Skip the check for exempted products
+                        if (exempted_product_ids.includes(product.id)) {
+                            return true; // continue the $.each loop
+                        }
+
                         if (product.type == 'product'){
                             if (check < 0){
                                 call_super = false;

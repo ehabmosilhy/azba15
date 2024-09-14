@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Form view for az.coupon -->
+        <record id="view_az_coupon_form" model="ir.ui.view">
+            <field name="name">az.coupon.form</field>
+            <field name="model">az.coupon</field>
+            <field name="arch" type="xml">
+                <form string="Coupon">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,valid,used"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name='id' invisible="1"/>
+                                <field name="name"/>
+                                <field name="code" attrs="{'invisible': [('id', '=', False)]}"/>
+                                <field name="pos_order_id"/>
+                                <field name="create_date"/>
+                            </group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="page_count"/>
+                                <field name="available_count"/>
+                                <field name="used_count"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="page_ids">
+                                <tree string="Pages">
+                                    <field name="code"/>
+                                    <field name="state" widget="badge" decoration-success="state == 'valid'"
+                                           decoration-danger="state == 'used'"/>
+                                    <field name="date_used"/>
+                                    <field name="pos_session_id"/>
+                                </tree>
+                                <form string="Page">
+                                    <sheet>
+                                        <group>
+                                            <field name="code"/>
+                                            <field name="state"/>
+                                            <field name="pos_session_id"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- Tree view for az.coupon -->
+        <record id="view_az_coupon_tree" model="ir.ui.view">
+            <field name="name">az.coupon.tree</field>
+            <field name="model">az.coupon</field>
+            <field name="arch" type="xml">
+                <tree string="Coupons" decoration-success="state == 'valid'">
+                    <field name="code"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'valid'"
+                           decoration-warning="state == 'partial'"
+                           decoration-danger="state == 'used'"/>
+                    <field name="name"/>
+                    <field name="page_count"/>
+                    <field name="available_count"/>
+                    <field name="used_count"/>
+                    <field name="pos_order_id"/>
+                    <field name="partner_id" invisible="1"/>
+                    <field name="partner_code"/>
+                    <field name="partner_name"/>
+                    <field name="create_date"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <!-- Search view for az.coupon -->
+        <record id="view_az_coupon_search" model="ir.ui.view">
+            <field name="name">az.coupon.search</field>
+            <field name="model">az.coupon</field>
+            <field name="arch" type="xml">
+                <search string="Search Coupons">
+                    <field name="code"/>
+                    <field name="partner_code"/>
+                    <field name="partner_name"/>
+                    <filter string="Valid" name="valid" domain="[('state', '=', 'valid')]"/>
+                    <filter string="Used" name="used" domain="[('state', '=', 'used')]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Menu item for Coupons -->
+        <menuitem id="menu_az_coupons"
+                  name="Coupons"
+                  parent="point_of_sale.menu_point_root"
+        />
+
+        <!-- Action for az.coupon -->
+        <record id="action_az_coupons" model="ir.actions.act_window">
+            <field name="name">Coupons</field>
+            <field name="res_model">az.coupon</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_az_coupon_tree"/>
+        </record>
+
+
+        <menuitem id="menu_az_coupons_coupons"
+                  name="Coupons 🎫"
+                  parent="menu_az_coupons"
+                  action="action_az_coupons"/>
+
+        <!-- Action for Settings -->
+        <record id="action_az_coupons_settings" model="ir.actions.act_window">
+            <field name="name">Coupons Settings</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module': 'az_coupons'}</field>
+        </record>
+
+        <!-- Menu item for Settings -->
+        <menuitem id="menu_az_coupons_settings"
+                  name="Settings⚙️"
+                  parent="menu_az_coupons"
+                  action="action_az_coupons_settings"/>
+
+    </data>
+</odoo>

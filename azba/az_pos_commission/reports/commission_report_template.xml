@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="commission_report_pdf_template">
+            <t t-call="web.html_container">
+                <div class="article" t-att-data-oe-model="docs and docs._name"
+                     t-att-data-oe-id="docs and docs.id"
+                     t-att-data-oe-lang="docs and docs.env.context.get('lang')">
+                    <h2 style="text-align: center">تقرير عمولة المناديب</h2>
+                    <p>
+                        <strong>تاريخ البداية</strong>
+                        <t t-esc="wizard['start_date']"/>
+                    </p>
+                    <p>
+                        <strong>تاريخ النهاية</strong>
+                        <t t-esc="wizard['end_date']"/>
+                    </p>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>المندوب</th>
+                                <th>نوع العمولة</th>
+                                <th>الكمية</th>
+                                <th>العمولة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="data" t-as="data">
+                                <!-- Check if the employee's data should be displayed in a new row -->
+                                <t t-if="data['emp_name'] != current_employee">
+                                    <tr>
+                                        <td colspan="4">
+                                            <t t-set="current_employee" t-value="data['emp_name']"/>
+                                            <strong>
+                                                [<t t-esc="data['config']"/>] <t t-esc="data['emp_name']"/>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <!-- Display the data for the employee -->
+                                <tr>
+                                    <td></td> <!-- Empty cell for alignment -->
+                                    <td>
+                                        <t t-esc="data['commission_category']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['qty']"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['commission']"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

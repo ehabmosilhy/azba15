@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_config_wa_form" model="ir.ui.view">
+        <field name="name">pos.config.form</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">        
+        	<xpath expr="//div[@id='posbox_reference']" position="after">
+                <h2>Whatsapp</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-12 col-lg-6 o_setting_box" id="whatsapp_server">
+                        <div class="o_setting_right_pane">
+                            <label for="whatsapp_server_id" string="Whatsapp Server" />
+                            <div class="text-muted">
+                                Select whatsapp server in order to send from here
+                            </div>
+                            <div class="content-group mt16">
+                                <field name="whatsapp_server_id" domain="[('status', '=', 'authenticated')]"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box" id="whatsapp_template">
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Whatsapp Message</span>
+                            <div class="text-muted">
+                                Define whatsapp message template here
+                            </div>
+                            <div class="content-group mt16">
+                                <field name="whatsapp_default_message" colspan="4" nolabel="1" attrs="{'required': [('whatsapp_server_id','=', True)]}" options="{'no_create': True}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
