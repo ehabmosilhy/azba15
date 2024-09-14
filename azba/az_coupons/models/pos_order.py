@@ -10,6 +10,7 @@ _logger = logging.getLogger(__name__)
 
 class PosOrder(models.Model):
     _inherit = "pos.order"
+
     def remove_paper(self, values):
         if 'lines' in values and values['lines']:
             for line in values['lines']:
@@ -28,6 +29,8 @@ class PosOrder(models.Model):
         order = super(PosOrder, self).create(values)
         self.update_coupon(order)
         # self.create_account_moves_coupon_page(order)
+        whats = self.env['whatsapp.integration']
+        whats.send_whatsapp_message(order)
         # self.send_whatsapp_message(order)
         return order
 
@@ -361,4 +364,3 @@ class PosOrder(models.Model):
         # Coupon Page is handlded in create_account_moves_coupon_page
         elif not coupon_page:
             return super(PosOrder, self)._create_invoice(move_vals)
-
