@@ -7,7 +7,7 @@
                 "stock_account",
                 'mail',
                 'base_setup',
-                'contacts','pos_coupon',
+                'contacts',
                 "point_of_sale","stock"],
     "data": [
         'views/coupon_coupon.xml',
