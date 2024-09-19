@@ -16,7 +16,7 @@ class CouponPage(models.Model):
     ], required=True, default='valid')
     date_used = fields.Datetime(string='Date Used')
     pos_session_id = fields.Many2one('pos.session', string='Session', ondelete='cascade', readonly=True)
-
+    active = fields.Boolean(string='Active', default=True)
     
     def write(self, vals):
         if "state" in vals and vals["state"] == "used":

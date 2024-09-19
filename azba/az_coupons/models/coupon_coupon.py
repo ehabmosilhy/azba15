@@ -23,6 +23,7 @@ class Coupon(models.Model):
 
     partner_name = fields.Char(related='partner_id.name', string='Partner Name', readonly=True)
     partner_code = fields.Char(related='partner_id.code', string='Partner Code', readonly=True)
+    active = fields.Boolean(string='Active', default=True)
 
 
     @api.depends('page_ids')

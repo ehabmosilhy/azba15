@@ -8,7 +8,8 @@
                 'mail',
                 'base_setup',
                 'contacts',
-                "point_of_sale","stock"],
+                'azbah_trivial',
+                "point_of_sale", "stock"],
     "data": [
         'views/coupon_coupon.xml',
         'views/res_config_settings.xml',
