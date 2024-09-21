@@ -14,9 +14,9 @@ class Coupon(models.Model):
     code = fields.Char(string='Code', readonly=True)
     page_ids = fields.One2many('az.coupon.page', 'coupon_book_id', string='Pages')
     receipt_number = fields.Char(string='Receipt Number', readonly=True)
-    pos_order_id = fields.Many2one('pos.order', string='POS Order',readonly = True)
+    pos_order_id = fields.Many2one('pos.order', string='POS Order', readonly=True)
     partner_id = fields.Many2one(related='pos_order_id.partner_id', string='Partner', readonly=True)
-    product_id = fields.Many2one(related='pos_order_id.lines.product_id', string='Product', readonly = True)
+    product_id = fields.Many2one(related='pos_order_id.lines.product_id', string='Product', readonly=True)
 
     available_count = fields.Integer(compute='_compute_available_count', string='Available')
     used_count = fields.Integer(compute='_compute_available_count', string='Used')
@@ -24,7 +24,6 @@ class Coupon(models.Model):
     partner_name = fields.Char(related='partner_id.name', string='Partner Name', readonly=True)
     partner_code = fields.Char(related='partner_id.code', string='Partner Code', readonly=True)
     active = fields.Boolean(string='Active', default=True)
-
 
     @api.depends('page_ids')
     def _compute_available_count(self):
@@ -36,7 +35,6 @@ class Coupon(models.Model):
             coupon.used_count = self.env['az.coupon.page'].search_count(
                 [('coupon_book_id', '=', coupon.id), ('state', '=', 'used')]
             )
-
 
     state = fields.Selection([
         ('valid', 'New'),
@@ -89,3 +87,17 @@ class Coupon(models.Model):
         self.env['az.coupon.page'].create(page_vals_list)
 
         return new_coupon
+
+    def write(self, vals):
+        result = super(Coupon, self).write(vals)
+        if 'active' in vals:
+            if vals['active']:
+                # Unarchiving
+                pages = self.env['az.coupon.page'].search([('coupon_book_id', '=', self.id), ('active', '=', False)])
+                pages.write({'active': True})
+
+            else:
+                # Archiving
+                pages = self.env['az.coupon.page'].search([('coupon_book_id', '=', self.id), ('active', '=', True)])
+                pages.write({'active': False})
+        return result
