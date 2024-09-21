@@ -80,26 +80,22 @@ class PosOrder(models.Model):
                 while qty > 0:
                     # Get the oldest valid or partial coupon book for this partner
                     coupon_book = self.env['az.coupon'].search(
-                        [('partner_id', '=', partner_id), ('active', '=', True), ('state', '!=', 'used'),
-                         ('active', '=', True)
-                         ],
-                        order='id asc', limit=1
-
-
-                    )
-
+                        [('partner_id', '=', partner_id),
+                         ('active', '=', True),
+                         ('state', '!=', 'used'),
+                         ('active', '=', True)],
+                        order='id asc', limit=1)
 
                     if not coupon_book:
                         break  # Exit loop if no valid or partial coupon book is found
 
                     # Get the required number of coupon pages from the coupon book
                     coupon_pages = self.env['az.coupon.page'].search(
-                        [('coupon_book_id', '=', coupon_book.id), 
+                        [('coupon_book_id', '=', coupon_book.id),
                          ('active', '=', True),
                          ('state', '!=', 'used')],
                         order='id asc', limit=qty
                     )
-
 
                     if not coupon_pages:
                         break  # Exit loop if no valid coupon pages are found
@@ -114,11 +110,10 @@ class PosOrder(models.Model):
 
                     # Check the state of the coupon book after updating the pages
                     valid_pages_left = self.env['az.coupon.page'].search_count(
-                        [('coupon_book_id', '=', coupon_book.id), 
+                        [('coupon_book_id', '=', coupon_book.id),
                          ('active', '=', True),
                          ('state', '!=', 'used')]
                     )
-
 
                     if valid_pages_left == 0:
                         coupon_book.state = 'used'

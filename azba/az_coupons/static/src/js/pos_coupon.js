@@ -5,10 +5,10 @@ odoo.define('pos_coupon.Coupon', function (require) {
     const Registries = require('point_of_sale.Registries');
     const models = require('point_of_sale.models');
     const rpc = require('web.rpc');
-    const {Gui} = require('point_of_sale.Gui');
+    const { Gui } = require('point_of_sale.Gui');
     const PosComponent = require('point_of_sale.PosComponent');
     const AbstractAwaitablePopup = require('point_of_sale.AbstractAwaitablePopup');
-    const {useListener} = require('web.custom_hooks');
+    const { useListener } = require('web.custom_hooks');
 
     models.Order = models.Order.extend({
         add_coupon_product_line: async function () {
@@ -23,9 +23,13 @@ odoo.define('pos_coupon.Coupon', function (require) {
             const total_valid_pages = await rpc.query({
                 model: 'az.coupon.page',
                 method: 'search_count',
-                args: [[['coupon_book_id.partner_id', '=', partner_id], ['state', '=', 'valid']]],
+                args: [[['coupon_book_id.partner_id', '=', partner_id],
+                ['state', '=', 'valid'],
+                ['active', '=', true],
+                ['coupon_book_id.active', '=', true]]],
             });
             let required_qty = 0;
+
             const order_lines = this.get_orderlines();
             order_lines.forEach(line => {
                 if (line.product.id === original_product_id) {
@@ -54,7 +58,7 @@ odoo.define('pos_coupon.Coupon', function (require) {
                         price: 0,
                         product_description: full_name,
                         quantity: line.quantity,
-                        extras: {full_product_name: full_name_wrapped}
+                        extras: { full_product_name: full_name_wrapped }
                     });
                 }
             });
@@ -145,8 +149,8 @@ odoo.define('pos_coupon.CouponProductsPopup', function (require) {
     const AbstractAwaitablePopup = require('point_of_sale.AbstractAwaitablePopup');
     const Registries = require('point_of_sale.Registries');
     const PosComponent = require('point_of_sale.PosComponent');
-    const {useState} = owl.hooks;
-    const {useListener} = require('web.custom_hooks');
+    const { useState } = owl.hooks;
+    const { useListener } = require('web.custom_hooks');
 
     class CouponProductsPopup extends AbstractAwaitablePopup {
         constructor() {
