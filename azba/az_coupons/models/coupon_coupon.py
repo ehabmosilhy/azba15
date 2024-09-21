@@ -59,7 +59,7 @@ class Coupon(models.Model):
         current_month = datetime.now().month  # Two-digit month
 
         # Find the last generated code
-        last_coupon = self.search([], order='id desc', limit=1)
+        last_coupon = self.search(['|', ('active', '=', True), ('active', '=', False)], order='id desc', limit=1)
 
         if last_coupon and last_coupon.code:
             last_serial = int(last_coupon.code[-4:])  # Extract the last 4 digits as serial number
