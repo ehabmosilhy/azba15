@@ -11,6 +11,8 @@ _logger = logging.getLogger(__name__)
 class PosOrder(models.Model):
     _inherit = "pos.order"
 
+    used_coupon_ids = fields.One2many("az.coupon.page", "order_id")
+
     def remove_paper(self, values):
         if 'lines' in values and values['lines']:
             for line in values['lines']:
@@ -29,9 +31,11 @@ class PosOrder(models.Model):
         order = super(PosOrder, self).create(values)
         self.update_coupon(order)
         # self.create_account_moves_coupon_page(order)
-        whats = self.env['whatsapp.integration']
-        whats.send_whatsapp_message(order)
-        # self.send_whatsapp_message(order)
+        try:
+            whats = self.env['whatsapp.integration']
+            whats.send_whatsapp_message(order)
+        except Exception:
+            pass
         return order
 
     @api.model
@@ -102,11 +106,18 @@ class PosOrder(models.Model):
 
                     # Update the state of each page to 'used'
                     for page in coupon_pages:
+
+                        # move these lines to another place
                         page.state = 'used'
                         page.date_used = fields.Datetime.now()
                         page.pos_session_id = values['pos_session_id']
+                        #####
+
+
                         qty -= 1  # Decrease the remaining quantity
                         used_coupons.append(page.code)  # Add code to the list
+
+                        self.used_coupon_ids = [(4, page.id)]
 
                     # Check the state of the coupon book after updating the pages
                     valid_pages_left = self.env['az.coupon.page'].search_count(
@@ -341,7 +352,7 @@ class PosOrder(models.Model):
 
                 new_move._recompute_payment_terms_lines()
 
-        #   /\_/\
+        # /\_/\
         # ( ◕‿◕ )
         #  >   <
         # Beginning: Ehab

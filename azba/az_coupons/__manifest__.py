@@ -9,7 +9,7 @@
                 'base_setup',
                 'contacts',
                 'azbah_trivial',
-                "point_of_sale", "stock"],
+                "point_of_sale", "azbah_pos", "stock"],
     "data": [
         'views/coupon_coupon.xml',
         'views/res_config_settings.xml',

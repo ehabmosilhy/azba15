@@ -8,6 +8,7 @@ class CouponPage(models.Model):
     _description = "Coupon Page"
     _rec_name = 'code'
 
+    partner_id = fields.Many2one('res.partner')
     coupon_book_id = fields.Many2one('az.coupon', string='Coupon Book', ondelete='cascade')
     code = fields.Char(required=True, readonly=True)
     state = fields.Selection([
@@ -17,8 +18,14 @@ class CouponPage(models.Model):
     date_used = fields.Datetime(string='Date Used')
     pos_session_id = fields.Many2one('pos.session', string='Session', ondelete='cascade', readonly=True)
     active = fields.Boolean(string='Active', default=True)
-    
+
+    order_id = fields.Many2one('pos.order', string='Order', ondelete='cascade')
     def write(self, vals):
-        if "state" in vals and vals["state"] == "used":
-            vals["date_used"] = fields.Datetime.now()
+        if "state" in vals:
+            if vals["state"] == "used":
+                vals["date_used"] = fields.Datetime.now()
+            else:
+                vals["date_used"] = None
+            
         result = super(CouponPage, self).write(vals)
+    
