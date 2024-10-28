@@ -212,6 +212,8 @@ class LedgerReport(models.TransientModel):
         sum_balance_credit = 0
 
         for ledger in vals:
+            if not ledger.get('code') and not ledger.get('name'):
+                continue
             worksheet.write(line, 0, ledger.get('code'), style=style_normal_right)
             worksheet.write(line, 1, ledger.get('name'), style=style_normal_right)
             worksheet.write(line, 2, ledger.get('before_period_debit', 0), style=style_normal_right)
