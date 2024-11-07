@@ -33,7 +33,10 @@ class WhatsAppIntegration(models.AbstractModel):
                 mobile_number = '966' + mobile_number[4:]
         elif not (mobile_number.startswith('00') or mobile_number.startswith('+')):
             mobile_number = '966' + mobile_number
-
+        elif mobile_number.startswith('00'):
+            mobile_number = mobile_number[2:]
+        elif mobile_number.startswith('+'):
+            mobile_number = mobile_number[1:]
         return mobile_number
 
     @api.model
