@@ -15,6 +15,7 @@ class WhatsAppIntegration(models.AbstractModel):
     _name = "whatsapp.integration"
 
     def format_to_whatsapp_number(self, number):
+        number=number.replace(" ", "")
         formatted_number = (number[1:] if number.startswith("+966")
                           else number[2:] if number.startswith("00966") 
                           else number.lstrip("00").lstrip("+") if number.startswith("+") or number.startswith("00")
