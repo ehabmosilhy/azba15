@@ -15,21 +15,24 @@ class WhatsAppIntegration(models.AbstractModel):
     _name = "whatsapp.integration"
 
     def format_to_whatsapp_number(self, number):
-        # Check if the number starts with "966"
-        if number.startswith("966"):
-            return number
-        # Remove "+" if it starts with "+966"
-        elif number.startswith("+966"):
-            return number[1:]
-        # Remove "00" if it starts with "00966"
-        elif number.startswith("00966"):
-            return number[2:]
-        # Remove "+" or "00" if it starts with either but not "966"
-        elif number.startswith("+") or number.startswith("00"):
-            return number.lstrip("00").lstrip("+")
-        # If the number starts with anything else, add "966"
-        else:
-            return "966" + number
+        formatted_number = (number[1:] if number.startswith("+966")
+                          else number[2:] if number.startswith("00966") 
+                          else number.lstrip("00").lstrip("+") if number.startswith("+") or number.startswith("00")
+                          else "966" + number if not number.startswith("966")
+                          else number)
+        _logger.info("""
+        **********************************************************
+        **********************************************************
+        **********************************************************
+        
+        Formatted WhatsApp number: %s
+        
+        **********************************************************
+        **********************************************************
+        **********************************************************
+        
+        """, formatted_number)
+        return formatted_number
 
     @api.model
     def send_whatsapp_message(self, order):
