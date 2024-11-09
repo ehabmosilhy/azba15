@@ -14,30 +14,22 @@ _logger = logging.getLogger(__name__)
 class WhatsAppIntegration(models.AbstractModel):
     _name = "whatsapp.integration"
 
-    def format_to_whatsapp_number(self, mobile_number):
-        # Remove any non-numeric characters
-        mobile_number = re.sub(r'\D', '', mobile_number)
-
-        # Check and remove leading '00'
-        if mobile_number.startswith('00'):
-            mobile_number = mobile_number[2:]
-
-        # Check and remove leading '+'
-        if mobile_number.startswith('+'):
-            mobile_number = mobile_number[1:]
-
-        # Ensure it starts with '966'
-        if mobile_number.startswith('966'):
-            # Remove any '0' after '966'
-            if mobile_number[3] == '0':
-                mobile_number = '966' + mobile_number[4:]
-        elif not (mobile_number.startswith('00') or mobile_number.startswith('+')):
-            mobile_number = '966' + mobile_number
-        elif mobile_number.startswith('00'):
-            mobile_number = mobile_number[2:]
-        elif mobile_number.startswith('+'):
-            mobile_number = mobile_number[1:]
-        return mobile_number
+    def format_to_whatsapp_number(self, number):
+        # Check if the number starts with "966"
+        if number.startswith("966"):
+            return number
+        # Remove "+" if it starts with "+966"
+        elif number.startswith("+966"):
+            return number[1:]
+        # Remove "00" if it starts with "00966"
+        elif number.startswith("00966"):
+            return number[2:]
+        # Remove "+" or "00" if it starts with either but not "966"
+        elif number.startswith("+") or number.startswith("00"):
+            return number.lstrip("00").lstrip("+")
+        # If the number starts with anything else, add "966"
+        else:
+            return "966" + number
 
     @api.model
     def send_whatsapp_message(self, order):
