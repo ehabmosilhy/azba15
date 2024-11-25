@@ -22,3 +22,20 @@ class AccountAsset(models.Model):
             'res_id': new_wizard.id,
             'context': self.env.context,
         }
+
+
+class AssetModify(models.TransientModel):
+    _inherit = 'asset.modify'
+
+    def write(self, vals):
+        # Ensure method_period is a string when writing to the asset
+        if 'method_period' in vals and isinstance(vals['method_period'], int):
+            vals['method_period'] = str(vals['method_period'])
+        return super(AssetModify, self).write(vals)
+
+    @api.model
+    def create(self, vals):
+        # Ensure method_period is a string when creating
+        if 'method_period' in vals and isinstance(vals['method_period'], int):
+            vals['method_period'] = str(vals['method_period'])
+        return super(AssetModify, self).create(vals)
