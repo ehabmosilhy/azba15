@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_history_tree" model="ir.ui.view">
+        <field name="name">product.history.report.tree</field>
+        <field name="model">product.history.report</field>
+        <field name="arch" type="xml">
+            <tree string="Product History" create="false" edit="false" delete="false">
+                <field name="date"/>
+                <field name="product_id"/>
+                <field name="location_id"/>
+                <field name="initial_qty"/>
+                <field name="in_qty"/>
+                <field name="out_qty"/>
+                <field name="final_qty"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_product_history_search" model="ir.ui.view">
+        <field name="name">product.history.report.search</field>
+        <field name="model">product.history.report</field>
+        <field name="arch" type="xml">
+            <search string="Product History">
+                <field name="product_id"/>
+                <field name="location_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <filter string="Today" name="today" domain="[('date','=',context_today().strftime('%Y-%m-%d'))]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Product" name="product" context="{'group_by':'product_id'}"/>
+                    <filter string="Location" name="location" context="{'group_by':'location_id'}"/>
+                    <filter string="Date" name="date" context="{'group_by':'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_product_history_report" model="ir.actions.act_window">
+        <field name="name">Product History with Initial Balance</field>
+        <field name="res_model">product.history.report</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="view_product_history_search"/>
+        <field name="context">{'search_default_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No stock movements found
+            </p>
+            <p>
+                This report shows the history of product stock movements with initial balance.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_product_history_report"
+        name="Product History with Initial Balance 📦"
+        parent="stock.menu_warehouse_report"
+        action="action_product_history_report"
+        sequence="150"/>
+</odoo>

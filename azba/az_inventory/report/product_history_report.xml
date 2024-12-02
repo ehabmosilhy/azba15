@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_product_history" model="ir.actions.report">
+        <field name="name">Product History Report</field>
+        <field name="model">product.history.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">az_inventory.report_product_history</field>
+        <field name="report_file">az_inventory.report_product_history</field>
+        <field name="binding_model_id" ref="model_product_history_wizard"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Product History Report - %s' % object.warehouse_id.name</field>
+    </record>
+
+    <template id="report_product_history">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-12">
+                                <h2>Product History Report</h2>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt32 mb32">
+                            <div class="col-3">
+                                <strong>Date Range:</strong><br/>
+                                From: <span t-field="o.start_date"/><br/>
+                                To: <span t-field="o.end_date"/>
+                            </div>
+                            <div class="col-3">
+                                <strong>Warehouse:</strong><br/>
+                                <span t-field="o.warehouse_id.name"/>
+                            </div>
+                            <div class="col-3">
+                                <strong>Product:</strong><br/>
+                                <t t-if="o.product_id">
+                                    <span t-field="o.product_id.display_name"/>
+                                </t>
+                                <t t-else="">All Products</t>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Product Code</th>
+                                    <th>Product Name</th>
+                                    <th class="text-right">Initial Balance</th>
+                                    <th class="text-right">Ins</th>
+                                    <th class="text-right">Outs</th>
+                                    <th class="text-right">Current Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="products" t-as="prod">
+                                    <td><span t-esc="prod['product_code']"/></td>
+                                    <td><span t-esc="prod['product_name']"/></td>
+                                    <td class="text-right">
+                                        <span t-esc="int(prod['initial_balance']) if prod['initial_balance'] == int(prod['initial_balance']) else '%.2f' % prod['initial_balance']"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="int(prod['ins']) if prod['ins'] == int(prod['ins']) else '%.2f' % prod['ins']"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="int(prod['outs']) if prod['outs'] == int(prod['outs']) else '%.2f' % prod['outs']"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="int(prod['current_balance']) if prod['current_balance'] == int(prod['current_balance']) else '%.2f' % prod['current_balance']"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                       
+
+                       
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
