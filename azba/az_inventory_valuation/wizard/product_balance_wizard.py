@@ -61,7 +61,7 @@ class ProductBalanceWizard(models.TransientModel):
             
             # Only include products with activity or balance
             if initial_qty != 0 or final_balance != 0 or total_in != 0 or total_out != 0:
-                code = product.default_code or ''
+                code = f'{product.product_tmpl_id.code.strip()}' if product.product_tmpl_id.code else '[]'
                 balance_lines.append({
                     'product_code': code,
                     'initial_balance': initial_qty,
@@ -70,6 +70,9 @@ class ProductBalanceWizard(models.TransientModel):
                     'total_out': total_out,
                     'final_balance': final_balance,
                 })
+
+        # Sort balance_lines by product_code
+        balance_lines = sorted(balance_lines, key=lambda x: x['product_code'] or '')
 
         self._generate_excel_report(balance_lines)
 
@@ -88,15 +91,15 @@ class ProductBalanceWizard(models.TransientModel):
         worksheet = workbook.add_worksheet('Product Balance')
 
         # Add headers
-        headers = ['Product Code', 'Initial Balance', 'Product Name', 'Total In', 'Total Out', 'Final Balance']
+        headers = ['Product Code', 'Product Name', 'Initial Balance', 'Total In', 'Total Out', 'Final Balance']
         for col_num, header in enumerate(headers):
             worksheet.write(0, col_num, header)
 
         # Add data
         for row_num, line in enumerate(balance_lines, start=1):
             worksheet.write(row_num, 0, line['product_code'])
-            worksheet.write(row_num, 1, line['initial_balance'])
-            worksheet.write(row_num, 2, line['product_name'])
+            worksheet.write(row_num, 1, line['product_name'])
+            worksheet.write(row_num, 2, line['initial_balance'])
             worksheet.write(row_num, 3, line['total_in'])
             worksheet.write(row_num, 4, line['total_out'])
             worksheet.write(row_num, 5, line['final_balance'])
@@ -104,5 +107,5 @@ class ProductBalanceWizard(models.TransientModel):
         workbook.close()
         self.write({
             'report_file': base64.b64encode(output.getvalue()),
-            'report_filename': 'product_balance.xlsx'
+            'report_filename': 'all_products_history.xlsx'
         })
