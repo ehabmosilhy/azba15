@@ -10,6 +10,7 @@
                     <field name="start_date"/>
                     <field name="end_date"/>
                     <field name="warehouse_id"/>
+                    <field name="location_id"/>
                 </group>
                 <footer>
                     <button name="action_view_report" string="View Report" type="object" class="btn-primary"/>

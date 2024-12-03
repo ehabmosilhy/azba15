@@ -5,13 +5,17 @@ class ProductHistoryReport(models.AbstractModel):
     _name = 'report.az_inventory.report_product_history'
     _description = 'Product History Report'
 
-    def _get_warehouse_locations(self, warehouse):
-        """Get all internal locations for a given warehouse."""
-        return self.env['stock.location'].search([
-            '|',
-            ('id', '=', warehouse.lot_stock_id.id),
-            ('location_id', 'child_of', warehouse.lot_stock_id.id)
-        ])
+    def _get_target_locations(self, doc):
+        """Get target locations based on either warehouse or specific location."""
+        if doc.warehouse_id:
+            return self.env['stock.location'].search([
+                '|',
+                ('id', '=', doc.warehouse_id.lot_stock_id.id),
+                ('location_id', 'child_of', doc.warehouse_id.lot_stock_id.id)
+            ])
+        elif doc.location_id:
+            return doc.location_id
+        return self.env['stock.location']
 
     def _get_stock_moves(self, doc):
         """Retrieve stock moves based on the wizard parameters."""
@@ -21,11 +25,11 @@ class ProductHistoryReport(models.AbstractModel):
             ('state', '=', 'done'),
         ]
 
-        wh_locations = self._get_warehouse_locations(doc.warehouse_id)
-        if wh_locations:
+        target_locations = self._get_target_locations(doc)
+        if target_locations:
             domain.extend([
-                '|', ('location_id', 'in', wh_locations.ids),
-                ('location_dest_id', 'in', wh_locations.ids),
+                '|', ('location_id', 'in', target_locations.ids),
+                ('location_dest_id', 'in', target_locations.ids),
             ])
 
         if doc.product_id:
@@ -42,8 +46,9 @@ class ProductHistoryReport(models.AbstractModel):
             ('location_id.usage', '=', 'internal'),
         ]
 
-        wh_locations = self._get_warehouse_locations(doc.warehouse_id)
-        domain.append(('location_id', 'in', wh_locations.ids))
+        target_locations = self._get_target_locations(doc)
+        if target_locations:
+            domain.append(('location_id', 'in', target_locations.ids))
 
         if doc.product_id:
             domain.append(('product_id', '=', doc.product_id.id))
@@ -52,7 +57,7 @@ class ProductHistoryReport(models.AbstractModel):
 
     def _get_product_data(self, doc):
         """Get all product movements and balances."""
-        wh_locations = self._get_warehouse_locations(doc.warehouse_id)
+        target_locations = self._get_target_locations(doc)
         
         # Convert dates to datetime for comparison
         start_datetime = fields.Datetime.from_string(doc.start_date)
@@ -60,7 +65,7 @@ class ProductHistoryReport(models.AbstractModel):
         
         # Get current quantities from stock.quant
         quant_domain = [
-            ('location_id', 'in', wh_locations.ids),
+            ('location_id', 'in', target_locations.ids),
             ('quantity', '!=', 0),  # Only products with quantities
         ]
         if doc.product_id:
@@ -109,22 +114,22 @@ class ProductHistoryReport(models.AbstractModel):
             
             # Calculate ins and outs during period
             period_ins = sum(period_moves.filtered(
-                lambda m: m.location_dest_id.id in wh_locations.ids
+                lambda m: m.location_dest_id.id in target_locations.ids
             ).mapped('qty_done'))
             
             period_outs = sum(period_moves.filtered(
-                lambda m: m.location_id.id in wh_locations.ids and 
-                         m.location_dest_id.id not in wh_locations.ids
+                lambda m: m.location_id.id in target_locations.ids and 
+                         m.location_dest_id.id not in target_locations.ids
             ).mapped('qty_done'))
             
             # Calculate ins and outs after period
             post_ins = sum(post_period_moves.filtered(
-                lambda m: m.location_dest_id.id in wh_locations.ids
+                lambda m: m.location_dest_id.id in target_locations.ids
             ).mapped('qty_done'))
             
             post_outs = sum(post_period_moves.filtered(
-                lambda m: m.location_id.id in wh_locations.ids and 
-                         m.location_dest_id.id not in wh_locations.ids
+                lambda m: m.location_id.id in target_locations.ids and 
+                         m.location_dest_id.id not in target_locations.ids
             ).mapped('qty_done'))
             
             # Current quantity from stock.quant
@@ -149,7 +154,7 @@ class ProductHistoryReport(models.AbstractModel):
         # Sort results by product code then name
         return sorted(result, key=lambda x: (x['product_code'] or '', x['product_name']))
 
-    def _get_initial_balance(self, product, start_date, wh_locations):
+    def _get_initial_balance(self, product, start_date, target_locations):
         """Calculate the initial balance for a product before the start date."""
         domain = [
             ('date', '<', start_date),
@@ -160,12 +165,12 @@ class ProductHistoryReport(models.AbstractModel):
         moves = self.env['stock.move.line'].search(domain)
         
         ins = sum(moves.filtered(
-            lambda m: m.location_dest_id.id in wh_locations.ids
+            lambda m: m.location_dest_id.id in target_locations.ids
         ).mapped('qty_done'))
         
         outs = sum(moves.filtered(
-            lambda m: m.location_id.id in wh_locations.ids and 
-                     m.location_dest_id.id not in wh_locations.ids
+            lambda m: m.location_id.id in target_locations.ids and 
+                     m.location_dest_id.id not in target_locations.ids
         ).mapped('qty_done'))
         
         return ins - outs
