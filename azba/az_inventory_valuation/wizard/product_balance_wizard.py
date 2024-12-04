@@ -30,7 +30,7 @@ class ProductBalanceWizard(models.TransientModel):
         domain = [
             ('state', '=', 'done'),
             ('product_id', '=', product.id),
-            ('picking_id.picking_type_id.code', 'in', ['incoming', 'outgoing']),
+            ('picking_id.picking_type_id.code', 'in', ['incoming', 'outgoing', 'mrp_operation']),  # Include manufacturing operations
         ]
         if date_start:
             domain.append(('date', '>=', date_start))
@@ -58,9 +58,10 @@ class ProductBalanceWizard(models.TransientModel):
                          for move in period_moves 
                          if move.picking_id.picking_type_id.code == 'incoming')
             
+            # Sum outgoing and manufacturing consumption
             total_out = sum(move.product_qty 
                           for move in period_moves 
-                          if move.picking_id.picking_type_id.code == 'outgoing')
+                          if move.picking_id.picking_type_id.code in ['outgoing', 'mrp_operation'])
             
             # Get final balance using stock valuation layers
             final_qty = self._get_quantity_at_date(product, self.end_date)
@@ -73,7 +74,7 @@ class ProductBalanceWizard(models.TransientModel):
                     'initial_balance': initial_qty,
                     'product_name': product.name,
                     'total_in': total_in,
-                    'total_out': total_out,
+                    'total_out': total_out,  # Now includes both outgoing and manufacturing consumption
                     'final_balance': final_qty,
                 })
 
