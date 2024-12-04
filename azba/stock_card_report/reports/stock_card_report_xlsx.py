@@ -28,6 +28,19 @@ class ReportStockCardReportXlsx(models.AbstractModel):
                 generate_ws_method = getattr(self, ws_params["generate_ws_method"])
                 generate_ws_method(workbook, ws, ws_params, data, objects, product)
 
+    def _get_report_values(self, docids, data=None):
+        wizard_id = data["wizard_id"]
+        report = self.env["report.stock.card.report"].browse(wizard_id)
+        report._compute_results()
+        return {
+            "doc_ids": docids,
+            "doc_model": "stock.card.report.wizard",
+            "docs": report,
+            "date_from": report.date_from,
+            "date_to": report.date_to,
+            "location": report.location_id.display_name,
+        }
+
     def _get_ws_params(self, wb, data, product):
         filter_template = {
             "1_date_from": {
