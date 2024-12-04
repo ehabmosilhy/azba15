@@ -30,13 +30,15 @@ class ProductBalanceWizard(models.TransientModel):
         domain = [
             ('state', '=', 'done'),
             ('product_id', '=', product.id),
-            ('picking_id.picking_type_id.code', 'in', ['incoming', 'outgoing', 'mrp_operation']),  # Include manufacturing operations
+            '|',
+                ('picking_id', '=', False),  # Include adjustment moves
+                ('picking_id.picking_type_id.code', 'in', ['incoming', 'outgoing', 'mrp_operation']),
         ]
         if date_start:
             domain.append(('date', '>=', date_start))
         if date_end:
             domain.append(('date', '<=', date_end))
-        return self.env['stock.move'].search(domain)
+        return self.env['stock.move'].search(domain, order='date asc')  # Order by date for proper adjustment processing
 
     def get_product_balance(self):
         self.ensure_one()
@@ -53,15 +55,30 @@ class ProductBalanceWizard(models.TransientModel):
             # Get moves within period
             period_moves = self._get_stock_moves(product, self.start_date, self.end_date)
             
-            # Calculate ins and outs based on picking type code
-            total_in = sum(move.product_qty 
-                         for move in period_moves 
-                         if move.picking_id.picking_type_id.code == 'incoming')
+            total_in = 0
+            total_out = 0
+            running_total = initial_qty
             
-            # Sum outgoing and manufacturing consumption
-            total_out = sum(move.product_qty 
-                          for move in period_moves 
-                          if move.picking_id.picking_type_id.code in ['outgoing', 'mrp_operation'])
+            for move in period_moves:
+                if move.picking_id:
+                    # Regular moves
+                    if move.picking_id.picking_type_id.code == 'incoming':
+                        total_in += move.product_qty
+                        running_total += move.product_qty
+                    elif move.picking_id.picking_type_id.code in ['outgoing', 'mrp_operation']:
+                        total_out += move.product_qty
+                        running_total -= move.product_qty
+                else:
+                    # Adjustment moves
+                    adjustment_qty = move.product_qty
+                    difference = adjustment_qty - running_total
+                    
+                    if difference > 0:
+                        total_in += difference
+                    else:
+                        total_out += abs(difference)
+                    
+                    running_total = adjustment_qty
             
             # Get final balance using stock valuation layers
             final_qty = self._get_quantity_at_date(product, self.end_date)
@@ -74,7 +91,7 @@ class ProductBalanceWizard(models.TransientModel):
                     'initial_balance': initial_qty,
                     'product_name': product.name,
                     'total_in': total_in,
-                    'total_out': total_out,  # Now includes both outgoing and manufacturing consumption
+                    'total_out': total_out,
                     'final_balance': final_qty,
                 })
 
