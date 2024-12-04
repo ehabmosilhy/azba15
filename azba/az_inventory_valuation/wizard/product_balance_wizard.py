@@ -2,7 +2,7 @@ from odoo import models, fields, api
 import io
 import xlsxwriter
 import base64
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class ProductBalanceWizard(models.TransientModel):
     _name = 'product.balance.wizard'
@@ -13,10 +13,24 @@ class ProductBalanceWizard(models.TransientModel):
     report_file = fields.Binary(string='Report File')
     report_filename = fields.Char(string='Report Filename', default='product_balance.xlsx')
 
+    def _get_quantity_at_date(self, product, date):
+        if date.time() == datetime.min.time():
+            date = date - timedelta(days=1)
+            date = date.replace(hour=23, minute=59, second=59, microsecond=0)
+
+        domain = [
+            ('create_date', '<=', date),
+            ('product_id', '=', product.id),
+            ('product_id.type', '=', 'product')
+        ]
+        stock_valuation_lines = self.env['stock.valuation.layer'].search(domain)
+        return sum(line.quantity for line in stock_valuation_lines)
+
     def _get_stock_moves(self, product, date_start=None, date_end=None):
         domain = [
             ('state', '=', 'done'),
             ('product_id', '=', product.id),
+            ('picking_id.picking_type_id.code', 'in', ['incoming', 'outgoing']),
         ]
         if date_start:
             domain.append(('date', '>=', date_start))
@@ -33,34 +47,26 @@ class ProductBalanceWizard(models.TransientModel):
         balance_lines = []
         
         for product in products:
-            # Get initial balance
-            initial_moves = self._get_stock_moves(product, date_end=self.start_date)
-            initial_qty = 0
-            for move in initial_moves:
-                if move.location_dest_id.usage == 'internal':
-                    initial_qty += move.product_qty
-                if move.location_id.usage == 'internal':
-                    initial_qty -= move.product_qty
+            # Get initial balance using stock valuation layers
+            initial_qty = self._get_quantity_at_date(product, self.start_date)
             
             # Get moves within period
             period_moves = self._get_stock_moves(product, self.start_date, self.end_date)
             
-            # Calculate ins and outs
+            # Calculate ins and outs based on picking type code
             total_in = sum(move.product_qty 
                          for move in period_moves 
-                         if move.location_dest_id.usage == 'internal' 
-                         and move.location_id.usage != 'internal')
+                         if move.picking_id.picking_type_id.code == 'incoming')
             
             total_out = sum(move.product_qty 
                           for move in period_moves 
-                          if move.location_id.usage == 'internal' 
-                          and move.location_dest_id.usage != 'internal')
+                          if move.picking_id.picking_type_id.code == 'outgoing')
             
-            # Calculate final balance
-            final_balance = initial_qty + total_in - total_out
+            # Get final balance using stock valuation layers
+            final_qty = self._get_quantity_at_date(product, self.end_date)
             
             # Only include products with activity or balance
-            if initial_qty != 0 or final_balance != 0 or total_in != 0 or total_out != 0:
+            if initial_qty != 0 or final_qty != 0 or total_in != 0 or total_out != 0:
                 code = f'{product.product_tmpl_id.code.strip()}' if product.product_tmpl_id.code else '[]'
                 balance_lines.append({
                     'product_code': code,
@@ -68,7 +74,7 @@ class ProductBalanceWizard(models.TransientModel):
                     'product_name': product.name,
                     'total_in': total_in,
                     'total_out': total_out,
-                    'final_balance': final_balance,
+                    'final_balance': final_qty,
                 })
 
         # Sort balance_lines by product_code
