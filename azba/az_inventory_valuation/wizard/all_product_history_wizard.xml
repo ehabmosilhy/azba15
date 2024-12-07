@@ -1,0 +1,38 @@
+<odoo>
+    <record id="view_all_product_history_wizard_form" model="ir.ui.view">
+        <field name="name">all_product.history.wizard.form</field>
+        <field name="model">all_product.history.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Product Balance Report">
+                <group>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                </group>
+                <footer>
+                    <button string="Generate Report" type="object" name="action_generate_report" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+                <div attrs="{'invisible': [('report_file', '=', False)]}">
+                    <group>
+                        <field name="report_file" filename="report_filename" readonly="1" invisible="1"/>
+                        <button string="Download Report" type="object" name="download_report" class="btn-primary"/>
+                    </group>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_all_product_history_wizard" model="ir.actions.act_window">
+        <field name="name">Product Balance Report</field>
+        <field name="res_model">all_product.history.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_all_product_history_wizard" 
+              name="All-Product History Report"
+              sequence="8"
+              parent="stock.menu_warehouse_report" 
+              action="action_all_product_history_wizard"/>
+
+</odoo>

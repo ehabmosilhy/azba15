@@ -7,7 +7,7 @@
     'data': [
         'security/ir.model.access.csv',
         'wizard/stock_valuation.xml',
-        'wizard/product_balance_wizard.xml'
+        'wizard/all_product_history_wizard.xml'
     ],
     'installable': True,
 
