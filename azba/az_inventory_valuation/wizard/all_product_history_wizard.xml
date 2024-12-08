@@ -3,10 +3,11 @@
         <field name="name">all_product.history.wizard.form</field>
         <field name="model">all_product.history.wizard</field>
         <field name="arch" type="xml">
-            <form string="Product Balance Report">
+            <form string="All-Product History Report">
                 <group>
                     <field name="start_date"/>
                     <field name="end_date"/>
+                    <field name="product_id"/>
                 </group>
                 <footer>
                     <button string="Generate Report" type="object" name="action_generate_report" class="btn-primary"/>
@@ -23,7 +24,7 @@
     </record>
 
     <record id="action_all_product_history_wizard" model="ir.actions.act_window">
-        <field name="name">Product Balance Report</field>
+        <field name="name">All-Product History Report</field>
         <field name="res_model">all_product.history.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
