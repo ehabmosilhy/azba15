@@ -111,7 +111,7 @@ class AllProductHistoryWizard(models.TransientModel):
                         total_in += move.product_qty
                         current_qty += move.product_qty
                         print(f"IN  Movement: {move.picking_id.name} - Type: {picking_code} - Qty: {move.product_qty} - Running Total: {current_qty} - From: {move.location_id.name} -> To: {move.location_dest_id.name}")
-                    elif picking_code == 'outgoing':
+                    elif picking_code in ['outgoing','mrp_operation']:  
                         total_out += move.product_qty
                         current_qty -= move.product_qty
                         print(f"OUT Movement: {move.picking_id.name} - Type: {picking_code} - Qty: {move.product_qty} - Running Total: {current_qty} - From: {move.location_id.name} -> To: {move.location_dest_id.name}")
