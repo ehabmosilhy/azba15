@@ -7,7 +7,9 @@
         This module extends the functionality of Saudi Arabia EDI.
     """,
     'depends': ['l10n_sa_edi'],
-    'data': [],
+    'data': [
+        'views/account_move.xml',
+    ],
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',
