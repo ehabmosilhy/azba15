@@ -31,16 +31,20 @@ class AccountEdiDocument(models.Model):
         
         # ============== START OF ZATCA FILTERING ==============
         # Filter out moves that are less than 24 hours old
-        filtered_jobs = []
-        for documents, doc_type in all_jobs:
-            filtered_documents = documents.filtered(lambda d: 
-                d.move_id.create_date and 
-                (datetime.now(pytz.UTC) - d.move_id.create_date) >= timedelta(hours=24)
-            )
-            if filtered_documents:
-                filtered_jobs.append((filtered_documents, doc_type))
-        
-        all_jobs = filtered_jobs
+        if not self.move_id.process_now:
+            filtered_jobs = []
+            for documents, doc_type in all_jobs:
+                filtered_documents = self.env['account.edi.document']
+                for document in documents:
+                    if document.move_id.create_date:
+                        # Convert create_date to UTC for comparison
+                        create_date_utc = pytz.UTC.localize(document.move_id.create_date) if document.move_id.create_date.tzinfo is None else document.move_id.create_date.astimezone(pytz.UTC)
+                        if (datetime.now(pytz.UTC) - create_date_utc) >= timedelta(hours=24):
+                            filtered_documents += document
+                if filtered_documents:
+                    filtered_jobs.append((filtered_documents, doc_type))
+            
+            all_jobs = filtered_jobs
         # ============== END OF ZATCA FILTERING ==============
         
         jobs_to_process = all_jobs[0:job_count] if job_count else all_jobs
