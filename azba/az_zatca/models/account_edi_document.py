@@ -28,25 +28,29 @@ class AccountEdiDocument(models.Model):
         :return:            The number of remaining jobs to process after ZATCA filtering and processing.
         '''
         all_jobs = self.filtered(lambda d: d.edi_format_id._needs_web_services())._prepare_jobs()
-        
+
         # ============== START OF ZATCA FILTERING ==============
         # Filter out moves that are less than 24 hours old
-        if not self.move_id.process_now:
-            filtered_jobs = []
-            for documents, doc_type in all_jobs:
-                filtered_documents = self.env['account.edi.document']
-                for document in documents:
-                    if document.move_id.create_date:
-                        # Convert create_date to UTC for comparison
-                        create_date_utc = pytz.UTC.localize(document.move_id.create_date) if document.move_id.create_date.tzinfo is None else document.move_id.create_date.astimezone(pytz.UTC)
-                        if (datetime.now(pytz.UTC) - create_date_utc) >= timedelta(hours=24):
-                            filtered_documents += document
-                if filtered_documents:
-                    filtered_jobs.append((filtered_documents, doc_type))
-            
-            all_jobs = filtered_jobs
+        filtered_jobs = all_jobs
+        for move in self.move_id:
+            if not move.process_now:
+                filtered_jobs = []
+                for documents, doc_type in all_jobs:
+                    filtered_documents = self.env['account.edi.document']
+                    for document in documents:
+                        if document.move_id.create_date:
+                            # Convert create_date to UTC for comparison
+                            create_date_utc = pytz.UTC.localize(
+                                document.move_id.create_date) if document.move_id.create_date.tzinfo is None else document.move_id.create_date.astimezone(
+                                pytz.UTC)
+                            if (datetime.now(pytz.UTC) - create_date_utc) >= timedelta(hours=24):
+                                filtered_documents += document
+                    if filtered_documents:
+                        filtered_jobs.append((filtered_documents, doc_type))
+
+        all_jobs = filtered_jobs
         # ============== END OF ZATCA FILTERING ==============
-        
+
         jobs_to_process = all_jobs[0:job_count] if job_count else all_jobs
 
         for documents, doc_type in jobs_to_process:
@@ -54,12 +58,15 @@ class AccountEdiDocument(models.Model):
             attachments_potential_unlink = documents.attachment_id.filtered(lambda a: not a.res_model and not a.res_id)
             try:
                 with self.env.cr.savepoint(flush=False):
-                    self._cr.execute('SELECT * FROM account_edi_document WHERE id IN %s FOR UPDATE NOWAIT', [tuple(documents.ids)])
-                    self._cr.execute('SELECT * FROM account_move WHERE id IN %s FOR UPDATE NOWAIT', [tuple(move_to_lock.ids)])
+                    self._cr.execute('SELECT * FROM account_edi_document WHERE id IN %s FOR UPDATE NOWAIT',
+                                     [tuple(documents.ids)])
+                    self._cr.execute('SELECT * FROM account_move WHERE id IN %s FOR UPDATE NOWAIT',
+                                     [tuple(move_to_lock.ids)])
 
                     # Locks the attachments that might be unlinked
                     if attachments_potential_unlink:
-                        self._cr.execute('SELECT * FROM ir_attachment WHERE id IN %s FOR UPDATE NOWAIT', [tuple(attachments_potential_unlink.ids)])
+                        self._cr.execute('SELECT * FROM ir_attachment WHERE id IN %s FOR UPDATE NOWAIT',
+                                         [tuple(attachments_potential_unlink.ids)])
 
             except OperationalError as e:
                 if e.pgcode == '55P03':
