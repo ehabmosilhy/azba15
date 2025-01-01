@@ -7,6 +7,8 @@
         This module extends the functionality of Saudi Arabia EDI.
     """,
     'depends': ['account_edi'],
+    'data': [
+    ],
     'installable': True,
     'auto_install': False,
     'license': 'LGPL-3',

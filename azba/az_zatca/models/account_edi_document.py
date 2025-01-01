@@ -43,7 +43,7 @@ class AccountEdiDocument(models.Model):
                             create_date_utc = pytz.UTC.localize(
                                 document.move_id.create_date) if document.move_id.create_date.tzinfo is None else document.move_id.create_date.astimezone(
                                 pytz.UTC)
-                            if (datetime.now(pytz.UTC) - create_date_utc) >= timedelta(hours=24):
+                            if (datetime.now(pytz.UTC) - create_date_utc) >= timedelta(hours=16):
                                 filtered_documents += document
                     if filtered_documents:
                         filtered_jobs.append((filtered_documents, doc_type))
