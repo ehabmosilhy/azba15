@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_all_product_history_wizard,access.all.product.history.report.wizard,model_all_product_history_wizard,base.group_user,1,1,1,0
+access_report_all_product_history,access.report.all.product.history.report,model_report_all_product_history,base.group_user,1,1,1,0
+access_all_product_history_view,access.all.product.history.view,model_all_product_history_view,base.group_user,1,1,1,0

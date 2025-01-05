@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="action_report_all_product_history_html" model="ir.actions.client">
+        <field name="name">All Product History Report</field>
+        <field name="tag">all_product_history_backend</field>
+        <field name="context" eval="{'active_model': 'report.all.product.history'}"/>
+    </record>
+
+    <record id="action_all_product_history_pdf" model="ir.actions.report">
+        <field name="name">All Product History PDF</field>
+        <field name="model">report.all.product.history</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">all_product_history.report_all_product_history_pdf</field>
+        <field name="report_file">all_product_history.report_all_product_history_pdf</field>
+        <field name="print_report_name">'All Product History Report - [%s]' % (object.location_id.complete_name)
+        </field>
+        <field name="paperformat_id" ref="all_product_history.paperformat_all_product_history"/>
+    </record>
+
+    <record id="action_all_product_history_xlsx" model="ir.actions.report">
+        <field name="name">All Product History XLSX</field>
+        <field name="model">report.all.product.history</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">all_product_history.report_all_product_history_xlsx</field>
+    </record>
+
+</odoo>
