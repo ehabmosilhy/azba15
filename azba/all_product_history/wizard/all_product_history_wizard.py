@@ -9,17 +9,12 @@ class AllProductHistoryWizard(models.TransientModel):
     _name = "all.product.history.wizard"
     _description = "All Product History Wizard"
 
-    date_range_id = fields.Many2one(comodel_name="date.range", string="Period")
     date_from = fields.Date(string="Start Date")
     date_to = fields.Date(string="End Date")
     product_ids = fields.Many2many(
         comodel_name="product.product", string="Products", required=True
     )
 
-    @api.onchange("date_range_id")
-    def _onchange_date_range_id(self):
-        self.date_from = self.date_range_id.date_start
-        self.date_to = self.date_range_id.date_end
 
     def button_export_html(self):
         self.ensure_one()
