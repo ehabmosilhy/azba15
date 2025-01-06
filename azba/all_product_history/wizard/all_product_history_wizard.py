@@ -12,9 +12,6 @@ class AllProductHistoryWizard(models.TransientModel):
     date_range_id = fields.Many2one(comodel_name="date.range", string="Period")
     date_from = fields.Date(string="Start Date")
     date_to = fields.Date(string="End Date")
-    location_id = fields.Many2one(
-        comodel_name="stock.location", string="Location", required=True
-    )
     product_ids = fields.Many2many(
         comodel_name="product.product", string="Products", required=True
     )
@@ -54,7 +51,6 @@ class AllProductHistoryWizard(models.TransientModel):
             "date_from": self.date_from,
             "date_to": self.date_to or fields.Date.Context_today(self),
             "product_ids": [(6, 0, self.product_ids.ids)],
-            "location_id": self.location_id.id,
         }
 
     def _export(self, report_type):

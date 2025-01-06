@@ -98,7 +98,6 @@
             <div class="act_as_row labels">
                 <div class="act_as_cell">Date From</div>
                 <div class="act_as_cell">Date To</div>
-                <div class="act_as_cell">Location</div>
             </div>
             <div class="act_as_row">
                 <div class="act_as_cell">
@@ -106,9 +105,6 @@
                 </div>
                 <div class="act_as_cell">
                     <span t-field="o.date_to"/>
-                </div>
-                <div class="act_as_cell">
-                    <span t-field="o.location_id"/>
                 </div>
             </div>
         </div>

@@ -24,7 +24,6 @@ class AllProductHistoryReport(models.TransientModel):
     date_from = fields.Date()
     date_to = fields.Date()
     product_ids = fields.Many2many(comodel_name="product.product")
-    location_id = fields.Many2one(comodel_name="stock.location")
 
     # Data fields, used to browse report data
     results = fields.Many2many(

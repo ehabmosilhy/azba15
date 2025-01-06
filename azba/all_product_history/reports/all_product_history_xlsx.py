@@ -38,7 +38,6 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
             "docs": report,
             "date_from": report.date_from,
             "date_to": report.date_to,
-            "location": report.location_id.display_name,
         }
 
     def _get_ws_params(self, wb, data, product):

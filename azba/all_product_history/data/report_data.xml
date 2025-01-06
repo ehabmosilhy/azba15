@@ -13,8 +13,7 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">all_product_history.report_all_product_history_pdf</field>
         <field name="report_file">all_product_history.report_all_product_history_pdf</field>
-        <field name="print_report_name">'All Product History Report - [%s]' % (object.location_id.complete_name)
-        </field>
+        <field name="print_report_name">'All Product History Report (%s - %s)' % (object.date_from.strftime('%Y-%m-%d'), object.date_to.strftime('%Y-%m-%d'))</field>
         <field name="paperformat_id" ref="all_product_history.paperformat_all_product_history"/>
     </record>
 
