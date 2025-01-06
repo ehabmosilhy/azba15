@@ -64,7 +64,7 @@ class AllProductHistoryReport(models.TransientModel):
                 FROM stock_valuation_layer v
                 JOIN product_product pp ON pp.id = v.product_id
                 JOIN product_template pt ON pt.id = pp.product_tmpl_id
-                WHERE v.product_id in %s
+                WHERE v.product_id in %s and v.product_id in (select distinct product_id from stock_valuation_layer)
                 GROUP BY v.product_id, TRIM(pt.code)
             )
             SELECT 
