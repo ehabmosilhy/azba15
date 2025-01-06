@@ -14,6 +14,10 @@ class AllProductHistoryView(models.TransientModel):
     product_out = fields.Float()
     initial_balance = fields.Float()
     balance = fields.Float()
+    initial_value = fields.Float()
+    value_in = fields.Float()
+    value_out = fields.Float()
+    total_value = fields.Float()
 
 
 class AllProductHistoryReport(models.TransientModel):
@@ -45,13 +49,25 @@ class AllProductHistoryReport(models.TransientModel):
                         ELSE 0 
                     END), 0) as initial_balance,
                     COALESCE(SUM(CASE 
+                        WHEN v.create_date::date < %s THEN v.value 
+                        ELSE 0 
+                    END), 0) as initial_value,
+                    COALESCE(SUM(CASE 
                         WHEN v.create_date::date BETWEEN %s AND %s AND v.quantity > 0 THEN v.quantity 
                         ELSE 0 
                     END), 0) as product_in,
+                    COALESCE(SUM(CASE 
+                        WHEN v.create_date::date BETWEEN %s AND %s AND v.quantity > 0 THEN v.value 
+                        ELSE 0 
+                    END), 0) as value_in,
                     COALESCE(ABS(SUM(CASE 
                         WHEN v.create_date::date BETWEEN %s AND %s AND v.quantity < 0 THEN v.quantity 
                         ELSE 0 
-                    END)), 0) as product_out
+                    END)), 0) as product_out,
+                    COALESCE(ABS(SUM(CASE 
+                        WHEN v.create_date::date BETWEEN %s AND %s AND v.quantity < 0 THEN v.value 
+                        ELSE 0 
+                    END)), 0) as value_out
                 FROM stock_valuation_layer v
                 WHERE v.product_id in %s
                 GROUP BY v.product_id
@@ -59,14 +75,21 @@ class AllProductHistoryReport(models.TransientModel):
             SELECT 
                 product_id,
                 initial_balance,
+                initial_value,
                 product_in,
+                value_in,
                 product_out,
-                initial_balance + product_in - product_out as balance
+                value_out,
+                initial_balance + product_in - product_out as balance,
+                initial_value + value_in - value_out as total_value
             FROM movements
             ORDER BY product_id
         """
         params = (
             self.date_from,
+            self.date_from,
+            self.date_from, self.date_to,
+            self.date_from, self.date_to,
             self.date_from, self.date_to,
             self.date_from, self.date_to,
             tuple(self.product_ids.ids),
