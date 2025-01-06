@@ -74,26 +74,13 @@
                             <t t-out="'{0:,.3f}'.format(product_line.initial_balance)"/>
                         </div>
                         <div class="act_as_cell right">
-                            <t t-out="'{0:,.2f}'.format(product_line.initial_value)"/>
-                        </div>
-                        <div class="act_as_cell right">
                             <t t-if="product_line.product_in">
                                 <t t-out="'{0:,.3f}'.format(product_line.product_in)"/>
                             </t>
                         </div>
                         <div class="act_as_cell right">
-                            <t t-if="product_line.value_in">
-                                <t t-out="'{0:,.2f}'.format(product_line.value_in)"/>
-                            </t>
-                        </div>
-                        <div class="act_as_cell right">
                             <t t-if="product_line.product_out">
                                 <t t-out="'{0:,.3f}'.format(product_line.product_out)"/>
-                            </t>
-                        </div>
-                        <div class="act_as_cell right">
-                            <t t-if="product_line.value_out">
-                                <t t-out="'{0:,.2f}'.format(product_line.value_out)"/>
                             </t>
                         </div>
                         <div class="act_as_cell right">
@@ -130,11 +117,8 @@
         <div class="act_as_thead">
             <div class="act_as_row labels">
                 <div class="act_as_cell">Initial Balance</div>
-                <div class="act_as_cell">Initial Value</div>
                 <div class="act_as_cell">Input</div>
-                <div class="act_as_cell">Input Value</div>
                 <div class="act_as_cell">Output</div>
-                <div class="act_as_cell">Output Value</div>
                 <div class="act_as_cell">Final Balance</div>
                 <div class="act_as_cell">Total Value</div>
             </div>
