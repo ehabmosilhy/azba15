@@ -20,13 +20,11 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
 
     def generate_xlsx_report(self, workbook, data, objects):
         self._define_formats(workbook)
-        for product in objects.product_ids:
-            for ws_params in self._get_ws_params(workbook, data, product):
-                ws_name = ws_params.get("ws_name")
-                ws_name = self._check_ws_name(ws_name)
-                ws = workbook.add_worksheet(ws_name)
-                generate_ws_method = getattr(self, ws_params["generate_ws_method"])
-                generate_ws_method(workbook, ws, ws_params, data, objects, product)
+        ws_params = self._get_ws_params(workbook, data, objects)
+        ws_name = ws_params.get("ws_name")
+        ws_name = self._check_ws_name(ws_name)
+        ws = workbook.add_worksheet(ws_name)
+        self._all_product_history_report(workbook, ws, ws_params, data, objects)
 
     def _get_report_values(self, docids, data=None):
         wizard_id = data["wizard_id"]
@@ -40,7 +38,7 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
             "date_to": report.date_to,
         }
 
-    def _get_ws_params(self, wb, data, product):
+    def _get_ws_params(self, wb, data, objects):
         filter_template = {
             "1_date_from": {
                 "header": {"value": "Date from"},
@@ -56,75 +54,79 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
                     "format": FORMATS["format_tcell_date_center"],
                 },
             },
-            "3_location": {
-                "header": {"value": "Location"},
-                "data": {
-                    "value": self._render("location"),
-                    "format": FORMATS["format_tcell_center"],
-                },
-            },
         }
-        initial_template = {
-            "1_ref": {
-                "data": {"value": "Initial Balance", "format": FORMATS["format_tcell_center"]},
-                "colspan": 4,
-            },
-            "2_balance": {
-                "data": {
-                    "value": self._render("initial_balance"),
-                    "format": FORMATS["format_tcell_amount_right"],
-                }
-            },
-        }
+        
         all_product_history_template = {
-            "1_initial": {
+            "1_code": {
+                "header": {"value": "Code"},
+                "data": {
+                    "value": self._render("code"),
+                    "format": FORMATS["format_tcell_left"],
+                },
+                "width": 20,
+            },
+            "2_name": {
+                "header": {"value": "Product"},
+                "data": {
+                    "value": self._render("name"),
+                    "format": FORMATS["format_tcell_left"],
+                },
+                "width": 40,
+            },
+            "3_initial": {
                 "header": {"value": "Initial Balance"},
                 "data": {
                     "value": self._render("initial_balance"),
                     "format": FORMATS["format_tcell_amount_right"],
                 },
-                "width": 25,
+                "width": 20,
             },
-            "2_input": {
-                "header": {"value": "In"},
+            "4_input": {
+                "header": {"value": "Input"},
                 "data": {
                     "value": self._render("input"),
                     "format": FORMATS["format_tcell_amount_right"],
                 },
-                "width": 25,
+                "width": 20,
             },
-            "3_output": {
-                "header": {"value": "Out"},
+            "5_output": {
+                "header": {"value": "Output"},
                 "data": {
                     "value": self._render("output"),
                     "format": FORMATS["format_tcell_amount_right"],
                 },
-                "width": 25,
+                "width": 20,
             },
-            "4_balance": {
+            "6_balance": {
                 "header": {"value": "Final Balance"},
                 "data": {
                     "value": self._render("balance"),
                     "format": FORMATS["format_tcell_amount_right"],
                 },
-                "width": 25,
+                "width": 20,
+            },
+            "7_value": {
+                "header": {"value": "Total Value"},
+                "data": {
+                    "value": self._render("value"),
+                    "format": FORMATS["format_tcell_amount_right"],
+                },
+                "width": 20,
             },
         }
 
         ws_params = {
-            "ws_name": product.name,
+            "ws_name": "All Products History",
             "generate_ws_method": "_all_product_history_report",
-            "title": "All Product History - {}".format(product.name),
+            "title": "All Products History Report",
             "wanted_list_filter": [k for k in sorted(filter_template.keys())],
             "col_specs_filter": filter_template,
-            "wanted_list_initial": [k for k in sorted(initial_template.keys())],
-            "col_specs_initial": initial_template,
             "wanted_list": [k for k in sorted(all_product_history_template.keys())],
             "col_specs": all_product_history_template,
         }
-        return [ws_params]
+        return ws_params
 
-    def _all_product_history_report(self, wb, ws, ws_params, data, objects, product):
+    def _all_product_history_report(self, wb, ws, ws_params, data, objects):
         ws.set_portrait()
         ws.fit_to_pages(1, 0)
         ws.set_header(XLS_HEADERS["xls_headers"]["standard"])
@@ -134,6 +136,30 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
 
         row_pos = 0
         row_pos = self._write_ws_title(ws, row_pos, ws_params)
+
+        # Write filters
+        row_pos = self._write_line(
+            ws,
+            row_pos,
+            ws_params,
+            col_specs_section="header_filter",
+            default_format=FORMATS["format_theader_blue_center"],
+        )
+        row_pos = self._write_line(
+            ws,
+            row_pos,
+            ws_params,
+            col_specs_section="data_filter",
+            render_space={
+                "date_from": objects.date_from or "",
+                "date_to": objects.date_to or "",
+            },
+            default_format=FORMATS["format_tcell_date_center"],
+        )
+
+        row_pos += 1
+
+        # Write table header
         row_pos = self._write_line(
             ws,
             row_pos,
@@ -142,32 +168,43 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
             default_format=FORMATS["format_theader_blue_center"],
         )
 
-        product_line = objects.results.filtered(lambda l: l.product_id == product)
-        if product_line:
-            row_pos = self._write_line(
-                ws,
-                row_pos,
-                ws_params,
-                col_specs_section="data",
-                render_space={
-                    "initial_balance": product_line.initial_balance,
-                    "input": product_line.product_in,
-                    "output": product_line.product_out,
-                    "balance": product_line.balance,
-                },
-                default_format=FORMATS["format_tcell_amount_right"],
-            )
-        else:
-            row_pos = self._write_line(
-                ws,
-                row_pos,
-                ws_params,
-                col_specs_section="data",
-                render_space={
-                    "initial_balance": "",
-                    "input": "",
-                    "output": "",
-                    "balance": "",
-                },
-                default_format=FORMATS["format_tcell_amount_right"],
-            )
+        # Get products
+        products = objects.product_ids or objects.env["product.product"].search([("type", "=", "product")])
+        
+        # Write product lines
+        for product in products:
+            product_line = objects.results.filtered(lambda l: l.product_id == product)
+            if product_line:
+                row_pos = self._write_line(
+                    ws,
+                    row_pos,
+                    ws_params,
+                    col_specs_section="data",
+                    render_space={
+                        "code": product.product_tmpl_id.code.strip() or "",
+                        "name": product.name,
+                        "initial_balance": product_line.initial_balance,
+                        "input": product_line.product_in,
+                        "output": product_line.product_out,
+                        "balance": product_line.balance,
+                        "value": product_line.total_value,
+                    },
+                    default_format=FORMATS["format_tcell_amount_right"],
+                )
+            else:
+                row_pos = self._write_line(
+                    ws,
+                    row_pos,
+                    ws_params,
+                    col_specs_section="data",
+                    render_space={
+                        "code": product.product_tmpl_id.code.strip() or "",
+                        "name": product.name,
+                        "initial_balance": 0,
+                        "input": 0,
+                        "output": 0,
+                        "balance": 0,
+                        "value": 0,
+                    },
+                    default_format=FORMATS["format_tcell_amount_right"],
+                )

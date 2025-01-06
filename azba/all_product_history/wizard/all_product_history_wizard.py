@@ -12,8 +12,7 @@ class AllProductHistoryWizard(models.TransientModel):
     date_from = fields.Date(string="Start Date")
     date_to = fields.Date(string="End Date")
     product_ids = fields.Many2many(
-        comodel_name="product.product", string="Products", required=True
-    )
+        comodel_name="product.product", string="Products"   )
 
 
     def button_export_html(self):

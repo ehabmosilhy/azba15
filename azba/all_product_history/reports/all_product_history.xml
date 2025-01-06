@@ -54,22 +54,35 @@
     </template>
 
     <template id="report_all_product_history_base">
-        <t t-foreach="o.product_ids" t-as="product">
-            <div class="page">
-                <div class="row">
-                    <t t-set="title">[<t t-out="product.product_tmpl_id.code"/>]
-                        <t t-out="product.name"/>
-                    </t>
-                    <h4 class="mt0" t-out="title" style="text-align: center;"/>
+        <div class="page">
+            <!-- Display filters -->
+            <t t-call="all_product_history.report_all_product_history_filters"/>
+            
+            <!-- Display All Product History -->
+            <div class="act_as_table data_table mt4" style="width: 100%;">
+                <!-- Display header line-->
+                <div class="act_as_thead">
+                    <div class="act_as_row labels">
+                        <div class="act_as_cell">Code</div>
+                        <div class="act_as_cell">Product</div>
+                        <div class="act_as_cell">Initial Balance</div>
+                        <div class="act_as_cell">Input</div>
+                        <div class="act_as_cell">Output</div>
+                        <div class="act_as_cell">Final Balance</div>
+                        <div class="act_as_cell">Total Value</div>
+                    </div>
                 </div>
-                <!-- Display filters -->
-                <t t-call="all_product_history.report_all_product_history_filters"/>
-                <!-- Display All Product History -->
-                <div class="act_as_table data_table mt4" style="width: 100%;">
-                    <!-- Display header line-->
-                    <t t-call="all_product_history.report_all_product_history_lines_header"/>
-                    <t t-set="product_line" t-value="o.results.filtered(lambda l: l.product_id == product)"/>
+                
+                <t t-set="products" t-value="o.product_ids or o.env['product.product'].search([('type', '=', 'product')])"/>
+                <t t-foreach="products" t-as="product">
                     <div class="act_as_row lines">
+                        <div class="act_as_cell left">
+                            <t t-out="product.product_tmpl_id.code or ''"/>
+                        </div>
+                        <div class="act_as_cell left">
+                            <t t-out="product.name"/>
+                        </div>
+                        <t t-set="product_line" t-value="o.results.filtered(lambda l: l.product_id == product)"/>
                         <div class="act_as_cell right">
                             <t t-out="'{0:,.3f}'.format(product_line.initial_balance)"/>
                         </div>
@@ -90,10 +103,9 @@
                             <t t-out="'{0:,.2f}'.format(product_line.total_value)"/>
                         </div>
                     </div>
-                </div>
-                <p style="page-break-before:always;"/>
+                </t>
             </div>
-        </t>
+        </div>
     </template>
 
     <template id="report_all_product_history_filters">

@@ -37,6 +37,11 @@ class AllProductHistoryReport(models.TransientModel):
         self.ensure_one()
         self.date_to = self.date_to or fields.Date.context_today(self)
 
+        # Get all products if none selected
+        products = self.product_ids
+        if not products:
+            products = self.env['product.product'].search([('type', '=', 'product')])
+
         query = """
             WITH movements AS (
                 SELECT 
@@ -72,7 +77,7 @@ class AllProductHistoryReport(models.TransientModel):
             self.date_from,
             self.date_from, self.date_to,
             self.date_from, self.date_to,
-            tuple(self.product_ids.ids),
+            tuple(products.ids),
         )
         
         self._cr.execute(query, params)
