@@ -67,46 +67,47 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
         }
         initial_template = {
             "1_ref": {
-                "data": {"value": "Initial", "format": FORMATS["format_tcell_center"]},
+                "data": {"value": "Initial Balance", "format": FORMATS["format_tcell_center"]},
                 "colspan": 4,
             },
             "2_balance": {
                 "data": {
-                    "value": self._render("balance"),
+                    "value": self._render("initial_balance"),
                     "format": FORMATS["format_tcell_amount_right"],
                 }
             },
         }
         all_product_history_template = {
-            "1_date": {
-                "header": {"value": "Date"},
+            "1_initial": {
+                "header": {"value": "Initial Balance"},
                 "data": {
-                    "value": self._render("date"),
-                    "format": FORMATS["format_tcell_date_left"],
+                    "value": self._render("initial_balance"),
+                    "format": FORMATS["format_tcell_amount_right"],
                 },
                 "width": 25,
             },
-            "2_reference": {
-                "header": {"value": "Reference"},
-                "data": {
-                    "value": self._render("reference"),
-                    "format": FORMATS["format_tcell_left"],
-                },
-                "width": 25,
-            },
-            "3_input": {
+            "2_input": {
                 "header": {"value": "In"},
-                "data": {"value": self._render("input")},
+                "data": {
+                    "value": self._render("input"),
+                    "format": FORMATS["format_tcell_amount_right"],
+                },
                 "width": 25,
             },
-            "4_output": {
+            "3_output": {
                 "header": {"value": "Out"},
-                "data": {"value": self._render("output")},
+                "data": {
+                    "value": self._render("output"),
+                    "format": FORMATS["format_tcell_amount_right"],
+                },
                 "width": 25,
             },
-            "5_balance": {
-                "header": {"value": "Balance"},
-                "data": {"value": self._render("balance")},
+            "4_balance": {
+                "header": {"value": "Final Balance"},
+                "data": {
+                    "value": self._render("balance"),
+                    "format": FORMATS["format_tcell_amount_right"],
+                },
                 "width": 25,
             },
         }
@@ -141,47 +142,33 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
             col_specs_section="header",
             default_format=FORMATS["format_theader_blue_center"],
         )
-        row_pos = self._write_line(
-            ws,
-            row_pos,
-            ws_params,
-            col_specs_section="data",
-            render_space={
-                "date_from": objects.date_from or "",
-                "date_to": objects.date_to or "",
-                "location": objects.location_id.display_name or "",
-            },
-            default_format=FORMATS["format_tcell_left"],
-        )
 
-        initial = objects._get_initial(
-            objects.results.filtered(lambda l: l.product_id == product and l.is_initial)
-        )
-        row_pos = self._write_line(
-            ws,
-            row_pos,
-            ws_params,
-            col_specs_section="initial",
-            render_space={"balance": initial},
-            default_format=FORMATS["format_tcell_left"],
-        )
-
-        product_balance = initial
-        for product_line in objects.results.filtered(
-            lambda l: l.product_id == product and not l.is_initial
-        ):
-            product_balance += product_line.product_in - product_line.product_out
+        product_line = objects.results.filtered(lambda l: l.product_id == product)
+        if product_line:
             row_pos = self._write_line(
                 ws,
                 row_pos,
                 ws_params,
                 col_specs_section="data",
                 render_space={
-                    "date": product_line.date or "",
-                    "reference": product_line.reference or "",
-                    "input": product_line.product_in or 0,
-                    "output": product_line.product_out or 0,
-                    "balance": product_balance,
+                    "initial_balance": product_line.initial_balance,
+                    "input": product_line.product_in,
+                    "output": product_line.product_out,
+                    "balance": product_line.balance,
                 },
-                default_format=FORMATS["format_tcell_left"],
+                default_format=FORMATS["format_tcell_amount_right"],
+            )
+        else:
+            row_pos = self._write_line(
+                ws,
+                row_pos,
+                ws_params,
+                col_specs_section="data",
+                render_space={
+                    "initial_balance": "",
+                    "input": "",
+                    "output": "",
+                    "balance": "",
+                },
+                default_format=FORMATS["format_tcell_amount_right"],
             )

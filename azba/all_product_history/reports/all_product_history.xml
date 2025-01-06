@@ -13,8 +13,7 @@
             <div class="row">
                 <div class="col-6 custom_footer">
                     <span
-                            t-out="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"
-                    />
+                            t-out="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
                 </div>
                 <div class="col-6 text-right custom_footer">
                     <span class="page"/>/
@@ -69,16 +68,11 @@
                 <div class="act_as_table data_table mt4" style="width: 100%;">
                     <!-- Display header line-->
                     <t t-call="all_product_history.report_all_product_history_lines_header"/>
-                    <t t-set="initial" t-value="o._get_initial(product)"/>
-                    <div class="act_as_row lines">
-                        <div class="act_as_cell"/>
-                        <div class="act_as_cell right">
-                            <t t-out="'{0:,.3f}'.format(initial)"/>
-                        </div>
-                    </div>
-                    <!-- Display product line -->
                     <t t-set="product_line" t-value="o.results.filtered(lambda l: l.product_id == product)"/>
                     <div class="act_as_row lines">
+                        <div class="act_as_cell right">
+                            <t t-out="'{0:,.3f}'.format(product_line.initial_balance)"/>
+                        </div>
                         <div class="act_as_cell right">
                             <t t-if="product_line.product_in">
                                 <t t-out="'{0:,.3f}'.format(product_line.product_in)"/>
@@ -88,6 +82,9 @@
                             <t t-if="product_line.product_out">
                                 <t t-out="'{0:,.3f}'.format(product_line.product_out)"/>
                             </t>
+                        </div>
+                        <div class="act_as_cell right">
+                            <t t-out="'{0:,.3f}'.format(product_line.balance)"/>
                         </div>
                     </div>
                 </div>
@@ -120,9 +117,10 @@
     <template id="report_all_product_history_lines_header">
         <div class="act_as_thead">
             <div class="act_as_row labels">
-                <div class="act_as_cell">Initial</div>
+                <div class="act_as_cell">Initial Balance</div>
                 <div class="act_as_cell">Input</div>
                 <div class="act_as_cell">Output</div>
+                <div class="act_as_cell">Final Balance</div>
             </div>
         </div>
     </template>

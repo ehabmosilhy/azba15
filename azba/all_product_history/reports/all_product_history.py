@@ -12,6 +12,8 @@ class AllProductHistoryView(models.TransientModel):
     product_id = fields.Many2one(comodel_name="product.product")
     product_in = fields.Float()
     product_out = fields.Float()
+    initial_balance = fields.Float()
+    balance = fields.Float()
 
 
 class AllProductHistoryReport(models.TransientModel):
@@ -34,26 +36,41 @@ class AllProductHistoryReport(models.TransientModel):
     def _compute_results(self):
         self.ensure_one()
         self.date_to = self.date_to or fields.Date.context_today(self)
-        locations = self.env["stock.location"].search([])
 
         query = """
-            SELECT move.product_id,
-                SUM(CASE WHEN move.location_dest_id in %s THEN move.product_qty ELSE 0 END) as product_in,
-                SUM(CASE WHEN move.location_id in %s THEN move.product_qty ELSE 0 END) as product_out
-            FROM stock_move move
-            WHERE (move.location_id in %s or move.location_dest_id in %s)
-                and move.state = 'done' and move.product_id in %s
-                and CAST(move.date AS date) <= %s
-            GROUP BY move.product_id
-            ORDER BY move.product_id
+            WITH movements AS (
+                SELECT 
+                    v.product_id,
+                    COALESCE(SUM(CASE 
+                        WHEN v.create_date::date < %s THEN v.quantity 
+                        ELSE 0 
+                    END), 0) as initial_balance,
+                    COALESCE(SUM(CASE 
+                        WHEN v.create_date::date BETWEEN %s AND %s AND v.quantity > 0 THEN v.quantity 
+                        ELSE 0 
+                    END), 0) as product_in,
+                    COALESCE(ABS(SUM(CASE 
+                        WHEN v.create_date::date BETWEEN %s AND %s AND v.quantity < 0 THEN v.quantity 
+                        ELSE 0 
+                    END)), 0) as product_out
+                FROM stock_valuation_layer v
+                WHERE v.product_id in %s
+                GROUP BY v.product_id
+            )
+            SELECT 
+                product_id,
+                initial_balance,
+                product_in,
+                product_out,
+                initial_balance + product_in - product_out as balance
+            FROM movements
+            ORDER BY product_id
         """
         params = (
-            tuple(locations.ids),
-            tuple(locations.ids),
-            tuple(locations.ids),
-            tuple(locations.ids),
+            self.date_from,
+            self.date_from, self.date_to,
+            self.date_from, self.date_to,
             tuple(self.product_ids.ids),
-            self.date_to,
         )
         
         self._cr.execute(query, params)
@@ -68,7 +85,7 @@ class AllProductHistoryReport(models.TransientModel):
         product_line = self.results.filtered(lambda l: l.product_id.id == product_id.id)
         if not product_line:
             return 0.0
-        return product_line.product_in - product_line.product_out
+        return product_line.initial_balance
 
     def print_report(self, report_type="qweb"):
         self.ensure_one()
