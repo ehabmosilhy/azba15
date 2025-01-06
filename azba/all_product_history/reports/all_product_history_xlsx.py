@@ -181,7 +181,7 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
                     ws_params,
                     col_specs_section="data",
                     render_space={
-                        "code": product.product_tmpl_id.code.strip() or "",
+                        "code": product.product_tmpl_id.code.strip() if product.product_tmpl_id.code else "",
                         "name": product.name,
                         "initial_balance": product_line.initial_balance,
                         "input": product_line.product_in,
@@ -198,7 +198,7 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
                     ws_params,
                     col_specs_section="data",
                     render_space={
-                        "code": product.product_tmpl_id.code.strip() or "",
+                        "code": product.product_tmpl_id.code.strip() if product.product_tmpl_id.code else "",
                         "name": product.name,
                         "initial_balance": 0,
                         "input": 0,

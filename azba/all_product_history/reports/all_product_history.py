@@ -7,9 +7,10 @@ from odoo import api, fields, models
 class AllProductHistoryView(models.TransientModel):
     _name = "all.product.history.view"
     _description = "All Product History View"
-    _order = "product_id"
+    _order = "product_code"
 
     product_id = fields.Many2one(comodel_name="product.product")
+    product_code = fields.Char()
     product_in = fields.Float()
     product_out = fields.Float()
     initial_balance = fields.Float()
@@ -46,6 +47,7 @@ class AllProductHistoryReport(models.TransientModel):
             WITH movements AS (
                 SELECT 
                     v.product_id,
+                    TRIM(pt.code) as product_code,
                     COALESCE(SUM(CASE 
                         WHEN v.create_date::date < %s THEN v.quantity 
                         ELSE 0 
@@ -60,18 +62,20 @@ class AllProductHistoryReport(models.TransientModel):
                     END)), 0) as product_out,
                     COALESCE(SUM(v.value), 0) as total_value
                 FROM stock_valuation_layer v
+                JOIN product_product pp ON pp.id = v.product_id
+                JOIN product_template pt ON pt.id = pp.product_tmpl_id
                 WHERE v.product_id in %s
-                GROUP BY v.product_id
+                GROUP BY v.product_id, TRIM(pt.code)
             )
             SELECT 
                 product_id,
+                product_code,
                 initial_balance,
                 product_in,
                 product_out,
                 initial_balance + product_in - product_out as balance,
                 total_value
             FROM movements
-            ORDER BY product_id
         """
         params = (
             self.date_from,
