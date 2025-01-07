@@ -67,6 +67,7 @@ class AllProductHistoryReport(models.TransientModel):
                 JOIN product_product pp ON pp.id = v.product_id
                 JOIN product_template pt ON pt.id = pp.product_tmpl_id
                 WHERE v.product_id in %s 
+                    AND v.company_id = %s
                 GROUP BY v.product_id, TRIM(pt.code)
             )
             SELECT 
@@ -84,6 +85,7 @@ class AllProductHistoryReport(models.TransientModel):
             self.date_from, self.date_to,
             self.date_from, self.date_to,
             tuple(products.ids),
+            self.env.company.id,
         )
         
         self._cr.execute(query, params)
