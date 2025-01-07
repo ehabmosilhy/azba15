@@ -79,6 +79,7 @@ class AllProductHistoryReport(models.TransientModel):
                 initial_balance + product_in - product_out as balance,
                 total_value
             FROM movements
+            ORDER BY product_code
         """
         params = (
             self.date_from,
