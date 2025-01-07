@@ -169,7 +169,11 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
         )
 
         # Get products
-        products = objects.product_ids or objects.env["product.product"].search([("type", "=", "product")])
+        products = objects.product_ids
+        if not products:
+            objects._cr.execute("SELECT DISTINCT product_id FROM stock_valuation_layer")
+            product_ids = [r[0] for r in objects._cr.fetchall()]
+            products = objects.env['product.product'].browse(product_ids)
         
         # Write product lines
         for product in products:

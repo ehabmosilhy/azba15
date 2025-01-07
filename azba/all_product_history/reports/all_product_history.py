@@ -41,7 +41,9 @@ class AllProductHistoryReport(models.TransientModel):
         # Get all products if none selected
         products = self.product_ids
         if not products:
-            products = self.env['product.product'].search([('type', '=', 'product')])
+            self._cr.execute("SELECT DISTINCT product_id FROM stock_valuation_layer")
+            product_ids = [r[0] for r in self._cr.fetchall()]
+            products = self.env['product.product'].browse(product_ids)
 
         query = """
             WITH movements AS (
@@ -64,7 +66,7 @@ class AllProductHistoryReport(models.TransientModel):
                 FROM stock_valuation_layer v
                 JOIN product_product pp ON pp.id = v.product_id
                 JOIN product_template pt ON pt.id = pp.product_tmpl_id
-                WHERE v.product_id in %s and v.product_id in (select distinct product_id from stock_valuation_layer)
+                WHERE v.product_id in %s 
                 GROUP BY v.product_id, TRIM(pt.code)
             )
             SELECT 
