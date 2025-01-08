@@ -60,12 +60,7 @@ class StockCardReport(models.TransientModel):
             date_from = datetime(1, 1, 1, 21, 0, 0)
         elif not date_from.hour and not date_from.minute:  # Only date component
             date_from = (date_from - timedelta(days=1)).replace(hour=21, minute=0, second=0)
-        
-        date_to = self.date_to or fields.Date.context_today(self)
-        if  not date_to.hour and not date_to.minute:  # Only date component
-            date_to = date_to.replace(hour=21, minute=0, second=0)
-        self.date_to = date_to
-        
+        self.date_to = self.date_to or fields.Date.context_today(self)
         locations = self.env["stock.location"].search(
             [("id", "child_of", [self.location_id.id])]
         )
