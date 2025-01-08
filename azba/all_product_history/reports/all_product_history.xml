@@ -73,34 +73,32 @@
                     </div>
                 </div>
                 
-                <t t-set="products" t-value="o.product_ids or o.env['product.product'].search([('type', '=', 'product')])"/>
-                <t t-foreach="products" t-as="product">
+                <t t-foreach="o.results" t-as="line">
                     <div class="act_as_row lines">
                         <div class="act_as_cell left">
-                            <t t-out="product.product_tmpl_id.code or ''"/>
+                            <t t-out="line.product_code or ''"/>
                         </div>
                         <div class="act_as_cell left">
-                            <t t-out="product.name"/>
-                        </div>
-                        <t t-set="product_line" t-value="o.results.filtered(lambda l: l.product_id == product)"/>
-                        <div class="act_as_cell right">
-                            <t t-out="'{0:,.3f}'.format(product_line.initial_balance)"/>
+                            <t t-out="line.product_id.name"/>
                         </div>
                         <div class="act_as_cell right">
-                            <t t-if="product_line.product_in">
-                                <t t-out="'{0:,.3f}'.format(product_line.product_in)"/>
+                            <t t-out="'{0:,.3f}'.format(line.initial_balance)"/>
+                        </div>
+                        <div class="act_as_cell right">
+                            <t t-if="line.product_in">
+                                <t t-out="'{0:,.3f}'.format(line.product_in)"/>
                             </t>
                         </div>
                         <div class="act_as_cell right">
-                            <t t-if="product_line.product_out">
-                                <t t-out="'{0:,.3f}'.format(product_line.product_out)"/>
+                            <t t-if="line.product_out">
+                                <t t-out="'{0:,.3f}'.format(line.product_out)"/>
                             </t>
                         </div>
                         <div class="act_as_cell right">
-                            <t t-out="'{0:,.3f}'.format(product_line.balance)"/>
+                            <t t-out="'{0:,.3f}'.format(line.balance)"/>
                         </div>
                         <div class="act_as_cell right">
-                            <t t-out="'{0:,.2f}'.format(product_line.total_value)"/>
+                            <t t-out="'{0:,.2f}'.format(line.total_value)"/>
                         </div>
                     </div>
                 </t>

@@ -168,47 +168,21 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
             default_format=FORMATS["format_theader_blue_center"],
         )
 
-        # Get products
-        products = objects.product_ids
-        if not products:
-            objects._cr.execute("SELECT DISTINCT product_id FROM stock_valuation_layer")
-            product_ids = [r[0] for r in objects._cr.fetchall()]
-            products = objects.env['product.product'].browse(product_ids)
-        
-        # Write product lines
-        for product in products:
-            product_line = objects.results.filtered(lambda l: l.product_id == product)
-            if product_line:
-                row_pos = self._write_line(
-                    ws,
-                    row_pos,
-                    ws_params,
-                    col_specs_section="data",
-                    render_space={
-                        "code": product.product_tmpl_id.code.strip() if product.product_tmpl_id.code else "",
-                        "name": product.name,
-                        "initial_balance": product_line.initial_balance,
-                        "input": product_line.product_in,
-                        "output": product_line.product_out,
-                        "balance": product_line.balance,
-                        "value": product_line.total_value,
-                    },
-                    default_format=FORMATS["format_tcell_amount_right"],
-                )
-            else:
-                row_pos = self._write_line(
-                    ws,
-                    row_pos,
-                    ws_params,
-                    col_specs_section="data",
-                    render_space={
-                        "code": product.product_tmpl_id.code.strip() if product.product_tmpl_id.code else "",
-                        "name": product.name,
-                        "initial_balance": 0,
-                        "input": 0,
-                        "output": 0,
-                        "balance": 0,
-                        "value": 0,
-                    },
-                    default_format=FORMATS["format_tcell_amount_right"],
-                )
+        # Write data lines directly from results
+        for line in objects.results:
+            row_pos = self._write_line(
+                ws,
+                row_pos,
+                ws_params,
+                col_specs_section="data",
+                render_space={
+                    "code": line.product_code or "",
+                    "name": line.product_id.name,
+                    "initial_balance": line.initial_balance,
+                    "input": line.product_in,
+                    "output": line.product_out,
+                    "balance": line.balance,
+                    "value": line.total_value,
+                },
+                default_format=FORMATS["format_tcell_amount_right"],
+            )
