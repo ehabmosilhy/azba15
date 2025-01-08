@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import api, fields, models
+from datetime import datetime, timedelta
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -40,8 +41,8 @@ class StockCardReport(models.TransientModel):
     _description = "Stock Card Report"
 
     # Filters fields, used for data computation
-    date_from = fields.Date()
-    date_to = fields.Date()
+    date_from = fields.Datetime()
+    date_to = fields.Datetime()
     product_ids = fields.Many2many(comodel_name="product.product")
     location_id = fields.Many2one(comodel_name="stock.location")
 
@@ -54,8 +55,17 @@ class StockCardReport(models.TransientModel):
 
     def _compute_results(self):
         self.ensure_one()
-        date_from = self.date_from or "0001-01-01"
-        self.date_to = self.date_to or fields.Date.context_today(self)
+        date_from = self.date_from
+        if not date_from:
+            date_from = datetime(1, 1, 1, 21, 0, 0)
+        elif not date_from.hour and not date_from.minute:  # Only date component
+            date_from = (date_from - timedelta(days=1)).replace(hour=21, minute=0, second=0)
+        
+        date_to = self.date_to or fields.Date.context_today(self)
+        if  not date_to.hour and not date_to.minute:  # Only date component
+            date_to = date_to.replace(hour=21, minute=0, second=0)
+        self.date_to = date_to
+        
         locations = self.env["stock.location"].search(
             [("id", "child_of", [self.location_id.id])]
         )
