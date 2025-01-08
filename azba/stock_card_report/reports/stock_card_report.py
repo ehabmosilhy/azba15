@@ -2,6 +2,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import api, fields, models
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class StockCardView(models.TransientModel):
@@ -56,8 +59,8 @@ class StockCardReport(models.TransientModel):
         locations = self.env["stock.location"].search(
             [("id", "child_of", [self.location_id.id])]
         )
-        self._cr.execute(
-            """
+        
+        query = """
             SELECT move.date, move.product_id, move.product_qty,
                 move.product_uom_qty, move.product_uom, move.reference,
                 move.location_id, move.location_dest_id,
@@ -72,17 +75,23 @@ class StockCardReport(models.TransientModel):
                 and move.state = 'done' and move.product_id in %s
                 and CAST(move.date AS date) <= %s
             ORDER BY move.date, move.reference
-        """,
-            (
-                tuple(locations.ids),
-                tuple(locations.ids),
-                date_from,
-                tuple(locations.ids),
-                tuple(locations.ids),
-                tuple(self.product_ids.ids),
-                self.date_to,
-            ),
+        """
+        
+        query_params = (
+            tuple(locations.ids),
+            tuple(locations.ids),
+            date_from,
+            tuple(locations.ids),
+            tuple(locations.ids),
+            tuple(self.product_ids.ids),
+            self.date_to,
         )
+
+        # Debug the actual SQL query with parameters
+        debug_query = self._cr.mogrify(query, query_params).decode('utf-8')
+        _logger.debug("STOCK CARD QUERY: %s", debug_query)
+        
+        self._cr.execute(query, query_params)
         stock_card_results = self._cr.dictfetchall()
         ReportLine = self.env["stock.card.view"]
         self.results = [ReportLine.new(line).id for line in stock_card_results]
