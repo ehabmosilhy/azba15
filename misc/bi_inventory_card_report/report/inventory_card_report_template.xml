@@ -1,374 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Main template that decides which sub-template to use -->
     <template id="inventory_card_report_template_view">
         <t t-call="web.external_layout">
-            <div class="page">
-                <t t-if="data.get('is_on_hand_only')">
-                    <t t-call="bi_inventory_card_report.on_hand_only"/>
-                </t>
-                <t t-else="">
-                    <t t-call="bi_inventory_card_report.all_data"/>
-                </t>
-            </div>
-        </t>
-    </template>
+            <div class="page"><br/><br/><br/>
+                <table width="100%" style="border-bottom-style:none; border-right-style:none; font-size:30px; border-style: none; margin-bottom:20px;margin-top:-55px; border-bottom-style:none; border-right-style:none;">
+                    <tr style="border-bottom-style:none; border-right-style:none; border-style: none;">
+                        <td style="border-bottom-style:none; border-right-style:none; border-style: none;">
+                            <center><strong>Inventory Card Report</strong>
+                            <t t-if ="data.get('report_by') == 'product'"><strong>- Product </strong></t>
+                            <t t-if ="data.get('report_by') == 'product_category'"><strong>- Product Category</strong></t></center></td>
 
-
-    <template id="all_data">
-        <table width="100%"
-               style="border-bottom-style:none; border-right-style:none; font-size:30px; border-style: none; margin-bottom:20px;margin-top:-55px; border-bottom-style:none; border-right-style:none;">
-            <tr style="border-bottom-style:none; border-right-style:none; border-style: none;">
-                <td style="border-bottom-style:none; border-right-style:none; border-style: none;">
-                    <center>
-                        <strong>Inventory Card Report</strong>
-                        <t t-if="data.get('report_by') == 'product'">
-                            <strong>- Product</strong>
-                        </t>
-                        <t t-if="data.get('report_by') == 'product_category'">
-                            <strong>- Product Category</strong>
-                        </t>
-                    </center>
-                </td>
-
-            </tr>
-        </table>
-        <table width="100%" style="border-style: none;">
-            <tr>
-                <td style="border: 1px solid black; text-align:center; background-color: #888888;  font-size:20px;">
-                    <strong>Start Date</strong>
-                </td>
-                <td style="border: 1px solid black; text-align:center; background-color: #888888;  font-size:20px;">
-                    <strong>End Date</strong>
-                </td>
-            </tr>
-            <tr style="border: 1px solid black; width=100%;">
-                <td style="border:1px solid black; text-align:center; font-size:20px;">
-                    <t t-esc="data.get('date_from')"/>
-                </td>
-                <td style="border:1px solid black; text-align:center; font-size:20px;">
-                    <t t-esc="data.get('date_to')"/>
-                </td>
-            </tr>
-        </table>
-        <br/>
-        <table width="100%" style="border-style: none;">
-            <tr>
-                <td style="border: 1px solid black; text-align:center; background-color: #888888; padding-left:5px; font-size:20px;">
-                    <strong>User</strong>
-                </td>
-                <td style="border: 1px solid black; text-align:center; background-color: #888888;  font-size:20px;">
-                    <strong>Warehouse</strong>
-                </td>
-                <td style="border: 1px solid black; text-align:center; background-color: #888888;  font-size:20px;">
-                    <strong>Location</strong>
-                </td>
-
-            </tr>
-            <tr style="border: 1px solid black; width=100%;">
-                <td style="border:1px solid black; text-align:center; font-size:20px;">
-                    <span t-esc="user.name"></span>
-                </td>
-                <td style="border:1px solid black; text-align:center; font-size:20px;">
-                    <t t-esc="data.get('warehouse_id').display_name"/>
-                </td>
-                <td style="border:1px solid black; text-align:center; font-size:20px;">
-                    <t t-esc="data.get('location_id').complete_name"/>
-                </td>
-            </tr>
-        </table>
-        <br/>
-        <table width="100%" style="border-style: none;">
-            <tr>
-                <td style="border: 1px solid black; text-align:center; background-color: #888888;  font-size:20px;">
-                    <strong>Date</strong>
-                </td>
-                <td style="border: 1px solid black; text-align:center; background-color: #888888;  font-size:20px;">
-                    <strong>Origin</strong>
-                </td>
-                <td style="border: 1px solid black; text-align:center; background-color: #888888; padding-left:5px; font-size:20px;">
-                    <strong>Quantity In</strong>
-                </td>
-                <td style="border: 1px solid black; text-align:center; background-color: #888888; padding-left:5px; font-size:20px;">
-                    <strong>Quantity Out</strong>
-                </td>
-                <td style="border: 1px solid black; text-align:center; background-color: #888888; padding-left:5px; font-size:20px;">
-                    <strong>Balance</strong>
-                </td>
-            </tr>
-
-            <t t-if="data.get('report_by') == 'product_category'">
-                <t t-set="category" t-value="[]"/>
-                <t t-foreach="get_product_detail(data)" t-as="line">
-                    <t t-set="category" t-value="category + [line['category']]"/>
-                </t>
-                <t t-foreach="set(category)" t-as="category">
+                    </tr>
+                </table>
+                <table width="100%" style="border-style: none;">
+                    <tr>
+                        <td style="border: 1px solid black; text-align:center; background-color: #888888;  font-size:20px;">
+                            <strong>Start Date</strong>
+                        </td>
+                        <td style="border: 1px solid black; text-align:center; background-color: #888888;  font-size:20px;">
+                            <strong>End Date</strong>
+                        </td>
+                    </tr>
+                        <tr style="border: 1px solid black; width=100%;">
+                            <td style="border:1px solid black; text-align:center; font-size:20px;">
+                                 <t t-esc="data.get('date_from')"/>
+                            </td>
+                            <td style="border:1px solid black; text-align:center; font-size:20px;">
+                                 <t t-esc="data.get('date_to')"/>
+                            </td>
+                        </tr>
+                </table><br/>
+                <table width="100%" style="border-style: none;">
+                    <tr>
+                        <td style="border: 1px solid black; text-align:center; background-color: #888888; padding-left:5px; font-size:20px;">
+                            <strong>User</strong>
+                        </td>
+                        <td style="border: 1px solid black; text-align:center; background-color: #888888;  font-size:20px;">
+                            <strong>Warehouse</strong>
+                        </td>
+                        <td style="border: 1px solid black; text-align:center; background-color: #888888;  font-size:20px;">
+                            <strong>Location</strong>
+                        </td>
+                        
+                    </tr>
                     <tr style="border: 1px solid black; width=100%;">
-                        <td style="border:1px solid black; text-align:center; background-color: #E6BF83; font-size:20px;"
-                            colspan="5">
-                            <t t-esc="category.complete_name"/>
+                        <td style="border:1px solid black; text-align:center; font-size:20px;">
+                            <span t-esc="user.name"></span>
+                        </td>
+                        <td style="border:1px solid black; text-align:center; font-size:20px;">
+                             <t t-esc="data.get('warehouse_id').display_name"/>
+                        </td>
+                        <td style="border:1px solid black; text-align:center; font-size:20px;">
+                             <t t-esc="data.get('location_id').complete_name"/>
+                        </td>   
+                    </tr>
+                </table><br/>
+                <table width="100%" style="border-style: none;">
+                    <tr>
+                        <td style="border: 1px solid black; text-align:center; background-color: #888888;  font-size:20px;">
+                            <strong>Date</strong>
+                        </td>
+                        <td style="border: 1px solid black; text-align:center; background-color: #888888;  font-size:20px;">
+                            <strong>Origin</strong>
+                        </td>
+                        <td style="border: 1px solid black; text-align:center; background-color: #888888; padding-left:5px; font-size:20px;">
+                            <strong>Quantity In</strong>
+                        </td>
+                        <td style="border: 1px solid black; text-align:center; background-color: #888888; padding-left:5px; font-size:20px;">
+                            <strong>Quantity Out</strong>
+                        </td>
+                         <td style="border: 1px solid black; text-align:center; background-color: #888888; padding-left:5px; font-size:20px;">
+                            <strong>Balance</strong>
                         </td>
                     </tr>
 
-                    <t t-set="product" t-value="[]"/>
-                    <t t-foreach="get_product_detail(data)" t-as="line">
-                        <t t-set="product" t-value="product + [line['product_id']]"/>
-                    </t>
-                    <t t-foreach="set(product)" t-as="product_id">
-                        <t t-if="category.id == product_id.categ_id.id">
-                            <tr style="border: 1px solid black; width=100%;">
-                                <td style="border:1px solid black; text-align:center; background-color: #83AAE6; font-size:20px;"
-                                    colspan="5">
-
-                                    <t t-esc="product_id.display_name"/>
-                                </td>
-                            </tr>
-                        </t>
-                        <t t-if="category.id == product_id.categ_id.id">
-                            <tr style="border: 1px solid black; width=100%;">
-                                <td style="border:1px solid black; text-align:center; font-size:20px;"
-                                    colspan="4">
-                                    Opening Balance
-                                </td>
-                                <td style="border:1px solid black; text-align:center; font-size:20px;"
-                                    colspan="4">
-                                    0.0
-                                </td>
-                            </tr>
-                        </t>
-                        <t t-if="category.id == product_id.categ_id.id">
-                            <t t-set="total_in_qty" t-value="0.0"/>
-                            <t t-set="total_out_qty" t-value="0.0"/>
-                            <t t-set="total_balance" t-value="0.0"/>
-                            <t t-set="balance" t-value="0.0"/>
-                            <t t-foreach="get_product_detail(data)[5:]" t-as="line">
-                                <t t-if="product_id.id == line['product_id'].id">
-                                    <t t-if="line['in_qty'] >= 0.0 or line['out_qty'] >= 0.0">
-                                        <tr>
-                                            <td style="border:1px solid black; text-align:center; font-size:20px;">
-                                                <t t-if="line.get('move_date')"
-                                                   t-esc="line['move_date'].strftime('%m-%d-%Y')"/>
-                                            </td>
-                                            <td style="border:1px solid black; text-align:center; font-size:20px;">
-                                                <t t-if="line.get('origin')" t-esc="line['origin']"/>
-                                            </td>
-                                            <td style="border:1px solid black; text-align:center; font-size:20px;">
-                                                <t t-if="line['in_qty'] > 0.0">
-                                                    <t t-set="total_in_qty"
-                                                       t-value="total_in_qty + line['in_qty']"/>
-                                                    <t t-set="balance" t-value="balance + line['in_qty']"/>
-                                                    <t t-esc="line['in_qty']"/>
-                                                </t>
-                                                <t t-else="">
-                                                    0.0
-                                                </t>
-                                            </td>
-                                            <td style="border:1px solid black; text-align:center; font-size:20px;">
-                                                <t t-if="line.get('out_qty')">
-                                                    <t t-set="total_out_qty"
-                                                       t-value="total_out_qty + line['out_qty']"/>
-                                                    <t t-set="balance" t-value="balance - line['out_qty']"/>
-                                                    <t t-esc="line['out_qty']"/>
-                                                </t>
-                                                <t t-else="">
-                                                    0.0
-                                                </t>
-
-                                            </td>
-                                            <td style="border:1px solid black; text-align:center; font-size:20px;">
-                                                <t t-set="total_balance" t-value="total_balance + balance"/>
-                                                <t t-esc="balance"/>
-                                            </td>
-                                        </tr>
-                                    </t>
-                                </t>
+                    <t t-if ="data.get('report_by') == 'product_category'">
+                            <t t-set="category" t-value="[]"/>
+                            <t t-foreach="get_product_detail(data)" t-as="line">
+                                <t t-set="category" t-value="category + [line['category']]"/>
                             </t>
-                            <tr>
-                                <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
-
-                                </td>
-                                <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
-                                    <strong>Total</strong>
-                                </td>
-                                <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
-                                    <strong>
-                                        <t t-esc="total_in_qty"/>
-                                    </strong>
-                                </td>
-                                <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
-                                    <strong>
-                                        <t t-esc="total_out_qty"/>
-                                    </strong>
-                                </td>
-                                <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
-                                    <strong>
-                                        <t t-esc="total_in_qty - total_out_qty"/>
-                                    </strong>
-                                </td>
-                            </tr>
-                        </t>
-                    </t>
-                </t>
-            </t>
-
-            <t t-else="">
-                <t t-set="product" t-value="[]"/>
-                <t t-foreach="get_product_detail(data)[1:]" t-as="line">
-                    <t t-set="product" t-value="product + [line['product_id']]"/>
-                </t>
-                <t t-foreach="set(product)" t-as="product_id">
-                    <t t-set="product_detail" t-value="get_product_detail(data)"/>
-                    <tr style="border: 1px solid black; width=100%;">
-                        <td style="border:1px solid black; text-align:center; background-color: #83AAE6; font-size:20px;"
-                            colspan="5">
-                            <t t-esc="product_id.display_name"/>
-                        </td>
-                    </tr>
-                    <tr style="border: 1px solid black; width=100%;">
-                        <td style="border:1px solid black; text-align:center; font-size:20px;" colspan="4">
-                            Opening Balance
-                        </td>
-                        <td style="border:1px solid black; text-align:center; font-size:20px;" colspan="4">
-                            <t t-esc="'{:,}'.format(product_detail[0][product_id.id]['initial_balance']) if isinstance(product_detail[0][product_id.id]['initial_balance'], int) else '{:,.2f}'.format(product_detail[0][product_id.id]['initial_balance']).rstrip('0').rstrip('.')"/>
-
-                        </td>
-                    </tr>
-                    <t t-set="total_in_qty" t-value="0.0"/>
-                    <t t-set="total_out_qty" t-value="0.0"/>
-                    <t t-set="total_balance" t-value="0.0"/>
-                    <t t-set="balance" t-value="0.0"/>
-                    <t t-foreach="product_detail[1:]" t-as="line">
-                        <t t-if="product_id.id == line['product_id'].id">
-                            <t t-if="line['in_qty'] >= 0.0 or line['out_qty'] >= 0.0">
-                                <tr style="padding:0 5 0 0">
-                                    <td style="border:1px solid black; text-align:center; font-size:20px;">
-                                        <t t-if="line.get('move_date')"
-                                           t-esc="line['move_date'].strftime('%m-%d-%Y')"/>
-                                    </td>
-                                    <td style="border:1px solid black; text-align:center; font-size:20px;">
-                                        <t t-if="line.get('origin')" t-esc="line['origin']"/>
-                                    </td>
-                                    <td style="border:1px solid black; text-align:center; font-size:20px;">
-                                        <t t-esc="'{:,}'.format(line['in_qty']) if isinstance(line['in_qty'], int) else '{:,.2f}'.format(line['in_qty']).rstrip('0').rstrip('.')"/>
-                                    </td>
-                                    <td style="border:1px solid black; text-align:center; font-size:20px;">
-                                        <t t-esc="'{:,}'.format(line['out_qty']) if isinstance(line['out_qty'], int) else '{:,.2f}'.format(line['out_qty']).rstrip('0').rstrip('.')"/>
-                                    </td>
-                                    <td style="border:1px solid black; text-align:center; font-size:20px;">
-                                        <t t-esc="'{:,}'.format(line['balance']) if isinstance(line['balance'], int) else '{:,.2f}'.format(line['balance']).rstrip('0').rstrip('.')"/>
+                            <t t-foreach="set(category)" t-as="category">
+                                <tr style="border: 1px solid black; width=100%;">
+                                    <td style="border:1px solid black; text-align:center; background-color: #E6BF83; font-size:20px;" colspan="5">
+                                         <t t-esc="category.complete_name"/>
                                     </td>
                                 </tr>
 
+                                <t t-set="product" t-value="[]"/>
+                                <t t-foreach="get_product_detail(data)" t-as="line">
+                                    <t t-set="product" t-value="product + [line['product_id']]"/>
+                                </t>
+                                <t t-foreach="set(product)" t-as="product_id">
+                                    <t t-if="category.id == product_id.categ_id.id">
+                                        <tr style="border: 1px solid black; width=100%;">
+                                            <td style="border:1px solid black; text-align:center; background-color: #83AAE6; font-size:20px;" colspan="5">
+                                               
+                                                    <t t-esc="product_id.display_name"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="category.id == product_id.categ_id.id">
+                                        <tr style="border: 1px solid black; width=100%;">
+                                            <td style="border:1px solid black; text-align:center; font-size:20px;" colspan="4">
+                                                Opening Balance
+                                            </td>
+                                            <td style="border:1px solid black; text-align:center; font-size:20px;" colspan="4">
+                                                0.0
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="category.id == product_id.categ_id.id">
+                                        <t t-set="total_in_qty" t-value="0.0"/>
+                                        <t t-set="total_out_qty" t-value="0.0"/>
+                                        <t t-set="total_balance" t-value="0.0"/>
+                                        <t t-set="balance" t-value="0.0"/>
+                                        <t t-foreach="get_product_detail(data)" t-as="line">
+                                            <t t-if="product_id.id == line['product_id'].id">
+                                                <t t-if = "line['in_qty'] >= 0.0 or line['out_qty'] >= 0.0">
+                                                    <tr>
+                                                        <td style="border:1px solid black; text-align:center; font-size:20px;">
+                                                             <t t-if ="line.get('move_date')" t-esc="line['move_date'].strftime('%m-%d-%Y')"/>
+                                                        </td>
+                                                        <td style="border:1px solid black; text-align:center; font-size:20px;">
+                                                             <t t-if ="line.get('origin')" t-esc="line['origin']"/>
+                                                        </td>
+                                                       <td style="border:1px solid black; text-align:center; font-size:20px;">
+                                                        <t t-if ="line['in_qty'] > 0.0">
+                                                             <t t-set="total_in_qty" t-value="total_in_qty + line['in_qty']"/>
+                                                             <t t-set="balance" t-value="balance + line['in_qty']"/>
+                                                            <t t-esc="line['in_qty']" />
+                                                        </t>
+                                                        <t t-else = "">
+                                                            0.0
+                                                        </t>     
+                                                    </td>
+                                                    <td style="border:1px solid black; text-align:center; font-size:20px;">
+                                                        <t t-if ="line.get('out_qty')">
+                                                            <t t-set="total_out_qty" t-value="total_out_qty + line['out_qty']"/>
+                                                           <t t-set="balance" t-value="balance - line['out_qty']"/>
+                                                            <t t-esc="line['out_qty']"/>
+                                                        </t>
+                                                        <t t-else = "">
+                                                            0.0
+                                                        </t>
+
+                                                    </td>
+                                                    <td style= "border:1px solid black; text-align:center; font-size:20px;">
+                                                        <t t-set="total_balance" t-value="total_balance + balance"/>
+                                                        <t t-esc="balance"/>
+                                                    </td>
+                                                    </tr>
+                                                </t> 
+                                            </t>
+                                        </t> 
+                                         <tr>
+                                            <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
+                                               
+                                            </td>
+                                            <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
+                                                <strong>Total</strong>
+                                            </td>
+                                            <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
+                                                <strong><t t-esc="total_in_qty"/></strong>
+                                            </td>
+                                            <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
+                                                <strong><t t-esc="total_out_qty"/></strong>
+                                            </td>
+                                            <td style= "border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
+                                               <strong><t t-esc="total_in_qty - total_out_qty"/></strong>
+                                            </td>
+                                        </tr>    
+                                    </t>
+                                </t>
                             </t>
                         </t>
-                    </t>
 
-                    <tr>
-                        <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
+                        <t t-else = "">
+                            <t t-set="product" t-value="[]"/>
+                            <t t-foreach="get_product_detail(data)" t-as="line">
+                                <t t-set="product" t-value="product + [line['product_id']]"/>
+                            </t>
+                            <t t-foreach="set(product)" t-as="product_id">
+                                <tr style="border: 1px solid black; width=100%;">
+                                    <td style="border:1px solid black; text-align:center; background-color: #83AAE6; font-size:20px;" colspan="5">
+                                         <t t-esc="product_id.display_name"/>
+                                    </td>
+                                </tr>
+                                <tr style="border: 1px solid black; width=100%;">
+                                    <td style="border:1px solid black; text-align:center; font-size:20px;" colspan="4">
+                                        Opening Balance
+                                    </td>
+                                    <td style="border:1px solid black; text-align:center; font-size:20px;" colspan="4">
+                                        0.0
+                                    </td>
+                                </tr>
+                                <t t-set="total_in_qty" t-value="0.0"/>
+                                <t t-set="total_out_qty" t-value="0.0"/>
+                                <t t-set="total_balance" t-value="0.0"/>
+                                <t t-set="balance" t-value="0.0"/>
+                                <t t-foreach="get_product_detail(data)" t-as="line">
+                                    <t t-if="product_id.id == line['product_id'].id">
+                                        <t t-if = "line['in_qty'] >= 0.0 or line['out_qty'] >= 0.0">
+                                            <tr>
+                                                <td style="border:1px solid black; text-align:center; font-size:20px;">
+                                                     <t t-if ="line.get('move_date')" t-esc="line['move_date'].strftime('%m-%d-%Y')"/>
+                                                </td>
+                                                <td style="border:1px solid black; text-align:center; font-size:20px;">
+                                                     <t t-if ="line.get('origin')" t-esc="line['origin']"/>
+                                                </td>
+                                                <td style="border:1px solid black; text-align:center; font-size:20px;">
+                                                    <t t-if ="line['in_qty'] > 0.0">
+                                                        <t t-set="total_in_qty" t-value="total_in_qty + line['in_qty']"/>
+                                                        <t t-set="balance" t-value="balance + line['in_qty']"/>
+                                                        <t t-esc="line['in_qty']" />
+                                                    </t>
+                                                    <t t-else = "">
+                                                        0.0
+                                                    </t>     
+                                                </td>
+                                                <td style="border:1px solid black; text-align:center; font-size:20px;">
+                                                    <t t-if ="line.get('out_qty')">
+                                                        <t t-set="total_out_qty" t-value="total_out_qty + line['out_qty']"/>
+                                                        <t t-set="balance" t-value="balance - line['out_qty']"/>
+                                                        <t t-esc="line['out_qty']"/>
+                                                    </t>
+                                                    <t t-else = "">
+                                                        0.0
+                                                    </t>
 
-                        </td>
-                        <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
-                            <strong>Total</strong>
-                        </td>
-                        <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
-                            <strong>
-                                <t t-esc="'{:,}'.format(product_detail[0][product_id.id]['total_in']) if isinstance(product_detail[0][product_id.id]['total_in'], int) else '{:,.2f}'.format(product_detail[0][product_id.id]['total_in']).rstrip('0').rstrip('.')"/>
-                            </strong>
-                        </td>
-                        <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
-                            <strong>
-                                <t t-esc="'{:,}'.format(product_detail[0][product_id.id]['total_out']) if isinstance(product_detail[0][product_id.id]['total_out'], int) else '{:,.2f}'.format(product_detail[0][product_id.id]['total_out']).rstrip('0').rstrip('.')"/>
-                            </strong>
-                        </td>
-                        <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
-                            <strong>
-                                <t t-esc="'{:,}'.format(product_detail[0][product_id.id]['final_balance']) if isinstance(product_detail[0][product_id.id]['final_balance'], int) else '{:,.2f}'.format(product_detail[0][product_id.id]['final_balance']).rstrip('0').rstrip('.')"/>
-                            </strong>
-                        </td>
-                    </tr>
+                                                </td>
+                                                <td style= "border:1px solid black; text-align:center; font-size:20px;">
+                                                    <t t-set="total_balance" t-value="total_balance + balance"/>
+                                                    <t t-esc="balance"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
 
-                </t>
-            </t>
-        </table>
+                                <tr>
+                                    <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
+                                       
+                                    </td>
+                                    <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
+                                        <strong><t t-esc="total_in_qty"/></strong>
+                                    </td>
+                                    <td style="border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
+                                        <strong><t t-esc="total_out_qty"/></strong>
+                                    </td>
+                                    <td style= "border:1px solid black; text-align:center; background-color: #888888; font-size:20px;">
+                                       <strong><t t-esc="total_in_qty - total_out_qty"/></strong>
+                                    </td>
+                                </tr>    
+                            </t>
+                        </t>
+                </table>
+            </div>
+        </t>
     </template>
-
-    <template id="on_hand_only">
-
-        <style>
-            .elegant-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            }
-
-            .elegant-table th,
-            .elegant-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-            }
-
-            .elegant-table th {
-            background-color: #E6E6FA;
-            color: black;
-            font-weight:bold;
-            text-align:center;
-            }
-
-            .elegant-table tr:nth-child(even){background-color: #f2f2f2;}
-
-            .elegant-table tr:hover {background-color: #ddd;}
-
-            .elegant-table th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            }
-            h2,h4{
-            text-align:center;
-            }
-        </style>
-        <h2> تقرير أرصدة أصناف</h2>
-        <h4>التاريخ:
-            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
-
-            ===
-
-        الموقع:
-            <t t-esc="data.get('location_id').complete_name"/>
-        </h4>
-        <h5 style="text-align:left">
-            تمت الطباعة بواسطة: <span t-esc="user.name"/>
-        </h5>
-        <table class="elegant-table" style="direction:rtl">
-
-            <thead>
-                <tr>
-                    <th>كود</th>
-                    <th>اسم الصنف</th>
-                    <th>الرصيد</th>
-                </tr>
-            </thead>
-            <tbody>
-                <t t-foreach="get_on_hand_only(data)" t-as="product">
-                    <tr>
-                        <td style="text-align:right">
-                            <t t-esc="product['code']"/>
-                        </td>
-                        <td style="text-align:right">
-                            <t t-esc="product['name']"/>
-                        </td>
-                        <td style="text-align:right">
-                            <t t-esc="'{:,}'.format(product['quantity']) if isinstance(product['quantity'], int) else '{:,.2f}'.format(product['quantity']).rstrip('0').rstrip('.')"/>
-
-                        </td>
-                    </tr>
-                </t>
-            </tbody>
-        </table>
-
-    </template>
-
 
     <template id="inventory_card_report_template">
         <t t-call="web.html_container">

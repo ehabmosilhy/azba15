@@ -10,8 +10,8 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="date_from" attrs="{'required':[('is_on_hand_only','=',False)]}"/>
-                                <field name="date_to" attrs="{'required':[('is_on_hand_only','=',False)]}"/>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
                                 <field name="warehouse_id"/>
                             </group>
                             <group>
@@ -21,9 +21,6 @@
                             </group>
                         </group>
                         <div>
-                            <group>
-                                <field name="is_on_hand_only" type="boolean"/>
-                            </group>
                             <group>
                                 <field name="product_ids"  attrs="{'invisible': [ ('report_by','!=','product')],'required':[('report_by','=', 'product')]}"/>
                                 <field name="product_category_ids" attrs="{'invisible': [ ('report_by','!=','product_category')],'required':[('report_by','=', 'product_category')]}"/>
