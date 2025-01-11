@@ -34,6 +34,46 @@ class AllProductHistoryReport(models.TransientModel):
         help="Use compute fields, so there is nothing store in database",
     )
 
+    def exempt_moves(self,date_from,date_to):
+        sql = """
+            WITH pairs AS (
+                SELECT
+                id,
+                    create_date,
+                    product_id,
+                    array_agg(quantity) as quantities,
+                    count(*) as row_count
+                FROM stock_valuation_layer
+                WHERE create_date BETWEEN %s AND %s
+                GROUP BY id,create_date, product_id
+                HAVING count(*) = 2
+            )
+            SELECT
+                svl.*
+            FROM pairs p
+            JOIN stock_valuation_layer svl
+            ON svl.create_date = p.create_date
+            AND svl.product_id = p.product_id
+            WHERE EXISTS (
+                SELECT 1
+                FROM stock_valuation_layer svl2
+                WHERE svl2.create_date = svl.create_date
+                AND svl2.product_id = svl.product_id
+                AND svl2.quantity = -svl.quantity
+            )
+            ORDER BY
+                svl.create_date,
+                svl.product_id,
+                svl.quantity DESC
+        """
+        params = (date_from, date_to)
+        debug_query = self._cr.mogrify(sql, params)
+        print (debug_query)
+        self._cr.execute(sql, params)
+        
+        return self._cr.fetchall()
+        
+
     def _compute_results(self):
         self.ensure_one()
         self.date_to = self.date_to or fields.Date.context_today(self)
@@ -44,8 +84,10 @@ class AllProductHistoryReport(models.TransientModel):
             self._cr.execute("SELECT DISTINCT product_id FROM stock_valuation_layer")
             product_ids = [r[0] for r in self._cr.fetchall()]
             products = self.env['product.product'].browse(product_ids)
+        
+        exempt_moves = self.exempt_moves(self.date_from, self.date_to) or [0]
 
-        query = """
+        sql = """
             WITH movements AS (
                 SELECT 
                     v.product_id,
@@ -68,6 +110,8 @@ class AllProductHistoryReport(models.TransientModel):
                 JOIN product_template pt ON pt.id = pp.product_tmpl_id
                 WHERE v.product_id in %s 
                     AND v.company_id = %s
+                    and v.id not in %s
+
                 GROUP BY v.product_id, TRIM(pt.code)
             )
             SELECT 
@@ -87,9 +131,10 @@ class AllProductHistoryReport(models.TransientModel):
             self.date_from, self.date_to,
             tuple(products.ids),
             self.env.company.id,
+            tuple(exempt_moves)
         )
         
-        self._cr.execute(query, params)
+        self._cr.execute(sql, params)
         all_product_history_results = self._cr.dictfetchall()
         ReportLine = self.env["all.product.history.view"]
         self.results = [ReportLine.new(line).id for line in all_product_history_results]

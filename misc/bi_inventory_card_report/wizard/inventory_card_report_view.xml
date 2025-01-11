@@ -44,9 +44,10 @@
         </record>
 
         <menuitem id="inventory_card_report_menu" 
-                name="Inventory Card Report"
+                name="Inventory Card Report💰💰💰"
                 parent = "stock.menu_warehouse_report"
                 action="inventory_card_report_action_form"
                 sequence="1"/>
+
     </data>
 </odoo>
