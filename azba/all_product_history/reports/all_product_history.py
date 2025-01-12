@@ -105,7 +105,7 @@ ORDER BY
                     WHEN v.create_date::date >= %s 
                     AND v.create_date::date <= %s 
                     AND v.quantity > 0
-                    AND (v.create_date::date > %s and v.create_date::date < %s and v.id not in %s)
+                    AND (v.create_date::date >= %s and v.create_date::date <= %s and v.id not in %s)
                     THEN v.quantity 
                     ELSE 0 
                 END), 0) as product_in,
@@ -113,13 +113,13 @@ ORDER BY
                     WHEN v.create_date::date >= %s 
                     AND v.create_date::date <= %s 
                     AND v.quantity < 0
-                    AND (v.create_date::date > %s and v.create_date::date < %s and v.id not in %s)
+                    AND (v.create_date::date >= %s and v.create_date::date <= %s and v.id not in %s)
                     THEN v.quantity 
                     ELSE 0 
                 END)), 0) as product_out,
                 COALESCE(SUM(CASE 
-                    WHEN v.create_date::date > %s 
-                    and v.create_date::date < %s 
+                    WHEN v.create_date::date >= %s 
+                    and v.create_date::date <= %s 
                     and v.id not in %s
                     THEN v.value 
                     ELSE 0 
