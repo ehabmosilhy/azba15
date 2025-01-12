@@ -55,7 +55,7 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
                 },
             },
         }
-        
+
         all_product_history_template = {
             "1_code": {
                 "header": {"value": "Code"},
@@ -139,21 +139,28 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
 
         # Add company name header
         company_name = objects.env.company.name
-        ws.write(row_pos, 0, company_name, FORMATS['format_theader_yellow_left'])
+        center_format = wb.add_format({'align': 'center', 'valign': 'vcenter'})
+
+        ws.merge_range(row_pos, 0, row_pos, 8, company_name, center_format)
         row_pos += 1
-        report_name ="تقرير حركات أصناف"
-        ws.write(row_pos, 0, report_name, FORMATS['format_theader_yellow_left'])
-        report_name="أول المدة - وارد - منصرف"
+        report_name = "تقرير حركات أصناف"
+        ws.merge_range(row_pos, 0, row_pos, 8, report_name, center_format)
+        report_name = "أول المدة - وارد - منصرف"
         row_pos += 1
-        ws.write(row_pos, 0, report_name, FORMATS['format_theader_yellow_left'])
+        ws.merge_range(row_pos, 0, row_pos, 8, report_name, center_format)
+        row_pos += 1
+        ws.merge_range(row_pos, 0, row_pos, 8, "المدة", center_format)
+        row_pos += 1
+        date_range = f"من {objects.date_from or ''} إلى {objects.date_to or ''}"
+
+        ws.merge_range(row_pos, 0, row_pos, 8, date_range, center_format)
 
         # Add report name header
         row_pos += 2
 
         # Add date range header
-        date_range = f"Date from {objects.date_from or ''} to {objects.date_to or ''}"
-        ws.write(row_pos, 0, date_range, FORMATS['format_theader_yellow_left'])
-        row_pos += 2
+        # ws.write(row_pos, 0, date_range, FORMATS['format_theader_yellow_left'])
+        # row_pos += 2
 
         # Write filters
         row_pos = self._write_line(
