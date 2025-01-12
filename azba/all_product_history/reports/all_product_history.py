@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import api, fields, models
+from datetime import timedelta
 
 
 class AllProductHistoryView(models.TransientModel):
@@ -34,49 +35,53 @@ class AllProductHistoryReport(models.TransientModel):
         help="Use compute fields, so there is nothing store in database",
     )
 
-    def exempt_moves(self,date_from,date_to):
+    def exempt_moves(self, date_from, date_to):
+
         sql = """
-            WITH pairs AS (
-                SELECT
-                id,
-                    create_date,
-                    product_id,
-                    array_agg(quantity) as quantities,
-                    count(*) as row_count
-                FROM stock_valuation_layer
-                WHERE create_date BETWEEN %s AND %s
-                GROUP BY id,create_date, product_id
-                HAVING count(*) = 2
-            )
-            SELECT
-                svl.*
-            FROM pairs p
-            JOIN stock_valuation_layer svl
-            ON svl.create_date = p.create_date
-            AND svl.product_id = p.product_id
-            WHERE EXISTS (
-                SELECT 1
-                FROM stock_valuation_layer svl2
-                WHERE svl2.create_date = svl.create_date
-                AND svl2.product_id = svl.product_id
-                AND svl2.quantity = -svl.quantity
-            )
-            ORDER BY
-                svl.create_date,
-                svl.product_id,
-                svl.quantity DESC
+         WITH pairs AS (
+  SELECT
+    create_date,
+    product_id,
+    array_agg(quantity) as quantities,
+    count(*) as row_count
+  FROM stock_valuation_layer
+  WHERE create_date >= %s AND create_date <= %s
+  and product_id in %s
+  GROUP BY create_date, product_id
+  HAVING count(*) = 2
+)
+SELECT
+  svl.id
+FROM pairs p
+JOIN stock_valuation_layer svl
+  ON svl.create_date = p.create_date
+  AND svl.product_id = p.product_id
+WHERE EXISTS (
+    SELECT 1
+    FROM stock_valuation_layer svl2
+    WHERE svl2.create_date = svl.create_date
+    AND svl2.product_id = svl.product_id
+    AND svl2.quantity = -svl.quantity
+)
+ORDER BY
+  svl.create_date,
+  svl.product_id,
+  svl.quantity DESC;
         """
-        params = (date_from, date_to)
+        params = (date_from, date_to, tuple(self.product_ids.ids))
         debug_query = self._cr.mogrify(sql, params)
-        print (debug_query)
+        print(debug_query)
         self._cr.execute(sql, params)
-        
+
         return self._cr.fetchall()
-        
 
     def _compute_results(self):
         self.ensure_one()
         self.date_to = self.date_to or fields.Date.context_today(self)
+
+        if self.date_from == self.date_to:
+            # add one day to date_to
+            self.date_to = self.date_from + timedelta(days=1) if self.date_from else None
 
         # Get all products if none selected
         products = self.product_ids
@@ -84,56 +89,71 @@ class AllProductHistoryReport(models.TransientModel):
             self._cr.execute("SELECT DISTINCT product_id FROM stock_valuation_layer")
             product_ids = [r[0] for r in self._cr.fetchall()]
             products = self.env['product.product'].browse(product_ids)
-        
-        exempt_moves = self.exempt_moves(self.date_from, self.date_to) or [0]
+
+        exempt_moves = [item for t in self.exempt_moves(self.date_from, self.date_to) or [[0]] for item in t]
 
         sql = """
-            WITH movements AS (
-                SELECT 
-                    v.product_id,
-                    TRIM(pt.code) as product_code,
-                    COALESCE(SUM(CASE 
-                        WHEN v.create_date::date < %s THEN v.quantity 
-                        ELSE 0 
-                    END), 0) as initial_balance,
-                    COALESCE(SUM(CASE 
-                        WHEN v.create_date::date BETWEEN %s AND %s AND v.quantity > 0 THEN v.quantity 
-                        ELSE 0 
-                    END), 0) as product_in,
-                    COALESCE(ABS(SUM(CASE 
-                        WHEN v.create_date::date BETWEEN %s AND %s AND v.quantity < 0 THEN v.quantity 
-                        ELSE 0 
-                    END)), 0) as product_out,
-                    COALESCE(SUM(v.value), 0) as total_value
-                FROM stock_valuation_layer v
-                JOIN product_product pp ON pp.id = v.product_id
-                JOIN product_template pt ON pt.id = pp.product_tmpl_id
-                WHERE v.product_id in %s 
-                    AND v.company_id = %s
-                    and v.id not in %s
-
-                GROUP BY v.product_id, TRIM(pt.code)
-            )
+                  WITH movements AS (
             SELECT 
-                product_id,
-                product_code,
-                initial_balance,
-                product_in,
-                product_out,
-                initial_balance + product_in - product_out as balance,
-                total_value
-            FROM movements
-            ORDER BY product_code
+                v.product_id,
+                TRIM(pt.code) as product_code,
+                COALESCE(SUM(CASE 
+                    WHEN v.create_date::date < %s THEN v.quantity 
+                    ELSE 0 
+                END), 0) as initial_balance,
+                COALESCE(SUM(CASE 
+                    WHEN v.create_date::date >= %s 
+                    AND v.create_date::date <= %s 
+                    AND v.quantity > 0
+                    AND (v.create_date::date < %s and v.create_date::date > %s and v.id not in %s)
+                    THEN v.quantity 
+                    ELSE 0 
+                END), 0) as product_in,
+                COALESCE(ABS(SUM(CASE 
+                    WHEN v.create_date::date >= %s 
+                    AND v.create_date::date <= %s 
+                    AND v.quantity < 0
+                    AND (v.create_date::date < %s and v.create_date::date > %s and v.id not in %s)
+                    THEN v.quantity 
+                    ELSE 0 
+                END)), 0) as product_out,
+                COALESCE(SUM(CASE 
+                    WHEN v.create_date::date < %s 
+                    and v.create_date::date > %s 
+                    and v.id not in %s
+                    THEN v.value 
+                    ELSE 0 
+                END), 0) as total_value
+            FROM stock_valuation_layer v
+            JOIN product_product pp ON pp.id = v.product_id
+            JOIN product_template pt ON pt.id = pp.product_tmpl_id
+            WHERE v.product_id in %s 
+                AND v.company_id = %s
+            GROUP BY v.product_id, TRIM(pt.code)
+        )
+        SELECT 
+            product_id,
+            product_code,
+            initial_balance,
+            product_in,
+            product_out,
+            initial_balance + product_in - product_out as balance,
+            total_value
+        FROM movements
+        ORDER BY product_code
         """
         params = (
-            self.date_from,
-            self.date_from, self.date_to,
-            self.date_from, self.date_to,
-            tuple(products.ids),
-            self.env.company.id,
-            tuple(exempt_moves)
+            self.date_from,  # for initial_balance
+            self.date_from, self.date_to,  # for product_in date range
+            self.date_from, self.date_to, tuple(exempt_moves),  # for product_in exempt check
+            self.date_from, self.date_to,  # for product_out date range
+            self.date_from, self.date_to, tuple(exempt_moves),  # for product_out exempt check
+            self.date_from, self.date_to, tuple(exempt_moves),  # for total_value exempt check
+            tuple(products.ids),  # for product_id in
+            self.env.company.id  # for company_id
         )
-        
+        debug_sql = self._cr.mogrify(sql, params).decode('utf-8').replace("\n", " ")
+        print(debug_sql)
         self._cr.execute(sql, params)
         all_product_history_results = self._cr.dictfetchall()
         ReportLine = self.env["all.product.history.view"]
@@ -151,8 +171,8 @@ class AllProductHistoryReport(models.TransientModel):
     def print_report(self, report_type="qweb"):
         self.ensure_one()
         action = (
-            report_type == "xlsx"
-            and self.env.ref("all_product_history.action_all_product_history_xlsx")
-            or self.env.ref("all_product_history.action_all_product_history_pdf")
+                report_type == "xlsx"
+                and self.env.ref("all_product_history.action_all_product_history_xlsx")
+                or self.env.ref("all_product_history.action_all_product_history_pdf")
         )
         return action.report_action(self, config=False)
