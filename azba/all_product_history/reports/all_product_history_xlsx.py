@@ -137,6 +137,16 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
         row_pos = 0
         row_pos = self._write_ws_title(ws, row_pos, ws_params)
 
+        # Add company name header
+        company_name = objects.env.company.name
+        ws.write(row_pos, 0, company_name, FORMATS['format_theader_yellow_left'])
+        row_pos += 2
+
+        # Add date range header
+        date_range = f"Date from {objects.date_from or ''} to {objects.date_to or ''}"
+        ws.write(row_pos, 0, date_range, FORMATS['format_theader_yellow_left'])
+        row_pos += 2
+
         # Write filters
         row_pos = self._write_line(
             ws,
