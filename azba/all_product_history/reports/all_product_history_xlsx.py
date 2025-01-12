@@ -140,6 +140,14 @@ class ReportAllProductHistoryXlsx(models.AbstractModel):
         # Add company name header
         company_name = objects.env.company.name
         ws.write(row_pos, 0, company_name, FORMATS['format_theader_yellow_left'])
+        row_pos += 1
+        report_name ="تقرير حركات أصناف"
+        ws.write(row_pos, 0, report_name, FORMATS['format_theader_yellow_left'])
+        report_name="أول المدة - وارد - منصرف"
+        row_pos += 1
+        ws.write(row_pos, 0, report_name, FORMATS['format_theader_yellow_left'])
+
+        # Add report name header
         row_pos += 2
 
         # Add date range header
