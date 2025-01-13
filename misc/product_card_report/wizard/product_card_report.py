@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """ init object """
-from odoo import fields, models, api, _ ,tools, SUPERUSER_ID
-from odoo.exceptions import ValidationError,UserError
+from odoo import fields, models, api, _, tools, SUPERUSER_ID
+from odoo.exceptions import ValidationError, UserError
 import pytz
-from datetime import datetime , date ,timedelta
+from datetime import datetime, date, timedelta
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTF
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
 from dateutil.relativedelta import relativedelta
@@ -21,6 +21,7 @@ import logging
 
 LOGGER = logging.getLogger(__name__)
 
+
 class ProductCardReportWizard(models.TransientModel):
     _name = 'product.card.report.wizard'
 
@@ -30,14 +31,15 @@ class ProductCardReportWizard(models.TransientModel):
     product_tmpl_id = fields.Many2one(comodel_name="product.template")
     date_from = fields.Datetime(default=lambda self: fields.Datetime.now(), required=False, )
     date_to = fields.Datetime(default=lambda self: fields.Datetime.now(), required=False, )
-    location_id = fields.Many2one(comodel_name="stock.location",)
-    report_type = fields.Selection(string="Status",default="xls", selection=[('xls', 'XLS'), ('html', 'HTML'), ], required=True, )
+    location_id = fields.Many2one(comodel_name="stock.location", )
+    report_type = fields.Selection(string="Status", default="xls", selection=[('xls', 'XLS'), ('html', 'HTML'), ],
+                                   required=True, )
     excel_sheet_name = fields.Char(string="", required=False, )
-    excel_sheet = fields.Binary(string="",  )
+    excel_sheet = fields.Binary(string="", )
 
     @api.model
     def default_get(self, fields_list):
-        res = super(ProductCardReportWizard,self).default_get(fields_list)
+        res = super(ProductCardReportWizard, self).default_get(fields_list)
         if self.env.context.get('active_model') == 'product.template':
             product = self.env['product.template'].browse(self.env.context.get('active_id'))
             res['product_tmpl_id'] = self.env.context.get('active_id')
@@ -50,21 +52,21 @@ class ProductCardReportWizard(models.TransientModel):
             res['default_code'] = product.default_code
         return res
 
-    def convert_date_to_utc(self,dat, tz):
+    def convert_date_to_utc(self, dat, tz):
         local = tz and pytz.timezone(tz) or pytz.timezone('UTC')
         date = local.localize(dat, is_dst=None)
         date = date.astimezone(pytz.utc)
         date.strftime('%Y-%m-%d %H:%M:%S')
         return date.replace(tzinfo=None)
 
-    def convert_date_to_local(self,dat, tz):
+    def convert_date_to_local(self, dat, tz):
         local = tz and pytz.timezone(tz) or pytz.timezone('UTC')
         dat = dat.replace(tzinfo=pytz.utc)
         dat = dat.astimezone(local)
         dat.strftime('%Y-%m-%d: %H:%M:%S')
         return dat.replace(tzinfo=None)
 
-    def get_data_from_move(self,move,qty,inc,out,qty_balance):
+    def get_data_from_move(self, move, qty, inc, out, qty_balance):
         picking = move.picking_id
         order_ref = ''
         picking_origin = ''
@@ -102,33 +104,34 @@ class ProductCardReportWizard(models.TransientModel):
             'qty_balance': qty_balance,
         }
 
-
     def get_report_data(self):
-        data=[]
+        data = []
         # product = self.product_id
         products = self.product_id if self.product_id else self.product_tmpl_id.product_variant_ids
         date_to_utc = fields.Datetime.from_string(self.date_to) if self.date_to else datetime.now()
         date_from_utc = fields.Datetime.from_string(self.date_from) if self.date_from else None
         domain = [('product_id', 'in', products.ids), ('state', '=', 'done')]
-            
+
         company_id = self.env.user.company_id.id
         qty_balance = 0
         if self.location_id:
             internal_locations = self.location_id
         else:
-            internal_locations = self.env['stock.location'].search([('company_id', '=', company_id), ('usage', 'in', ['internal', 'transit'])])
+            internal_locations = self.env['stock.location'].search(
+                [('company_id', '=', company_id), ('usage', 'in', ['internal', 'transit'])])
 
         if self.date_from:
             date_from_utc = fields.Datetime.from_string(self.date_from)
-            domain.append(('date','>=',str(date_from_utc)))
+            domain.append(('date', '>=', str(date_from_utc)))
             if self.product_tmpl_id:
-                qty_balance = self.product_tmpl_id.with_context(to_date=date_from_utc,location=self.location_id.id).qty_available
+                qty_balance = self.product_tmpl_id.with_context(to_date=date_from_utc,
+                                                                location=self.location_id.id).qty_available
             else:
-                qty_balance = self.product_id.with_context(to_date=date_from_utc,location=self.location_id.id).qty_available
-                
+                qty_balance = self.product_id.with_context(to_date=date_from_utc,
+                                                           location=self.location_id.id).qty_available
 
             data.append({
-                'date': str(self.convert_date_to_local(fields.Datetime.from_string(self.date_from),self.env.user.tz)),
+                'date': str(self.convert_date_to_local(fields.Datetime.from_string(self.date_from), self.env.user.tz)),
                 'ref': '',
                 'order_ref': '',
                 'partner': '',
@@ -140,21 +143,28 @@ class ProductCardReportWizard(models.TransientModel):
             })
 
         if self.date_to:
-            domain.append(('date','<=',str(date_to_utc)))
+            domain.append(('date', '<=', str(date_to_utc)))
 
         if self.location_id:
-            domain.extend(['|',('location_id', 'child_of', self.location_id.id),('location_dest_id', 'child_of', self.location_id.id)])
+            domain.extend(['|', ('location_id', 'child_of', self.location_id.id),
+                           ('location_dest_id', 'child_of', self.location_id.id)])
 
-        stock_move = self.env['stock.move'].search(domain,order='date asc,id asc')
+        stock_move = self.env['stock.move'].search(domain, order='date asc,id asc')
         for move in stock_move:
 
-            inc = True if move.location_dest_id in internal_locations else False
-            out = True if move.location_id in internal_locations else False
+            # inc = True if move.location_dest_id.usage == 'supplier' else False
+            # out = True if move.location_id.usage == 'customer' else False
+            inc = True if move.location_id.usage in ('supplier') else False
+            out = True if move.location_dest_id.usage in ('customer', 'production') else False
+            if not inc and not out:
+                if move.location_id.usage =='internal' and move.location_dest_id.usage == 'internal':
+                    inc = out = True
+                    
             qty = move.quantity_done
 
             previous_qty_balance = data[-1]['qty_balance'] if data else 0
 
-            if out and not inc :
+            if out and not inc:
                 sign = -1
             elif not out and inc:
                 sign = 1
@@ -163,15 +173,15 @@ class ProductCardReportWizard(models.TransientModel):
 
             qty_balance = previous_qty_balance + sign * qty
 
-            line_data = self.get_data_from_move(move,qty,inc,out,qty_balance)
+            line_data = self.get_data_from_move(move, qty, inc, out, qty_balance)
             data.append(line_data)
 
         if stock_move and not date_from_utc:
             date_from_utc = fields.Datetime.from_string(stock_move[0].date)
 
-        return data,date_to_utc,date_from_utc
+        return data, date_to_utc, date_from_utc
 
-    def add_excel_sheet(self,workbook,data,date_to_utc,date_from_utc,sheet_name):
+    def add_excel_sheet(self, workbook, data, date_to_utc, date_from_utc, sheet_name):
         worksheet = workbook.add_sheet(sheet_name)
 
         lang = self.env.user.lang
@@ -249,23 +259,26 @@ class ProductCardReportWizard(models.TransientModel):
         worksheet.set_horz_split_pos(5)
         row = 0
         worksheet.write_merge(row, row, 0, 1, _('اسم الصنف'), TABLE_data)
-        worksheet.write_merge(row, row , 2, 6,self.name, TABLE_data)
-        worksheet.write_merge(row, row , 7, 8, _('كود الصنف'), TABLE_data)
+        worksheet.write_merge(row, row, 2, 6, self.name, TABLE_data)
+        worksheet.write_merge(row, row, 7, 8, _('كود الصنف'), TABLE_data)
         worksheet.write(row, 9, self.product_id.default_code, TABLE_data)
 
         row = 1
         worksheet.write_merge(row, row, 0, 1, _('التاريخ من'), TABLE_data)
-        worksheet.write_merge(row, row , 2, 3,str(self.convert_date_to_local(date_from_utc,self.env.user.tz)) if date_from_utc else '', TABLE_data)
-        worksheet.write_merge(row, row , 4, 5, _('التاريخ الى'), TABLE_data)
-        worksheet.write_merge(row, row , 6, 7, str(self.convert_date_to_local(date_to_utc,self.env.user.tz)), TABLE_data)
+        worksheet.write_merge(row, row, 2, 3,
+                              str(self.convert_date_to_local(date_from_utc, self.env.user.tz)) if date_from_utc else '',
+                              TABLE_data)
+        worksheet.write_merge(row, row, 4, 5, _('التاريخ الى'), TABLE_data)
+        worksheet.write_merge(row, row, 6, 7, str(self.convert_date_to_local(date_to_utc, self.env.user.tz)),
+                              TABLE_data)
         if self.location_id:
-            worksheet.write_merge(row, row , 8, 9, _('مخزن'), TABLE_data)
-            worksheet.write_merge(row, row , 10, 11,self.location_id.complete_name, TABLE_data)
+            worksheet.write_merge(row, row, 8, 9, _('مخزن'), TABLE_data)
+            worksheet.write_merge(row, row, 10, 11, self.location_id.complete_name, TABLE_data)
 
         row = 3
         col = 0
         worksheet.row(row).height = 256 * 5
-        worksheet.row(row+1).height = 256 * 5
+        worksheet.row(row + 1).height = 256 * 5
         worksheet.write_merge(row, row + 1, col, col, _('تاريخ'), header_format)
         col += 1
         worksheet.write_merge(row, row + 1, col, col, _('رقم الأذن'), header_format)
@@ -280,17 +293,17 @@ class ProductCardReportWizard(models.TransientModel):
         col += 1
         worksheet.write_merge(row, row + 1, col, col, _('الى مخزن'), header_format)
         col += 1
-        worksheet.write(row, col , _('وارد'), header_format)
+        worksheet.write(row, col, _('وارد'), header_format)
         col += 1
         worksheet.write(row, col, _('منصرف'), header_format)
         col += 1
         worksheet.write(row, col, _('رصيد'), header_format)
         col = 6
-        worksheet.write(row+1,col, _('كمية'), header_format)
+        worksheet.write(row + 1, col, _('كمية'), header_format)
         col += 1
-        worksheet.write(row+1,col, _('كمية'), header_format)
+        worksheet.write(row + 1, col, _('كمية'), header_format)
         col += 1
-        worksheet.write(row+1,col, _('كمية'), header_format)
+        worksheet.write(row + 1, col, _('كمية'), header_format)
         col += 1
         worksheet.col(0).width = 256 * 50
         row += 1
@@ -318,7 +331,6 @@ class ProductCardReportWizard(models.TransientModel):
             worksheet.write(row, col, d['qty_balance'], TABLE_data)
             col += 1
 
-
     def action_print_xls(self):
         self.ensure_one()
         workbook = xlwt.Workbook()
@@ -328,11 +340,10 @@ class ProductCardReportWizard(models.TransientModel):
         if self.date_to and not self.date_from:
             raise ValidationError(_('Start date is not set'))
 
-        report_data,date_to_utc,date_from_utc = self.get_report_data()
-        self.add_excel_sheet(workbook, report_data,date_to_utc,date_from_utc, _('كارت صنف قيمة'))
+        report_data, date_to_utc, date_from_utc = self.get_report_data()
+        self.add_excel_sheet(workbook, report_data, date_to_utc, date_from_utc, _('كارت صنف قيمة'))
 
-
-        xls_file_path = (_( self.name + ' كارت صنف قيمة.xls'))
+        xls_file_path = (_(self.name + ' كارت صنف قيمة.xls'))
 
         output = BytesIO()
 
@@ -350,7 +361,7 @@ class ProductCardReportWizard(models.TransientModel):
     def action_print_html(self):
         return {
             'type': 'ir.actions.act_url',
-            'url': '/custom/product_card/%s' %(self.id),
+            'url': '/custom/product_card/%s' % (self.id),
             'target': 'current'
         }
 
@@ -360,5 +371,3 @@ class ProductCardReportWizard(models.TransientModel):
 
         elif self.report_type == 'html':
             return self.action_print_html()
-
-
