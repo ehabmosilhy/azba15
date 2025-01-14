@@ -103,6 +103,26 @@ class ProductCardReportWizard(models.TransientModel):
             'qty_out': qty if out else 0,
             'qty_balance': qty_balance,
         }
+    
+    def get_initial_balance_as_in_valuation(self):
+        if self.product_id:
+            product_id =self.product_id.id
+        else:
+            product_id = self.product_tmpl_id.product_variant_ids[0].id
+        query = """
+            SELECT
+                SUM(quantity) AS balance
+            FROM
+                product_template pt
+                INNER JOIN product_product pp ON pt.id = pp.product_tmpl_id
+                LEFT JOIN stock_valuation_layer v ON pp.id = v.product_id
+            WHERE
+                v.product_id = %s AND
+                v.create_date < %s
+        """
+        self.env.cr.execute(query, (product_id, self.date_from))
+        result = self.env.cr.fetchone()
+        return result[0] if result else 0
 
     def get_report_data(self):
         data = []
@@ -114,7 +134,10 @@ class ProductCardReportWizard(models.TransientModel):
 
         company_id = self.env.user.company_id.id
         qty_balance = 0
+        is_location_selected=False  
+
         if self.location_id:
+            is_location_selected=True
             internal_locations = self.location_id
         else:
             internal_locations = self.env['stock.location'].search(
@@ -130,6 +153,8 @@ class ProductCardReportWizard(models.TransientModel):
                 qty_balance = self.product_id.with_context(to_date=date_from_utc,
                                                            location=self.location_id.id).qty_available
 
+            if not is_location_selected:
+                qty_balance = self.get_initial_balance_as_in_valuation()
             data.append({
                 'date': str(self.convert_date_to_local(fields.Datetime.from_string(self.date_from), self.env.user.tz)),
                 'ref': '',
@@ -149,7 +174,7 @@ class ProductCardReportWizard(models.TransientModel):
             domain.extend(['|', ('location_id', 'child_of', self.location_id.id),
                            ('location_dest_id', 'child_of', self.location_id.id)])
 
-        stock_move = self.env['stock.move'].search(domain, order='date asc,id asc')
+        stock_move = self.env['stock.move'].search(domain, order='date asc,id asc', limit=1)
         for move in stock_move:
 
             # inc = True if move.location_dest_id.usage == 'supplier' else False
@@ -160,7 +185,7 @@ class ProductCardReportWizard(models.TransientModel):
                 if move.location_id.usage == 'internal' and move.location_dest_id.usage == 'internal':
                     inc = out = True
                 elif move.location_dest_id.usage == 'inventory':  # inventory loss
-                    if move.quantity_done > 0:
+                    if move.quantity_done < 0:
                         inc = True
                     else:
                         out = True
