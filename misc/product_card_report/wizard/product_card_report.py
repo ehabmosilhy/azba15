@@ -157,9 +157,14 @@ class ProductCardReportWizard(models.TransientModel):
             inc = True if move.location_id.usage in ('supplier') else False
             out = True if move.location_dest_id.usage in ('customer', 'production') else False
             if not inc and not out:
-                if move.location_id.usage =='internal' and move.location_dest_id.usage == 'internal':
+                if move.location_id.usage == 'internal' and move.location_dest_id.usage == 'internal':
                     inc = out = True
-                    
+                elif move.location_dest_id.usage == 'inventory':  # inventory loss
+                    if move.quantity_done > 0:
+                        inc = True
+                    else:
+                        out = True
+
             qty = move.quantity_done
 
             previous_qty_balance = data[-1]['qty_balance'] if data else 0
