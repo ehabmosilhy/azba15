@@ -174,7 +174,7 @@ class ProductCardReportWizard(models.TransientModel):
             domain.extend(['|', ('location_id', 'child_of', self.location_id.id),
                            ('location_dest_id', 'child_of', self.location_id.id)])
 
-        stock_move = self.env['stock.move'].search(domain, order='date asc,id asc', limit=1)
+        stock_move = self.env['stock.move'].search(domain, order='date asc,id asc')
         for move in stock_move:
 
             # inc = True if move.location_dest_id.usage == 'supplier' else False
