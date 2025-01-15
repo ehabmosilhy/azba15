@@ -156,6 +156,45 @@ ORDER BY
         print(debug_sql)
         self._cr.execute(sql, params)
         all_product_history_results = self._cr.dictfetchall()
+
+        # Additional movements from stock_move not in valuation layer
+        additional_moves_sql = """
+            SELECT 
+                sm.product_id,
+                SUM(CASE WHEN sm.reference iLIKE %s THEN sm.product_qty ELSE 0 END) as product_in,
+                SUM(CASE WHEN sm.reference iLIKE %s THEN sm.product_qty ELSE 0 END) as product_out
+            FROM stock_move sm
+            WHERE sm.date::date >= %s
+                AND sm.date::date <= %s
+                AND sm.product_id in %s
+                AND sm.state = 'done'
+                AND sm.id NOT IN (
+                    SELECT COALESCE(stock_move_id, 0)
+                    FROM stock_valuation_layer
+                    WHERE create_date::date >= %s
+                    AND create_date::date <= %s
+                    AND product_id = sm.product_id
+                )
+            GROUP BY sm.product_id
+        """
+        additional_params = (
+            '%in%',  # for product_in pattern
+            '%out%',  # for product_out pattern
+            self.date_from, self.date_to,  # date range
+            tuple(products.ids),  # product_ids
+            self.date_from, self.date_to,  # date range for valuation layer check
+        )
+        self._cr.execute(additional_moves_sql, additional_params)
+        additional_moves = {r['product_id']: r for r in self._cr.dictfetchall()}
+
+        # Combine the results
+        for result in all_product_history_results:
+            product_id = result['product_id']
+            if product_id in additional_moves:
+                result['product_in'] += additional_moves[product_id]['product_in'] or 0
+                result['product_out'] += additional_moves[product_id]['product_out'] or 0
+                result['balance'] = result['initial_balance'] + result['product_in'] - result['product_out']
+
         ReportLine = self.env["all.product.history.view"]
         self.results = [ReportLine.new(line).id for line in all_product_history_results]
 
