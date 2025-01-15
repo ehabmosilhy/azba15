@@ -178,12 +178,14 @@ ORDER BY
             GROUP BY sm.product_id
         """
         additional_params = (
-            '%in%',  # for product_in pattern
-            '%out%',  # for product_out pattern
+            '%/in/%',  # for product_in pattern
+            '%/out/%',  # for product_out pattern
             self.date_from, self.date_to,  # date range
             tuple(products.ids),  # product_ids
             self.date_from, self.date_to,  # date range for valuation layer check
         )
+        debug_query = self._cr.mogrify(additional_moves_sql, additional_params).decode('utf-8').replace("\n", " ")
+        print(debug_query)
         self._cr.execute(additional_moves_sql, additional_params)
         additional_moves = {r['product_id']: r for r in self._cr.dictfetchall()}
 
@@ -193,7 +195,7 @@ ORDER BY
             if product_id in additional_moves:
                 result['product_in'] += additional_moves[product_id]['product_in'] or 0
                 result['product_out'] += additional_moves[product_id]['product_out'] or 0
-                result['balance'] = result['initial_balance'] + result['product_in'] - result['product_out']
+                # result['balance'] = result['initial_balance'] + result['product_in'] - result['product_out']
 
         ReportLine = self.env["all.product.history.view"]
         self.results = [ReportLine.new(line).id for line in all_product_history_results]
