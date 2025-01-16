@@ -105,6 +105,7 @@ class ProductCardReportWizard(models.TransientModel):
         }
     
     def get_initial_balance_as_in_valuation(self):
+        # ---------------- Ehab -----------------------------------------
         if self.product_id:
             product_id =self.product_id.id
         else:
@@ -119,10 +120,14 @@ class ProductCardReportWizard(models.TransientModel):
             WHERE
                 v.product_id = %s AND
                 v.create_date < %s
+                and v.company_id = %s
         """
-        self.env.cr.execute(query, (product_id, self.date_from))
+
+        self.env.cr.execute(query, (product_id, self.date_from, self.env.company.id))
         result = self.env.cr.fetchone()
         return result[0] if result else 0
+        # ---------------- Ehab -----------------------------------------
+
 
     def get_report_data(self):
         data = []
