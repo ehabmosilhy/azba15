@@ -187,13 +187,23 @@ class ProductCardReportWizard(models.TransientModel):
             inc = True if move.location_id.usage in ('supplier') else False
             out = True if move.location_dest_id.usage in ('customer', 'production') else False
             if not inc and not out:
-                if move.location_id.usage == 'internal' and move.location_dest_id.usage == 'internal':
-                    inc = out = True
-                elif move.location_dest_id.usage == 'inventory':  # inventory loss
-                    if move.quantity_done < 0:
+                # if move.location_id.usage == 'internal' and move.location_dest_id.usage == 'internal':
+                #     inc = out = True
+                # elif move.location_dest_id.usage == 'inventory':  # inventory loss
+                #     if move.quantity_done < 0:
+                #         inc = True
+                #     else:
+                #         out = True
+                layer = self.env['stock.valuation.layer'].search(
+                    [('stock_move_id', '=', move.id)]
+                )
+                if layer:
+                    if layer.quantity > 0:
                         inc = True
                     else:
                         out = True
+
+
 
             qty = move.quantity_done
 
