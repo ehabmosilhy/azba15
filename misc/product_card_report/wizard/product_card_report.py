@@ -193,7 +193,8 @@ class ProductCardReportWizard(models.TransientModel):
             qty = move.quantity_done
 
             previous_qty_balance = data[-1]['qty_balance'] if data else 0
-
+            if not previous_qty_balance:
+                previous_qty_balance =0
             if out and not inc:
                 sign = -1
             elif not out and inc:
