@@ -37,38 +37,44 @@ class AllProductHistoryReport(models.TransientModel):
 
     def exempt_moves(self, date_from, date_to):
 
+        # sql = """
+        #  WITH pairs AS (
+        #               SELECT
+        #                 create_date,
+        #                 product_id,
+        #                 array_agg(quantity) as quantities,
+        #                 count(*) as row_count
+        #               FROM stock_valuation_layer
+        #               WHERE create_date >= %s AND create_date <= %s
+        #               and product_id in %s
+        #               GROUP BY create_date, product_id
+        #               HAVING count(*) = 2
+        #             )
+        #             SELECT
+        #               svl.id
+        #             FROM pairs p
+        #             JOIN stock_valuation_layer svl
+        #               ON svl.create_date = p.create_date
+        #               AND svl.product_id = p.product_id
+        #             WHERE EXISTS (
+        #                 SELECT 1
+        #                 FROM stock_valuation_layer svl2
+        #                 WHERE svl2.create_date = svl.create_date
+        #                 AND svl2.product_id = svl.product_id
+        #                 AND svl2.quantity = -svl.quantity
+        #             )
+        #             ORDER BY
+        #               svl.create_date,
+        #               svl.product_id,
+        #               svl.quantity DESC;
+        # """
         sql = """
-         WITH pairs AS (
-  SELECT
-    create_date,
-    product_id,
-    array_agg(quantity) as quantities,
-    count(*) as row_count
-  FROM stock_valuation_layer
-  WHERE create_date >= %s AND create_date <= %s
-  and product_id in %s
-  GROUP BY create_date, product_id
-  HAVING count(*) = 2
-)
-SELECT
-  svl.id
-FROM pairs p
-JOIN stock_valuation_layer svl
-  ON svl.create_date = p.create_date
-  AND svl.product_id = p.product_id
-WHERE EXISTS (
-    SELECT 1
-    FROM stock_valuation_layer svl2
-    WHERE svl2.create_date = svl.create_date
-    AND svl2.product_id = svl.product_id
-    AND svl2.quantity = -svl.quantity
-)
-ORDER BY
-  svl.create_date,
-  svl.product_id,
-  svl.quantity DESC;
+        select id
+        from stock_valuation_layer
+        where description ilike %s and description ilike %s 
+        and create_date >= %s and create_date <= %s
         """
-        params = (date_from, date_to, tuple(self.product_ids.ids))
+        params = ('%fifo%', '%average%', date_from, date_to)
         debug_query = self._cr.mogrify(sql, params)
         print(debug_query)
         self._cr.execute(sql, params)
@@ -195,7 +201,7 @@ ORDER BY
             if product_id in additional_moves:
                 result['product_in'] += additional_moves[product_id]['product_in'] or 0
                 result['product_out'] += additional_moves[product_id]['product_out'] or 0
-                # result['balance'] = result['initial_balance'] + result['product_in'] - result['product_out']
+                result['balance'] = result['initial_balance'] + result['product_in'] - result['product_out']
 
         ReportLine = self.env["all.product.history.view"]
         self.results = [ReportLine.new(line).id for line in all_product_history_results]
