@@ -167,28 +167,27 @@ class AllProductHistoryReport(models.TransientModel):
         additional_moves_sql = """
             SELECT 
                 sm.product_id,
-                SUM(CASE WHEN sm.reference iLIKE %s THEN sm.product_qty ELSE 0 END) as product_in,
-                SUM(CASE WHEN sm.reference iLIKE %s THEN sm.product_qty ELSE 0 END) as product_out
+                SUM(CASE WHEN sm.reference LIKE %s THEN sm.product_qty ELSE 0 END) as product_in,
+                SUM(CASE WHEN sm.reference LIKE %s THEN sm.product_qty ELSE 0 END) as product_out
             FROM stock_move sm
+            LEFT JOIN stock_valuation_layer svl
+                ON sm.id = svl.stock_move_id
+                AND svl.create_date::date >= %s
+                AND svl.create_date::date <= %s
+                AND svl.product_id = sm.product_id
             WHERE sm.date::date >= %s
                 AND sm.date::date <= %s
-                AND sm.product_id in %s
+                AND sm.product_id IN %s
                 AND sm.state = 'done'
-                AND sm.id NOT IN (
-                    SELECT COALESCE(stock_move_id, 0)
-                    FROM stock_valuation_layer
-                    WHERE create_date::date >= %s
-                    AND create_date::date <= %s
-                    AND product_id = sm.product_id
-                )
+                AND svl.stock_move_id IS NULL
             GROUP BY sm.product_id
         """
         additional_params = (
-            '%/in/%',  # for product_in pattern
-            '%/out/%',  # for product_out pattern
-            self.date_from, self.date_to,  # date range
-            tuple(products.ids),  # product_ids
+            '%/IN/%',  # for product_in pattern
+            '%/OUT/%',  # for product_out pattern
             self.date_from, self.date_to,  # date range for valuation layer check
+            self.date_from, self.date_to,  # date range for stock_move
+            tuple(products.ids),  # product_ids
         )
         debug_query = self._cr.mogrify(additional_moves_sql, additional_params).decode('utf-8').replace("\n", " ")
         print(debug_query)
