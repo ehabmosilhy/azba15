@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 
 
 class FleetVehicleLogServices(models.Model):
@@ -21,7 +21,7 @@ class FleetVehicleLogServices(models.Model):
     def name_get(self):
         result = []
         for record in self:
-            service_types = record.service_type_id.mapped(lambda r: '[%s] %s' % (r.code, r.name))
+            service_types = record.service_type_id.mapped(lambda r: '[%s] %s' % (r.code or '', r.name))
             name = ' + '.join(service_types) or _('New Service')
             result.append((record.id, name))
         return result
