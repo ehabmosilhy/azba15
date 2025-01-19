@@ -25,3 +25,7 @@ class FleetVehicleLogServices(models.Model):
             name = ' + '.join(service_types) or _('New Service')
             result.append((record.id, name))
         return result
+
+    def action_done(self):
+        """Mark the service as done."""
+        return self.write({'state': 'done'})

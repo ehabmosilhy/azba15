@@ -17,6 +17,13 @@
         <field name="model">fleet.vehicle.log.services</field>
         <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_done" 
+                        string="Mark as Done" 
+                        type="object" 
+                        class="oe_highlight"
+                        attrs="{'invisible': [('state', '=', 'done')]}"/>
+            </xpath>
             <xpath expr="//field[@name='service_type_id']" position="attributes">
                 <attribute name="widget">many2many_tags</attribute>
             </xpath>
