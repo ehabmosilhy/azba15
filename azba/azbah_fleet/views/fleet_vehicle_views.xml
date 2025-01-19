@@ -11,4 +11,26 @@
             </xpath>
         </field>
     </record>
+
+    <record id="fleet_vehicle_log_services_form_view_inherited" model="ir.ui.view">
+        <field name="name">fleet.vehicle.log.services.form.inherited</field>
+        <field name="model">fleet.vehicle.log.services</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='service_type_id']" position="attributes">
+                <attribute name="widget">many2many_tags</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_log_services_tree_view_inherited" model="ir.ui.view">
+        <field name="name">fleet.vehicle.log.services.tree.inherited</field>
+        <field name="model">fleet.vehicle.log.services</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_log_services_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="service_type_id" position="replace">
+                <field name="service_type_id" widget="many2many_tags"/>
+            </field>
+        </field>
+    </record>
 </odoo>
