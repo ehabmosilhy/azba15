@@ -6,5 +6,6 @@
     "depends": ["base", "fleet"],
     "data": [
         "views/fleet_vehicle.xml",
+        "views/fleet_vehicle_views.xml",
     ],
 }

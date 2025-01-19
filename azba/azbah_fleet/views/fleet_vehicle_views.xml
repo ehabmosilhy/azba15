@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Inherit Tree View -->
+    <record id="fleet_vehicle_service_types_view_tree_inherited" model="ir.ui.view">
+        <field name="name">fleet.service.type.tree.inherited</field>
+        <field name="model">fleet.service.type</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_service_types_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="code"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
