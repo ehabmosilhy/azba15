@@ -5,63 +5,114 @@
             <t t-foreach="docs" t-as="doc">
                 <t t-call="web.external_layout">
                     <div class="page">
-                        <h2 class="text-center">Vehicle Service Report</h2>
-                        
-                        <div class="row mt-4">
-                            <div class="col-6">
-                                <strong>Vehicle:</strong>
-                                <span t-field="doc.vehicle_id.name"/>
-                            </div>
-                            <div class="col-6">
-                                <strong>Date:</strong>
-                                <span t-field="doc.date"/>
-                            </div>
-                        </div>
+                        <style>
+                            .service-report h2 {
+                                color: #2C3E50;
+                                padding-bottom: 10px;
+                                border-bottom: 2px solid #3498DB;
+                                margin-bottom: 20px;
+                            }
+                            .service-report .section-header {
+                                background-color: #f8f9fa;
+                                padding: 8px;
+                                margin-bottom: 15px;
+                                border-left: 4px solid #3498DB;
+                            }
+                            .service-report .field-label {
+                                color: #2C3E50;
+                                font-weight: bold;
+                                margin-bottom: 5px;
+                            }
+                            .service-report .field-value {
+                                color: #34495E;
+                                padding-left: 5px;
+                            }
+                            .service-report .service-types-list {
+                                list-style: none;
+                                padding-left: 0;
+                            }
+                            .service-report .service-types-list li {
+                                padding: 5px 10px;
+                                margin-bottom: 5px;
+                                background-color: #f8f9fa;
+                                border-radius: 4px;
+                            }
+                            .service-report .service-code {
+                                color: #7f8c8d;
+                                font-size: 0.9em;
+                                margin-right: 5px;
+                            }
+                            .service-report .amount-value {
+                                font-weight: bold;
+                                color: #27ae60;
+                            }
+                        </style>
 
-                        <div class="row mt-3">
-                            <div class="col-12">
-                                <strong>Service Types:</strong>
-                                <ul class="list-unstyled">
-                                    <t t-foreach="doc.service_type_id" t-as="service_type">
-                                        <li><span t-field="service_type.name"/></li>
-                                    </t>
-                                </ul>
+                        <div class="service-report">
+                            <h2 class="text-center">Vehicle Service Report</h2>
+                            
+                            <div class="section-header">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="field-label">Service Types:</div>
+                                        <div class="field-value">
+                                            <t t-foreach="doc.service_type_id" t-as="service_type">
+                                                <span class="service-code" t-if="service_type.code">[<t t-esc="service_type.code"/>]</span>
+                                                <span t-field="service_type.name"/>
+                                                <t t-if="not service_type_last"> + </t>
+                                            </t>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="field-label">Date:</div>
+                                        <div class="field-value"><span t-field="doc.date"/></div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mt-3">
-                            <div class="col-6">
-                                <strong>Odometer:</strong>
-                                <span t-field="doc.odometer"/>
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <div class="field-label">Vehicle:</div>
+                                    <div class="field-value"><span t-field="doc.vehicle_id.name"/></div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="field-label">Odometer:</div>
+                                    <div class="field-value"><span t-field="doc.odometer"/> km</div>
+                                </div>
                             </div>
-                            <div class="col-6">
-                                <strong>Vendor:</strong>
-                                <span t-field="doc.vendor_id.name"/>
-                            </div>
-                        </div>
 
-                        <div class="row mt-3">
-                            <div class="col-12">
-                                <strong>Description:</strong>
-                                <p t-field="doc.description"/>
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <div class="field-label">Vendor:</div>
+                                    <div class="field-value"><span t-field="doc.vendor_id.name"/></div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="field-label">Driver:</div>
+                                    <div class="field-value"><span t-field="doc.purchaser_id.name"/></div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mt-4">
-                            <div class="col-6">
-                                <strong>Cost:</strong>
-                                <span t-field="doc.amount" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div class="field-label">Description:</div>
+                                    <div class="field-value"><p t-field="doc.description"/></div>
+                                </div>
                             </div>
-                            <div class="col-6">
-                                <strong>Purchaser:</strong>
-                                <span t-field="doc.purchaser_id.name"/>
-                            </div>
-                        </div>
 
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <strong>Notes:</strong>
-                                <p t-field="doc.notes"/>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div class="field-label">Cost:</div>
+                                    <div class="field-value amount-value">
+                                        <span t-field="doc.amount" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div class="field-label">Notes:</div>
+                                    <div class="field-value"><p t-field="doc.notes"/></div>
+                                </div>
                             </div>
                         </div>
                     </div>
