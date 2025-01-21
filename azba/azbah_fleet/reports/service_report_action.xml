@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_report_fleet_service" model="ir.actions.report">
+        <field name="name">Service Report</field>
+        <field name="model">fleet.vehicle.log.services</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">azbah_fleet.report_fleet_service</field>
+        <field name="report_file">azbah_fleet.report_fleet_service</field>
+        <field name="binding_model_id" ref="fleet.model_fleet_vehicle_log_services"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
