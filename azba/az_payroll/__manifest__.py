@@ -13,8 +13,8 @@
         'report_xlsx_helper',
     ],
     'data': [
+        'reports/report_actions.xml',
         'views/hr_payslip_views.xml',
-        'views/report_actions.xml',
     ],
     'installable': True,
     'application': False,
