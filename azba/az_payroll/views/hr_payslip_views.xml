@@ -9,6 +9,13 @@
                 <attribute name="options">{'no_create': True}</attribute>
                 <attribute name="context">{'show_employee_code': True}</attribute>
             </field>
+            <xpath expr="//header" position="inside">
+                <button name="%(az_payroll.action_payslip_xlsx_report)d" 
+                        string="Export Excel" 
+                        type="action" 
+                        class="oe_highlight"
+                        icon="fa-file-excel-o"/>
+            </xpath>
         </field>
     </record>
 </odoo>

@@ -30,7 +30,7 @@ class AccountEdiDocument(models.Model):
         all_jobs = self.filtered(lambda d: d.edi_format_id._needs_web_services())._prepare_jobs()
 
         # ============== START OF ZATCA FILTERING ==============
-        # Filter out moves that are less than 24 hours old
+        # Filter out moves that are less than 6 hours old
         filtered_jobs = all_jobs
         for move in self.move_id:
             if not move.process_now:
