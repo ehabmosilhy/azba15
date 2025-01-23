@@ -8,8 +8,6 @@
             <field name="report_name">az_payroll.report_payslip_xlsx</field>
             <field name="report_file">az_payroll.report_payslip_xlsx</field>
             <field name="print_report_name">'Payslip Report - %s' % (object.employee_id.name)</field>
-            <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
-            <field name="binding_type">report</field>
         </record>
 
         <record id="action_payslip_matrix_xlsx_report" model="ir.actions.report">
@@ -19,8 +17,6 @@
             <field name="report_name">az_payroll.report_payslip_matrix_xlsx</field>
             <field name="report_file">az_payroll.report_payslip_matrix_xlsx</field>
             <field name="print_report_name">'Payslips Summary Report'</field>
-            <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
-            <field name="binding_type">report</field>
         </record>
     </data>
 </odoo>

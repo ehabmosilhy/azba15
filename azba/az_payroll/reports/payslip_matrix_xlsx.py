@@ -43,6 +43,12 @@ class PayslipMatrixXlsxReport(models.AbstractModel):
             'border_color': '#E0E0E0'
         })
         
+        number_cell_format = workbook.add_format({
+            'align': 'center',
+            'border': 1,
+            'border_color': '#E0E0E0'
+        })
+        
         date_format = workbook.add_format({
             'num_format': 'yyyy-mm-dd',
             'align': 'center',
@@ -50,7 +56,7 @@ class PayslipMatrixXlsxReport(models.AbstractModel):
             'border_color': '#E0E0E0'
         })
         
-        number_format = workbook.add_format({
+        amount_format = workbook.add_format({
             'num_format': '#,##0.00',
             'align': 'right',
             'border': 1,
@@ -72,6 +78,7 @@ class PayslipMatrixXlsxReport(models.AbstractModel):
         # Fixed columns
         columns = OrderedDict([
             ('employee', {'name': 'Employee', 'width': 30}),
+            ('number', {'name': 'Number', 'width': 15}),
             ('date_from', {'name': 'Start Date', 'width': 12}),
             ('date_to', {'name': 'End Date', 'width': 12}),
         ])
@@ -99,6 +106,8 @@ class PayslipMatrixXlsxReport(models.AbstractModel):
             # Write fixed columns
             sheet.write(row, col, payslip.employee_id.name, data_format)
             col += 1
+            sheet.write(row, col, payslip.number or '', number_cell_format)
+            col += 1
             sheet.write(row, col, payslip.date_from, date_format)
             col += 1
             sheet.write(row, col, payslip.date_to, date_format)
@@ -113,7 +122,7 @@ class PayslipMatrixXlsxReport(models.AbstractModel):
                 # Make deductions negative
                 if rule_info['category'].lower().find('deduction') >= 0:
                     value = -abs(value)
-                sheet.write(row, col, value, number_format)
+                sheet.write(row, col, value, amount_format)
                 col += 1
             
             row += 1
@@ -123,9 +132,10 @@ class PayslipMatrixXlsxReport(models.AbstractModel):
             sheet.write(row, 0, 'Totals', header_format)
             sheet.write(row, 1, '', header_format)
             sheet.write(row, 2, '', header_format)
+            sheet.write(row, 3, '', header_format)
             
             # Add sum formulas for each rule column
-            for col in range(3, len(columns)):
+            for col in range(4, len(columns)):
                 col_letter = chr(65 + col)
                 formula = f'=SUM({col_letter}2:{col_letter}{row})'
                 sheet.write_formula(row, col, formula, total_format)
