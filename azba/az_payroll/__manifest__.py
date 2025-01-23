@@ -7,6 +7,7 @@
         Extends HR Payroll functionality with:
         - Employee code in payslip employee selection
         - Excel report generation for payslips
+        - Matrix report for multiple payslips
     """,
     'depends': [
         'hr_payroll',
@@ -14,6 +15,7 @@
     ],
     'data': [
         'reports/report_actions.xml',
+        'views/actions.xml',
         'views/hr_payslip_views.xml',
     ],
     'installable': True,
