@@ -63,15 +63,6 @@ class PayslipMatrixXlsxReport(models.AbstractModel):
             'border_color': '#E0E0E0'
         })
 
-        total_format = workbook.add_format({
-            'bold': True,
-            'num_format': '#,##0.00',
-            'align': 'right',
-            'border': 1,
-            'bg_color': '#F2F2F2',
-            'border_color': '#E0E0E0'
-        })
-
         # Get all unique salary rules
         salary_rules = self._get_salary_rules(payslips)
         
@@ -126,16 +117,3 @@ class PayslipMatrixXlsxReport(models.AbstractModel):
                 col += 1
             
             row += 1
-
-        # Write totals
-        if row > 1:
-            sheet.write(row, 0, 'Totals', header_format)
-            sheet.write(row, 1, '', header_format)
-            sheet.write(row, 2, '', header_format)
-            sheet.write(row, 3, '', header_format)
-            
-            # Add sum formulas for each rule column
-            for col in range(4, len(columns)):
-                col_letter = chr(65 + col)
-                formula = f'=SUM({col_letter}2:{col_letter}{row})'
-                sheet.write_formula(row, col, formula, total_format)
