@@ -68,7 +68,7 @@ class PayslipMatrixXlsxReport(models.AbstractModel):
         
         # Fixed columns
         columns = OrderedDict([
-            ('employee', {'name': 'Employee', 'width': 30}),
+            ('employee', {'name': 'Employee', 'width': 40}),  
             ('number', {'name': 'Number', 'width': 15}),
             ('date_from', {'name': 'Start Date', 'width': 12}),
             ('date_to', {'name': 'End Date', 'width': 12}),
@@ -95,7 +95,9 @@ class PayslipMatrixXlsxReport(models.AbstractModel):
         for payslip in payslips:
             col = 0
             # Write fixed columns
-            sheet.write(row, col, payslip.employee_id.name, data_format)
+            employee_code = payslip.employee_id.code or ''
+            employee_display = f"[{employee_code}] {payslip.employee_id.name}" if employee_code else payslip.employee_id.name
+            sheet.write(row, col, employee_display, data_format)
             col += 1
             sheet.write(row, col, payslip.number or '', number_cell_format)
             col += 1
