@@ -38,6 +38,12 @@ class WhatsAppIntegration(models.AbstractModel):
 
     @api.model
     def send_whatsapp_message(self, order):
+        """
+        This method does nothing now.
+        The twilio params should be set instead of xxxxx below
+        """
+        return
+
         partner = order.partner_id
         whatsapp_number = partner.mobile
         if not whatsapp_number or len(whatsapp_number) < 4:
@@ -58,10 +64,10 @@ class WhatsAppIntegration(models.AbstractModel):
 
         to_number = self.format_to_whatsapp_number(whatsapp_number)
         from_number = "whatsapp:966593120000"
-        messaging_service_sid = "MGbf7e1ca8d7581693a55d09285733d1cc"
+        messaging_service_sid = "xxxxxxx"
 
-        account_sid = "AC2d38454d87a1d186927a4488eed3842f"
-        auth_token = "74a21fd14e6f7a72f004a93a1c8dff90"
+        account_sid = "xxxx"
+        auth_token = "xxxx"
 
         variables = {
             "1": partner.name,
@@ -73,7 +79,7 @@ class WhatsAppIntegration(models.AbstractModel):
         variables = json.dumps(variables, ensure_ascii=False, indent=2)
 
         payload = {
-            'ContentSid': 'HX0a9f3d367c6163eb0f00bd4cd0e3897f',
+            'ContentSid': 'xxxx',
             'To': f'whatsapp:{to_number}',
             'From': from_number,
             'MessagingServiceSid': messaging_service_sid,
